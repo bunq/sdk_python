@@ -1,5 +1,25 @@
-# bunq Java SDK
+# bunq Python SDK
 Version 0.9.0 **BETA**
+
+## Introduction
+Hi developers!
+
+Welcome to the bunq Python SDK! 👨‍💻
+
+We're very happy to introduce yet another unique product: complete banking SDKs! 
+Now you can build even bigger and better apps and integrate them with your bank of the free! 🌈
+
+Before you dive into this brand new SDK, please consider:
+- Checking out our new developer’s page [bunq.com/developers](https://bunq.com/developers) 🙌  
+- Grabbing your production API key from the bunq app or asking our support for a Sandbox API key 🗝
+- Visiting [together.bunq.com](https://together.bunq.com) where you can share your creations,
+questions and experience 🎤
+
+Give us your feedback, create pull requests, build your very own bunq apps and most importantly:
+have fun! 💪
+
+This SDK is in **beta**. We cannot guarantee constant availability or stability. 
+Thanks to your feedback we will make improvements on it.
 
 ## Installation
 In the root of your project, being in the correct virtual environment, run:
