@@ -86,4 +86,7 @@ htmlcov/
 
 # bunq specific
 bunq.conf
-**/tmp/
+bunq-test.conf
+**/tmp
+config.json
+tests/connectQr.png
