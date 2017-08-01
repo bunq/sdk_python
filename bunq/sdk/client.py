@@ -101,6 +101,14 @@ class ApiClient(object):
             headers=all_headers
         )
 
+        if self._api_context.installation_context is not None:
+            security.validate_response(
+                self._api_context.installation_context.public_key_server,
+                response.status_code,
+                response.content,
+                response.headers
+            )
+
         self._assert_response_success(response)
 
         return response

@@ -42,6 +42,7 @@ _BLOCK_SIZE = 16
 _HEADER_CLIENT_ENCRYPTION_KEY = 'X-Bunq-Client-Encryption-Key'
 _HEADER_CLIENT_ENCRYPTION_IV = 'X-Bunq-Client-Encryption-Iv'
 _HEADER_CLIENT_ENCRYPTION_HMAC = 'X-Bunq-Client-Encryption-Hmac'
+_HEADER_SERVER_SIGNATURE = 'X-Bunq-Server-Signature'
 
 
 def generate_rsa_private_key():
@@ -97,7 +98,7 @@ def sign_request(private_key, method, endpoint, body_bytes, headers):
     :rtype: str
     """
 
-    head_bytes = _generate_head_bytes(method, endpoint, headers)
+    head_bytes = _generate_request_head_bytes(method, endpoint, headers)
     bytes_to_sign = head_bytes + body_bytes
     signer = PKCS1_v1_5.new(private_key)
     digest = SHA256.new()
@@ -107,7 +108,7 @@ def sign_request(private_key, method, endpoint, body_bytes, headers):
     return b64encode(sign)
 
 
-def _generate_head_bytes(method, endpoint, headers):
+def _generate_request_head_bytes(method, endpoint, headers):
     """
     :type method: str
     :type endpoint: str
@@ -116,17 +117,17 @@ def _generate_head_bytes(method, endpoint, headers):
     :rtype: bytes
     """
 
-    header_tuples = sorted((k, headers[k]) for k in headers)
     head_string = _FORMAT_METHOD_AND_ENDPOINT.format(method, endpoint)
+    header_tuples = sorted((k, headers[k]) for k in headers)
 
     for name, value in header_tuples:
-        if _should_sign_header(name):
+        if _should_sign_request_header(name):
             head_string += _FORMAT_HEADER_STRING.format(name, value)
 
     return (head_string + _DELIMITER_NEWLINE).encode()
 
 
-def _should_sign_header(header_name):
+def _should_sign_request_header(header_name):
     """
     :type header_name: str
 
@@ -229,3 +230,55 @@ def _add_header_client_encryption_hmac(request_bytes, key, iv, custom_headers):
     hashed = hmac.new(key, iv + request_bytes, sha1)
     hashed_base64 = base64.b64encode(hashed.digest()).decode()
     custom_headers[_HEADER_CLIENT_ENCRYPTION_HMAC] = hashed_base64
+
+
+def validate_response(public_key_server, status_code, body_bytes, headers):
+    """
+    :type public_key_server: RSA.RsaKey
+    :type status_code: int
+    :type body_bytes: bytes
+    :type headers: dict[str, str]
+
+    :rtype: None
+    """
+
+    head_bytes = _generate_response_head_bytes(status_code, headers)
+    bytes_signed = head_bytes + body_bytes
+    signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
+    digest = SHA256.new()
+    digest.update(bytes_signed)
+    signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
+
+
+def _generate_response_head_bytes(status_code, headers):
+    """
+    :type status_code: int
+    :type headers: dict[str, str]
+
+    :rtype: bytes
+    """
+
+    head_string = str(status_code) + _DELIMITER_NEWLINE
+    header_tuples = sorted((k, headers[k]) for k in headers)
+
+    for name, value in header_tuples:
+        if _should_sign_response_header(name):
+            head_string += _FORMAT_HEADER_STRING.format(name, value)
+
+    return (head_string + _DELIMITER_NEWLINE).encode()
+
+
+def _should_sign_response_header(header_name):
+    """
+    :type header_name: str
+
+    :rtype: bool
+    """
+
+    if header_name == _HEADER_SERVER_SIGNATURE:
+        return False
+
+    if re.match(_PATTERN_HEADER_PREFIX_BUNQ, header_name):
+        return True
+
+    return False

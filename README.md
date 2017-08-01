@@ -10,7 +10,7 @@ We're very happy to introduce yet another unique product: complete banking SDKs!
 Now you can build even bigger and better apps and integrate them with your bank of the free! 🌈
 
 Before you dive into this brand new SDK, please consider:
-- Checking out our new developer’s page [bunq.com/developers](https://bunq.com/developers) 🙌  
+- Checking out our new developer’s page [https://bunq.com/en/developer](https://bunq.com/en/developer) 🙌  
 - Grabbing your production API key from the bunq app or asking our support for a Sandbox API key 🗝
 - Visiting [together.bunq.com](https://together.bunq.com) where you can share your creations,
 questions and experience 🎤
@@ -22,9 +22,10 @@ This SDK is in **beta**. We cannot guarantee constant availability or stability.
 Thanks to your feedback we will make improvements on it.
 
 ## Installation
-In the root of your project, being in the correct virtual environment, run:
+From the root of your project, run:
+
 ```shell
-(bunq_sdk_python) $ pip install bunq_sdk && pip freeze > requirements.txt
+(bunq_sdk) $ pip install bunq_sdk --upgrade
 ```
 
 ## Usage
