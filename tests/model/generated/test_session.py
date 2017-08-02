@@ -17,7 +17,7 @@ class TestSession(BunqSdkTestCase):
         cls._API_KEY = Config.get_api_key()
         cls._BUNQ_CONFIG_FILE = "bunq-test.conf"
         cls._DEVICE_DESCRIPTION = 'Python test device'
-        cls._API_CONTEXT = cls.get_api_context()
+        cls._API_CONTEXT = cls._get_api_context()
 
     def test_session_delete(self):
         """

@@ -23,7 +23,7 @@ class TestRequestEnquiry(BunqSdkTestCase):
         cls._COUNTER_PARTY_SAME_USER = Config.get_pointer_counter_party_self()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
         cls._MONETARY_ACCOUNT_ID2 = Config.get_monetary_account_id_2()
-        cls._API_CONTEXT = cls.get_api_context()
+        cls._API_CONTEXT = cls._get_api_context()
 
     def test_sending_and_accepting_request(self):
         """

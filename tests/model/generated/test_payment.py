@@ -24,7 +24,7 @@ class TestPayment(BunqSdkTestCase):
         cls._COUNTER_PARTY_OTHER_USER = Config.get_pointer_counter_party_other()
         cls._COUNTER_PARTY_SAME_USER = Config.get_pointer_counter_party_self()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
-        cls._API_CONTEXT = cls.get_api_context()
+        cls._API_CONTEXT = cls._get_api_context()
 
     def test_payment_to_other_user(self):
         """

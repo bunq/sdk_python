@@ -20,7 +20,7 @@ class TestAttachmentPublic(BunqSdkTestCase):
         cls._CONTENT_TYPE = Config.get_attachment_content_type()
         cls._ATTACHMENT_DESCRIPTION = Config.get_attachment_description()
         cls._ATTACHMENT_PATH_IN = Config.get_attachment_path_in()
-        cls._API_CONTEXT = cls.get_api_context()
+        cls._API_CONTEXT = cls._get_api_context()
 
     def test_file_upload_and_retrieval(self):
         """

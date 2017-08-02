@@ -1,8 +1,8 @@
 {
     "API_KEY": "<API KEY>",
     "USER_ID": "xxxx",
-    "MA_ID": "xxxx",
-    "MA_ID2": "xxxx",
+    "MONETARY_ACCOUNT_ID": "xxxx",
+    "MONETARY_ACCOUNT_ID2": "xxxx",
     "ipAddress": "<Ip address>",
     "AttachmentPublicTest":{
         "CONTENT_TYPE": "image/png",

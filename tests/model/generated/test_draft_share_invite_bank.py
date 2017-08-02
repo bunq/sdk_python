@@ -23,7 +23,7 @@ class TestDraftShareInvite(BunqSdkTestCase):
         cls._WRITE_BYTES = 'wb'
         cls._EXPIRATION_ADDED_TIME = 1
         cls._USER_ID = Config.get_user_id()
-        cls._API_CONTEXT = cls.get_api_context()
+        cls._API_CONTEXT = cls._get_api_context()
 
     def test_draft_share_invite_bank(self):
         """

@@ -25,7 +25,7 @@ class TestCardDebit(BunqSdkTestCase):
         cls._SECOND_LINE_LENGTH_MAXIMUM = 20
         cls._STRING_EMPTY = ''
         cls._USER_ID = Config.get_user_id()
-        cls._API_CONTEXT = cls.get_api_context()
+        cls._API_CONTEXT = cls._get_api_context()
 
     def test_order_debit_card(self):
         """

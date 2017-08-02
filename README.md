@@ -146,3 +146,36 @@ users = generated.User.list(api_context)
 
 ##### Example
 See [`UserListExample.py`](./examples/user_list_example.py)
+
+## Running Samples
+In order to make the experience of getting into bunq Python SDK smoother, we
+have bundled it with example use cases (located under `/examples`).
+
+To run an example, please do the following:
+1. In your IDE, open the example you are interested in and adjust the constants,
+such as `_API_KEY` or `_USER_ID`, to hold your data.
+2. In your terminal, go to the root of bunq SDK project:
+
+```shell
+$ cd /path/to/bunq/sdk/
+```
+3. In the terminal, run:
+
+```shell
+$ python3 run.py examples/<something_example.py>
+```
+   Replace `<something_example.py>` with the name of the example you would like
+   to run. If you wish to run the example with python 2, also replace
+   `python3` with `python`.
+
+In order for examples to run, you would need a valid context file (`bunq.conf`)
+to be present in the bunq SDK project root directory. The file can either copied
+from somewhere else (e.g. tests) or created by running the following command
+in your bunq SDK project root directory:
+
+```shell
+$ python3 run.py examples/api_context_save_example.py
+```
+
+Please do not forget to set the `_API_KEY` constant in
+`api_context_save_example.py` to your actual API key before running the sample!

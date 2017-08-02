@@ -19,7 +19,7 @@ class BunqSdkTestCase(unittest.TestCase):
     _DEVICE_DESCRIPTION = 'Python test device'
 
     @classmethod
-    def get_api_context(cls):
+    def _get_api_context(cls):
         """
         Calls IsSessionActive to check if the session token is still active
         and returns the ApiContext.
