@@ -1,13 +1,11 @@
-import unittest
-
-from tests.api_context_handler import ApiContextHandler
-from tests.config import Config
+from bunq.sdk.client import ApiClient
 from bunq.sdk.model.generated.endpoint import AttachmentPublic
 from bunq.sdk.model.generated.endpoint import AttachmentPublicContent
-from bunq.sdk.client import ApiClient
+from tests.bunq_test import BunqSdkTestCase
+from tests.config import Config
 
 
-class TestAttachmentPublic(unittest.TestCase):
+class TestAttachmentPublic(BunqSdkTestCase):
     """
     Tests:
         AttachmentPublic
@@ -17,13 +15,12 @@ class TestAttachmentPublic(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # config values
-        cls._PATH_TO_ATTACHMENT = '/Users/khellemun/bunq/sdk_python/tests/' \
-                                  'assets'
+        cls._PATH_ATTACHMENT = cls._get_directory_test_root() + '/assets/'
         cls._READ_BYTES = "rb"
         cls._CONTENT_TYPE = Config.get_attachment_content_type()
         cls._ATTACHMENT_DESCRIPTION = Config.get_attachment_description()
         cls._ATTACHMENT_PATH_IN = Config.get_attachment_path_in()
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_file_upload_and_retrieval(self):
         """
@@ -53,6 +50,6 @@ class TestAttachmentPublic(unittest.TestCase):
         :rtype: bytes
         """
 
-        with open(self._PATH_TO_ATTACHMENT + self._ATTACHMENT_PATH_IN,
+        with open(self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN,
                   self._READ_BYTES) as f:
             return f.read()

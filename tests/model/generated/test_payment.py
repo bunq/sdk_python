@@ -1,14 +1,12 @@
-import unittest
-
 from bunq.sdk.model.generated.endpoint import Payment
 from bunq.sdk.model.generated.endpoint import PaymentChat
 from bunq.sdk.model.generated.endpoint import ChatMessageText
 from bunq.sdk.model.generated.object_ import Amount
-from tests.api_context_handler import ApiContextHandler
+from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
 
-class TestPayment(unittest.TestCase):
+class TestPayment(BunqSdkTestCase):
     """
     Tests:
         Payment
@@ -26,7 +24,7 @@ class TestPayment(unittest.TestCase):
         cls._COUNTER_PARTY_OTHER_USER = Config.get_pointer_counter_party_other()
         cls._COUNTER_PARTY_SAME_USER = Config.get_pointer_counter_party_self()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_payment_to_other_user(self):
         """

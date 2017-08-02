@@ -1,12 +1,11 @@
-import unittest
 from secrets import token_hex
 
 from bunq.sdk.model.generated.endpoint import MonetaryAccountBank
-from tests.api_context_handler import ApiContextHandler
+from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
 
-class TestMonetaryAccount(unittest.TestCase):
+class TestMonetaryAccount(BunqSdkTestCase):
     """
     Tests:
         MonetaryAccountBank
@@ -21,7 +20,7 @@ class TestMonetaryAccount(unittest.TestCase):
         cls._FIELD_CURRENCY = 'EUR'
         cls._MONETARY_ACCOUNT_PREFIX = 'Python_test'
         cls._USER_ID = Config.get_user_id()
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_create_new_monetary_account(self):
         """

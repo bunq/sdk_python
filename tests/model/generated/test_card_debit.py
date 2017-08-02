@@ -1,17 +1,16 @@
 import random
 import string
-import unittest
 
 from bunq.sdk.model.generated.endpoint import User
 from bunq.sdk.model.generated.endpoint import CardName
 from bunq.sdk.model.generated.endpoint import Card
 from bunq.sdk.model.generated.endpoint import CardDebit
 from bunq.sdk.model.generated.object_ import Pointer
-from tests.api_context_handler import ApiContextHandler
+from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
 
-class TestCardDebit(unittest.TestCase):
+class TestCardDebit(BunqSdkTestCase):
     """
     Tests:
         Card
@@ -24,9 +23,9 @@ class TestCardDebit(unittest.TestCase):
         cls._CARD_PIN_CODE = '4045'
         cls._FIRST_INDEX = 0
         cls._SECOND_LINE_LENGTH_MAXIMUM = 20
-        cls._EMPTY_STRING = ''
+        cls._STRING_EMPTY = ''
         cls._USER_ID = Config.get_user_id()
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_order_debit_card(self):
         """
@@ -81,4 +80,4 @@ class TestCardDebit(unittest.TestCase):
             next_char = random.choice(string.ascii_uppercase)
             second_line_characters.append(next_char)
 
-        return self._EMPTY_STRING.join(second_line_characters)
+        return self._STRING_EMPTY.join(second_line_characters)

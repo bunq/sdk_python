@@ -1,13 +1,11 @@
-import unittest
-
 from bunq.sdk.model.generated.endpoint import TabUsageSingle
 from bunq.sdk.model.generated.endpoint import TabItemShop
 from bunq.sdk.model.generated.object_ import Amount
-from tests.api_context_handler import ApiContextHandler
+from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
 
-class TestTabUsageSingle(unittest.TestCase):
+class TestTabUsageSingle(BunqSdkTestCase):
     """
     Tests:
         TabUsageSingle
@@ -25,7 +23,7 @@ class TestTabUsageSingle(unittest.TestCase):
         cls._TAB_ITEM_FIELD_DESCRIPTION = 'Super expensive python tea'
         cls._STATUS_WAITING = 'WAITING_FOR_PAYMENT'
         cls._TAB_FIELD_DESCRIPTION = 'Pay the tab for Python test please.'
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_create_and_update_tab(self):
         """

@@ -1,13 +1,11 @@
-import unittest
-
 from bunq.sdk.model.generated.object_ import Amount
-from tests.api_context_handler import ApiContextHandler
+from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 from bunq.sdk.model.generated.endpoint import RequestInquiry
 from bunq.sdk.model.generated.endpoint import RequestResponse
 
 
-class TestRequestEnquiry(unittest.TestCase):
+class TestRequestEnquiry(BunqSdkTestCase):
     """
     Tests:
         RequestInquiry
@@ -25,12 +23,12 @@ class TestRequestEnquiry(unittest.TestCase):
         cls._COUNTER_PARTY_SAME_USER = Config.get_pointer_counter_party_self()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
         cls._MONETARY_ACCOUNT_ID2 = Config.get_monetary_account_id_2()
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_sending_and_accepting_request(self):
         """
-        Tests sending a request from monetary account 1 to monetary account 2 and accepting this
-        request
+        Tests sending a request from monetary account 1 to monetary account 2
+        and accepting this request
 
         This test has no assertion as of its testing to see if the code runs
         without errors

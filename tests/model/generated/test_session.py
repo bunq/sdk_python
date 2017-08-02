@@ -1,12 +1,11 @@
-import unittest
 import time
 
 from bunq.sdk.model.generated import Session
-from tests.api_context_handler import ApiContextHandler
+from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
 
-class TestSession(unittest.TestCase):
+class TestSession(BunqSdkTestCase):
     """
     Tests:
         Session
@@ -18,7 +17,7 @@ class TestSession(unittest.TestCase):
         cls._API_KEY = Config.get_api_key()
         cls._BUNQ_CONFIG_FILE = "bunq-test.conf"
         cls._DEVICE_DESCRIPTION = 'Python test device'
-        cls._API_CONTEXT = ApiContextHandler.get_api_context()
+        cls._API_CONTEXT = cls.get_api_context()
 
     def test_session_delete(self):
         """
