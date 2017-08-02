@@ -22,11 +22,7 @@ This SDK is in **beta**. We cannot guarantee constant availability or stability.
 Thanks to your feedback we will make improvements on it.
 
 ## Installation
-From the root of your project, run:
-
-```shell
-(bunq_sdk) $ pip install bunq_sdk --upgrade
-```
+TBA
 
 ## Usage
 
