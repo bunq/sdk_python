@@ -22,7 +22,7 @@ This SDK is in **beta**. We cannot guarantee constant availability or stability.
 Thanks to your feedback we will make improvements on it.
 
 ## Installation
-TBA
+``pip install bunq_sdk --upgrade``
 
 ## Usage
 
