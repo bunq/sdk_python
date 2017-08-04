@@ -179,3 +179,8 @@ $ python3 run.py examples/api_context_save_example.py
 
 Please do not forget to set the `_API_KEY` constant in
 `api_context_save_example.py` to your actual API key before running the sample!
+
+## Running Tests
+
+Information regarding the test cases can be found in the [README.md](./tests/README.md)
+located in [test](/tests)
