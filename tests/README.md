@@ -16,7 +16,7 @@ These are the scenarios that are currently being tested:
 * Create installation, session-server and device server
 * Create a new MonetaryAccount
 * Create a tab
-*  Update the tab
+* Update the tab
 * Create attachment and avatar
 * Request money from first MA to second MA
 * Accept the request
@@ -27,22 +27,25 @@ These are the scenarios that are currently being tested:
 * Delete the current session
 * Order a card with a second line
 
-Besides these scenarios some code of ApiContext, ApiClient and the JSON module 
+Besides these scenarios, some code of ApiContext, ApiClient and the JSON module 
 are also tested :thumbs_up:.
 
 ## Configuration
 
-To run the tests you must first setup the test configuration JSON. This is
-located at `tests/assets/config.example.json`. Once you have filled the values
-in with your sandbox user data, rename the file to `config.json`.
+To run the tests you must first setup the test configuration JSON. The example
+of a configuration file is located at `tests/assets/config.example.json`. In
+order to make use of the configuration file, please copy the example to the same
+directory, fill in your sandbox user data and rename the copy to config.json.
 
 ## Execution
 
-You can run the tests  via command line: 
+You can run the tests via command line: 
 
-` python -m unittest discover -s tests/model/generated`  
+```
+python -m unittest discover -s tests/model/generated
+```  
 
-or via PyCharm, but first you must configure Pycharm by doing the following:
+or via PyCharm, but first you must configure PyCharm by doing the following:
 * Got to preferences --> tools --> Python integrated tools and change default
 test runner to `unittests`.
 * Configure your Python interpreter to an supported Python version. Python 3 is
