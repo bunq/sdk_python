@@ -16,7 +16,7 @@ class ApiEnvironmentType(aenum.AutoNumberEnum):
     :type uri_base: str
     """
 
-    PRODUCTION = 'https://public.api.bunq.com/v1/'
+    PRODUCTION = 'https://api.bunq.com/v1/'
     SANDBOX = 'https://sandbox.public.api.bunq.com/v1/'
 
     def __init__(self, uri_base):
