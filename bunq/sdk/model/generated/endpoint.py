@@ -1567,6 +1567,7 @@ class Card(model.BunqModel):
     :type _country_permission: list[object_.CardCountryPermission]
     :type _label_monetary_account_ordered: object_.MonetaryAccountReference
     :type _label_monetary_account_current: object_.MonetaryAccountReference
+    :type _pin_code_assignment: object_.CardPinAssignment
     """
 
     # Field constants.
@@ -1577,6 +1578,8 @@ class Card(model.BunqModel):
     FIELD_MAG_STRIPE_PERMISSION = "mag_stripe_permission"
     FIELD_COUNTRY_PERMISSION = "country_permission"
     FIELD_MONETARY_ACCOUNT_CURRENT_ID = "monetary_account_current_id"
+    FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
+    FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
 
     # Endpoint constants.
     _ENDPOINT_URL_UPDATE = "user/{}/card/{}"
@@ -1602,6 +1605,7 @@ class Card(model.BunqModel):
         self._country_permission = None
         self._label_monetary_account_ordered = None
         self._label_monetary_account_current = None
+        self._pin_code_assignment = None
 
     @classmethod
     def update(cls, api_context, request_map, user_id, card_id,
@@ -1796,6 +1800,14 @@ class Card(model.BunqModel):
         """
 
         return self._label_monetary_account_current
+
+    @property
+    def pin_code_assignment(self):
+        """
+        :rtype: object_.CardPinAssignment
+        """
+
+        return self._pin_code_assignment
 
 
 class CashRegisterQrCodeContent(model.BunqModel):
@@ -8974,6 +8986,9 @@ class UserCredentialPasswordIp(model.BunqModel):
     Create a credential of a user for server authentication, or delete the
     credential of a user for server authentication.
 
+    :type _id_: int
+    :type _created: str
+    :type _updated: str
     :type _status: str
     :type _expiry_time: str
     :type _token_value: str
@@ -8988,6 +9003,9 @@ class UserCredentialPasswordIp(model.BunqModel):
     _OBJECT_TYPE = "CredentialPasswordIp"
 
     def __init__(self):
+        self._id_ = None
+        self._created = None
+        self._updated = None
         self._status = None
         self._expiry_time = None
         self._token_value = None
@@ -9033,6 +9051,30 @@ class UserCredentialPasswordIp(model.BunqModel):
         response_raw = api_client.get(endpoint_url, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
 
     @property
     def status(self):
