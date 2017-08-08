@@ -43,8 +43,8 @@ class TestCardDebit(BunqSdkTestCase):
             CardDebit.FIELD_SECOND_LINE: second_line
         }
         card_debit = CardDebit.create(self._API_CONTEXT, card_debit_map,
-                                      self._USER_ID)
-        card = Card.get(self._API_CONTEXT, self._USER_ID, card_debit.id_)
+                                      self._USER_ID).value
+        card = Card.get(self._API_CONTEXT, self._USER_ID, card_debit.id_).value
 
         self.assertEqual(self.card_name_allowed, card.name_on_card)
         self.assertEqual(second_line, card.second_line)
@@ -56,8 +56,8 @@ class TestCardDebit(BunqSdkTestCase):
         :rtype: Pointer
         """
 
-        return User.list(self._API_CONTEXT)[self._FIRST_INDEX].UserCompany \
-            .alias[self._FIRST_INDEX]
+        return User.list(self._API_CONTEXT).value[self._FIRST_INDEX] \
+            .UserCompany.alias[self._FIRST_INDEX]
 
     @property
     def card_name_allowed(self):
@@ -65,7 +65,7 @@ class TestCardDebit(BunqSdkTestCase):
         :rtype: str
         """
 
-        return CardName.list(self._API_CONTEXT, self._USER_ID)[
+        return CardName.list(self._API_CONTEXT, self._USER_ID).value[
             self._FIRST_INDEX].possible_card_name_array[self._FIRST_INDEX]
 
     @property

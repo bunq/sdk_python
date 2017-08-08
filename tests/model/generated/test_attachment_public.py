@@ -37,10 +37,12 @@ class TestAttachmentPublic(BunqSdkTestCase):
 
         attachment_uuid = AttachmentPublic.create(self._API_CONTEXT,
                                                   self.attachment_contents,
-                                                  custom_headers)
+                                                  custom_headers).value
 
-        contents_from_response = AttachmentPublicContent.list(self._API_CONTEXT,
-                                                              attachment_uuid)
+        contents_from_response = AttachmentPublicContent.list(
+            self._API_CONTEXT,
+            attachment_uuid
+        ).value
 
         self.assertEqual(self.attachment_contents, contents_from_response)
 

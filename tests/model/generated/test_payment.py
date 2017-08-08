@@ -74,12 +74,21 @@ class TestPayment(BunqSdkTestCase):
                                          self._PAYMENT_CURRENCY),
             Payment.FIELD_DESCRIPTION: self._FIELD_DESCRIPTION,
         }
-        payment_id = Payment.create(self._API_CONTEXT, request_map,
-                                    self._USER_ID, self._MONETARY_ACCOUNT_ID)
+        payment_id = Payment.create(
+            self._API_CONTEXT,
+            request_map,
+            self._USER_ID,
+            self._MONETARY_ACCOUNT_ID
+        ).value
 
         chat_map = {}
-        chat_id = PaymentChat.create(self._API_CONTEXT, chat_map, self._USER_ID,
-                                     self._MONETARY_ACCOUNT_ID, payment_id)
+        chat_id = PaymentChat.create(
+            self._API_CONTEXT,
+            chat_map,
+            self._USER_ID,
+            self._MONETARY_ACCOUNT_ID,
+            payment_id
+        ).value
 
         message_map = {
             ChatMessageText.FIELD_TEXT: self._PAYMENT_CHAT_TEXT_MESSAGE,
