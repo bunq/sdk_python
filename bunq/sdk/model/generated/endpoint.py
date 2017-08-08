@@ -68,7 +68,7 @@ class Invoice(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[Invoice]
+        :rtype: model.BunqResponse[list[Invoice]]
         """
 
         if custom_headers is None:
@@ -77,9 +77,9 @@ class Invoice(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, invoice_id,
@@ -91,7 +91,7 @@ class Invoice(model.BunqModel):
         :type invoice_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Invoice
+        :rtype: model.BunqResponse[Invoice]
         """
 
         if custom_headers is None:
@@ -101,9 +101,9 @@ class Invoice(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      invoice_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -288,7 +288,7 @@ class InvoiceByUser(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[InvoiceByUser]
+        :rtype: model.BunqResponse[list[InvoiceByUser]]
         """
 
         if custom_headers is None:
@@ -296,9 +296,9 @@ class InvoiceByUser(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, invoice_by_user_id, custom_headers=None):
@@ -308,7 +308,7 @@ class InvoiceByUser(model.BunqModel):
         :type invoice_by_user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: InvoiceByUser
+        :rtype: model.BunqResponse[InvoiceByUser]
         """
 
         if custom_headers is None:
@@ -317,9 +317,9 @@ class InvoiceByUser(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      invoice_by_user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -469,7 +469,7 @@ class ChatConversation(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ChatConversation]
+        :rtype: model.BunqResponse[list[ChatConversation]]
         """
 
         if custom_headers is None:
@@ -477,9 +477,9 @@ class ChatConversation(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, chat_conversation_id,
@@ -490,7 +490,7 @@ class ChatConversation(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ChatConversation
+        :rtype: model.BunqResponse[ChatConversation]
         """
 
         if custom_headers is None:
@@ -499,9 +499,9 @@ class ChatConversation(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      chat_conversation_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
 
 class ChatMessageAttachment(model.BunqModel):
@@ -537,7 +537,7 @@ class ChatMessageAttachment(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -547,9 +547,10 @@ class ChatMessageAttachment(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        chat_conversation_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def id_(self):
@@ -592,7 +593,7 @@ class ChatMessageText(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -602,9 +603,10 @@ class ChatMessageText(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        chat_conversation_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def id_(self):
@@ -656,7 +658,7 @@ class ChatMessage(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ChatMessage]
+        :rtype: model.BunqResponse[list[ChatMessage]]
         """
 
         if custom_headers is None:
@@ -665,9 +667,9 @@ class ChatMessage(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         chat_conversation_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -758,7 +760,7 @@ class AttachmentConversationContent(model.BunqModel):
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -768,8 +770,9 @@ class AttachmentConversationContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         chat_conversation_id,
                                                         attachment_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class AttachmentPublicContent(model.BunqModel):
@@ -793,7 +796,7 @@ class AttachmentPublicContent(model.BunqModel):
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -801,8 +804,9 @@ class AttachmentPublicContent(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(attachment_public_uuid)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class AttachmentTabContent(model.BunqModel):
@@ -830,7 +834,7 @@ class AttachmentTabContent(model.BunqModel):
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -840,8 +844,9 @@ class AttachmentTabContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         attachment_tab_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class TabAttachmentTabContent(model.BunqModel):
@@ -866,7 +871,7 @@ class TabAttachmentTabContent(model.BunqModel):
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -874,8 +879,9 @@ class TabAttachmentTabContent(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(tab_uuid, attachment_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class AttachmentMonetaryAccount(model.BunqModel):
@@ -914,7 +920,7 @@ class AttachmentMonetaryAccount(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -923,9 +929,10 @@ class AttachmentMonetaryAccount(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def attachment(self):
@@ -983,7 +990,7 @@ class AttachmentPublic(model.BunqModel):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]|None
 
-        :rtype: str
+        :rtype: model.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -991,9 +998,10 @@ class AttachmentPublic(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_uuid(response.text)
+        return cls._process_for_uuid(response_raw)
 
     @classmethod
     def get(cls, api_context, attachment_public_uuid, custom_headers=None):
@@ -1006,7 +1014,7 @@ class AttachmentPublic(model.BunqModel):
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: AttachmentPublic
+        :rtype: model.BunqResponse[AttachmentPublic]
         """
 
         if custom_headers is None:
@@ -1014,9 +1022,9 @@ class AttachmentPublic(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(attachment_public_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def uuid(self):
@@ -1093,7 +1101,7 @@ class AttachmentTab(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -1102,9 +1110,10 @@ class AttachmentTab(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, attachment_tab_id,
@@ -1119,7 +1128,7 @@ class AttachmentTab(model.BunqModel):
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: AttachmentTab
+        :rtype: model.BunqResponse[AttachmentTab]
         """
 
         if custom_headers is None:
@@ -1129,9 +1138,9 @@ class AttachmentTab(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      attachment_tab_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -1200,7 +1209,7 @@ class TabAttachmentTab(model.BunqModel):
         :type tab_attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TabAttachmentTab
+        :rtype: model.BunqResponse[TabAttachmentTab]
         """
 
         if custom_headers is None:
@@ -1209,9 +1218,9 @@ class TabAttachmentTab(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid,
                                                      tab_attachment_tab_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -1280,7 +1289,7 @@ class Avatar(model.BunqModel):
         :type request_map: dict[str, object]
         :type custom_headers: dict[str, str]|None
 
-        :rtype: str
+        :rtype: model.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -1289,9 +1298,10 @@ class Avatar(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_uuid(response.text)
+        return cls._process_for_uuid(response_raw)
 
     @classmethod
     def get(cls, api_context, avatar_uuid, custom_headers=None):
@@ -1300,7 +1310,7 @@ class Avatar(model.BunqModel):
         :type avatar_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Avatar
+        :rtype: model.BunqResponse[Avatar]
         """
 
         if custom_headers is None:
@@ -1308,9 +1318,9 @@ class Avatar(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(avatar_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def uuid(self):
@@ -1384,7 +1394,7 @@ class CardDebit(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: CardDebit
+        :rtype: model.BunqResponse[CardDebit]
         """
 
         if custom_headers is None:
@@ -1395,9 +1405,10 @@ class CardDebit(model.BunqModel):
         request_bytes = security.encrypt(api_context, request_bytes,
                                          custom_headers)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -1516,7 +1527,7 @@ class CardName(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[CardName]
+        :rtype: model.BunqResponse[list[CardName]]
         """
 
         if custom_headers is None:
@@ -1524,9 +1535,9 @@ class CardName(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def possible_card_name_array(self):
@@ -1607,7 +1618,7 @@ class Card(model.BunqModel):
         :type card_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Card
+        :rtype: model.BunqResponse[Card]
         """
 
         if custom_headers is None:
@@ -1618,9 +1629,10 @@ class Card(model.BunqModel):
         request_bytes = security.encrypt(api_context, request_bytes,
                                          custom_headers)
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, card_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, card_id, custom_headers=None):
@@ -1632,7 +1644,7 @@ class Card(model.BunqModel):
         :type card_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Card
+        :rtype: model.BunqResponse[Card]
         """
 
         if custom_headers is None:
@@ -1640,9 +1652,9 @@ class Card(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, card_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -1653,7 +1665,7 @@ class Card(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[Card]
+        :rtype: model.BunqResponse[list[Card]]
         """
 
         if custom_headers is None:
@@ -1661,9 +1673,9 @@ class Card(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -1812,7 +1824,7 @@ class CashRegisterQrCodeContent(model.BunqModel):
         :type qr_code_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -1823,8 +1835,9 @@ class CashRegisterQrCodeContent(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         qr_code_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class CashRegisterQrCode(model.BunqModel):
@@ -1880,7 +1893,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -1891,9 +1904,10 @@ class CashRegisterQrCode(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id,
                                                        cash_register_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -1910,7 +1924,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_qr_code_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -1922,9 +1936,10 @@ class CashRegisterQrCode(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        cash_register_qr_code_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -1940,7 +1955,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_qr_code_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: CashRegisterQrCode
+        :rtype: model.BunqResponse[CashRegisterQrCode]
         """
 
         if custom_headers is None:
@@ -1951,9 +1966,9 @@ class CashRegisterQrCode(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id,
                                                      cash_register_qr_code_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -1967,7 +1982,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[CashRegisterQrCode]
+        :rtype: model.BunqResponse[list[CashRegisterQrCode]]
         """
 
         if custom_headers is None:
@@ -1977,9 +1992,9 @@ class CashRegisterQrCode(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -2091,7 +2106,7 @@ class CashRegister(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -2101,9 +2116,10 @@ class CashRegister(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2117,7 +2133,7 @@ class CashRegister(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: CashRegister
+        :rtype: model.BunqResponse[CashRegister]
         """
 
         if custom_headers is None:
@@ -2127,9 +2143,9 @@ class CashRegister(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      cash_register_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -2146,7 +2162,7 @@ class CashRegister(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -2157,9 +2173,10 @@ class CashRegister(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        cash_register_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -2172,7 +2189,7 @@ class CashRegister(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[CashRegister]
+        :rtype: model.BunqResponse[list[CashRegister]]
         """
 
         if custom_headers is None:
@@ -2181,9 +2198,9 @@ class CashRegister(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -2296,7 +2313,7 @@ class Tab(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Tab
+        :rtype: model.BunqResponse[Tab]
         """
 
         if custom_headers is None:
@@ -2306,9 +2323,9 @@ class Tab(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      cash_register_id, tab_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text)
+        return cls._from_json(response_raw)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2322,7 +2339,7 @@ class Tab(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[Tab]
+        :rtype: model.BunqResponse[list[Tab]]
         """
 
         if custom_headers is None:
@@ -2332,9 +2349,9 @@ class Tab(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text)
+        return cls._from_json_list(response_raw)
 
     @property
     def TabUsageSingle(self):
@@ -2450,7 +2467,7 @@ class TabUsageSingle(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: str
+        :rtype: model.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2461,9 +2478,10 @@ class TabUsageSingle(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id,
                                                        cash_register_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_uuid(response.text)
+        return cls._process_for_uuid(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -2482,7 +2500,7 @@ class TabUsageSingle(model.BunqModel):
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: str
+        :rtype: model.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2494,9 +2512,10 @@ class TabUsageSingle(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        tab_usage_single_uuid)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_uuid(response.text)
+        return cls._process_for_uuid(response_raw)
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2512,7 +2531,7 @@ class TabUsageSingle(model.BunqModel):
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -2523,7 +2542,9 @@ class TabUsageSingle(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        tab_usage_single_uuid)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2538,7 +2559,7 @@ class TabUsageSingle(model.BunqModel):
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TabUsageSingle
+        :rtype: model.BunqResponse[TabUsageSingle]
         """
 
         if custom_headers is None:
@@ -2549,9 +2570,9 @@ class TabUsageSingle(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id,
                                                      tab_usage_single_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2565,7 +2586,7 @@ class TabUsageSingle(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[TabUsageSingle]
+        :rtype: model.BunqResponse[list[TabUsageSingle]]
         """
 
         if custom_headers is None:
@@ -2575,9 +2596,9 @@ class TabUsageSingle(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def uuid(self):
@@ -2906,7 +2927,7 @@ class TabUsageMultiple(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: str
+        :rtype: model.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2917,9 +2938,10 @@ class TabUsageMultiple(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id,
                                                        cash_register_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_uuid(response.text)
+        return cls._process_for_uuid(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -2940,7 +2962,7 @@ class TabUsageMultiple(model.BunqModel):
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: str
+        :rtype: model.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2952,9 +2974,10 @@ class TabUsageMultiple(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        tab_usage_multiple_uuid)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_uuid(response.text)
+        return cls._process_for_uuid(response_raw)
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2970,7 +2993,7 @@ class TabUsageMultiple(model.BunqModel):
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -2981,7 +3004,9 @@ class TabUsageMultiple(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        tab_usage_multiple_uuid)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2996,7 +3021,7 @@ class TabUsageMultiple(model.BunqModel):
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TabUsageMultiple
+        :rtype: model.BunqResponse[TabUsageMultiple]
         """
 
         if custom_headers is None:
@@ -3007,9 +3032,9 @@ class TabUsageMultiple(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id,
                                                      tab_usage_multiple_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -3023,7 +3048,7 @@ class TabUsageMultiple(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[TabUsageMultiple]
+        :rtype: model.BunqResponse[list[TabUsageMultiple]]
         """
 
         if custom_headers is None:
@@ -3033,9 +3058,9 @@ class TabUsageMultiple(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def uuid(self):
@@ -3210,7 +3235,7 @@ class CertificatePinned(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3219,9 +3244,10 @@ class CertificatePinned(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def delete(cls, api_context, user_id, certificate_pinned_id,
@@ -3234,7 +3260,7 @@ class CertificatePinned(model.BunqModel):
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -3243,7 +3269,9 @@ class CertificatePinned(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id,
                                                        certificate_pinned_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -3254,7 +3282,7 @@ class CertificatePinned(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[CertificatePinned]
+        :rtype: model.BunqResponse[list[CertificatePinned]]
         """
 
         if custom_headers is None:
@@ -3262,9 +3290,9 @@ class CertificatePinned(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, certificate_pinned_id,
@@ -3277,7 +3305,7 @@ class CertificatePinned(model.BunqModel):
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: CertificatePinned
+        :rtype: model.BunqResponse[CertificatePinned]
         """
 
         if custom_headers is None:
@@ -3286,9 +3314,9 @@ class CertificatePinned(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      certificate_pinned_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def certificate_chain(self):
@@ -3353,7 +3381,7 @@ class DeviceServer(model.BunqModel):
         :type request_map: dict[str, object]
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3362,9 +3390,10 @@ class DeviceServer(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, device_server_id, custom_headers=None):
@@ -3375,7 +3404,7 @@ class DeviceServer(model.BunqModel):
         :type device_server_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: DeviceServer
+        :rtype: model.BunqResponse[DeviceServer]
         """
 
         if custom_headers is None:
@@ -3383,9 +3412,9 @@ class DeviceServer(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_server_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, custom_headers=None):
@@ -3395,7 +3424,7 @@ class DeviceServer(model.BunqModel):
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[DeviceServer]
+        :rtype: model.BunqResponse[list[DeviceServer]]
         """
 
         if custom_headers is None:
@@ -3403,9 +3432,9 @@ class DeviceServer(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -3485,7 +3514,7 @@ class Device(model.BunqModel):
         :type device_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Device
+        :rtype: model.BunqResponse[Device]
         """
 
         if custom_headers is None:
@@ -3493,9 +3522,9 @@ class Device(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text)
+        return cls._from_json(response_raw)
 
     @classmethod
     def list(cls, api_context, custom_headers=None):
@@ -3506,7 +3535,7 @@ class Device(model.BunqModel):
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[Device]
+        :rtype: model.BunqResponse[list[Device]]
         """
 
         if custom_headers is None:
@@ -3514,9 +3543,9 @@ class Device(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text)
+        return cls._from_json_list(response_raw)
 
     @property
     def DevicePhone(self):
@@ -3551,6 +3580,7 @@ class DevicePhone(model.BunqModel):
     # Field constants.
     FIELD_DESCRIPTION = "description"
     FIELD_PHONE_NUMBER = "phone_number"
+    FIELD_REMOVE_OLD_DEVICES = "remove_old_devices"
 
     # Object type.
     _OBJECT_TYPE = "DevicePhone"
@@ -3647,7 +3677,7 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -3656,8 +3686,9 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         draft_share_invite_bank_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class DraftShareInviteBank(model.BunqModel):
@@ -3707,7 +3738,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3716,9 +3747,10 @@ class DraftShareInviteBank(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, draft_share_invite_bank_id,
@@ -3731,7 +3763,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: DraftShareInviteBank
+        :rtype: model.BunqResponse[DraftShareInviteBank]
         """
 
         if custom_headers is None:
@@ -3740,9 +3772,9 @@ class DraftShareInviteBank(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      draft_share_invite_bank_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id,
@@ -3757,7 +3789,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: DraftShareInviteBank
+        :rtype: model.BunqResponse[DraftShareInviteBank]
         """
 
         if custom_headers is None:
@@ -3767,9 +3799,10 @@ class DraftShareInviteBank(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        draft_share_invite_bank_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -3778,7 +3811,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[DraftShareInviteBank]
+        :rtype: model.BunqResponse[list[DraftShareInviteBank]]
         """
 
         if custom_headers is None:
@@ -3786,9 +3819,9 @@ class DraftShareInviteBank(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def user_alias_created(self):
@@ -3871,7 +3904,7 @@ class ExportAnnualOverviewContent(model.BunqModel):
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -3880,8 +3913,9 @@ class ExportAnnualOverviewContent(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         export_annual_overview_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class ExportAnnualOverview(model.BunqModel):
@@ -3926,7 +3960,7 @@ class ExportAnnualOverview(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3935,9 +3969,10 @@ class ExportAnnualOverview(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, export_annual_overview_id,
@@ -3950,7 +3985,7 @@ class ExportAnnualOverview(model.BunqModel):
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ExportAnnualOverview
+        :rtype: model.BunqResponse[ExportAnnualOverview]
         """
 
         if custom_headers is None:
@@ -3959,9 +3994,9 @@ class ExportAnnualOverview(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      export_annual_overview_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -3972,7 +4007,7 @@ class ExportAnnualOverview(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ExportAnnualOverview]
+        :rtype: model.BunqResponse[list[ExportAnnualOverview]]
         """
 
         if custom_headers is None:
@@ -3980,9 +4015,9 @@ class ExportAnnualOverview(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -4050,7 +4085,7 @@ class CustomerStatementExportContent(model.BunqModel):
         :type customer_statement_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -4060,8 +4095,9 @@ class CustomerStatementExportContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         customer_statement_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class CustomerStatementExport(model.BunqModel):
@@ -4118,7 +4154,7 @@ class CustomerStatementExport(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4128,9 +4164,10 @@ class CustomerStatementExport(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id,
@@ -4142,7 +4179,7 @@ class CustomerStatementExport(model.BunqModel):
         :type customer_statement_export_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: CustomerStatementExport
+        :rtype: model.BunqResponse[CustomerStatementExport]
         """
 
         if custom_headers is None:
@@ -4152,9 +4189,9 @@ class CustomerStatementExport(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      customer_statement_export_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -4165,7 +4202,7 @@ class CustomerStatementExport(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[CustomerStatementExport]
+        :rtype: model.BunqResponse[list[CustomerStatementExport]]
         """
 
         if custom_headers is None:
@@ -4174,9 +4211,9 @@ class CustomerStatementExport(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id,
@@ -4188,7 +4225,7 @@ class CustomerStatementExport(model.BunqModel):
         :type customer_statement_export_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -4198,7 +4235,9 @@ class CustomerStatementExport(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id,
                                                        monetary_account_id,
                                                        customer_statement_export_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @property
     def id_(self):
@@ -4307,7 +4346,7 @@ class InstallationServerPublicKey(model.BunqModel):
         :type installation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[InstallationServerPublicKey]
+        :rtype: model.BunqResponse[list[InstallationServerPublicKey]]
         """
 
         if custom_headers is None:
@@ -4315,9 +4354,9 @@ class InstallationServerPublicKey(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(installation_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def server_public_key(self):
@@ -4358,7 +4397,7 @@ class ShareInviteBankAmountUsed(model.BunqModel):
         :type share_invite_bank_amount_used_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -4369,7 +4408,9 @@ class ShareInviteBankAmountUsed(model.BunqModel):
                                                        monetary_account_id,
                                                        share_invite_bank_inquiry_id,
                                                        share_invite_bank_amount_used_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
 
 class ShareInviteBankInquiry(model.BunqModel):
@@ -4439,7 +4480,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4449,9 +4490,10 @@ class ShareInviteBankInquiry(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id,
@@ -4465,7 +4507,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type share_invite_bank_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ShareInviteBankInquiry
+        :rtype: model.BunqResponse[ShareInviteBankInquiry]
         """
 
         if custom_headers is None:
@@ -4475,9 +4517,9 @@ class ShareInviteBankInquiry(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      share_invite_bank_inquiry_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -4493,7 +4535,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type share_invite_bank_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ShareInviteBankInquiry
+        :rtype: model.BunqResponse[ShareInviteBankInquiry]
         """
 
         if custom_headers is None:
@@ -4504,9 +4546,10 @@ class ShareInviteBankInquiry(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        share_invite_bank_inquiry_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -4521,7 +4564,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ShareInviteBankInquiry]
+        :rtype: model.BunqResponse[list[ShareInviteBankInquiry]]
         """
 
         if custom_headers is None:
@@ -4530,9 +4573,9 @@ class ShareInviteBankInquiry(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def alias(self):
@@ -4673,7 +4716,7 @@ class ShareInviteBankResponse(model.BunqModel):
         :type share_invite_bank_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ShareInviteBankResponse
+        :rtype: model.BunqResponse[ShareInviteBankResponse]
         """
 
         if custom_headers is None:
@@ -4682,9 +4725,9 @@ class ShareInviteBankResponse(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      share_invite_bank_response_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id,
@@ -4698,7 +4741,7 @@ class ShareInviteBankResponse(model.BunqModel):
         :type share_invite_bank_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ShareInviteBankResponse
+        :rtype: model.BunqResponse[ShareInviteBankResponse]
         """
 
         if custom_headers is None:
@@ -4708,9 +4751,10 @@ class ShareInviteBankResponse(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        share_invite_bank_response_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -4721,7 +4765,7 @@ class ShareInviteBankResponse(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ShareInviteBankResponse]
+        :rtype: model.BunqResponse[list[ShareInviteBankResponse]]
         """
 
         if custom_headers is None:
@@ -4729,9 +4773,9 @@ class ShareInviteBankResponse(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def counter_alias(self):
@@ -4894,7 +4938,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4903,9 +4947,10 @@ class MonetaryAccountBank(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_bank_id,
@@ -4918,7 +4963,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type monetary_account_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: MonetaryAccountBank
+        :rtype: model.BunqResponse[MonetaryAccountBank]
         """
 
         if custom_headers is None:
@@ -4927,9 +4972,9 @@ class MonetaryAccountBank(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_bank_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_bank_id,
@@ -4943,7 +4988,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type monetary_account_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4953,9 +4998,10 @@ class MonetaryAccountBank(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_bank_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -4966,7 +5012,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[MonetaryAccountBank]
+        :rtype: model.BunqResponse[list[MonetaryAccountBank]]
         """
 
         if custom_headers is None:
@@ -4974,9 +5020,9 @@ class MonetaryAccountBank(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -5208,7 +5254,7 @@ class MonetaryAccount(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: MonetaryAccount
+        :rtype: model.BunqResponse[MonetaryAccount]
         """
 
         if custom_headers is None:
@@ -5217,9 +5263,9 @@ class MonetaryAccount(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text)
+        return cls._from_json(response_raw)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -5230,7 +5276,7 @@ class MonetaryAccount(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[MonetaryAccount]
+        :rtype: model.BunqResponse[list[MonetaryAccount]]
         """
 
         if custom_headers is None:
@@ -5238,9 +5284,9 @@ class MonetaryAccount(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text)
+        return cls._from_json_list(response_raw)
 
     @property
     def MonetaryAccountBank(self):
@@ -5287,7 +5333,7 @@ class PaymentBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5297,9 +5343,10 @@ class PaymentBatch(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -5315,7 +5362,7 @@ class PaymentBatch(model.BunqModel):
         :type payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5326,9 +5373,10 @@ class PaymentBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        payment_batch_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, payment_batch_id,
@@ -5342,7 +5390,7 @@ class PaymentBatch(model.BunqModel):
         :type payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: PaymentBatch
+        :rtype: model.BunqResponse[PaymentBatch]
         """
 
         if custom_headers is None:
@@ -5352,9 +5400,9 @@ class PaymentBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      payment_batch_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -5367,7 +5415,7 @@ class PaymentBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[PaymentBatch]
+        :rtype: model.BunqResponse[list[PaymentBatch]]
         """
 
         if custom_headers is None:
@@ -5376,9 +5424,9 @@ class PaymentBatch(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def payments(self):
@@ -5477,7 +5525,7 @@ class Payment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5487,9 +5535,10 @@ class Payment(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, payment_id,
@@ -5503,7 +5552,7 @@ class Payment(model.BunqModel):
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Payment
+        :rtype: model.BunqResponse[Payment]
         """
 
         if custom_headers is None:
@@ -5513,9 +5562,9 @@ class Payment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      payment_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -5529,7 +5578,7 @@ class Payment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[Payment]
+        :rtype: model.BunqResponse[list[Payment]]
         """
 
         if custom_headers is None:
@@ -5538,9 +5587,9 @@ class Payment(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -5767,7 +5816,7 @@ class PaymentChat(model.BunqModel):
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5778,9 +5827,10 @@ class PaymentChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id,
                                                        payment_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -5796,7 +5846,7 @@ class PaymentChat(model.BunqModel):
         :type payment_chat_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: PaymentChat
+        :rtype: model.BunqResponse[PaymentChat]
         """
 
         if custom_headers is None:
@@ -5808,9 +5858,10 @@ class PaymentChat(model.BunqModel):
                                                        monetary_account_id,
                                                        payment_id,
                                                        payment_chat_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, payment_id,
@@ -5824,7 +5875,7 @@ class PaymentChat(model.BunqModel):
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[PaymentChat]
+        :rtype: model.BunqResponse[list[PaymentChat]]
         """
 
         if custom_headers is None:
@@ -5834,9 +5885,9 @@ class PaymentChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         payment_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -5907,7 +5958,7 @@ class PermittedIp(model.BunqModel):
         :type permitted_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: PermittedIp
+        :rtype: model.BunqResponse[PermittedIp]
         """
 
         if custom_headers is None:
@@ -5917,9 +5968,9 @@ class PermittedIp(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      credential_password_ip_id,
                                                      permitted_ip_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def create(cls, api_context, request_map, user_id,
@@ -5931,7 +5982,7 @@ class PermittedIp(model.BunqModel):
         :type credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5941,9 +5992,10 @@ class PermittedIp(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        credential_password_ip_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def list(cls, api_context, user_id, credential_password_ip_id,
@@ -5954,7 +6006,7 @@ class PermittedIp(model.BunqModel):
         :type credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[PermittedIp]
+        :rtype: model.BunqResponse[list[PermittedIp]]
         """
 
         if custom_headers is None:
@@ -5963,9 +6015,9 @@ class PermittedIp(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         credential_password_ip_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id,
@@ -5978,7 +6030,7 @@ class PermittedIp(model.BunqModel):
         :type permitted_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5989,9 +6041,10 @@ class PermittedIp(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        credential_password_ip_id,
                                                        permitted_ip_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def ip(self):
@@ -6051,7 +6104,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6061,9 +6114,10 @@ class RequestInquiryBatch(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -6079,7 +6133,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6090,9 +6144,10 @@ class RequestInquiryBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        request_inquiry_batch_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id,
@@ -6106,7 +6161,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestInquiryBatch
+        :rtype: model.BunqResponse[RequestInquiryBatch]
         """
 
         if custom_headers is None:
@@ -6116,9 +6171,9 @@ class RequestInquiryBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      request_inquiry_batch_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -6131,7 +6186,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[RequestInquiryBatch]
+        :rtype: model.BunqResponse[list[RequestInquiryBatch]]
         """
 
         if custom_headers is None:
@@ -6140,9 +6195,9 @@ class RequestInquiryBatch(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def request_inquiries(self):
@@ -6260,7 +6315,7 @@ class RequestInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6270,9 +6325,10 @@ class RequestInquiry(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -6287,7 +6343,7 @@ class RequestInquiry(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestInquiry
+        :rtype: model.BunqResponse[RequestInquiry]
         """
 
         if custom_headers is None:
@@ -6298,9 +6354,10 @@ class RequestInquiry(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        request_inquiry_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -6313,7 +6370,7 @@ class RequestInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[RequestInquiry]
+        :rtype: model.BunqResponse[list[RequestInquiry]]
         """
 
         if custom_headers is None:
@@ -6322,9 +6379,9 @@ class RequestInquiry(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, request_inquiry_id,
@@ -6338,7 +6395,7 @@ class RequestInquiry(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestInquiry
+        :rtype: model.BunqResponse[RequestInquiry]
         """
 
         if custom_headers is None:
@@ -6348,9 +6405,9 @@ class RequestInquiry(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      request_inquiry_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -6599,7 +6656,7 @@ class RequestInquiryChat(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6610,9 +6667,10 @@ class RequestInquiryChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id,
                                                        request_inquiry_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -6629,7 +6687,7 @@ class RequestInquiryChat(model.BunqModel):
         :type request_inquiry_chat_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestInquiryChat
+        :rtype: model.BunqResponse[RequestInquiryChat]
         """
 
         if custom_headers is None:
@@ -6641,9 +6699,10 @@ class RequestInquiryChat(model.BunqModel):
                                                        monetary_account_id,
                                                        request_inquiry_id,
                                                        request_inquiry_chat_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, request_inquiry_id,
@@ -6657,7 +6716,7 @@ class RequestInquiryChat(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[RequestInquiryChat]
+        :rtype: model.BunqResponse[list[RequestInquiryChat]]
         """
 
         if custom_headers is None:
@@ -6667,9 +6726,9 @@ class RequestInquiryChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         request_inquiry_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -6751,7 +6810,7 @@ class RequestResponseChat(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6762,9 +6821,10 @@ class RequestResponseChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id,
                                                        request_response_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -6781,7 +6841,7 @@ class RequestResponseChat(model.BunqModel):
         :type request_response_chat_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestResponseChat
+        :rtype: model.BunqResponse[RequestResponseChat]
         """
 
         if custom_headers is None:
@@ -6793,9 +6853,10 @@ class RequestResponseChat(model.BunqModel):
                                                        monetary_account_id,
                                                        request_response_id,
                                                        request_response_chat_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -6809,7 +6870,7 @@ class RequestResponseChat(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[RequestResponseChat]
+        :rtype: model.BunqResponse[list[RequestResponseChat]]
         """
 
         if custom_headers is None:
@@ -6819,9 +6880,9 @@ class RequestResponseChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         request_response_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -6941,7 +7002,7 @@ class RequestResponse(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestResponse
+        :rtype: model.BunqResponse[RequestResponse]
         """
 
         if custom_headers is None:
@@ -6952,9 +7013,10 @@ class RequestResponse(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        request_response_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -6967,7 +7029,7 @@ class RequestResponse(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[RequestResponse]
+        :rtype: model.BunqResponse[list[RequestResponse]]
         """
 
         if custom_headers is None:
@@ -6976,9 +7038,9 @@ class RequestResponse(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, request_response_id,
@@ -6992,7 +7054,7 @@ class RequestResponse(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: RequestResponse
+        :rtype: model.BunqResponse[RequestResponse]
         """
 
         if custom_headers is None:
@@ -7002,9 +7064,9 @@ class RequestResponse(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      request_response_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -7236,7 +7298,7 @@ class ScheduleInstance(model.BunqModel):
         :type schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: ScheduleInstance
+        :rtype: model.BunqResponse[ScheduleInstance]
         """
 
         if custom_headers is None:
@@ -7247,9 +7309,9 @@ class ScheduleInstance(model.BunqModel):
                                                      monetary_account_id,
                                                      schedule_id,
                                                      schedule_instance_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -7263,7 +7325,7 @@ class ScheduleInstance(model.BunqModel):
         :type schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7275,9 +7337,10 @@ class ScheduleInstance(model.BunqModel):
                                                        monetary_account_id,
                                                        schedule_id,
                                                        schedule_instance_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, schedule_id,
@@ -7289,7 +7352,7 @@ class ScheduleInstance(model.BunqModel):
         :type schedule_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ScheduleInstance]
+        :rtype: model.BunqResponse[list[ScheduleInstance]]
         """
 
         if custom_headers is None:
@@ -7299,9 +7362,9 @@ class ScheduleInstance(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         schedule_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def state(self):
@@ -7388,7 +7451,7 @@ class SchedulePaymentBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7398,9 +7461,10 @@ class SchedulePaymentBatch(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -7413,7 +7477,7 @@ class SchedulePaymentBatch(model.BunqModel):
         :type schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7424,9 +7488,10 @@ class SchedulePaymentBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        schedule_payment_batch_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id,
@@ -7438,7 +7503,7 @@ class SchedulePaymentBatch(model.BunqModel):
         :type schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7448,7 +7513,9 @@ class SchedulePaymentBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id,
                                                        monetary_account_id,
                                                        schedule_payment_batch_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @property
     def payments(self):
@@ -7503,7 +7570,7 @@ class SchedulePayment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7513,9 +7580,10 @@ class SchedulePayment(model.BunqModel):
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
                                                        monetary_account_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id,
@@ -7527,7 +7595,7 @@ class SchedulePayment(model.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7537,7 +7605,9 @@ class SchedulePayment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id,
                                                        monetary_account_id,
                                                        schedule_payment_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, schedule_payment_id,
@@ -7549,7 +7619,7 @@ class SchedulePayment(model.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: SchedulePayment
+        :rtype: model.BunqResponse[SchedulePayment]
         """
 
         if custom_headers is None:
@@ -7559,9 +7629,9 @@ class SchedulePayment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      schedule_payment_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -7572,7 +7642,7 @@ class SchedulePayment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[SchedulePayment]
+        :rtype: model.BunqResponse[list[SchedulePayment]]
         """
 
         if custom_headers is None:
@@ -7581,9 +7651,9 @@ class SchedulePayment(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -7596,7 +7666,7 @@ class SchedulePayment(model.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7607,9 +7677,10 @@ class SchedulePayment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
                                                        monetary_account_id,
                                                        schedule_payment_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def payment(self):
@@ -7652,7 +7723,7 @@ class Schedule(model.BunqModel):
         :type schedule_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: Schedule
+        :rtype: model.BunqResponse[Schedule]
         """
 
         if custom_headers is None:
@@ -7662,9 +7733,9 @@ class Schedule(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      schedule_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -7681,7 +7752,7 @@ class Schedule(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[Schedule]
+        :rtype: model.BunqResponse[list[Schedule]]
         """
 
         if custom_headers is None:
@@ -7690,9 +7761,9 @@ class Schedule(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
 
 class ScheduleUser(model.BunqModel):
@@ -7720,7 +7791,7 @@ class ScheduleUser(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[ScheduleUser]
+        :rtype: model.BunqResponse[list[ScheduleUser]]
         """
 
         if custom_headers is None:
@@ -7728,9 +7799,9 @@ class ScheduleUser(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
 
 class Session(model.BunqModel):
@@ -7753,7 +7824,7 @@ class Session(model.BunqModel):
         :type session_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7761,7 +7832,9 @@ class Session(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(session_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
 
 class TabItemShopBatch(model.BunqModel):
@@ -7798,7 +7871,7 @@ class TabItemShopBatch(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7810,9 +7883,10 @@ class TabItemShopBatch(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        tab_uuid)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def tab_items(self):
@@ -7888,7 +7962,7 @@ class TabItemShop(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7900,9 +7974,10 @@ class TabItemShop(model.BunqModel):
                                                        monetary_account_id,
                                                        cash_register_id,
                                                        tab_uuid)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id,
@@ -7920,7 +7995,7 @@ class TabItemShop(model.BunqModel):
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7933,9 +8008,10 @@ class TabItemShop(model.BunqModel):
                                                        cash_register_id,
                                                        tab_uuid,
                                                        tab_item_shop_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -7952,7 +8028,7 @@ class TabItemShop(model.BunqModel):
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype None:
+        :rtype model.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7964,7 +8040,9 @@ class TabItemShop(model.BunqModel):
                                                        cash_register_id,
                                                        tab_uuid,
                                                        tab_item_shop_id)
-        api_client.delete(endpoint_url, custom_headers)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return model.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -7979,7 +8057,7 @@ class TabItemShop(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[TabItemShop]
+        :rtype: model.BunqResponse[list[TabItemShop]]
         """
 
         if custom_headers is None:
@@ -7990,9 +8068,9 @@ class TabItemShop(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -8008,7 +8086,7 @@ class TabItemShop(model.BunqModel):
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TabItemShop
+        :rtype: model.BunqResponse[TabItemShop]
         """
 
         if custom_headers is None:
@@ -8019,9 +8097,9 @@ class TabItemShop(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id, tab_uuid,
                                                      tab_item_shop_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):
@@ -8117,7 +8195,7 @@ class TabResultInquiry(model.BunqModel):
         :type tab_result_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TabResultInquiry
+        :rtype: model.BunqResponse[TabResultInquiry]
         """
 
         if custom_headers is None:
@@ -8128,9 +8206,9 @@ class TabResultInquiry(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id, tab_uuid,
                                                      tab_result_inquiry_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -8145,7 +8223,7 @@ class TabResultInquiry(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[TabResultInquiry]
+        :rtype: model.BunqResponse[list[TabResultInquiry]]
         """
 
         if custom_headers is None:
@@ -8156,9 +8234,9 @@ class TabResultInquiry(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def tab(self):
@@ -8210,7 +8288,7 @@ class TabResultResponse(model.BunqModel):
         :type tab_result_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TabResultResponse
+        :rtype: model.BunqResponse[TabResultResponse]
         """
 
         if custom_headers is None:
@@ -8220,9 +8298,9 @@ class TabResultResponse(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      tab_result_response_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
@@ -8235,7 +8313,7 @@ class TabResultResponse(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[TabResultResponse]
+        :rtype: model.BunqResponse[list[TabResultResponse]]
         """
 
         if custom_headers is None:
@@ -8244,9 +8322,9 @@ class TabResultResponse(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def tab(self):
@@ -8294,7 +8372,7 @@ class TabQrCodeContent(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: bytes
+        :rtype: model.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -8305,8 +8383,9 @@ class TabQrCodeContent(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return api_client.get(endpoint_url, custom_headers).content
+        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
 
 
 class TokenQrRequestIdeal(model.BunqModel):
@@ -8383,7 +8462,7 @@ class TokenQrRequestIdeal(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: TokenQrRequestIdeal
+        :rtype: model.BunqResponse[TokenQrRequestIdeal]
         """
 
         if custom_headers is None:
@@ -8392,9 +8471,10 @@ class TokenQrRequestIdeal(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
-        response = api_client.post(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def time_responded(self):
@@ -8651,7 +8731,7 @@ class UserCompany(model.BunqModel):
         :type user_company_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: UserCompany
+        :rtype: model.BunqResponse[UserCompany]
         """
 
         if custom_headers is None:
@@ -8659,9 +8739,9 @@ class UserCompany(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_company_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_company_id,
@@ -8674,7 +8754,7 @@ class UserCompany(model.BunqModel):
         :type user_company_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -8683,9 +8763,10 @@ class UserCompany(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_company_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def id_(self):
@@ -8893,9 +8974,6 @@ class UserCredentialPasswordIp(model.BunqModel):
     Create a credential of a user for server authentication, or delete the
     credential of a user for server authentication.
 
-    :type _id_: int
-    :type _created: str
-    :type _updated: str
     :type _status: str
     :type _expiry_time: str
     :type _token_value: str
@@ -8910,9 +8988,6 @@ class UserCredentialPasswordIp(model.BunqModel):
     _OBJECT_TYPE = "CredentialPasswordIp"
 
     def __init__(self):
-        self._id_ = None
-        self._created = None
-        self._updated = None
         self._status = None
         self._expiry_time = None
         self._token_value = None
@@ -8927,7 +9002,7 @@ class UserCredentialPasswordIp(model.BunqModel):
         :type user_credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: UserCredentialPasswordIp
+        :rtype: model.BunqResponse[UserCredentialPasswordIp]
         """
 
         if custom_headers is None:
@@ -8936,9 +9011,9 @@ class UserCredentialPasswordIp(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      user_credential_password_ip_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -8947,7 +9022,7 @@ class UserCredentialPasswordIp(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[UserCredentialPasswordIp]
+        :rtype: model.BunqResponse[list[UserCredentialPasswordIp]]
         """
 
         if custom_headers is None:
@@ -8955,33 +9030,9 @@ class UserCredentialPasswordIp(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text, cls._OBJECT_TYPE)
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
     @property
     def status(self):
@@ -9133,7 +9184,7 @@ class UserPerson(model.BunqModel):
         :type user_person_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: UserPerson
+        :rtype: model.BunqResponse[UserPerson]
         """
 
         if custom_headers is None:
@@ -9141,9 +9192,9 @@ class UserPerson(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_person_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
     def update(cls, api_context, request_map, user_person_id,
@@ -9156,7 +9207,7 @@ class UserPerson(model.BunqModel):
         :type user_person_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: int
+        :rtype: model.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -9165,9 +9216,10 @@ class UserPerson(model.BunqModel):
         api_client = client.ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_person_id)
-        response = api_client.put(endpoint_url, request_bytes, custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
 
-        return cls._process_for_id(response.text)
+        return cls._process_for_id(response_raw)
 
     @property
     def id_(self):
@@ -9449,7 +9501,7 @@ class User(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: User
+        :rtype: model.BunqResponse[User]
         """
 
         if custom_headers is None:
@@ -9457,9 +9509,9 @@ class User(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text)
+        return cls._from_json(response_raw)
 
     @classmethod
     def list(cls, api_context, custom_headers=None):
@@ -9469,7 +9521,7 @@ class User(model.BunqModel):
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
 
-        :rtype: list[User]
+        :rtype: model.BunqResponse[list[User]]
         """
 
         if custom_headers is None:
@@ -9477,9 +9529,9 @@ class User(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json_list(response.text)
+        return cls._from_json_list(response_raw)
 
     @property
     def UserLight(self):
@@ -9625,7 +9677,7 @@ class UserLight(model.BunqModel):
         :type user_light_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: UserLight
+        :rtype: model.BunqResponse[UserLight]
         """
 
         if custom_headers is None:
@@ -9633,9 +9685,9 @@ class UserLight(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_light_id)
-        response = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return cls._from_json(response.text, cls._OBJECT_TYPE)
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @property
     def id_(self):

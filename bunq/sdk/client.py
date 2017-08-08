@@ -32,7 +32,7 @@ class ApiClient(object):
     HEADER_AUTHENTICATION = 'X-Bunq-Client-Authentication'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.9'
+    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.9.1'
     _GEOLOCATION_ZERO = '0 0 0 0 NL'
     _LANGUAGE_EN_US = 'en_US'
     _REGION_NL_NL = 'nl_NL'
@@ -66,7 +66,7 @@ class ApiClient(object):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
 
-        :return: requests.Response
+        :return: BunqResponseRaw
         """
 
         return self._request(
@@ -83,7 +83,7 @@ class ApiClient(object):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
 
-        :return: requests.Response
+        :return: BunqResponseRaw
         """
 
         self._api_context.ensure_session_active()
@@ -111,7 +111,7 @@ class ApiClient(object):
                 response.headers
             )
 
-        return response
+        return self._create_bunq_response_raw(response)
 
     def _get_all_headers(self, method, endpoint, request_bytes, custom_headers):
         """
@@ -184,6 +184,16 @@ class ApiClient(object):
                 self._fetch_error_messages(response)
             )
 
+    @classmethod
+    def _create_bunq_response_raw(cls, response):
+        """
+        :type response: requests.Response
+
+        :rtype: BunqResponseRaw
+        """
+
+        return BunqResponseRaw(response.content, response.headers)
+
     def _fetch_error_messages(self, response):
         """
         :type response: requests.Response
@@ -221,7 +231,7 @@ class ApiClient(object):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
 
-        :rtype: requests.Response
+        :rtype: BunqResponseRaw
         """
 
         return self._request(
@@ -236,7 +246,7 @@ class ApiClient(object):
         :type uri_relative: str
         :type custom_headers: dict[str, str]
 
-        :rtype: requests.Response
+        :rtype: BunqResponseRaw
         """
 
         return self._request(
@@ -251,7 +261,7 @@ class ApiClient(object):
         :type uri_relative: str
         :type custom_headers: dict[str, str]
 
-        :rtype: requests.Response
+        :rtype: BunqResponseRaw
         """
 
         return self._request(
@@ -260,3 +270,35 @@ class ApiClient(object):
             self._BYTES_EMPTY,
             custom_headers
         )
+
+
+class BunqResponseRaw(object):
+    """
+    :type _body_bytes: bytes
+    :type _headers: dict[str, str]
+    """
+
+    def __init__(self, body_bytes, headers):
+        """
+        :type body_bytes: bytes
+        :type headers: dict[str, str]
+        """
+
+        self._body_bytes = body_bytes
+        self._headers = headers
+
+    @property
+    def body_bytes(self):
+        """
+        :rtype: bytes
+        """
+
+        return self._body_bytes
+
+    @property
+    def headers(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        return self._headers

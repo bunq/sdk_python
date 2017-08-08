@@ -13,7 +13,7 @@ def run():
         api_context,
         _USER_ITEM_ID,
         _MONETARY_ACCOUNT_ITEM_ID,
-    )
+    ).value
 
     for payment in payments:
         print(payment.id_)

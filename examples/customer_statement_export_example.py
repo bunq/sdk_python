@@ -13,14 +13,18 @@ _DAYS_IN_WEEK = 7
 # Date format required for customer statement export endpoint
 _FORMAT_DATE = '%Y-%m-%d'
 
+# Index of the very first item in an array
+_INDEX_FIRST = 0
+
 
 def run():
     api_context = context.ApiContext.restore()
-    user_id = generated.User.list(api_context)[0].UserCompany.id_
+    user_id = generated.User.list(api_context).value[_INDEX_FIRST]\
+        .UserCompany.id_
     monetary_account_id = generated.MonetaryAccountBank.list(
         api_context,
         user_id
-    )[0].id_
+    ).value[_INDEX_FIRST].id_
 
     date_start = datetime.datetime.now()
     date_start -= datetime.timedelta(_DAYS_IN_WEEK)
@@ -40,7 +44,7 @@ def run():
         customer_statement_map,
         user_id,
         monetary_account_id
-    )
+    ).value
     generated.CustomerStatementExport.delete(
         api_context,
         user_id,

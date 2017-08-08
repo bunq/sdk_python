@@ -20,32 +20,36 @@ class BunqModel(object):
         return converter.class_to_json(self)
 
     @classmethod
-    def _from_json_array_nested(cls, response_json):
+    def _from_json_array_nested(cls, response_raw):
         """
-        :type response_json: str
+        :type response_raw: client.BunqResponseRaw
 
-        :rtype: cls
+        :rtype: BunqResponse[cls]
         """
 
-        obj = converter.json_to_class(dict, response_json)
+        json = response_raw.body_bytes.decode()
+        obj = converter.json_to_class(dict, json)
+        value = converter.deserialize(cls, obj[cls._FIELD_RESPONSE])
 
-        return converter.deserialize(cls, obj[cls._FIELD_RESPONSE])
+        return BunqResponse(value, response_raw.headers)
 
     @classmethod
-    def _from_json(cls, response_json, wrapper=None):
+    def _from_json(cls, response_raw, wrapper=None):
         """
-        :type response_json: str
+        :type response_raw: client.BunqResponseRaw
         :type wrapper: str|None
 
-        :rtype: cls
+        :rtype: BunqResponse[cls]
         """
 
-        obj = converter.json_to_class(dict, response_json)
-
-        return converter.deserialize(
+        json = response_raw.body_bytes.decode()
+        obj = converter.json_to_class(dict, json)
+        value = converter.deserialize(
             cls,
             cls._unwrap_response_single(obj, wrapper)
         )
+
+        return BunqResponse(value, response_raw.headers)
 
     @classmethod
     def _unwrap_response_single(cls, obj, wrapper=None):
@@ -62,47 +66,50 @@ class BunqModel(object):
         return obj[cls._FIELD_RESPONSE][cls._INDEX_FIRST]
 
     @classmethod
-    def _process_for_id(cls, response_json):
+    def _process_for_id(cls, response_raw):
         """
-        :type response_json: str
+        :type response_raw: client.BunqResponseRaw
 
-        :rtype: Id
+        :rtype: BunqResponse[int]
         """
 
-        obj = converter.json_to_class(dict, response_json)
+        json = response_raw.body_bytes.decode()
+        obj = converter.json_to_class(dict, json)
         id_ = converter.deserialize(
             Id,
             cls._unwrap_response_single(obj, cls._FIELD_ID)
         )
 
-        return id_.id_
+        return BunqResponse(id_.id_, response_raw.headers)
 
     @classmethod
-    def _process_for_uuid(cls, response_json):
+    def _process_for_uuid(cls, response_raw):
         """
-        :type response_json: str
+        :type response_raw: client.BunqResponseRaw
 
-        :rtype: Uuid
+        :rtype: BunqResponse[str]
         """
 
-        obj = converter.json_to_class(dict, response_json)
+        json = response_raw.body_bytes.decode()
+        obj = converter.json_to_class(dict, json)
         uuid = converter.deserialize(
             Uuid,
             cls._unwrap_response_single(obj, cls._FIELD_UUID)
         )
 
-        return uuid.uuid
+        return BunqResponse(uuid.uuid, response_raw.headers)
 
     @classmethod
-    def _from_json_list(cls, response_json, wrapper=None):
+    def _from_json_list(cls, response_raw, wrapper=None):
         """
-        :type response_json: str
+        :type response_raw: client.BunqResponseRaw
         :type wrapper: str|None
 
-        :rtype: list[cls]
+        :rtype: BunqResponse[list[cls]]
         """
 
-        obj = converter.json_to_class(dict, response_json)
+        json = response_raw.body_bytes.decode()
+        obj = converter.json_to_class(dict, json)
         array = obj[cls._FIELD_RESPONSE]
         array_deserialized = []
 
@@ -111,7 +118,7 @@ class BunqModel(object):
             item_deserialized = converter.deserialize(cls, item_unwrapped)
             array_deserialized.append(item_deserialized)
 
-        return array_deserialized
+        return BunqResponse(array_deserialized, response_raw.headers)
 
 
 class Id(BunqModel):
@@ -230,16 +237,16 @@ class Installation(BunqModel):
         :type api_context: context.ApiContext
         :type public_key_string: str
 
-        :rtype: Installation
+        :rtype: BunqResponse[Installation]
         """
 
         api_client = client.ApiClient(api_context)
         body_bytes = cls.generate_request_body_bytes(
             public_key_string
         )
-        response = api_client.post(cls._ENDPOINT_URL_POST, body_bytes, {})
+        response_raw = api_client.post(cls._ENDPOINT_URL_POST, body_bytes, {})
 
-        return cls._from_json_array_nested(response.text)
+        return cls._from_json_array_nested(response_raw)
 
     @classmethod
     def generate_request_body_bytes(cls, public_key_string):
@@ -252,54 +259,6 @@ class Installation(BunqModel):
         return converter.class_to_json(
             {
                 cls.FIELD_CLIENT_PUBLIC_KEY: public_key_string,
-            }
-        ).encode()
-
-
-class DeviceServer(BunqModel):
-    # Endpoint name.
-    _ENDPOINT_URL_POST = "device-server"
-
-    # Field constants
-    FIELD_DESCRIPTION = "description"
-    FIELD_SECRET = "secret"
-    FIELD_PERMITTED_IPS = "permitted_ips"
-
-    @classmethod
-    def create(cls, api_context, description, permitted_ips):
-        """
-        :type api_context: context.ApiContext
-        :type description: str
-        :type permitted_ips: list[str]
-
-        :rtype: int
-        """
-
-        api_client = client.ApiClient(api_context)
-        body_bytes = cls.generate_request_body_bytes(
-            description,
-            api_context.api_key,
-            permitted_ips
-        )
-        response = api_client.post(cls._ENDPOINT_URL_POST, body_bytes, {})
-
-        return cls._process_for_id(response.text)
-
-    @classmethod
-    def generate_request_body_bytes(cls, description, secret, permitted_ips):
-        """
-        :type description: str
-        :type secret: str
-        :type permitted_ips: list[str]
-
-        :rtype: bytes
-        """
-
-        return converter.class_to_json(
-            {
-                cls.FIELD_DESCRIPTION: description,
-                cls.FIELD_SECRET: secret,
-                cls.FIELD_PERMITTED_IPS: permitted_ips,
             }
         ).encode()
 
@@ -361,14 +320,14 @@ class SessionServer(BunqModel):
         """
         :type api_context: context.ApiContext
 
-        :rtype: SessionServer
+        :rtype: BunqResponse[SessionServer]
         """
 
         api_client = client.ApiClient(api_context)
         body_bytes = cls.generate_request_body_bytes(api_context.api_key)
-        response = api_client.post(cls._ENDPOINT_URL_POST, body_bytes, {})
+        response_raw = api_client.post(cls._ENDPOINT_URL_POST, body_bytes, {})
 
-        return cls._from_json_array_nested(response.text)
+        return cls._from_json_array_nested(response_raw)
 
     @classmethod
     def generate_request_body_bytes(cls, secret):
@@ -379,3 +338,35 @@ class SessionServer(BunqModel):
         """
 
         return converter.class_to_json({cls.FIELD_SECRET: secret}).encode()
+
+
+class BunqResponse(object):
+    """
+    :type _value: T
+    :type _headers: dict[str, str]
+    """
+
+    def __init__(self, value, headers):
+        """
+        :type value: T
+        :type headers: dict[str, str]
+        """
+
+        self._value = value
+        self._headers = headers
+
+    @property
+    def value(self):
+        """
+        :rtype: T
+        """
+
+        return self._value
+
+    @property
+    def headers(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        return self._headers

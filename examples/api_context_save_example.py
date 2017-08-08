@@ -7,7 +7,7 @@ from bunq.sdk.json import converter
 def run():
     ctx = context.ApiContext(
         context.ApiEnvironmentType.SANDBOX,
-        '###YOUR_API_KEY###',  # Put your API key here
+        '### YOUR_API_KEY ###',  # Put your API key here
         'test device python'
     )
 
