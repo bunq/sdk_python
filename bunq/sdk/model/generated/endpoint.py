@@ -68,7 +68,7 @@ class Invoice(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[Invoice]]
+        :rtype: client.BunqResponse[list[Invoice]]
         """
 
         if custom_headers is None:
@@ -91,7 +91,7 @@ class Invoice(model.BunqModel):
         :type invoice_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Invoice]
+        :rtype: client.BunqResponse[Invoice]
         """
 
         if custom_headers is None:
@@ -288,7 +288,7 @@ class InvoiceByUser(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[InvoiceByUser]]
+        :rtype: client.BunqResponse[list[InvoiceByUser]]
         """
 
         if custom_headers is None:
@@ -308,7 +308,7 @@ class InvoiceByUser(model.BunqModel):
         :type invoice_by_user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[InvoiceByUser]
+        :rtype: client.BunqResponse[InvoiceByUser]
         """
 
         if custom_headers is None:
@@ -469,7 +469,7 @@ class ChatConversation(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ChatConversation]]
+        :rtype: client.BunqResponse[list[ChatConversation]]
         """
 
         if custom_headers is None:
@@ -490,7 +490,7 @@ class ChatConversation(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ChatConversation]
+        :rtype: client.BunqResponse[ChatConversation]
         """
 
         if custom_headers is None:
@@ -537,7 +537,7 @@ class ChatMessageAttachment(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -593,7 +593,7 @@ class ChatMessageText(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -658,7 +658,7 @@ class ChatMessage(model.BunqModel):
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ChatMessage]]
+        :rtype: client.BunqResponse[list[ChatMessage]]
         """
 
         if custom_headers is None:
@@ -760,7 +760,7 @@ class AttachmentConversationContent(model.BunqModel):
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -772,7 +772,8 @@ class AttachmentConversationContent(model.BunqModel):
                                                         attachment_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class AttachmentPublicContent(model.BunqModel):
@@ -796,7 +797,7 @@ class AttachmentPublicContent(model.BunqModel):
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -806,7 +807,8 @@ class AttachmentPublicContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(attachment_public_uuid)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class AttachmentTabContent(model.BunqModel):
@@ -834,7 +836,7 @@ class AttachmentTabContent(model.BunqModel):
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -846,7 +848,8 @@ class AttachmentTabContent(model.BunqModel):
                                                         attachment_tab_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class TabAttachmentTabContent(model.BunqModel):
@@ -871,7 +874,7 @@ class TabAttachmentTabContent(model.BunqModel):
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -881,7 +884,8 @@ class TabAttachmentTabContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(tab_uuid, attachment_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class AttachmentMonetaryAccount(model.BunqModel):
@@ -920,7 +924,7 @@ class AttachmentMonetaryAccount(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -990,7 +994,7 @@ class AttachmentPublic(model.BunqModel):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -1014,7 +1018,7 @@ class AttachmentPublic(model.BunqModel):
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[AttachmentPublic]
+        :rtype: client.BunqResponse[AttachmentPublic]
         """
 
         if custom_headers is None:
@@ -1101,7 +1105,7 @@ class AttachmentTab(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -1128,7 +1132,7 @@ class AttachmentTab(model.BunqModel):
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[AttachmentTab]
+        :rtype: client.BunqResponse[AttachmentTab]
         """
 
         if custom_headers is None:
@@ -1209,7 +1213,7 @@ class TabAttachmentTab(model.BunqModel):
         :type tab_attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TabAttachmentTab]
+        :rtype: client.BunqResponse[TabAttachmentTab]
         """
 
         if custom_headers is None:
@@ -1289,7 +1293,7 @@ class Avatar(model.BunqModel):
         :type request_map: dict[str, object]
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -1310,7 +1314,7 @@ class Avatar(model.BunqModel):
         :type avatar_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Avatar]
+        :rtype: client.BunqResponse[Avatar]
         """
 
         if custom_headers is None:
@@ -1394,7 +1398,7 @@ class CardDebit(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[CardDebit]
+        :rtype: client.BunqResponse[CardDebit]
         """
 
         if custom_headers is None:
@@ -1527,7 +1531,7 @@ class CardName(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[CardName]]
+        :rtype: client.BunqResponse[list[CardName]]
         """
 
         if custom_headers is None:
@@ -1622,7 +1626,7 @@ class Card(model.BunqModel):
         :type card_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Card]
+        :rtype: client.BunqResponse[Card]
         """
 
         if custom_headers is None:
@@ -1648,7 +1652,7 @@ class Card(model.BunqModel):
         :type card_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Card]
+        :rtype: client.BunqResponse[Card]
         """
 
         if custom_headers is None:
@@ -1669,7 +1673,7 @@ class Card(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[Card]]
+        :rtype: client.BunqResponse[list[Card]]
         """
 
         if custom_headers is None:
@@ -1836,7 +1840,7 @@ class CashRegisterQrCodeContent(model.BunqModel):
         :type qr_code_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -1849,7 +1853,8 @@ class CashRegisterQrCodeContent(model.BunqModel):
                                                         qr_code_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class CashRegisterQrCode(model.BunqModel):
@@ -1905,7 +1910,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -1936,7 +1941,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_qr_code_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -1967,7 +1972,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_qr_code_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[CashRegisterQrCode]
+        :rtype: client.BunqResponse[CashRegisterQrCode]
         """
 
         if custom_headers is None:
@@ -1994,7 +1999,7 @@ class CashRegisterQrCode(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[CashRegisterQrCode]]
+        :rtype: client.BunqResponse[list[CashRegisterQrCode]]
         """
 
         if custom_headers is None:
@@ -2118,7 +2123,7 @@ class CashRegister(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -2145,7 +2150,7 @@ class CashRegister(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[CashRegister]
+        :rtype: client.BunqResponse[CashRegister]
         """
 
         if custom_headers is None:
@@ -2174,7 +2179,7 @@ class CashRegister(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -2201,7 +2206,7 @@ class CashRegister(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[CashRegister]]
+        :rtype: client.BunqResponse[list[CashRegister]]
         """
 
         if custom_headers is None:
@@ -2325,7 +2330,7 @@ class Tab(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Tab]
+        :rtype: client.BunqResponse[Tab]
         """
 
         if custom_headers is None:
@@ -2351,7 +2356,7 @@ class Tab(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[Tab]]
+        :rtype: client.BunqResponse[list[Tab]]
         """
 
         if custom_headers is None:
@@ -2479,7 +2484,7 @@ class TabUsageSingle(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2512,7 +2517,7 @@ class TabUsageSingle(model.BunqModel):
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2543,7 +2548,7 @@ class TabUsageSingle(model.BunqModel):
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -2556,7 +2561,7 @@ class TabUsageSingle(model.BunqModel):
                                                        tab_usage_single_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -2571,7 +2576,7 @@ class TabUsageSingle(model.BunqModel):
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TabUsageSingle]
+        :rtype: client.BunqResponse[TabUsageSingle]
         """
 
         if custom_headers is None:
@@ -2598,7 +2603,7 @@ class TabUsageSingle(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[TabUsageSingle]]
+        :rtype: client.BunqResponse[list[TabUsageSingle]]
         """
 
         if custom_headers is None:
@@ -2939,7 +2944,7 @@ class TabUsageMultiple(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -2974,7 +2979,7 @@ class TabUsageMultiple(model.BunqModel):
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         if custom_headers is None:
@@ -3005,7 +3010,7 @@ class TabUsageMultiple(model.BunqModel):
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -3018,7 +3023,7 @@ class TabUsageMultiple(model.BunqModel):
                                                        tab_usage_multiple_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -3033,7 +3038,7 @@ class TabUsageMultiple(model.BunqModel):
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TabUsageMultiple]
+        :rtype: client.BunqResponse[TabUsageMultiple]
         """
 
         if custom_headers is None:
@@ -3060,7 +3065,7 @@ class TabUsageMultiple(model.BunqModel):
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[TabUsageMultiple]]
+        :rtype: client.BunqResponse[list[TabUsageMultiple]]
         """
 
         if custom_headers is None:
@@ -3247,7 +3252,7 @@ class CertificatePinned(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3272,7 +3277,7 @@ class CertificatePinned(model.BunqModel):
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -3283,7 +3288,7 @@ class CertificatePinned(model.BunqModel):
                                                        certificate_pinned_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def list(cls, api_context, user_id, custom_headers=None):
@@ -3294,7 +3299,7 @@ class CertificatePinned(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[CertificatePinned]]
+        :rtype: client.BunqResponse[list[CertificatePinned]]
         """
 
         if custom_headers is None:
@@ -3317,7 +3322,7 @@ class CertificatePinned(model.BunqModel):
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[CertificatePinned]
+        :rtype: client.BunqResponse[CertificatePinned]
         """
 
         if custom_headers is None:
@@ -3393,7 +3398,7 @@ class DeviceServer(model.BunqModel):
         :type request_map: dict[str, object]
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3416,7 +3421,7 @@ class DeviceServer(model.BunqModel):
         :type device_server_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[DeviceServer]
+        :rtype: client.BunqResponse[DeviceServer]
         """
 
         if custom_headers is None:
@@ -3436,7 +3441,7 @@ class DeviceServer(model.BunqModel):
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[DeviceServer]]
+        :rtype: client.BunqResponse[list[DeviceServer]]
         """
 
         if custom_headers is None:
@@ -3526,7 +3531,7 @@ class Device(model.BunqModel):
         :type device_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Device]
+        :rtype: client.BunqResponse[Device]
         """
 
         if custom_headers is None:
@@ -3547,7 +3552,7 @@ class Device(model.BunqModel):
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[Device]]
+        :rtype: client.BunqResponse[list[Device]]
         """
 
         if custom_headers is None:
@@ -3689,7 +3694,7 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -3700,7 +3705,8 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
                                                         draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class DraftShareInviteBank(model.BunqModel):
@@ -3750,7 +3756,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3775,7 +3781,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[DraftShareInviteBank]
+        :rtype: client.BunqResponse[DraftShareInviteBank]
         """
 
         if custom_headers is None:
@@ -3801,7 +3807,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[DraftShareInviteBank]
+        :rtype: client.BunqResponse[DraftShareInviteBank]
         """
 
         if custom_headers is None:
@@ -3823,7 +3829,7 @@ class DraftShareInviteBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[DraftShareInviteBank]]
+        :rtype: client.BunqResponse[list[DraftShareInviteBank]]
         """
 
         if custom_headers is None:
@@ -3916,7 +3922,7 @@ class ExportAnnualOverviewContent(model.BunqModel):
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -3927,7 +3933,8 @@ class ExportAnnualOverviewContent(model.BunqModel):
                                                         export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class ExportAnnualOverview(model.BunqModel):
@@ -3972,7 +3979,7 @@ class ExportAnnualOverview(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -3997,7 +4004,7 @@ class ExportAnnualOverview(model.BunqModel):
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ExportAnnualOverview]
+        :rtype: client.BunqResponse[ExportAnnualOverview]
         """
 
         if custom_headers is None:
@@ -4019,7 +4026,7 @@ class ExportAnnualOverview(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ExportAnnualOverview]]
+        :rtype: client.BunqResponse[list[ExportAnnualOverview]]
         """
 
         if custom_headers is None:
@@ -4097,7 +4104,7 @@ class CustomerStatementExportContent(model.BunqModel):
         :type customer_statement_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -4109,7 +4116,8 @@ class CustomerStatementExportContent(model.BunqModel):
                                                         customer_statement_id)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class CustomerStatementExport(model.BunqModel):
@@ -4166,7 +4174,7 @@ class CustomerStatementExport(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4191,7 +4199,7 @@ class CustomerStatementExport(model.BunqModel):
         :type customer_statement_export_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[CustomerStatementExport]
+        :rtype: client.BunqResponse[CustomerStatementExport]
         """
 
         if custom_headers is None:
@@ -4214,7 +4222,7 @@ class CustomerStatementExport(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[CustomerStatementExport]]
+        :rtype: client.BunqResponse[list[CustomerStatementExport]]
         """
 
         if custom_headers is None:
@@ -4237,7 +4245,7 @@ class CustomerStatementExport(model.BunqModel):
         :type customer_statement_export_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -4249,7 +4257,7 @@ class CustomerStatementExport(model.BunqModel):
                                                        customer_statement_export_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @property
     def id_(self):
@@ -4358,7 +4366,7 @@ class InstallationServerPublicKey(model.BunqModel):
         :type installation_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[InstallationServerPublicKey]]
+        :rtype: client.BunqResponse[list[InstallationServerPublicKey]]
         """
 
         if custom_headers is None:
@@ -4409,7 +4417,7 @@ class ShareInviteBankAmountUsed(model.BunqModel):
         :type share_invite_bank_amount_used_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -4422,7 +4430,7 @@ class ShareInviteBankAmountUsed(model.BunqModel):
                                                        share_invite_bank_amount_used_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
 
 class ShareInviteBankInquiry(model.BunqModel):
@@ -4492,7 +4500,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4519,7 +4527,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type share_invite_bank_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ShareInviteBankInquiry]
+        :rtype: client.BunqResponse[ShareInviteBankInquiry]
         """
 
         if custom_headers is None:
@@ -4547,7 +4555,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type share_invite_bank_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ShareInviteBankInquiry]
+        :rtype: client.BunqResponse[ShareInviteBankInquiry]
         """
 
         if custom_headers is None:
@@ -4576,7 +4584,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ShareInviteBankInquiry]]
+        :rtype: client.BunqResponse[list[ShareInviteBankInquiry]]
         """
 
         if custom_headers is None:
@@ -4728,7 +4736,7 @@ class ShareInviteBankResponse(model.BunqModel):
         :type share_invite_bank_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ShareInviteBankResponse]
+        :rtype: client.BunqResponse[ShareInviteBankResponse]
         """
 
         if custom_headers is None:
@@ -4753,7 +4761,7 @@ class ShareInviteBankResponse(model.BunqModel):
         :type share_invite_bank_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ShareInviteBankResponse]
+        :rtype: client.BunqResponse[ShareInviteBankResponse]
         """
 
         if custom_headers is None:
@@ -4777,7 +4785,7 @@ class ShareInviteBankResponse(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ShareInviteBankResponse]]
+        :rtype: client.BunqResponse[list[ShareInviteBankResponse]]
         """
 
         if custom_headers is None:
@@ -4950,7 +4958,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -4975,7 +4983,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type monetary_account_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[MonetaryAccountBank]
+        :rtype: client.BunqResponse[MonetaryAccountBank]
         """
 
         if custom_headers is None:
@@ -5000,7 +5008,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type monetary_account_bank_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5024,7 +5032,7 @@ class MonetaryAccountBank(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[MonetaryAccountBank]]
+        :rtype: client.BunqResponse[list[MonetaryAccountBank]]
         """
 
         if custom_headers is None:
@@ -5266,7 +5274,7 @@ class MonetaryAccount(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[MonetaryAccount]
+        :rtype: client.BunqResponse[MonetaryAccount]
         """
 
         if custom_headers is None:
@@ -5288,7 +5296,7 @@ class MonetaryAccount(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[MonetaryAccount]]
+        :rtype: client.BunqResponse[list[MonetaryAccount]]
         """
 
         if custom_headers is None:
@@ -5345,7 +5353,7 @@ class PaymentBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5374,7 +5382,7 @@ class PaymentBatch(model.BunqModel):
         :type payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5402,7 +5410,7 @@ class PaymentBatch(model.BunqModel):
         :type payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[PaymentBatch]
+        :rtype: client.BunqResponse[PaymentBatch]
         """
 
         if custom_headers is None:
@@ -5427,7 +5435,7 @@ class PaymentBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[PaymentBatch]]
+        :rtype: client.BunqResponse[list[PaymentBatch]]
         """
 
         if custom_headers is None:
@@ -5537,7 +5545,7 @@ class Payment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5564,7 +5572,7 @@ class Payment(model.BunqModel):
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Payment]
+        :rtype: client.BunqResponse[Payment]
         """
 
         if custom_headers is None:
@@ -5590,7 +5598,7 @@ class Payment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[Payment]]
+        :rtype: client.BunqResponse[list[Payment]]
         """
 
         if custom_headers is None:
@@ -5828,7 +5836,7 @@ class PaymentChat(model.BunqModel):
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -5858,7 +5866,7 @@ class PaymentChat(model.BunqModel):
         :type payment_chat_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[PaymentChat]
+        :rtype: client.BunqResponse[PaymentChat]
         """
 
         if custom_headers is None:
@@ -5887,7 +5895,7 @@ class PaymentChat(model.BunqModel):
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[PaymentChat]]
+        :rtype: client.BunqResponse[list[PaymentChat]]
         """
 
         if custom_headers is None:
@@ -5970,7 +5978,7 @@ class PermittedIp(model.BunqModel):
         :type permitted_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[PermittedIp]
+        :rtype: client.BunqResponse[PermittedIp]
         """
 
         if custom_headers is None:
@@ -5994,7 +6002,7 @@ class PermittedIp(model.BunqModel):
         :type credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6018,7 +6026,7 @@ class PermittedIp(model.BunqModel):
         :type credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[PermittedIp]]
+        :rtype: client.BunqResponse[list[PermittedIp]]
         """
 
         if custom_headers is None:
@@ -6042,7 +6050,7 @@ class PermittedIp(model.BunqModel):
         :type permitted_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6116,7 +6124,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6145,7 +6153,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6173,7 +6181,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestInquiryBatch]
+        :rtype: client.BunqResponse[RequestInquiryBatch]
         """
 
         if custom_headers is None:
@@ -6198,7 +6206,7 @@ class RequestInquiryBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[RequestInquiryBatch]]
+        :rtype: client.BunqResponse[list[RequestInquiryBatch]]
         """
 
         if custom_headers is None:
@@ -6327,7 +6335,7 @@ class RequestInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6355,7 +6363,7 @@ class RequestInquiry(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestInquiry]
+        :rtype: client.BunqResponse[RequestInquiry]
         """
 
         if custom_headers is None:
@@ -6382,7 +6390,7 @@ class RequestInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[RequestInquiry]]
+        :rtype: client.BunqResponse[list[RequestInquiry]]
         """
 
         if custom_headers is None:
@@ -6407,7 +6415,7 @@ class RequestInquiry(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestInquiry]
+        :rtype: client.BunqResponse[RequestInquiry]
         """
 
         if custom_headers is None:
@@ -6668,7 +6676,7 @@ class RequestInquiryChat(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6699,7 +6707,7 @@ class RequestInquiryChat(model.BunqModel):
         :type request_inquiry_chat_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestInquiryChat]
+        :rtype: client.BunqResponse[RequestInquiryChat]
         """
 
         if custom_headers is None:
@@ -6728,7 +6736,7 @@ class RequestInquiryChat(model.BunqModel):
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[RequestInquiryChat]]
+        :rtype: client.BunqResponse[list[RequestInquiryChat]]
         """
 
         if custom_headers is None:
@@ -6822,7 +6830,7 @@ class RequestResponseChat(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -6853,7 +6861,7 @@ class RequestResponseChat(model.BunqModel):
         :type request_response_chat_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestResponseChat]
+        :rtype: client.BunqResponse[RequestResponseChat]
         """
 
         if custom_headers is None:
@@ -6882,7 +6890,7 @@ class RequestResponseChat(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[RequestResponseChat]]
+        :rtype: client.BunqResponse[list[RequestResponseChat]]
         """
 
         if custom_headers is None:
@@ -7014,7 +7022,7 @@ class RequestResponse(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestResponse]
+        :rtype: client.BunqResponse[RequestResponse]
         """
 
         if custom_headers is None:
@@ -7041,7 +7049,7 @@ class RequestResponse(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[RequestResponse]]
+        :rtype: client.BunqResponse[list[RequestResponse]]
         """
 
         if custom_headers is None:
@@ -7066,7 +7074,7 @@ class RequestResponse(model.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[RequestResponse]
+        :rtype: client.BunqResponse[RequestResponse]
         """
 
         if custom_headers is None:
@@ -7310,7 +7318,7 @@ class ScheduleInstance(model.BunqModel):
         :type schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[ScheduleInstance]
+        :rtype: client.BunqResponse[ScheduleInstance]
         """
 
         if custom_headers is None:
@@ -7337,7 +7345,7 @@ class ScheduleInstance(model.BunqModel):
         :type schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7364,7 +7372,7 @@ class ScheduleInstance(model.BunqModel):
         :type schedule_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ScheduleInstance]]
+        :rtype: client.BunqResponse[list[ScheduleInstance]]
         """
 
         if custom_headers is None:
@@ -7463,7 +7471,7 @@ class SchedulePaymentBatch(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7489,7 +7497,7 @@ class SchedulePaymentBatch(model.BunqModel):
         :type schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7515,7 +7523,7 @@ class SchedulePaymentBatch(model.BunqModel):
         :type schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7527,7 +7535,7 @@ class SchedulePaymentBatch(model.BunqModel):
                                                        schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @property
     def payments(self):
@@ -7582,7 +7590,7 @@ class SchedulePayment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7607,7 +7615,7 @@ class SchedulePayment(model.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7619,7 +7627,7 @@ class SchedulePayment(model.BunqModel):
                                                        schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, schedule_payment_id,
@@ -7631,7 +7639,7 @@ class SchedulePayment(model.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[SchedulePayment]
+        :rtype: client.BunqResponse[SchedulePayment]
         """
 
         if custom_headers is None:
@@ -7654,7 +7662,7 @@ class SchedulePayment(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[SchedulePayment]]
+        :rtype: client.BunqResponse[list[SchedulePayment]]
         """
 
         if custom_headers is None:
@@ -7678,7 +7686,7 @@ class SchedulePayment(model.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7735,7 +7743,7 @@ class Schedule(model.BunqModel):
         :type schedule_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[Schedule]
+        :rtype: client.BunqResponse[Schedule]
         """
 
         if custom_headers is None:
@@ -7764,7 +7772,7 @@ class Schedule(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[Schedule]]
+        :rtype: client.BunqResponse[list[Schedule]]
         """
 
         if custom_headers is None:
@@ -7803,7 +7811,7 @@ class ScheduleUser(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[ScheduleUser]]
+        :rtype: client.BunqResponse[list[ScheduleUser]]
         """
 
         if custom_headers is None:
@@ -7836,7 +7844,7 @@ class Session(model.BunqModel):
         :type session_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -7846,7 +7854,7 @@ class Session(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(session_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
 
 class TabItemShopBatch(model.BunqModel):
@@ -7883,7 +7891,7 @@ class TabItemShopBatch(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -7974,7 +7982,7 @@ class TabItemShop(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -8007,7 +8015,7 @@ class TabItemShop(model.BunqModel):
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -8040,7 +8048,7 @@ class TabItemShop(model.BunqModel):
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype model.BunqResponse[None]:
+        :rtype client.BunqResponse[None]:
         """
 
         if custom_headers is None:
@@ -8054,7 +8062,7 @@ class TabItemShop(model.BunqModel):
                                                        tab_item_shop_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return model.BunqResponse(None, response_raw.headers)
+        return client.BunqResponse(None, response_raw.headers)
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
@@ -8069,7 +8077,7 @@ class TabItemShop(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[TabItemShop]]
+        :rtype: client.BunqResponse[list[TabItemShop]]
         """
 
         if custom_headers is None:
@@ -8098,7 +8106,7 @@ class TabItemShop(model.BunqModel):
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TabItemShop]
+        :rtype: client.BunqResponse[TabItemShop]
         """
 
         if custom_headers is None:
@@ -8207,7 +8215,7 @@ class TabResultInquiry(model.BunqModel):
         :type tab_result_inquiry_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TabResultInquiry]
+        :rtype: client.BunqResponse[TabResultInquiry]
         """
 
         if custom_headers is None:
@@ -8235,7 +8243,7 @@ class TabResultInquiry(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[TabResultInquiry]]
+        :rtype: client.BunqResponse[list[TabResultInquiry]]
         """
 
         if custom_headers is None:
@@ -8300,7 +8308,7 @@ class TabResultResponse(model.BunqModel):
         :type tab_result_response_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TabResultResponse]
+        :rtype: client.BunqResponse[TabResultResponse]
         """
 
         if custom_headers is None:
@@ -8325,7 +8333,7 @@ class TabResultResponse(model.BunqModel):
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[TabResultResponse]]
+        :rtype: client.BunqResponse[list[TabResultResponse]]
         """
 
         if custom_headers is None:
@@ -8384,7 +8392,7 @@ class TabQrCodeContent(model.BunqModel):
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[bytes]
+        :rtype: client.BunqResponse[bytes]
         """
 
         if custom_headers is None:
@@ -8397,7 +8405,8 @@ class TabQrCodeContent(model.BunqModel):
                                                         tab_uuid)
         response_raw = api_client.get(endpoint_url, custom_headers)
 
-        return model.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return client.BunqResponse(response_raw.body_bytes,
+                                   response_raw.headers)
 
 
 class TokenQrRequestIdeal(model.BunqModel):
@@ -8474,7 +8483,7 @@ class TokenQrRequestIdeal(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[TokenQrRequestIdeal]
+        :rtype: client.BunqResponse[TokenQrRequestIdeal]
         """
 
         if custom_headers is None:
@@ -8743,7 +8752,7 @@ class UserCompany(model.BunqModel):
         :type user_company_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[UserCompany]
+        :rtype: client.BunqResponse[UserCompany]
         """
 
         if custom_headers is None:
@@ -8766,7 +8775,7 @@ class UserCompany(model.BunqModel):
         :type user_company_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -9020,7 +9029,7 @@ class UserCredentialPasswordIp(model.BunqModel):
         :type user_credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[UserCredentialPasswordIp]
+        :rtype: client.BunqResponse[UserCredentialPasswordIp]
         """
 
         if custom_headers is None:
@@ -9040,7 +9049,7 @@ class UserCredentialPasswordIp(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[UserCredentialPasswordIp]]
+        :rtype: client.BunqResponse[list[UserCredentialPasswordIp]]
         """
 
         if custom_headers is None:
@@ -9226,7 +9235,7 @@ class UserPerson(model.BunqModel):
         :type user_person_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[UserPerson]
+        :rtype: client.BunqResponse[UserPerson]
         """
 
         if custom_headers is None:
@@ -9249,7 +9258,7 @@ class UserPerson(model.BunqModel):
         :type user_person_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         if custom_headers is None:
@@ -9543,7 +9552,7 @@ class User(model.BunqModel):
         :type user_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[User]
+        :rtype: client.BunqResponse[User]
         """
 
         if custom_headers is None:
@@ -9563,7 +9572,7 @@ class User(model.BunqModel):
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[list[User]]
+        :rtype: client.BunqResponse[list[User]]
         """
 
         if custom_headers is None:
@@ -9666,8 +9675,7 @@ class UserLight(model.BunqModel):
     FIELD_SUB_STATUS = "sub_status"
     FIELD_LEGAL_GUARDIAN_ALIAS = "legal_guardian_alias"
     FIELD_SESSION_TIMEOUT = "session_timeout"
-    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = \
-        "daily_limit_without_confirmation_login"
+    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
     FIELD_NOTIFICATION_FILTERS = "notification_filters"
 
     # Endpoint constants.
@@ -9719,7 +9727,7 @@ class UserLight(model.BunqModel):
         :type user_light_id: int
         :type custom_headers: dict[str, str]|None
 
-        :rtype: model.BunqResponse[UserLight]
+        :rtype: client.BunqResponse[UserLight]
         """
 
         if custom_headers is None:

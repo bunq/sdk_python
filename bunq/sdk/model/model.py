@@ -1,5 +1,6 @@
 from bunq.sdk import client
 from bunq.sdk import context
+from bunq.sdk.client import BunqResponse
 from bunq.sdk.json import converter
 
 
@@ -24,7 +25,7 @@ class BunqModel(object):
         """
         :type response_raw: client.BunqResponseRaw
 
-        :rtype: BunqResponse[cls]
+        :rtype: bunq.sdk.client.BunqResponse[cls]
         """
 
         json = response_raw.body_bytes.decode()
@@ -340,33 +341,3 @@ class SessionServer(BunqModel):
         return converter.class_to_json({cls.FIELD_SECRET: secret}).encode()
 
 
-class BunqResponse(object):
-    """
-    :type _value: T
-    :type _headers: dict[str, str]
-    """
-
-    def __init__(self, value, headers):
-        """
-        :type value: T
-        :type headers: dict[str, str]
-        """
-
-        self._value = value
-        self._headers = headers
-
-    @property
-    def value(self):
-        """
-        :rtype: T
-        """
-
-        return self._value
-
-    @property
-    def headers(self):
-        """
-        :rtype: dict[str, str]
-        """
-
-        return self._headers

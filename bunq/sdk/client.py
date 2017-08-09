@@ -302,3 +302,35 @@ class BunqResponseRaw(object):
         """
 
         return self._headers
+
+
+class BunqResponse(object):
+    """
+    :type _value: T
+    :type _headers: dict[str, str]
+    """
+
+    def __init__(self, value, headers):
+        """
+        :type value: T
+        :type headers: dict[str, str]
+        """
+
+        self._value = value
+        self._headers = headers
+
+    @property
+    def value(self):
+        """
+        :rtype: T
+        """
+
+        return self._value
+
+    @property
+    def headers(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        return self._headers
