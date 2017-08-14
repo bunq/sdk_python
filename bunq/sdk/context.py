@@ -95,7 +95,7 @@ class ApiContext(object):
         installation = model.Installation.create(
             self,
             security.public_key_to_string(private_key_client.publickey())
-        )
+        ).value
         token = installation.token.token
         public_key_server_string = \
             installation.server_public_key.server_public_key
@@ -116,14 +116,21 @@ class ApiContext(object):
         :rtype: None
         """
 
-        model.DeviceServer.create(self, device_description, permitted_ips)
+        generated.DeviceServer.create(
+            self,
+            {
+                generated.DeviceServer.FIELD_DESCRIPTION: device_description,
+                generated.DeviceServer.FIELD_SECRET: self.api_key,
+                generated.DeviceServer.FIELD_PERMITTED_IPS: permitted_ips,
+            }
+        )
 
     def _initialize_session(self):
         """
         :rtype: None
         """
 
-        session_server = model.SessionServer.create(self)
+        session_server = model.SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
 
