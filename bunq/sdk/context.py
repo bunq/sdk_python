@@ -254,28 +254,41 @@ class ApiContext(object):
 
         return self._session_context
 
-    def save(self, path=None, to_json=False):
+    def to_json(self):
+        """
+        Serializes an ApiInstance to JSON data
+
+        :return: str
+        """
+        return converter.class_to_json(self)
+
+    @classmethod
+    def from_json(cls, data):
+        """
+        Creates an ApiContext instance from JSON data
+
+        :param data: str
+        :return: ApiContext
+        """
+        return converter.json_to_class(ApiContext, data)
+
+    def save(self, path=None):
         """
         :type path: str
-        :type to_json: bool
 
-        :rtype: Union[None, str]
+        :rtype: None, str
         """
 
         if path is None:
             path = self._PATH_API_CONTEXT_DEFAULT
 
-        if to_json:
-            return converter.class_to_json(self)
-
-        with open(path, self._FILE_MODE_WRITE) as file:
-            file.write(converter.class_to_json(self))
+        with open(path, self._FILE_MODE_WRITE) as file_:
+            file_.write(self.to_json())
 
     @classmethod
-    def restore(cls, path=None, json_data=None):
+    def restore(cls, path=None):
         """
         :type path: str
-        :type json_data: str
 
         :rtype: ApiContext
         """
@@ -283,16 +296,13 @@ class ApiContext(object):
         if path is None:
             path = cls._PATH_API_CONTEXT_DEFAULT
 
-        if json_data is not None:
-            return converter.json_to_class(ApiContext, json_data)
-
-        with open(path, cls._FILE_MODE_READ) as file:
-            return converter.json_to_class(ApiContext, file.read())
+        with open(path, cls._FILE_MODE_READ) as file_:
+            return cls.from_json(file_.read())
 
     def __eq__(self, other):
-        return self.token == other.token \
-               and self.api_key == other.api_key \
-               and self.environment_type == other.environment_type
+        return (self.token == other.token and
+                self.api_key == other.api_key and
+                self.environment_type == other.environment_type)
 
 
 class InstallationContext(object):

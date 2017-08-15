@@ -33,8 +33,8 @@ class ApiContextTest(BunqSdkTestCase):
 
         self._API_CONTEXT.save(self._TMP_FILE_PATH_FULL)
 
-        with open(self._TMP_FILE_PATH_FULL, self._FILE_MODE_READ) as file:
-            context_retrieved = file.read()
+        with open(self._TMP_FILE_PATH_FULL, self._FILE_MODE_READ) as file_:
+            context_retrieved = file_.read()
 
         os.remove(self._TMP_FILE_PATH_FULL)
 
@@ -65,7 +65,7 @@ class ApiContextTest(BunqSdkTestCase):
         """
 
         context_json = converter.class_to_json(self._API_CONTEXT)
-        context_saved = self._API_CONTEXT.save(to_json=True)
+        context_saved = self._API_CONTEXT.to_json()
 
         self.assertEqual(context_saved, context_json)
 
@@ -79,7 +79,7 @@ class ApiContextTest(BunqSdkTestCase):
         ApiContext.
         """
 
-        context_json = self._API_CONTEXT.save(to_json=True)
-        api_context_restored = self._API_CONTEXT.restore(json_data=context_json)
+        context_json = self._API_CONTEXT.to_json()
+        api_context_restored = self._API_CONTEXT.from_json(context_json)
 
         self.assertEqual(api_context_restored, self._API_CONTEXT)
