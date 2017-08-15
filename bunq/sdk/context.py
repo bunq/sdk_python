@@ -256,21 +256,23 @@ class ApiContext(object):
 
     def to_json(self):
         """
-        Serializes an ApiInstance to JSON data
+        Serializes an ApiContext to JSON string
 
         :rtype: str
         """
+
         return converter.class_to_json(self)
 
     @classmethod
     def from_json(cls, data):
         """
-        Creates an ApiContext instance from JSON data
+        Creates an ApiContext instance from JSON string.
 
         :type data: str
 
         :rtype: ApiContext
         """
+
         return converter.json_to_class(ApiContext, data)
 
     def save(self, path=None):
