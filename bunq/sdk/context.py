@@ -258,7 +258,7 @@ class ApiContext(object):
         """
         Serializes an ApiInstance to JSON data
 
-        :return: str
+        :rtype: str
         """
         return converter.class_to_json(self)
 
@@ -267,8 +267,9 @@ class ApiContext(object):
         """
         Creates an ApiContext instance from JSON data
 
-        :param data: str
-        :return: ApiContext
+        :type data: str
+
+        :rtype: ApiContext
         """
         return converter.json_to_class(ApiContext, data)
 
