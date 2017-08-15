@@ -277,7 +277,7 @@ class ApiContext(object):
         """
         :type path: str
 
-        :rtype: None, str
+        :rtype: None
         """
 
         if path is None:
