@@ -5,7 +5,7 @@ from bunq.sdk.json import converter
 from tests.bunq_test import BunqSdkTestCase
 
 
-class ApiContextTest(BunqSdkTestCase):
+class TestApiContext(BunqSdkTestCase):
     """
     Tests:
         ApiContext
