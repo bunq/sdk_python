@@ -264,8 +264,17 @@ class ApiContext(object):
         if path is None:
             path = self._PATH_API_CONTEXT_DEFAULT
 
-        with open(path, self._FILE_MODE_WRITE) as file:
-            file.write(converter.class_to_json(self))
+        with open(path, self._FILE_MODE_WRITE) as file_:
+            file_.write(self.to_json())
+
+    def to_json(self):
+        """
+        Serializes an ApiContext to JSON string.
+
+        :rtype: str
+        """
+
+        return converter.class_to_json(self)
 
     @classmethod
     def restore(cls, path=None):
@@ -278,8 +287,25 @@ class ApiContext(object):
         if path is None:
             path = cls._PATH_API_CONTEXT_DEFAULT
 
-        with open(path, cls._FILE_MODE_READ) as file:
-            return converter.json_to_class(ApiContext, file.read())
+        with open(path, cls._FILE_MODE_READ) as file_:
+            return cls.from_json(file_.read())
+        
+    @classmethod
+    def from_json(cls, json_str):
+        """
+        Creates an ApiContext instance from JSON string.
+
+        :type json_str: str
+
+        :rtype: ApiContext
+        """
+
+        return converter.json_to_class(ApiContext, json_str)
+
+    def __eq__(self, other):
+        return (self.token == other.token and
+                self.api_key == other.api_key and
+                self.environment_type == other.environment_type)
 
 
 class InstallationContext(object):

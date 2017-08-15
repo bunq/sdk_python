@@ -37,6 +37,16 @@ of a configuration file is located at [`tests/assets/config.example.json`](./ass
 In order to make use of the configuration file, please copy the example to the
 same directory, fill in your sandbox user data and rename the copy to config.json.
 
+Note:
+* `MONETARY_ACCOUNT_ID` and `MONETARY_ACCOUNT_ID2` must be of same user
+* `CounterPartyOther` must be of another Sandbox user
+* You can create a `CASH_REGISTER_ID` on doc.bunq.com
+    1. Add your **Developer Key** to `settings`
+    2. Upload an image to the `Attachment Public` endpoint
+    3. Create an `Avatar` with the returned UUID
+    4. Use the Avatar's UUID to create a `Cash Register`
+    5. Copy the Cash Register's ID to the `config.json`
+
 ## Execution
 
 You can run the tests via command line: 
