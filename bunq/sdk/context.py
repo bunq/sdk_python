@@ -254,9 +254,10 @@ class ApiContext(object):
 
         return self._session_context
 
-    def save(self, path=None):
+    def save(self, path=None, to_json=False):
         """
         :type path: str
+        :type to_json: bool
 
         :rtype: None
         """
@@ -264,19 +265,26 @@ class ApiContext(object):
         if path is None:
             path = self._PATH_API_CONTEXT_DEFAULT
 
+        if to_json:
+            return converter.class_to_json(self)
+
         with open(path, self._FILE_MODE_WRITE) as file:
             file.write(converter.class_to_json(self))
 
     @classmethod
-    def restore(cls, path=None):
+    def restore(cls, path=None, json_data=None):
         """
         :type path: str
+        :type json_data: str
 
         :rtype: ApiContext
         """
 
         if path is None:
             path = cls._PATH_API_CONTEXT_DEFAULT
+
+        if json_data is not None:
+            return converter.json_to_class(ApiContext, json_data)
 
         with open(path, cls._FILE_MODE_READ) as file:
             return converter.json_to_class(ApiContext, file.read())
