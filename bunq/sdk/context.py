@@ -259,7 +259,7 @@ class ApiContext(object):
         :type path: str
         :type to_json: bool
 
-        :rtype: None
+        :rtype: Union[None, str]
         """
 
         if path is None:
@@ -288,6 +288,11 @@ class ApiContext(object):
 
         with open(path, cls._FILE_MODE_READ) as file:
             return converter.json_to_class(ApiContext, file.read())
+
+    def __eq__(self, other):
+        return self.token == other.token \
+               and self.api_key == other.api_key \
+               and self.environment_type == other.environment_type
 
 
 class InstallationContext(object):
