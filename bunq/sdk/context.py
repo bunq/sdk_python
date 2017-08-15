@@ -254,27 +254,6 @@ class ApiContext(object):
 
         return self._session_context
 
-    def to_json(self):
-        """
-        Serializes an ApiContext to JSON string
-
-        :rtype: str
-        """
-
-        return converter.class_to_json(self)
-
-    @classmethod
-    def from_json(cls, data):
-        """
-        Creates an ApiContext instance from JSON string.
-
-        :type data: str
-
-        :rtype: ApiContext
-        """
-
-        return converter.json_to_class(ApiContext, data)
-
     def save(self, path=None):
         """
         :type path: str
@@ -287,6 +266,15 @@ class ApiContext(object):
 
         with open(path, self._FILE_MODE_WRITE) as file_:
             file_.write(self.to_json())
+
+    def to_json(self):
+        """
+        Serializes an ApiContext to JSON string.
+
+        :rtype: str
+        """
+
+        return converter.class_to_json(self)
 
     @classmethod
     def restore(cls, path=None):
@@ -301,6 +289,18 @@ class ApiContext(object):
 
         with open(path, cls._FILE_MODE_READ) as file_:
             return cls.from_json(file_.read())
+        
+    @classmethod
+    def from_json(cls, json_str):
+        """
+        Creates an ApiContext instance from JSON string.
+
+        :type json_str: str
+
+        :rtype: ApiContext
+        """
+
+        return converter.json_to_class(ApiContext, json_str)
 
     def __eq__(self, other):
         return (self.token == other.token and
