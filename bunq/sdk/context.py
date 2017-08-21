@@ -67,7 +67,8 @@ class ApiContext(object):
         :type proxy_url: str|None
         """
 
-        permitted_ips = permitted_ips or []
+        if permitted_ips is None:
+            permitted_ips = []
 
         self._environment_type = environment_type
         self._api_key = api_key
