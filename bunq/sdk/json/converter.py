@@ -165,8 +165,8 @@ class JsonAdapter(object):
 
         instance = cls_target.__new__(cls_target, cls_target)
         dict_deserialized = cls._deserialize_dict_attributes(cls_target, dict_)
-        instance.__dict__ = cls._set_default_values(cls_target,
-                                                    dict_deserialized)
+        instance.__dict__ = cls._fill_default_values(cls_target,
+                                                     dict_deserialized)
 
         return instance
 
@@ -370,7 +370,7 @@ class JsonAdapter(object):
         warnings.warn(cls._WARNING_KEY_UNKNOWN.format(key, context_name))
 
     @classmethod
-    def _set_default_values(cls, cls_context, dict_):
+    def _fill_default_values(cls, cls_context, dict_):
         """
         :type cls_context: type
         :type dict_: dict
@@ -378,7 +378,7 @@ class JsonAdapter(object):
         :rtype: dict
         """
 
-        dict_with_default_values = dict_.copy()
+        dict_with_default_values = dict(dict_)
         params = re.findall(cls._PATTERN_PARAM_NAME_TYPED_ANY,
                             cls_context.__doc__)
 
