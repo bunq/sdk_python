@@ -41,6 +41,7 @@ class ApiContext(object):
     :type _api_key: str
     :type _session_context: SessionContext
     :type _installation_context: InstallationContext
+    :type _proxy_url: str|None
     """
 
     # File mode for saving and restoring the context
@@ -57,21 +58,22 @@ class ApiContext(object):
     _PATH_API_CONTEXT_DEFAULT = 'bunq.conf'
 
     def __init__(self, environment_type, api_key, device_description,
-                 permitted_ips=None):
+                 permitted_ips=None, proxy_url=None):
         """
         :type environment_type: ApiEnvironmentType
         :type api_key: str
         :type device_description: str
         :type permitted_ips: list[str]|None
+        :type proxy_url: str|None
         """
 
-        if permitted_ips is None:
-            permitted_ips = []
+        permitted_ips = permitted_ips or []
 
         self._environment_type = environment_type
         self._api_key = api_key
         self._installation_context = None
         self._session_context = None
+        self._proxy_url = proxy_url
         self._initialize(device_description, permitted_ips)
 
     def _initialize(self, device_description, permitted_ips):
@@ -253,6 +255,14 @@ class ApiContext(object):
         """
 
         return self._session_context
+
+    @property
+    def proxy_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._proxy_url
 
     def save(self, path=None):
         """
