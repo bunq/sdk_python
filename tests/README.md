@@ -1,5 +1,4 @@
 # bunq Python SDK
-Version 0.9.0 **BETA**
 
 ## Introduction
 Hi developers!
