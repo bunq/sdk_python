@@ -6,7 +6,7 @@ from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
 
-class AvatarTest(BunqSdkTestCase):
+class TestAvatar(BunqSdkTestCase):
     """
     Tests:
         Avatar
