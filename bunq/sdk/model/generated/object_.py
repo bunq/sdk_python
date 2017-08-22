@@ -250,6 +250,23 @@ class CardMagStripePermission(model.BunqModel):
         self.expiry_time = None
 
 
+class CardPinAssignment(model.BunqModel):
+    """
+    :type type_: str
+    :type pin_code: str
+    :type monetary_account_id: str
+    """
+
+    def __init__(self, type_):
+        """
+        :type type_: str
+        """
+
+        self.type_ = type_
+        self.pin_code = None
+        self.monetary_account_id = None
+
+
 class Geolocation(model.BunqModel):
     """
     :type latitude: float

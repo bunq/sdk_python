@@ -41,6 +41,7 @@ class ApiContext(object):
     :type _api_key: str
     :type _session_context: SessionContext
     :type _installation_context: InstallationContext
+    :type _proxy_url: str|None
     """
 
     # File mode for saving and restoring the context
@@ -57,12 +58,13 @@ class ApiContext(object):
     _PATH_API_CONTEXT_DEFAULT = 'bunq.conf'
 
     def __init__(self, environment_type, api_key, device_description,
-                 permitted_ips=None):
+                 permitted_ips=None, proxy_url=None):
         """
         :type environment_type: ApiEnvironmentType
         :type api_key: str
         :type device_description: str
         :type permitted_ips: list[str]|None
+        :type proxy_url: str|None
         """
 
         if permitted_ips is None:
@@ -72,6 +74,7 @@ class ApiContext(object):
         self._api_key = api_key
         self._installation_context = None
         self._session_context = None
+        self._proxy_url = proxy_url
         self._initialize(device_description, permitted_ips)
 
     def _initialize(self, device_description, permitted_ips):
@@ -95,7 +98,7 @@ class ApiContext(object):
         installation = model.Installation.create(
             self,
             security.public_key_to_string(private_key_client.publickey())
-        )
+        ).value
         token = installation.token.token
         public_key_server_string = \
             installation.server_public_key.server_public_key
@@ -116,14 +119,21 @@ class ApiContext(object):
         :rtype: None
         """
 
-        model.DeviceServer.create(self, device_description, permitted_ips)
+        generated.DeviceServer.create(
+            self,
+            {
+                generated.DeviceServer.FIELD_DESCRIPTION: device_description,
+                generated.DeviceServer.FIELD_SECRET: self.api_key,
+                generated.DeviceServer.FIELD_PERMITTED_IPS: permitted_ips,
+            }
+        )
 
     def _initialize_session(self):
         """
         :rtype: None
         """
 
-        session_server = model.SessionServer.create(self)
+        session_server = model.SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
 
@@ -247,6 +257,14 @@ class ApiContext(object):
 
         return self._session_context
 
+    @property
+    def proxy_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._proxy_url
+
     def save(self, path=None):
         """
         :type path: str
@@ -257,8 +275,17 @@ class ApiContext(object):
         if path is None:
             path = self._PATH_API_CONTEXT_DEFAULT
 
-        with open(path, self._FILE_MODE_WRITE) as file:
-            file.write(converter.class_to_json(self))
+        with open(path, self._FILE_MODE_WRITE) as file_:
+            file_.write(self.to_json())
+
+    def to_json(self):
+        """
+        Serializes an ApiContext to JSON string.
+
+        :rtype: str
+        """
+
+        return converter.class_to_json(self)
 
     @classmethod
     def restore(cls, path=None):
@@ -271,8 +298,25 @@ class ApiContext(object):
         if path is None:
             path = cls._PATH_API_CONTEXT_DEFAULT
 
-        with open(path, cls._FILE_MODE_READ) as file:
-            return converter.json_to_class(ApiContext, file.read())
+        with open(path, cls._FILE_MODE_READ) as file_:
+            return cls.from_json(file_.read())
+        
+    @classmethod
+    def from_json(cls, json_str):
+        """
+        Creates an ApiContext instance from JSON string.
+
+        :type json_str: str
+
+        :rtype: ApiContext
+        """
+
+        return converter.json_to_class(ApiContext, json_str)
+
+    def __eq__(self, other):
+        return (self.token == other.token and
+                self.api_key == other.api_key and
+                self.environment_type == other.environment_type)
 
 
 class InstallationContext(object):

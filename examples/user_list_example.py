@@ -6,7 +6,7 @@ from bunq.sdk.model import generated
 
 def run():
     api_context = context.ApiContext.restore()
-    users = generated.User.list(api_context)
+    users = generated.User.list(api_context).value
     api_context.save()
 
     for user in users:

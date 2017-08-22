@@ -35,7 +35,7 @@ def run():
         request_map,
         _USER_ITEM_ID,
         _MONETARY_ACCOUNT_ITEM_ID
-    )
+    ).value
 
     print(
         generated.PaymentBatch.get(
@@ -43,5 +43,5 @@ def run():
             _USER_ITEM_ID,
             _MONETARY_ACCOUNT_ITEM_ID,
             payment_id
-        ).to_json()
+        ).value.to_json()
     )

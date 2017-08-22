@@ -43,11 +43,11 @@ class TestDraftShareInvite(BunqSdkTestCase):
             DraftShareInviteBank.FIELD_EXPIRATION: self.expiration_date
         }
         draft_id = DraftShareInviteBank.create(self._API_CONTEXT, draft_map,
-                                               self._USER_ID)
+                                               self._USER_ID).value
 
         connect_qr = DraftShareInviteBankQrCodeContent.list(self._API_CONTEXT,
                                                             self._USER_ID,
-                                                            draft_id,)
+                                                            draft_id).value
 
         with open(self._OUT_PUT_FILE_PATH, self._WRITE_BYTES) as f:
             f.write(connect_qr)

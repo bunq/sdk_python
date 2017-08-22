@@ -42,7 +42,7 @@ class TestTabUsageSingle(BunqSdkTestCase):
         tab_uuid = TabUsageSingle.create(self._API_CONTEXT, create_map,
                                          self._USER_ID,
                                          self._MONETARY_ACCOUNT_ID,
-                                         self._CASH_REGISTER_ID)
+                                         self._CASH_REGISTER_ID).value
 
         self._add_item_to_tab(tab_uuid)
         self._update_tab(tab_uuid)

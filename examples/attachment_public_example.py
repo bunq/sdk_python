@@ -28,11 +28,11 @@ def run():
         api_context,
         attachment_bytes,
         custom_headers
-    )
+    ).value
     attachment_bytes2 = generated.AttachmentPublicContent.list(
         api_context,
         attachment_uuid
-    )
+    ).value
 
     if not os.path.exists(os.path.dirname(_PATH_ATTACHMENT_OUT)):
         try:

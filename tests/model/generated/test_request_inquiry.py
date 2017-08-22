@@ -36,10 +36,11 @@ class TestRequestEnquiry(BunqSdkTestCase):
 
         self.send_request()
 
-        request_response_id = RequestResponse.list(self._API_CONTEXT,
-                                                   self._USER_ID,
-                                                   self._MONETARY_ACCOUNT_ID2)[
-            self._FIRST_INDEX].id_
+        request_response_id = RequestResponse.list(
+            self._API_CONTEXT,
+            self._USER_ID,
+            self._MONETARY_ACCOUNT_ID2
+        ).value[self._FIRST_INDEX].id_
 
         self.accept_request(request_response_id)
 

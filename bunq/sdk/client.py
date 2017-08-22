@@ -19,6 +19,9 @@ class ApiClient(object):
     :type _api_context: context.ApiContext
     """
 
+    # HTTPS type of proxy, the only used at bunq
+    _FIELD_PROXY_HTTPS = 'https'
+
     # Header constants
     HEADER_ATTACHMENT_DESCRIPTION = 'X-Bunq-Attachment-Description'
     HEADER_CONTENT_TYPE = 'Content-Type'
@@ -32,7 +35,7 @@ class ApiClient(object):
     HEADER_AUTHENTICATION = 'X-Bunq-Client-Authentication'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.9'
+    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.10.0'
     _GEOLOCATION_ZERO = '0 0 0 0 NL'
     _LANGUAGE_EN_US = 'en_US'
     _REGION_NL_NL = 'nl_NL'
@@ -66,7 +69,7 @@ class ApiClient(object):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
 
-        :return: requests.Response
+        :return: BunqResponseRaw
         """
 
         return self._request(
@@ -83,7 +86,7 @@ class ApiClient(object):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
 
-        :return: requests.Response
+        :return: BunqResponseRaw
         """
 
         self._api_context.ensure_session_active()
@@ -98,7 +101,8 @@ class ApiClient(object):
             method,
             self._get_uri_full(uri_relative),
             data=request_bytes,
-            headers=all_headers
+            headers=all_headers,
+            proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url}
         )
 
         self._assert_response_success(response)
@@ -111,7 +115,7 @@ class ApiClient(object):
                 response.headers
             )
 
-        return response
+        return self._create_bunq_response_raw(response)
 
     def _get_all_headers(self, method, endpoint, request_bytes, custom_headers):
         """
@@ -184,6 +188,16 @@ class ApiClient(object):
                 self._fetch_error_messages(response)
             )
 
+    @classmethod
+    def _create_bunq_response_raw(cls, response):
+        """
+        :type response: requests.Response
+
+        :rtype: BunqResponseRaw
+        """
+
+        return BunqResponseRaw(response.content, response.headers)
+
     def _fetch_error_messages(self, response):
         """
         :type response: requests.Response
@@ -221,7 +235,7 @@ class ApiClient(object):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
 
-        :rtype: requests.Response
+        :rtype: BunqResponseRaw
         """
 
         return self._request(
@@ -236,7 +250,7 @@ class ApiClient(object):
         :type uri_relative: str
         :type custom_headers: dict[str, str]
 
-        :rtype: requests.Response
+        :rtype: BunqResponseRaw
         """
 
         return self._request(
@@ -251,7 +265,7 @@ class ApiClient(object):
         :type uri_relative: str
         :type custom_headers: dict[str, str]
 
-        :rtype: requests.Response
+        :rtype: BunqResponseRaw
         """
 
         return self._request(
@@ -260,3 +274,67 @@ class ApiClient(object):
             self._BYTES_EMPTY,
             custom_headers
         )
+
+
+class BunqResponseRaw(object):
+    """
+    :type _body_bytes: bytes
+    :type _headers: dict[str, str]
+    """
+
+    def __init__(self, body_bytes, headers):
+        """
+        :type body_bytes: bytes
+        :type headers: dict[str, str]
+        """
+
+        self._body_bytes = body_bytes
+        self._headers = headers
+
+    @property
+    def body_bytes(self):
+        """
+        :rtype: bytes
+        """
+
+        return self._body_bytes
+
+    @property
+    def headers(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        return self._headers
+
+
+class BunqResponse(object):
+    """
+    :type _value: T
+    :type _headers: dict[str, str]
+    """
+
+    def __init__(self, value, headers):
+        """
+        :type value: T
+        :type headers: dict[str, str]
+        """
+
+        self._value = value
+        self._headers = headers
+
+    @property
+    def value(self):
+        """
+        :rtype: T
+        """
+
+        return self._value
+
+    @property
+    def headers(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        return self._headers

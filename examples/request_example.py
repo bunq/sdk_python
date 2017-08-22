@@ -33,14 +33,14 @@ def run():
         request_map,
         _USER_ITEM_ID,
         _MONETARY_ACCOUNT_ITEM_ID
-    )
+    ).value
     print(
         generated.RequestInquiry.get(
             api_context,
             _USER_ITEM_ID,
             _MONETARY_ACCOUNT_ITEM_ID,
             request_id
-        ).to_json()
+        ).value.to_json()
     )
 
     request_update_map = {
@@ -53,5 +53,5 @@ def run():
             _USER_ITEM_ID,
             _MONETARY_ACCOUNT_ITEM_ID,
             request_id
-        ).to_json()
+        ).value.to_json()
     )

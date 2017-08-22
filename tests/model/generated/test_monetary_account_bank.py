@@ -38,7 +38,7 @@ class TestMonetaryAccount(BunqSdkTestCase):
         }
         monetary_account_id = MonetaryAccountBank.create(self._API_CONTEXT,
                                                          create_map,
-                                                         self._USER_ID)
+                                                         self._USER_ID).value
 
         update_map = {
             MonetaryAccountBank.FIELD_STATUS: self._FIELD_STATUS,

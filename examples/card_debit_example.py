@@ -32,7 +32,7 @@ def run():
     }
 
     print(generated.CardDebit.create(api_context, request_map,
-                                     _USER_ITEM_ID).to_json())
+                                     _USER_ITEM_ID).value.to_json())
 
 
 def _make_second_line():
