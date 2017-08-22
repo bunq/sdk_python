@@ -19,6 +19,9 @@ class ApiClient(object):
     :type _api_context: context.ApiContext
     """
 
+    # HTTPS type of proxy, the only used at bunq
+    _FIELD_PROXY_HTTPS = 'https'
+
     # Header constants
     HEADER_ATTACHMENT_DESCRIPTION = 'X-Bunq-Attachment-Description'
     HEADER_CONTENT_TYPE = 'Content-Type'
@@ -98,7 +101,8 @@ class ApiClient(object):
             method,
             self._get_uri_full(uri_relative),
             data=request_bytes,
-            headers=all_headers
+            headers=all_headers,
+            proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url}
         )
 
         self._assert_response_success(response)

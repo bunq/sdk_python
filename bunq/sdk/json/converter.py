@@ -29,7 +29,8 @@ class JsonAdapter(object):
     _PREFIX_KEY_PROTECTED = '_'
 
     # Constants to fetch param types from the docstrings
-    _PATTERN_PARAM_TYPES = ':type (_?{}): ([\w.]+)(?:\[([\w.]+)\])?'
+    _TEMPLATE_PATTERN_PARAM_TYPES = ':type (_?{}): ([\w.]+)(?:\[([\w.]+)\])?'
+    _PATTERN_PARAM_NAME_TYPED_ANY = ':type (\w+):'
     _SUBMATCH_INDEX_NAME = 1
     _SUBMATCH_INDEX_TYPE_MAIN = 2
     _SUBMATCH_INDEX_TYPE_SUB = 3
@@ -163,7 +164,9 @@ class JsonAdapter(object):
         """
 
         instance = cls_target.__new__(cls_target, cls_target)
-        instance.__dict__ = cls._deserialize_dict_attributes(cls_target, dict_)
+        dict_deserialized = cls._deserialize_dict_attributes(cls_target, dict_)
+        instance.__dict__ = cls._fill_default_values(cls_target,
+                                                     dict_deserialized)
 
         return instance
 
@@ -191,18 +194,6 @@ class JsonAdapter(object):
                 cls._warn_key_unknown(cls_context, key)
 
         return dict_deserialized
-
-    @classmethod
-    def _warn_key_unknown(cls, cls_context, key):
-        """
-        :type cls_context: type
-        :type key: str
-
-        :rtype: None
-        """
-
-        context_name = cls_context.__name__
-        warnings.warn(cls._WARNING_KEY_UNKNOWN.format(key, context_name))
 
     @classmethod
     def _deserialize_key(cls, key):
@@ -240,7 +231,7 @@ class JsonAdapter(object):
         :rtype: ValueSpecs
         """
 
-        pattern = cls._PATTERN_PARAM_TYPES.format(attribute_name)
+        pattern = cls._TEMPLATE_PATTERN_PARAM_TYPES.format(attribute_name)
         match = re.search(pattern, cls_in.__doc__)
 
         if match is not None:
@@ -365,6 +356,37 @@ class JsonAdapter(object):
             list_deserialized.append(item_deserialized)
 
         return list_deserialized
+
+    @classmethod
+    def _warn_key_unknown(cls, cls_context, key):
+        """
+        :type cls_context: type
+        :type key: str
+
+        :rtype: None
+        """
+
+        context_name = cls_context.__name__
+        warnings.warn(cls._WARNING_KEY_UNKNOWN.format(key, context_name))
+
+    @classmethod
+    def _fill_default_values(cls, cls_context, dict_):
+        """
+        :type cls_context: type
+        :type dict_: dict
+
+        :rtype: dict
+        """
+
+        dict_with_default_values = dict(dict_)
+        params = re.findall(cls._PATTERN_PARAM_NAME_TYPED_ANY,
+                            cls_context.__doc__)
+
+        for param in params:
+            if param not in dict_with_default_values:
+                dict_with_default_values[param] = None
+
+        return dict_with_default_values
 
     @classmethod
     def can_serialize(cls):
