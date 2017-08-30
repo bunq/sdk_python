@@ -312,9 +312,10 @@ class BunqResponse(object):
     """
     :type _value: T
     :type _headers: dict[str, str]
+    :type _pagination: Pagination
     """
 
-    def __init__(self, value, headers):
+    def __init__(self, value, headers, pagination=None):
         """
         :type value: T
         :type headers: dict[str, str]
@@ -322,6 +323,7 @@ class BunqResponse(object):
 
         self._value = value
         self._headers = headers
+        self._pagination = pagination
 
     @property
     def value(self):
@@ -339,6 +341,14 @@ class BunqResponse(object):
 
         return self._headers
 
+    @property
+    def pagination(self):
+        """
+        :rtype: Pagination
+        """
+
+        return self._pagination
+
 
 class Pagination(object):
     """
@@ -348,8 +358,67 @@ class Pagination(object):
     :type _count: int|None
     """
 
+    # Field constants
+    _FIELD_OLDER_ID = 'older_id'
+    _FIELD_NEWER_ID = 'newer_id'
+    _FIELD_COUNT = 'count'
+
     def __init__(self):
         self._older_id = None
         self._newer_id = None
         self._future_id = None
         self._count = None
+
+    @property
+    def url_params_previous(self):
+        """
+        :rtype: dict
+        """
+
+        params = {
+            self._FIELD_OLDER_ID: self._older_id,
+        }
+        self._add_count_to_params_if_needed(params)
+
+        return params
+
+    def _add_count_to_params_if_needed(self, params):
+        """
+        :type params: dict
+
+        :rtype: None
+        """
+
+        if self._count is not None:
+            params[self._FIELD_COUNT] = self._count
+
+    @property
+    def _next_id(self):
+        """
+        :rtype: int
+        """
+
+        if self.has_next_item_assured():
+            return self._newer_id
+
+        return self._future_id
+
+    def has_next_item_assured(self):
+        """
+        :rtype: bool
+        """
+
+        return self._newer_id is not None
+
+    @property
+    def url_params_next(self):
+        """
+        :rtype: dict
+        """
+
+        params = {
+            self._FIELD_NEWER_ID: self._next_id,
+        }
+        self._add_count_to_params_if_needed(params)
+
+        return params
