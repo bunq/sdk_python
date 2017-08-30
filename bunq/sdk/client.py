@@ -13,6 +13,11 @@ from bunq.sdk import security
 from bunq.sdk import context
 from bunq.sdk import exception
 
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
+
 
 class ApiClient(object):
     """
@@ -79,27 +84,34 @@ class ApiClient(object):
             custom_headers
         )
 
-    def _request(self, method, uri_relative, request_bytes, custom_headers):
+    def _request(self, method, uri_relative, request_bytes, custom_headers,
+                 params=None):
         """
         :type method: str
         :type uri_relative: str
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]
+        :type params: dict[str, str]|None
 
         :return: BunqResponseRaw
         """
 
+        if params:
+            uri_relative_with_params = uri_relative + '?' + urlencode(params)
+        else:
+            uri_relative_with_params = uri_relative
+
         self._api_context.ensure_session_active()
         all_headers = self._get_all_headers(
             method,
-            uri_relative,
+            uri_relative_with_params,
             request_bytes,
             custom_headers
         )
 
         response = requests.request(
             method,
-            self._get_uri_full(uri_relative),
+            self._get_uri_full(uri_relative_with_params),
             data=request_bytes,
             headers=all_headers,
             proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url}
@@ -245,10 +257,11 @@ class ApiClient(object):
             custom_headers
         )
 
-    def get(self, uri_relative, custom_headers):
+    def get(self, uri_relative, custom_headers, params=None):
         """
         :type uri_relative: str
         :type custom_headers: dict[str, str]
+        :type params: dict[str, str]
 
         :rtype: BunqResponseRaw
         """
@@ -257,7 +270,8 @@ class ApiClient(object):
             self._METHOD_GET,
             uri_relative,
             self._BYTES_EMPTY,
-            custom_headers
+            custom_headers,
+            params
         )
 
     def delete(self, uri_relative, custom_headers):
@@ -372,11 +386,11 @@ class Pagination(object):
     @property
     def url_params_previous(self):
         """
-        :rtype: dict
+        :rtype: dict[str, str]
         """
 
         params = {
-            self._FIELD_OLDER_ID: self._older_id,
+            self._FIELD_OLDER_ID: str(self._older_id),
         }
         self._add_count_to_params_if_needed(params)
 
@@ -384,13 +398,13 @@ class Pagination(object):
 
     def _add_count_to_params_if_needed(self, params):
         """
-        :type params: dict
+        :type params: dict[str, str]
 
         :rtype: None
         """
 
         if self._count is not None:
-            params[self._FIELD_COUNT] = self._count
+            params[self._FIELD_COUNT] = str(self._count)
 
     @property
     def _next_id(self):
@@ -413,11 +427,11 @@ class Pagination(object):
     @property
     def url_params_next(self):
         """
-        :rtype: dict
+        :rtype: dict[str, str]
         """
 
         params = {
-            self._FIELD_NEWER_ID: self._next_id,
+            self._FIELD_NEWER_ID: str(self._next_id),
         }
         self._add_count_to_params_if_needed(params)
 
