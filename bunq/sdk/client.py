@@ -338,3 +338,18 @@ class BunqResponse(object):
         """
 
         return self._headers
+
+
+class Pagination(object):
+    """
+    :type _older_id: int|None
+    :type _newer_id: int|None
+    :type _future_id: int|None
+    :type _count: int|None
+    """
+
+    def __init__(self):
+        self._older_id = None
+        self._newer_id = None
+        self._future_id = None
+        self._count = None
