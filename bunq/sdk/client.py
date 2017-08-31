@@ -52,6 +52,9 @@ class ApiClient(object):
     _METHOD_GET = 'GET'
     _METHOD_DELETE = 'DELETE'
 
+    # Delimiter between path and params in URI
+    _DELIMITER_PATH_AND_PARAMS = '?'
+
     # Status code for successful execution
     _STATUS_CODE_OK = 200
 
@@ -97,11 +100,8 @@ class ApiClient(object):
         :return: BunqResponseRaw
         """
 
-        if params:
-            uri_relative_with_params = uri_relative + '?' + urlencode(params)
-        else:
-            uri_relative_with_params = uri_relative
-
+        uri_relative_with_params = self._append_params_to_uri(uri_relative,
+                                                              params)
         self._api_context.ensure_session_active()
         all_headers = self._get_all_headers(
             method,
@@ -129,6 +129,20 @@ class ApiClient(object):
             )
 
         return self._create_bunq_response_raw(response)
+
+    @classmethod
+    def _append_params_to_uri(cls, uri, params):
+        """
+        :type uri: str
+        :type params: dict[str, str]
+
+        :rtype: str
+        """
+
+        if params:
+            return uri + cls._DELIMITER_PATH_AND_PARAMS + urlencode(params)
+
+        return uri
 
     def _get_all_headers(self, method, endpoint, request_bytes, custom_headers):
         """
@@ -376,9 +390,9 @@ class Pagination(object):
     """
 
     # Field constants
-    _FIELD_OLDER_ID = 'older_id'
-    _FIELD_NEWER_ID = 'newer_id'
-    _FIELD_COUNT = 'count'
+    FIELD_OLDER_ID = 'older_id'
+    FIELD_NEWER_ID = 'newer_id'
+    FIELD_COUNT = 'count'
 
     def __init__(self):
         self._older_id = None
@@ -393,7 +407,7 @@ class Pagination(object):
         """
 
         params = {
-            self._FIELD_OLDER_ID: str(self._older_id),
+            self.FIELD_OLDER_ID: str(self._older_id),
         }
         self._add_count_to_params_if_needed(params)
 
@@ -407,7 +421,7 @@ class Pagination(object):
         """
 
         if self._count is not None:
-            params[self._FIELD_COUNT] = str(self._count)
+            params[self.FIELD_COUNT] = str(self._count)
 
     @property
     def _next_id(self):
@@ -434,7 +448,7 @@ class Pagination(object):
         """
 
         params = {
-            self._FIELD_NEWER_ID: str(self._next_id),
+            self.FIELD_NEWER_ID: str(self._next_id),
         }
         self._add_count_to_params_if_needed(params)
 

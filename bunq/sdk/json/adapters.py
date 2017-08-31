@@ -483,29 +483,33 @@ class PaginationAdapter(converter.JsonAdapter):
 
         pagination_dict = {}
 
-        cls.update_dict_id_field_from_response_field(pagination_dict,
-                                                     cls._FIELD_OLDER_ID,
-                                                     response_obj,
-                                                     cls._FIELD_OLDER_URL,
-                                                     cls._FIELD_OLDER_ID)
-        cls.update_dict_id_field_from_response_field(pagination_dict,
-                                                     cls._FIELD_NEWER_ID,
-                                                     response_obj,
-                                                     cls._FIELD_NEWER_URL,
-                                                     cls._FIELD_NEWER_ID)
-        cls.update_dict_id_field_from_response_field(pagination_dict,
-                                                     cls._FIELD_FUTURE_ID,
-                                                     response_obj,
-                                                     cls._FIELD_FUTURE_URL,
-                                                     cls._FIELD_NEWER_ID)
+        cls.update_dict_id_field_from_response_field(
+            pagination_dict,
+            cls._FIELD_OLDER_ID,
+            response_obj,
+            cls._FIELD_OLDER_URL,
+            client.Pagination.FIELD_OLDER_ID
+        )
+        cls.update_dict_id_field_from_response_field(
+            pagination_dict,
+            cls._FIELD_NEWER_ID,
+            response_obj,
+            cls._FIELD_NEWER_URL,
+            client.Pagination.FIELD_NEWER_ID
+        )
+        cls.update_dict_id_field_from_response_field(
+            pagination_dict,
+            cls._FIELD_FUTURE_ID,
+            response_obj,
+            cls._FIELD_FUTURE_URL,
+            client.Pagination.FIELD_NEWER_ID
+        )
 
         return pagination_dict
 
     @classmethod
-    def update_dict_id_field_from_response_field(cls, dict_,
-                                                 dict_id_field,
-                                                 response_obj,
-                                                 response_field,
+    def update_dict_id_field_from_response_field(cls, dict_, dict_id_field,
+                                                 response_obj, response_field,
                                                  response_param):
         """
         :type dict_: dict
@@ -526,7 +530,7 @@ class PaginationAdapter(converter.JsonAdapter):
 
             if cls._FIELD_COUNT in parameters:
                 dict_[cls._FIELD_COUNT] = int(
-                    parameters[cls._FIELD_COUNT][cls._INDEX_FIRST]
+                    parameters[client.Pagination.FIELD_COUNT][cls._INDEX_FIRST]
                 )
 
     @classmethod
