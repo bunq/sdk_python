@@ -81,17 +81,18 @@ class ApiClient(object):
             self._METHOD_POST,
             uri_relative,
             request_bytes,
+            {},
             custom_headers
         )
 
-    def _request(self, method, uri_relative, request_bytes, custom_headers,
-                 params=None):
+    def _request(self, method, uri_relative, request_bytes, params,
+                 custom_headers):
         """
         :type method: str
         :type uri_relative: str
         :type request_bytes: bytes
+        :type params: dict[str, str]
         :type custom_headers: dict[str, str]
-        :type params: dict[str, str]|None
 
         :return: BunqResponseRaw
         """
@@ -254,14 +255,15 @@ class ApiClient(object):
             self._METHOD_PUT,
             uri_relative,
             request_bytes,
+            {},
             custom_headers
         )
 
-    def get(self, uri_relative, custom_headers, params=None):
+    def get(self, uri_relative, params, custom_headers):
         """
         :type uri_relative: str
-        :type custom_headers: dict[str, str]
         :type params: dict[str, str]
+        :type custom_headers: dict[str, str]
 
         :rtype: BunqResponseRaw
         """
@@ -270,8 +272,8 @@ class ApiClient(object):
             self._METHOD_GET,
             uri_relative,
             self._BYTES_EMPTY,
-            custom_headers,
-            params
+            params,
+            custom_headers
         )
 
     def delete(self, uri_relative, custom_headers):
@@ -286,6 +288,7 @@ class ApiClient(object):
             self._METHOD_DELETE,
             uri_relative,
             self._BYTES_EMPTY,
+            {},
             custom_headers
         )
 

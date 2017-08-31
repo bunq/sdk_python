@@ -60,16 +60,20 @@ class Invoice(model.BunqModel):
         self._vat_number = None
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Invoice]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -77,7 +81,7 @@ class Invoice(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -282,21 +286,25 @@ class InvoiceByUser(model.BunqModel):
         self._vat_number = None
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[InvoiceByUser]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -463,21 +471,25 @@ class ChatConversation(model.BunqModel):
     _OBJECT_TYPE = "ChatConversation"
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ChatConversation]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -648,7 +660,7 @@ class ChatMessage(model.BunqModel):
         self._content = None
 
     @classmethod
-    def list(cls, api_context, user_id, chat_conversation_id,
+    def list(cls, api_context, user_id, chat_conversation_id, params=None,
              custom_headers=None):
         """
         Get all the messages that are part of a specific conversation.
@@ -657,9 +669,13 @@ class ChatMessage(model.BunqModel):
         :type user_id: int
         :type chat_conversation_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ChatMessage]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -667,7 +683,7 @@ class ChatMessage(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         chat_conversation_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -750,7 +766,7 @@ class AttachmentConversationContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, chat_conversation_id, attachment_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
@@ -759,9 +775,13 @@ class AttachmentConversationContent(model.BunqModel):
         :type chat_conversation_id: int
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -770,7 +790,7 @@ class AttachmentConversationContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         chat_conversation_id,
                                                         attachment_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -789,23 +809,28 @@ class AttachmentPublicContent(model.BunqModel):
     _OBJECT_TYPE = "AttachmentPublicContent"
 
     @classmethod
-    def list(cls, api_context, attachment_public_uuid, custom_headers=None):
+    def list(cls, api_context, attachment_public_uuid, params=None,
+             custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
         :type api_context: context.ApiContext
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(attachment_public_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -826,7 +851,7 @@ class AttachmentTabContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, attachment_tab_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
@@ -835,9 +860,13 @@ class AttachmentTabContent(model.BunqModel):
         :type monetary_account_id: int
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -846,7 +875,7 @@ class AttachmentTabContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         attachment_tab_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -865,7 +894,8 @@ class TabAttachmentTabContent(model.BunqModel):
     _OBJECT_TYPE = "TabAttachmentTabContent"
 
     @classmethod
-    def list(cls, api_context, tab_uuid, attachment_id, custom_headers=None):
+    def list(cls, api_context, tab_uuid, attachment_id, params=None,
+             custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
@@ -873,16 +903,20 @@ class TabAttachmentTabContent(model.BunqModel):
         :type tab_uuid: str
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(tab_uuid, attachment_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -1352,14 +1386,19 @@ class CardDebit(model.BunqModel):
     :type _id_: int
     :type _created: str
     :type _updated: str
+    :type _public_uuid: str
     :type _second_line: str
     :type _name_on_card: str
+    :type _primary_account_number_four_digit: str
     :type _status: str
     :type _order_status: str
     :type _expiry_date: str
     :type _limit: list[object_.CardLimit]
     :type _country_permission: list[object_.CardCountryPermission]
+    :type _label_monetary_account_ordered: object_.MonetaryAccountReference
+    :type _label_monetary_account_current: object_.MonetaryAccountReference
     :type _alias: object_.LabelUser
+    :type _pin_code_assignment: list[object_.CardPinAssignment]
     """
 
     # Field constants.
@@ -1368,6 +1407,8 @@ class CardDebit(model.BunqModel):
     FIELD_PIN_CODE = "pin_code"
     FIELD_ALIAS = "alias"
     FIELD_TYPE = "type"
+    FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
+    FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
 
     # Endpoint constants.
     _ENDPOINT_URL_CREATE = "user/{}/card-debit"
@@ -1379,14 +1420,19 @@ class CardDebit(model.BunqModel):
         self._id_ = None
         self._created = None
         self._updated = None
+        self._public_uuid = None
         self._second_line = None
         self._name_on_card = None
+        self._primary_account_number_four_digit = None
         self._status = None
         self._order_status = None
         self._expiry_date = None
         self._limit = None
         self._country_permission = None
+        self._label_monetary_account_ordered = None
+        self._label_monetary_account_current = None
         self._alias = None
+        self._pin_code_assignment = None
 
     @classmethod
     def create(cls, api_context, request_map, user_id, custom_headers=None):
@@ -1439,6 +1485,14 @@ class CardDebit(model.BunqModel):
         return self._updated
 
     @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
     def second_line(self):
         """
         :rtype: str
@@ -1453,6 +1507,14 @@ class CardDebit(model.BunqModel):
         """
 
         return self._name_on_card
+
+    @property
+    def primary_account_number_four_digit(self):
+        """
+        :rtype: str
+        """
+
+        return self._primary_account_number_four_digit
 
     @property
     def status(self):
@@ -1495,12 +1557,36 @@ class CardDebit(model.BunqModel):
         return self._country_permission
 
     @property
+    def label_monetary_account_ordered(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._label_monetary_account_ordered
+
+    @property
+    def label_monetary_account_current(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._label_monetary_account_current
+
+    @property
     def alias(self):
         """
         :rtype: object_.LabelUser
         """
 
         return self._alias
+
+    @property
+    def pin_code_assignment(self):
+        """
+        :rtype: list[object_.CardPinAssignment]
+        """
+
+        return self._pin_code_assignment
 
 
 class CardName(model.BunqModel):
@@ -1523,23 +1609,27 @@ class CardName(model.BunqModel):
         self._possible_card_name_array = None
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         Return all the accepted card names for a specific user.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CardName]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -1571,7 +1661,8 @@ class Card(model.BunqModel):
     :type _country_permission: list[object_.CardCountryPermission]
     :type _label_monetary_account_ordered: object_.MonetaryAccountReference
     :type _label_monetary_account_current: object_.MonetaryAccountReference
-    :type _pin_code_assignment: object_.CardPinAssignment
+    :type _pin_code_assignment: list[object_.CardPinAssignment]
+    :type _monetary_account_id_fallback: int
     """
 
     # Field constants.
@@ -1610,6 +1701,7 @@ class Card(model.BunqModel):
         self._label_monetary_account_ordered = None
         self._label_monetary_account_current = None
         self._pin_code_assignment = None
+        self._monetary_account_id_fallback = None
 
     @classmethod
     def update(cls, api_context, request_map, user_id, card_id,
@@ -1665,23 +1757,27 @@ class Card(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         Return all the cards available to the user.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Card]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -1808,10 +1904,18 @@ class Card(model.BunqModel):
     @property
     def pin_code_assignment(self):
         """
-        :rtype: object_.CardPinAssignment
+        :rtype: list[object_.CardPinAssignment]
         """
 
         return self._pin_code_assignment
+
+    @property
+    def monetary_account_id_fallback(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id_fallback
 
 
 class CashRegisterQrCodeContent(model.BunqModel):
@@ -1829,7 +1933,7 @@ class CashRegisterQrCodeContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             qr_code_id, custom_headers=None):
+             qr_code_id, params=None, custom_headers=None):
         """
         Show the raw contents of a QR code
 
@@ -1839,9 +1943,13 @@ class CashRegisterQrCodeContent(model.BunqModel):
         :type cash_register_id: int
         :type qr_code_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -1851,7 +1959,7 @@ class CashRegisterQrCodeContent(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         qr_code_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -1989,7 +2097,7 @@ class CashRegisterQrCode(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get a collection of QR code information from a given CashRegister
 
@@ -1998,9 +2106,13 @@ class CashRegisterQrCode(model.BunqModel):
         :type monetary_account_id: int
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CashRegisterQrCode]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -2009,7 +2121,7 @@ class CashRegisterQrCode(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -2196,7 +2308,7 @@ class CashRegister(model.BunqModel):
         return cls._process_for_id(response_raw)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Get a collection of CashRegister for a given user and monetary account.
@@ -2205,9 +2317,13 @@ class CashRegister(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CashRegister]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -2215,7 +2331,7 @@ class CashRegister(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -2346,7 +2462,7 @@ class Tab(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get a collection of tabs.
 
@@ -2355,9 +2471,13 @@ class Tab(model.BunqModel):
         :type monetary_account_id: int
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Tab]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -2366,7 +2486,7 @@ class Tab(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw)
 
@@ -2593,7 +2713,7 @@ class TabUsageSingle(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get a collection of TabUsageSingle.
 
@@ -2602,9 +2722,13 @@ class TabUsageSingle(model.BunqModel):
         :type monetary_account_id: int
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabUsageSingle]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -2613,7 +2737,7 @@ class TabUsageSingle(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -3055,7 +3179,7 @@ class TabUsageMultiple(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get a collection of TabUsageMultiple.
 
@@ -3064,9 +3188,13 @@ class TabUsageMultiple(model.BunqModel):
         :type monetary_account_id: int
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabUsageMultiple]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -3075,7 +3203,7 @@ class TabUsageMultiple(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         cash_register_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -3222,7 +3350,7 @@ class CertificatePinned(model.BunqModel):
     certificate chains are used for SSL validation whenever a callback is
     initiated to one of your https callback urls.
 
-    :type _certificate_chain: list[object_.Certificate]
+    :type _certificate_chain: str
     :type _id_: int
     """
 
@@ -3291,23 +3419,27 @@ class CertificatePinned(model.BunqModel):
         return client.BunqResponse(None, response_raw.headers)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         List all the pinned certificate chain for the given user.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CertificatePinned]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -3338,7 +3470,7 @@ class CertificatePinned(model.BunqModel):
     @property
     def certificate_chain(self):
         """
-        :rtype: list[object_.Certificate]
+        :rtype: str
         """
 
         return self._certificate_chain
@@ -3434,22 +3566,26 @@ class DeviceServer(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, custom_headers=None):
+    def list(cls, api_context, params=None, custom_headers=None):
         """
         Get a collection of all the DeviceServers you have created.
 
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[DeviceServer]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -3544,23 +3680,27 @@ class Device(model.BunqModel):
         return cls._from_json(response_raw)
 
     @classmethod
-    def list(cls, api_context, custom_headers=None):
+    def list(cls, api_context, params=None, custom_headers=None):
         """
         Get a collection of Devices. A Device is either a DevicePhone or a
         DeviceServer.
 
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Device]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw)
 
@@ -3668,6 +3808,221 @@ class DevicePhone(model.BunqModel):
         return self._status
 
 
+class DraftPayment(model.BunqModel):
+    """
+    A DraftPayment is like a regular Payment, but it needs to be accepted by the
+    sending party before the actual Payment is done.
+
+    :type _id_: int
+    :type _monetary_account_id: int
+    :type _user_alias_created: object_.LabelUser
+    :type _responses: list[object_.DraftPaymentResponse]
+    :type _status: str
+    :type _type_: str
+    :type _entries: list[object_.DraftPaymentEntry]
+    :type _object_: model.BunqModel
+    """
+
+    # Field constants.
+    FIELD_STATUS = "status"
+    FIELD_ENTRIES = "entries"
+    FIELD_PREVIOUS_UPDATED_TIMESTAMP = "previous_updated_timestamp"
+    FIELD_NUMBER_OF_REQUIRED_ACCEPTS = "number_of_required_accepts"
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/draft-payment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/draft-payment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/draft-payment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/draft-payment/{}"
+
+    # Object type.
+    _OBJECT_TYPE = "DraftPayment"
+
+    def __init__(self):
+        self._id_ = None
+        self._monetary_account_id = None
+        self._user_alias_created = None
+        self._responses = None
+        self._status = None
+        self._type_ = None
+        self._entries = None
+        self._object_ = None
+
+    @classmethod
+    def create(cls, api_context, request_map, user_id, monetary_account_id,
+               custom_headers=None):
+        """
+        Create a new DraftPayment.
+
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type monetary_account_id: int
+        :type custom_headers: dict[str, str]|None
+
+        :rtype: client.BunqResponse[int]
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id,
+                                                       monetary_account_id)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return cls._process_for_id(response_raw)
+
+    @classmethod
+    def update(cls, api_context, request_map, user_id, monetary_account_id,
+               draft_payment_id, custom_headers=None):
+        """
+        Update a DraftPayment.
+
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type monetary_account_id: int
+        :type draft_payment_id: int
+        :type custom_headers: dict[str, str]|None
+
+        :rtype: client.BunqResponse[int]
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id,
+                                                       monetary_account_id,
+                                                       draft_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return cls._process_for_id(response_raw)
+
+    @classmethod
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
+             custom_headers=None):
+        """
+        Get a listing of all DraftPayments from a given MonetaryAccount.
+
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
+
+        :rtype: client.BunqResponse[list[DraftPayment]]
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
+                                                        monetary_account_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+
+    @classmethod
+    def get(cls, api_context, user_id, monetary_account_id, draft_payment_id,
+            custom_headers=None):
+        """
+        Get a specific DraftPayment.
+
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type draft_payment_id: int
+        :type custom_headers: dict[str, str]|None
+
+        :rtype: client.BunqResponse[DraftPayment]
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
+                                                     monetary_account_id,
+                                                     draft_payment_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
+
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def user_alias_created(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_created
+
+    @property
+    def responses(self):
+        """
+        :rtype: list[object_.DraftPaymentResponse]
+        """
+
+        return self._responses
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def entries(self):
+        """
+        :rtype: list[object_.DraftPaymentEntry]
+        """
+
+        return self._entries
+
+    @property
+    def object_(self):
+        """
+        :rtype: model.BunqModel
+        """
+
+        return self._object_
+
+
 class DraftShareInviteBankQrCodeContent(model.BunqModel):
     """
     This call returns the raw content of the QR code that links to this draft
@@ -3682,7 +4037,7 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
     _OBJECT_TYPE = "DraftShareInviteBankQrCodeContent"
 
     @classmethod
-    def list(cls, api_context, user_id, draft_share_invite_bank_id,
+    def list(cls, api_context, user_id, draft_share_invite_bank_id, params=None,
              custom_headers=None):
         """
         Returns the raw content of the QR code that links to this draft share
@@ -3693,9 +4048,13 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         :type user_id: int
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -3703,7 +4062,7 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         draft_share_invite_bank_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -3823,21 +4182,25 @@ class DraftShareInviteBank(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[DraftShareInviteBank]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -3912,7 +4275,7 @@ class ExportAnnualOverviewContent(model.BunqModel):
     _OBJECT_TYPE = "ExportAnnualOverviewContent"
 
     @classmethod
-    def list(cls, api_context, user_id, export_annual_overview_id,
+    def list(cls, api_context, user_id, export_annual_overview_id, params=None,
              custom_headers=None):
         """
         Used to retrieve the raw content of an annual overview.
@@ -3921,9 +4284,13 @@ class ExportAnnualOverviewContent(model.BunqModel):
         :type user_id: int
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -3931,7 +4298,7 @@ class ExportAnnualOverviewContent(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         export_annual_overview_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -4018,23 +4385,27 @@ class ExportAnnualOverview(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         List all the annual overviews for a user.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ExportAnnualOverview]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -4096,16 +4467,20 @@ class CustomerStatementExportContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
-             customer_statement_id, custom_headers=None):
+             customer_statement_id, params=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type customer_statement_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -4114,7 +4489,7 @@ class CustomerStatementExportContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         customer_statement_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -4214,16 +4589,20 @@ class CustomerStatementExport(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CustomerStatementExport]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -4231,7 +4610,7 @@ class CustomerStatementExport(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -4358,23 +4737,28 @@ class InstallationServerPublicKey(model.BunqModel):
         self._server_public_key = None
 
     @classmethod
-    def list(cls, api_context, installation_id, custom_headers=None):
+    def list(cls, api_context, installation_id, params=None,
+             custom_headers=None):
         """
         Show the ServerPublicKey for this Installation.
 
         :type api_context: context.ApiContext
         :type installation_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[InstallationServerPublicKey]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(installation_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -4572,7 +4956,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Get a list with all the share inquiries for a monetary account, only if
@@ -4583,9 +4967,13 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ShareInviteBankInquiry]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -4593,7 +4981,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -4777,23 +5165,27 @@ class ShareInviteBankResponse(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         Return all the shares a user was invited to.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ShareInviteBankResponse]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -5024,23 +5416,27 @@ class MonetaryAccountBank(model.BunqModel):
         return cls._process_for_id(response_raw)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         Gets a listing of all MonetaryAccountBanks of a given user.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[MonetaryAccountBank]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -5288,23 +5684,27 @@ class MonetaryAccount(model.BunqModel):
         return cls._from_json(response_raw)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         Get a collection of all your MonetaryAccounts.
 
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[MonetaryAccount]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw)
 
@@ -5425,7 +5825,7 @@ class PaymentBatch(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Return all the payment batches for a monetary account.
@@ -5434,9 +5834,13 @@ class PaymentBatch(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[PaymentBatch]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -5444,7 +5848,7 @@ class PaymentBatch(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -5587,7 +5991,7 @@ class Payment(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Get a listing of all Payments performed on a given MonetaryAccount
@@ -5597,9 +6001,13 @@ class Payment(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Payment]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -5607,7 +6015,7 @@ class Payment(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -5885,7 +6293,7 @@ class PaymentChat(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, payment_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get the chat for a specific payment.
 
@@ -5894,9 +6302,13 @@ class PaymentChat(model.BunqModel):
         :type monetary_account_id: int
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[PaymentChat]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -5905,7 +6317,7 @@ class PaymentChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         payment_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -6018,16 +6430,20 @@ class PermittedIp(model.BunqModel):
         return cls._process_for_id(response_raw)
 
     @classmethod
-    def list(cls, api_context, user_id, credential_password_ip_id,
+    def list(cls, api_context, user_id, credential_password_ip_id, params=None,
              custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[PermittedIp]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -6035,7 +6451,7 @@ class PermittedIp(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         credential_password_ip_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -6196,7 +6612,7 @@ class RequestInquiryBatch(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Return all the request batches for a monetary account.
@@ -6205,9 +6621,13 @@ class RequestInquiryBatch(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestInquiryBatch]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -6215,7 +6635,7 @@ class RequestInquiryBatch(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -6380,7 +6800,7 @@ class RequestInquiry(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Get all payment requests for a user's monetary account.
@@ -6389,9 +6809,13 @@ class RequestInquiry(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestInquiry]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -6399,7 +6823,7 @@ class RequestInquiry(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -6726,7 +7150,7 @@ class RequestInquiryChat(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, request_inquiry_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         Get the chat for a specific request inquiry.
 
@@ -6735,9 +7159,13 @@ class RequestInquiryChat(model.BunqModel):
         :type monetary_account_id: int
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestInquiryChat]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -6746,7 +7174,7 @@ class RequestInquiryChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         request_inquiry_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -6880,7 +7308,7 @@ class RequestResponseChat(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
-             request_response_id, custom_headers=None):
+             request_response_id, params=None, custom_headers=None):
         """
         Get the chat for a specific request response.
 
@@ -6889,9 +7317,13 @@ class RequestResponseChat(model.BunqModel):
         :type monetary_account_id: int
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestResponseChat]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -6900,7 +7332,7 @@ class RequestResponseChat(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         request_response_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -6967,6 +7399,8 @@ class RequestResponse(model.BunqModel):
     :type _address_billing: object_.Address
     :type _address_shipping: object_.Address
     :type _allow_chat: bool
+    :type _credit_scheme_identifier: str
+    :type _mandate_identifier: str
     :type _eligible_whitelist_id: int
     """
 
@@ -7007,6 +7441,8 @@ class RequestResponse(model.BunqModel):
         self._address_billing = None
         self._address_shipping = None
         self._allow_chat = None
+        self._credit_scheme_identifier = None
+        self._mandate_identifier = None
         self._eligible_whitelist_id = None
 
     @classmethod
@@ -7039,7 +7475,7 @@ class RequestResponse(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Get all RequestResponses for a MonetaryAccount.
@@ -7048,9 +7484,13 @@ class RequestResponse(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestResponse]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -7058,7 +7498,7 @@ class RequestResponse(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -7265,6 +7705,22 @@ class RequestResponse(model.BunqModel):
         return self._allow_chat
 
     @property
+    def credit_scheme_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._credit_scheme_identifier
+
+    @property
+    def mandate_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._mandate_identifier
+
+    @property
     def eligible_whitelist_id(self):
         """
         :rtype: int
@@ -7364,16 +7820,20 @@ class ScheduleInstance(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, schedule_id,
-             custom_headers=None):
+             params=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ScheduleInstance]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -7382,7 +7842,7 @@ class ScheduleInstance(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         schedule_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -7654,16 +8114,20 @@ class SchedulePayment(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[SchedulePayment]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -7671,7 +8135,7 @@ class SchedulePayment(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -7758,7 +8222,7 @@ class Schedule(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Get a collection of scheduled definition for a given monetary account.
@@ -7771,9 +8235,13 @@ class Schedule(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Schedule]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -7781,7 +8249,7 @@ class Schedule(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -7798,7 +8266,7 @@ class ScheduleUser(model.BunqModel):
     _OBJECT_TYPE = "ScheduleUser"
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         Get a collection of scheduled definition for all accessible monetary
         accounts of the user. You can add the parameter type to filter the
@@ -7810,16 +8278,20 @@ class ScheduleUser(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ScheduleUser]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -8066,7 +8538,7 @@ class TabItemShop(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             tab_uuid, custom_headers=None):
+             tab_uuid, params=None, custom_headers=None):
         """
         Get a collection of TabItems from a given Tab.
 
@@ -8076,9 +8548,13 @@ class TabItemShop(model.BunqModel):
         :type cash_register_id: int
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabItemShop]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -8088,7 +8564,7 @@ class TabItemShop(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -8232,7 +8708,7 @@ class TabResultInquiry(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             tab_uuid, custom_headers=None):
+             tab_uuid, params=None, custom_headers=None):
         """
         Used to view a list of TabResultInquiry objects belonging to a tab.
 
@@ -8242,9 +8718,13 @@ class TabResultInquiry(model.BunqModel):
         :type cash_register_id: int
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabResultInquiry]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -8254,7 +8734,7 @@ class TabResultInquiry(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -8323,7 +8803,7 @@ class TabResultResponse(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, monetary_account_id,
+    def list(cls, api_context, user_id, monetary_account_id, params=None,
              custom_headers=None):
         """
         Used to view a list of TabResultResponse objects belonging to a tab.
@@ -8332,9 +8812,13 @@ class TabResultResponse(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabResultResponse]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -8342,7 +8826,7 @@ class TabResultResponse(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -8379,7 +8863,7 @@ class TabQrCodeContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             tab_uuid, custom_headers=None):
+             tab_uuid, params=None, custom_headers=None):
         """
         Returns the raw content of the QR code that links to this Tab. The raw
         content is the binary representation of a file, without any JSON
@@ -8391,9 +8875,13 @@ class TabQrCodeContent(model.BunqModel):
         :type cash_register_id: int
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -8403,7 +8891,7 @@ class TabQrCodeContent(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -8680,6 +9168,7 @@ class UserCompany(model.BunqModel):
     :type _version_terms_of_service: str
     :type _director_alias: object_.LabelUser
     :type _language: str
+    :type _country: str
     :type _region: str
     :type _ubo: list[object_.Ubo]
     :type _status: str
@@ -8687,6 +9176,9 @@ class UserCompany(model.BunqModel):
     :type _session_timeout: int
     :type _daily_limit_without_confirmation_login: object_.Amount
     :type _notification_filters: list[object_.NotificationFilter]
+    :type _customer: Customer
+    :type _customer_limit: CustomerLimit
+    :type _billing_contract: BillingContractSubscription
     """
 
     # Field constants.
@@ -8735,6 +9227,7 @@ class UserCompany(model.BunqModel):
         self._version_terms_of_service = None
         self._director_alias = None
         self._language = None
+        self._country = None
         self._region = None
         self._ubo = None
         self._status = None
@@ -8742,6 +9235,9 @@ class UserCompany(model.BunqModel):
         self._session_timeout = None
         self._daily_limit_without_confirmation_login = None
         self._notification_filters = None
+        self._customer = None
+        self._customer_limit = None
+        self._billing_contract = None
 
     @classmethod
     def get(cls, api_context, user_company_id, custom_headers=None):
@@ -8934,6 +9430,14 @@ class UserCompany(model.BunqModel):
         return self._language
 
     @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
     def region(self):
         """
         :rtype: str
@@ -8989,6 +9493,363 @@ class UserCompany(model.BunqModel):
 
         return self._notification_filters
 
+    @property
+    def customer(self):
+        """
+        :rtype: Customer
+        """
+
+        return self._customer
+
+    @property
+    def customer_limit(self):
+        """
+        :rtype: CustomerLimit
+        """
+
+        return self._customer_limit
+
+    @property
+    def billing_contract(self):
+        """
+        :rtype: BillingContractSubscription
+        """
+
+        return self._billing_contract
+
+
+class Customer(model.BunqModel):
+    """
+    Used to view a customer.
+
+    :type _id_: int
+    :type _created: str
+    :type _updated: str
+    :type _billing_account_id: str
+    """
+
+    # Field constants.
+    FIELD_BILLING_ACCOUNT_ID = "billing_account_id"
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/customer"
+    _ENDPOINT_URL_READ = "user/{}/customer/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/customer/{}"
+
+    # Object type.
+    _OBJECT_TYPE = "Customer"
+
+    def __init__(self):
+        self._id_ = None
+        self._created = None
+        self._updated = None
+        self._billing_account_id = None
+
+    @classmethod
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
+
+        :rtype: client.BunqResponse[list[Customer]]
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+
+    @classmethod
+    def get(cls, api_context, user_id, customer_id, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type customer_id: int
+        :type custom_headers: dict[str, str]|None
+
+        :rtype: client.BunqResponse[Customer]
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, customer_id)
+        response_raw = api_client.get(endpoint_url, custom_headers)
+
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+
+    @classmethod
+    def update(cls, api_context, request_map, user_id, customer_id,
+               custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type customer_id: int
+        :type custom_headers: dict[str, str]|None
+
+        :rtype: client.BunqResponse[int]
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, customer_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return cls._process_for_id(response_raw)
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def billing_account_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._billing_account_id
+
+
+class CustomerLimit(model.BunqModel):
+    """
+    Show the limits for the authenticated user.
+
+    :type _limit_monetary_account: int
+    :type _limit_card_debit_maestro: int
+    :type _limit_card_debit_mastercard: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/limit"
+
+    # Object type.
+    _OBJECT_TYPE = "CustomerLimit"
+
+    def __init__(self):
+        self._limit_monetary_account = None
+        self._limit_card_debit_maestro = None
+        self._limit_card_debit_mastercard = None
+
+    @classmethod
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
+        """
+        Get all limits for the authenticated user.
+
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
+
+        :rtype: client.BunqResponse[list[CustomerLimit]]
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+
+    @property
+    def limit_monetary_account(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_monetary_account
+
+    @property
+    def limit_card_debit_maestro(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_card_debit_maestro
+
+    @property
+    def limit_card_debit_mastercard(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_card_debit_mastercard
+
+
+class BillingContractSubscription(model.BunqModel):
+    """
+    Show the subscription billing contract for the authenticated user.
+
+    :type _id_: int
+    :type _created: str
+    :type _updated: str
+    :type _contract_date_start: str
+    :type _contract_date_end: str
+    :type _contract_version: int
+    :type _subscription_type: str
+    """
+
+    # Field constants.
+    FIELD_SUBSCRIPTION_TYPE = "subscription_type"
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/billing-contract-subscription"
+    _ENDPOINT_URL_LISTING = "user/{}/billing-contract-subscription"
+
+    # Object type.
+    _OBJECT_TYPE = "BillingContractSubscription"
+
+    def __init__(self):
+        self._id_ = None
+        self._created = None
+        self._updated = None
+        self._contract_date_start = None
+        self._contract_date_end = None
+        self._contract_version = None
+        self._subscription_type = None
+
+    @classmethod
+    def create(cls, api_context, request_map, user_id, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type custom_headers: dict[str, str]|None
+
+        :rtype: client.BunqResponse[BillingContractSubscription]
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+
+    @classmethod
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
+        """
+        Get all subscription billing contract for the authenticated user.
+
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
+
+        :rtype: client.BunqResponse[list[BillingContractSubscription]]
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def contract_date_start(self):
+        """
+        :rtype: str
+        """
+
+        return self._contract_date_start
+
+    @property
+    def contract_date_end(self):
+        """
+        :rtype: str
+        """
+
+        return self._contract_date_end
+
+    @property
+    def contract_version(self):
+        """
+        :rtype: int
+        """
+
+        return self._contract_version
+
+    @property
+    def subscription_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._subscription_type
+
 
 class UserCredentialPasswordIp(model.BunqModel):
     """
@@ -9043,21 +9904,25 @@ class UserCredentialPasswordIp(model.BunqModel):
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
     @classmethod
-    def list(cls, api_context, user_id, custom_headers=None):
+    def list(cls, api_context, user_id, params=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[UserCredentialPasswordIp]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
 
@@ -9565,22 +10430,26 @@ class User(model.BunqModel):
         return cls._from_json(response_raw)
 
     @classmethod
-    def list(cls, api_context, custom_headers=None):
+    def list(cls, api_context, params=None, custom_headers=None):
         """
         Get a collection of all available users.
 
         :type api_context: context.ApiContext
         :type custom_headers: dict[str, str]|None
+        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[User]]
         """
+
+        if params is None:
+            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return cls._from_json_list(response_raw)
 
@@ -9675,7 +10544,8 @@ class UserLight(model.BunqModel):
     FIELD_SUB_STATUS = "sub_status"
     FIELD_LEGAL_GUARDIAN_ALIAS = "legal_guardian_alias"
     FIELD_SESSION_TIMEOUT = "session_timeout"
-    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
+    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = \
+        "daily_limit_without_confirmation_login"
     FIELD_NOTIFICATION_FILTERS = "notification_filters"
 
     # Endpoint constants.
