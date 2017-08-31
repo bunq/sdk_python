@@ -1399,6 +1399,7 @@ class CardDebit(model.BunqModel):
     :type _label_monetary_account_current: object_.MonetaryAccountReference
     :type _alias: object_.LabelUser
     :type _pin_code_assignment: list[object_.CardPinAssignment]
+    :type _monetary_account_id_fallback: int
     """
 
     # Field constants.
@@ -1433,6 +1434,7 @@ class CardDebit(model.BunqModel):
         self._label_monetary_account_current = None
         self._alias = None
         self._pin_code_assignment = None
+        self._monetary_account_id_fallback = None
 
     @classmethod
     def create(cls, api_context, request_map, user_id, custom_headers=None):
@@ -1587,6 +1589,14 @@ class CardDebit(model.BunqModel):
         """
 
         return self._pin_code_assignment
+
+    @property
+    def monetary_account_id_fallback(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id_fallback
 
 
 class CardName(model.BunqModel):
