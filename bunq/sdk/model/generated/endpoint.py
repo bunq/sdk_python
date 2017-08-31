@@ -105,7 +105,7 @@ class Invoice(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      invoice_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -325,7 +325,7 @@ class InvoiceByUser(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      invoice_by_user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -511,7 +511,7 @@ class ChatConversation(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      chat_conversation_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -1060,7 +1060,7 @@ class AttachmentPublic(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(attachment_public_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -1176,7 +1176,7 @@ class AttachmentTab(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      attachment_tab_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -1256,7 +1256,7 @@ class TabAttachmentTab(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid,
                                                      tab_attachment_tab_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -1356,7 +1356,7 @@ class Avatar(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(avatar_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -1752,7 +1752,7 @@ class Card(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, card_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -2091,7 +2091,7 @@ class CashRegisterQrCode(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id,
                                                      cash_register_qr_code_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -2272,7 +2272,7 @@ class CashRegister(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      cash_register_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -2456,7 +2456,7 @@ class Tab(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      cash_register_id, tab_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw)
 
@@ -2707,7 +2707,7 @@ class TabUsageSingle(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id,
                                                      tab_usage_single_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -3173,7 +3173,7 @@ class TabUsageMultiple(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id,
                                                      tab_usage_multiple_uuid)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -3463,7 +3463,7 @@ class CertificatePinned(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      certificate_pinned_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -3561,7 +3561,7 @@ class DeviceServer(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_server_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -3675,7 +3675,7 @@ class Device(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw)
 
@@ -3954,7 +3954,7 @@ class DraftPayment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      draft_payment_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -4149,7 +4149,7 @@ class DraftShareInviteBank(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      draft_share_invite_bank_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -4380,7 +4380,7 @@ class ExportAnnualOverview(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      export_annual_overview_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -4584,7 +4584,7 @@ class CustomerStatementExport(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      customer_statement_export_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -4921,7 +4921,7 @@ class ShareInviteBankInquiry(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      share_invite_bank_inquiry_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -5133,7 +5133,7 @@ class ShareInviteBankResponse(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      share_invite_bank_response_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -5384,7 +5384,7 @@ class MonetaryAccountBank(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_bank_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -5679,7 +5679,7 @@ class MonetaryAccount(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw)
 
@@ -5820,7 +5820,7 @@ class PaymentBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      payment_batch_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -5986,7 +5986,7 @@ class Payment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      payment_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -6400,7 +6400,7 @@ class PermittedIp(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      credential_password_ip_id,
                                                      permitted_ip_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -6607,7 +6607,7 @@ class RequestInquiryBatch(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      request_inquiry_batch_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -6849,7 +6849,7 @@ class RequestInquiry(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      request_inquiry_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -7524,7 +7524,7 @@ class RequestResponse(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      request_response_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -7785,7 +7785,7 @@ class ScheduleInstance(model.BunqModel):
                                                      monetary_account_id,
                                                      schedule_id,
                                                      schedule_instance_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -8109,7 +8109,7 @@ class SchedulePayment(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      schedule_payment_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -8217,7 +8217,7 @@ class Schedule(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      schedule_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -8593,7 +8593,7 @@ class TabItemShop(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id, tab_uuid,
                                                      tab_item_shop_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -8702,7 +8702,7 @@ class TabResultInquiry(model.BunqModel):
                                                      monetary_account_id,
                                                      cash_register_id, tab_uuid,
                                                      tab_result_inquiry_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -8798,7 +8798,7 @@ class TabResultResponse(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      monetary_account_id,
                                                      tab_result_response_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -9256,7 +9256,7 @@ class UserCompany(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_company_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -9584,7 +9584,7 @@ class Customer(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, customer_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -9899,7 +9899,7 @@ class UserCredentialPasswordIp(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id,
                                                      user_credential_password_ip_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -10108,7 +10108,7 @@ class UserPerson(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_person_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
@@ -10425,7 +10425,7 @@ class User(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw)
 
@@ -10605,7 +10605,7 @@ class UserLight(model.BunqModel):
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_light_id)
-        response_raw = api_client.get(endpoint_url, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return cls._from_json(response_raw, cls._OBJECT_TYPE)
 
