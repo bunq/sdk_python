@@ -468,8 +468,10 @@ class PaginationAdapter(converter.JsonAdapter):
         :rtype: client.Pagination
         """
 
-        pagination = client.Pagination.__new__(client.Pagination)
-        pagination.__dict__ = cls.parse_pagination_dict(pagination_response)
+        pagination = client.Pagination()
+        pagination.__dict__.update(
+            cls.parse_pagination_dict(pagination_response)
+        )
 
         return pagination
 

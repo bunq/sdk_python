@@ -383,10 +383,10 @@ class BunqResponse(object):
 
 class Pagination(object):
     """
-    :type _older_id: int|None
-    :type _newer_id: int|None
-    :type _future_id: int|None
-    :type _count: int|None
+    :type older_id: int|None
+    :type newer_id: int|None
+    :type future_id: int|None
+    :type count: int|None
     """
 
     # Error constants
@@ -399,10 +399,10 @@ class Pagination(object):
     URL_PARAM_COUNT = 'count'
 
     def __init__(self):
-        self._older_id = None
-        self._newer_id = None
-        self._future_id = None
-        self._count = None
+        self.older_id = None
+        self.newer_id = None
+        self.future_id = None
+        self.count = None
 
     @property
     def url_params_previous_page(self):
@@ -415,8 +415,19 @@ class Pagination(object):
             raise exception.BunqException(self._ERROR_NO_PREVIOUS_PAGE)
 
         params = {
-            self.URL_PARAM_OLDER_ID: str(self._older_id),
+            self.URL_PARAM_OLDER_ID: str(self.older_id),
         }
+        self._add_count_to_params_if_needed(params)
+
+        return params
+
+    @property
+    def url_params_count_only(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        params = {}
         self._add_count_to_params_if_needed(params)
 
         return params
@@ -426,7 +437,7 @@ class Pagination(object):
         :rtype: bool
         """
 
-        return self._older_id is not None
+        return self.older_id is not None
 
     def _add_count_to_params_if_needed(self, params):
         """
@@ -435,8 +446,8 @@ class Pagination(object):
         :rtype: None
         """
 
-        if self._count is not None:
-            params[self.URL_PARAM_COUNT] = str(self._count)
+        if self.count is not None:
+            params[self.URL_PARAM_COUNT] = str(self.count)
 
     @property
     def _next_id(self):
@@ -445,16 +456,16 @@ class Pagination(object):
         """
 
         if self.has_next_item_assured():
-            return self._newer_id
+            return self.newer_id
 
-        return self._future_id
+        return self.future_id
 
     def has_next_item_assured(self):
         """
         :rtype: bool
         """
 
-        return self._newer_id is not None
+        return self.newer_id is not None
 
     @property
     def url_params_next_page(self):
