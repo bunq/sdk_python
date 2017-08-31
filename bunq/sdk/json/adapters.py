@@ -488,21 +488,21 @@ class PaginationAdapter(converter.JsonAdapter):
             cls._FIELD_OLDER_ID,
             response_obj,
             cls._FIELD_OLDER_URL,
-            client.Pagination.FIELD_OLDER_ID
+            client.Pagination.URL_PARAM_OLDER_ID
         )
         cls.update_dict_id_field_from_response_field(
             pagination_dict,
             cls._FIELD_NEWER_ID,
             response_obj,
             cls._FIELD_NEWER_URL,
-            client.Pagination.FIELD_NEWER_ID
+            client.Pagination.URL_PARAM_NEWER_ID
         )
         cls.update_dict_id_field_from_response_field(
             pagination_dict,
             cls._FIELD_FUTURE_ID,
             response_obj,
             cls._FIELD_FUTURE_URL,
-            client.Pagination.FIELD_NEWER_ID
+            client.Pagination.URL_PARAM_NEWER_ID
         )
 
         return pagination_dict
@@ -530,7 +530,8 @@ class PaginationAdapter(converter.JsonAdapter):
 
             if cls._FIELD_COUNT in parameters:
                 dict_[cls._FIELD_COUNT] = int(
-                    parameters[client.Pagination.FIELD_COUNT][cls._INDEX_FIRST]
+                    parameters[client.Pagination.URL_PARAM_COUNT][
+                        cls._INDEX_FIRST]
                 )
 
     @classmethod
