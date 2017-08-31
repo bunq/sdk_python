@@ -389,6 +389,10 @@ class Pagination(object):
     :type _count: int|None
     """
 
+    # Error constants
+    _ERROR_NO_PREVIOUS_PAGE = 'Could not generate previous page URL params: ' \
+                              'there is no previous page.'
+
     # Field constants
     FIELD_OLDER_ID = 'older_id'
     FIELD_NEWER_ID = 'newer_id'
@@ -401,10 +405,14 @@ class Pagination(object):
         self._count = None
 
     @property
-    def url_params_previous(self):
+    def url_params_previous_page(self):
         """
         :rtype: dict[str, str]
+        :raise: exception.BunqException When there is no previous page.
         """
+
+        if not self.has_previous_item():
+            raise exception.BunqException(self._ERROR_NO_PREVIOUS_PAGE)
 
         params = {
             self.FIELD_OLDER_ID: str(self._older_id),
@@ -412,6 +420,13 @@ class Pagination(object):
         self._add_count_to_params_if_needed(params)
 
         return params
+
+    def has_previous_item(self):
+        """
+        :rtype: bool
+        """
+
+        return self._older_id is not None
 
     def _add_count_to_params_if_needed(self, params):
         """
@@ -442,7 +457,7 @@ class Pagination(object):
         return self._newer_id is not None
 
     @property
-    def url_params_next(self):
+    def url_params_next_page(self):
         """
         :rtype: dict[str, str]
         """
