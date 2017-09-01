@@ -9195,6 +9195,7 @@ class UserCompany(model.BunqModel):
     FIELD_NAME = "name"
     FIELD_PUBLIC_NICK_NAME = "public_nick_name"
     FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_ADDRESS = "address"
     FIELD_ADDRESS_MAIN = "address_main"
     FIELD_ADDRESS_POSTAL = "address_postal"
     FIELD_LANGUAGE = "language"
@@ -10034,6 +10035,7 @@ class UserPerson(model.BunqModel):
     FIELD_MIDDLE_NAME = "middle_name"
     FIELD_LAST_NAME = "last_name"
     FIELD_PUBLIC_NICK_NAME = "public_nick_name"
+    FIELD_ADDRESS = "address"
     FIELD_ADDRESS_MAIN = "address_main"
     FIELD_ADDRESS_POSTAL = "address_postal"
     FIELD_AVATAR_UUID = "avatar_uuid"
@@ -10530,6 +10532,7 @@ class UserLight(model.BunqModel):
     FIELD_LAST_NAME = "last_name"
     FIELD_PUBLIC_NICK_NAME = "public_nick_name"
     FIELD_COUNTER_BANK_IBAN = "counter_bank_iban"
+    FIELD_ADDRESS = "address"
     FIELD_ADDRESS_MAIN = "address_main"
     FIELD_ADDRESS_POSTAL = "address_postal"
     FIELD_AVATAR_UUID = "avatar_uuid"
@@ -10551,8 +10554,7 @@ class UserLight(model.BunqModel):
     FIELD_SUB_STATUS = "sub_status"
     FIELD_LEGAL_GUARDIAN_ALIAS = "legal_guardian_alias"
     FIELD_SESSION_TIMEOUT = "session_timeout"
-    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = \
-        "daily_limit_without_confirmation_login"
+    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
     FIELD_NOTIFICATION_FILTERS = "notification_filters"
 
     # Endpoint constants.
