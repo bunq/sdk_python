@@ -52,8 +52,8 @@ class ApiClient(object):
     _METHOD_GET = 'GET'
     _METHOD_DELETE = 'DELETE'
 
-    # Delimiter between path and params in URI
-    _DELIMITER_PATH_AND_PARAMS = '?'
+    # Delimiter between path and params in URL
+    _DELIMITER_URL_QUERY = '?'
 
     # Status code for successful execution
     _STATUS_CODE_OK = 200
@@ -140,7 +140,7 @@ class ApiClient(object):
         """
 
         if params:
-            return uri + cls._DELIMITER_PATH_AND_PARAMS + urlencode(params)
+            return uri + cls._DELIMITER_URL_QUERY + urlencode(params)
 
         return uri
 
@@ -343,13 +343,14 @@ class BunqResponse(object):
     """
     :type _value: T
     :type _headers: dict[str, str]
-    :type _pagination: Pagination
+    :type _pagination: Pagination|None
     """
 
     def __init__(self, value, headers, pagination=None):
         """
         :type value: T
         :type headers: dict[str, str]
+        :type pagination Pagination|None
         """
 
         self._value = value
@@ -394,9 +395,9 @@ class Pagination(object):
                               'there is no previous page.'
 
     # URL Param constants
-    URL_PARAM_OLDER_ID = 'older_id'
-    URL_PARAM_NEWER_ID = 'newer_id'
-    URL_PARAM_COUNT = 'count'
+    PARAM_OLDER_ID = 'older_id'
+    PARAM_NEWER_ID = 'newer_id'
+    PARAM_COUNT = 'count'
 
     def __init__(self):
         self.older_id = None
@@ -414,9 +415,7 @@ class Pagination(object):
         if not self.has_previous_item():
             raise exception.BunqException(self._ERROR_NO_PREVIOUS_PAGE)
 
-        params = {
-            self.URL_PARAM_OLDER_ID: str(self.older_id),
-        }
+        params = {self.PARAM_OLDER_ID: str(self.older_id)}
         self._add_count_to_params_if_needed(params)
 
         return params
@@ -447,7 +446,7 @@ class Pagination(object):
         """
 
         if self.count is not None:
-            params[self.URL_PARAM_COUNT] = str(self.count)
+            params[self.PARAM_COUNT] = str(self.count)
 
     @property
     def _next_id(self):
@@ -473,9 +472,7 @@ class Pagination(object):
         :rtype: dict[str, str]
         """
 
-        params = {
-            self.URL_PARAM_NEWER_ID: str(self._next_id),
-        }
+        params = {self.PARAM_NEWER_ID: str(self._next_id)}
         self._add_count_to_params_if_needed(params)
 
         return params
