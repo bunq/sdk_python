@@ -12,8 +12,8 @@ _MESSAGE_NO_PRIOR_PAYMENTS_FOUND = 'No prior payments found!'
 # Size of page of payments to list
 _PAGE_SIZE = 3
 
-_USER_ITEM_ID = 1969  # Put your user ID here
-_MONETARY_ACCOUNT_ITEM_ID = 1988  # Put your monetary account ID here
+_USER_ITEM_ID = 0  # Put your user ID here
+_MONETARY_ACCOUNT_ITEM_ID = 0  # Put your monetary account ID here
 
 
 def run():
