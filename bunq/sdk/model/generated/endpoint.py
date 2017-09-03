@@ -9150,7 +9150,7 @@ class UserCompany(model.BunqModel):
     :type _notification_filters: list[object_.NotificationFilter]
     :type _customer: Customer
     :type _customer_limit: CustomerLimit
-    :type _billing_contract: BillingContractSubscription
+    :type _billing_contract: list[BillingContractSubscription]
     """
 
     # Field constants.
@@ -9483,7 +9483,7 @@ class UserCompany(model.BunqModel):
     @property
     def billing_contract(self):
         """
-        :rtype: BillingContractSubscription
+        :rtype: list[BillingContractSubscription]
         """
 
         return self._billing_contract
@@ -9635,6 +9635,7 @@ class CustomerLimit(model.BunqModel):
         self._limit_monetary_account = None
         self._limit_card_debit_maestro = None
         self._limit_card_debit_mastercard = None
+        self._limit_card_debit_replacement = None
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
