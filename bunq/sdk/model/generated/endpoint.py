@@ -9157,7 +9157,6 @@ class UserCompany(model.BunqModel):
     FIELD_NAME = "name"
     FIELD_PUBLIC_NICK_NAME = "public_nick_name"
     FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_ADDRESS = "address"
     FIELD_ADDRESS_MAIN = "address_main"
     FIELD_ADDRESS_POSTAL = "address_postal"
     FIELD_LANGUAGE = "language"
@@ -9686,7 +9685,6 @@ class CustomerLimit(model.BunqModel):
 
         return self._limit_card_debit_mastercard
 
-
 class BillingContractSubscription(model.BunqModel):
     """
     Show the subscription billing contract for the authenticated user.
@@ -9997,7 +9995,6 @@ class UserPerson(model.BunqModel):
     FIELD_MIDDLE_NAME = "middle_name"
     FIELD_LAST_NAME = "last_name"
     FIELD_PUBLIC_NICK_NAME = "public_nick_name"
-    FIELD_ADDRESS = "address"
     FIELD_ADDRESS_MAIN = "address_main"
     FIELD_ADDRESS_POSTAL = "address_postal"
     FIELD_AVATAR_UUID = "avatar_uuid"
@@ -10494,7 +10491,6 @@ class UserLight(model.BunqModel):
     FIELD_LAST_NAME = "last_name"
     FIELD_PUBLIC_NICK_NAME = "public_nick_name"
     FIELD_COUNTER_BANK_IBAN = "counter_bank_iban"
-    FIELD_ADDRESS = "address"
     FIELD_ADDRESS_MAIN = "address_main"
     FIELD_ADDRESS_POSTAL = "address_postal"
     FIELD_AVATAR_UUID = "avatar_uuid"
