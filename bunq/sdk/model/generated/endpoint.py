@@ -66,8 +66,8 @@ class Invoice(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Invoice]]
         """
@@ -290,8 +290,8 @@ class InvoiceByUser(model.BunqModel):
         """
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[InvoiceByUser]]
         """
@@ -475,8 +475,8 @@ class ChatConversation(model.BunqModel):
         """
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ChatConversation]]
         """
@@ -668,8 +668,8 @@ class ChatMessage(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type chat_conversation_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ChatMessage]]
         """
@@ -766,7 +766,7 @@ class AttachmentConversationContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, chat_conversation_id, attachment_id,
-             params=None, custom_headers=None):
+             custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
@@ -775,13 +775,9 @@ class AttachmentConversationContent(model.BunqModel):
         :type chat_conversation_id: int
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -790,7 +786,7 @@ class AttachmentConversationContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         chat_conversation_id,
                                                         attachment_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -809,28 +805,23 @@ class AttachmentPublicContent(model.BunqModel):
     _OBJECT_TYPE = "AttachmentPublicContent"
 
     @classmethod
-    def list(cls, api_context, attachment_public_uuid, params=None,
-             custom_headers=None):
+    def list(cls, api_context, attachment_public_uuid, custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
         :type api_context: context.ApiContext
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(attachment_public_uuid)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -851,7 +842,7 @@ class AttachmentTabContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, attachment_tab_id,
-             params=None, custom_headers=None):
+             custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
@@ -860,13 +851,9 @@ class AttachmentTabContent(model.BunqModel):
         :type monetary_account_id: int
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -875,7 +862,7 @@ class AttachmentTabContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         attachment_tab_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -894,8 +881,7 @@ class TabAttachmentTabContent(model.BunqModel):
     _OBJECT_TYPE = "TabAttachmentTabContent"
 
     @classmethod
-    def list(cls, api_context, tab_uuid, attachment_id, params=None,
-             custom_headers=None):
+    def list(cls, api_context, tab_uuid, attachment_id, custom_headers=None):
         """
         Get the raw content of a specific attachment.
 
@@ -903,20 +889,16 @@ class TabAttachmentTabContent(model.BunqModel):
         :type tab_uuid: str
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
 
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(tab_uuid, attachment_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -1625,8 +1607,8 @@ class CardName(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CardName]]
         """
@@ -1773,8 +1755,8 @@ class Card(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Card]]
         """
@@ -1943,7 +1925,7 @@ class CashRegisterQrCodeContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             qr_code_id, params=None, custom_headers=None):
+             qr_code_id, custom_headers=None):
         """
         Show the raw contents of a QR code
 
@@ -1953,13 +1935,9 @@ class CashRegisterQrCodeContent(model.BunqModel):
         :type cash_register_id: int
         :type qr_code_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -1969,7 +1947,7 @@ class CashRegisterQrCodeContent(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         qr_code_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -2115,8 +2093,8 @@ class CashRegisterQrCode(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CashRegisterQrCode]]
         """
@@ -2326,8 +2304,8 @@ class CashRegister(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CashRegister]]
         """
@@ -2480,8 +2458,8 @@ class Tab(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Tab]]
         """
@@ -2731,8 +2709,8 @@ class TabUsageSingle(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabUsageSingle]]
         """
@@ -3197,8 +3175,8 @@ class TabUsageMultiple(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabUsageMultiple]]
         """
@@ -3435,8 +3413,8 @@ class CertificatePinned(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CertificatePinned]]
         """
@@ -3581,8 +3559,8 @@ class DeviceServer(model.BunqModel):
         Get a collection of all the DeviceServers you have created.
 
         :type api_context: context.ApiContext
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[DeviceServer]]
         """
@@ -3696,8 +3674,8 @@ class Device(model.BunqModel):
         DeviceServer.
 
         :type api_context: context.ApiContext
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Device]]
         """
@@ -3923,8 +3901,8 @@ class DraftPayment(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[DraftPayment]]
         """
@@ -4047,7 +4025,7 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
     _OBJECT_TYPE = "DraftShareInviteBankQrCodeContent"
 
     @classmethod
-    def list(cls, api_context, user_id, draft_share_invite_bank_id, params=None,
+    def list(cls, api_context, user_id, draft_share_invite_bank_id,
              custom_headers=None):
         """
         Returns the raw content of the QR code that links to this draft share
@@ -4058,13 +4036,9 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         :type user_id: int
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -4072,7 +4046,7 @@ class DraftShareInviteBankQrCodeContent(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         draft_share_invite_bank_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -4196,8 +4170,8 @@ class DraftShareInviteBank(model.BunqModel):
         """
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[DraftShareInviteBank]]
         """
@@ -4285,7 +4259,7 @@ class ExportAnnualOverviewContent(model.BunqModel):
     _OBJECT_TYPE = "ExportAnnualOverviewContent"
 
     @classmethod
-    def list(cls, api_context, user_id, export_annual_overview_id, params=None,
+    def list(cls, api_context, user_id, export_annual_overview_id,
              custom_headers=None):
         """
         Used to retrieve the raw content of an annual overview.
@@ -4294,13 +4268,9 @@ class ExportAnnualOverviewContent(model.BunqModel):
         :type user_id: int
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -4308,7 +4278,7 @@ class ExportAnnualOverviewContent(model.BunqModel):
         api_client = client.ApiClient(api_context)
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         export_annual_overview_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -4401,8 +4371,8 @@ class ExportAnnualOverview(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ExportAnnualOverview]]
         """
@@ -4477,20 +4447,16 @@ class CustomerStatementExportContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id,
-             customer_statement_id, params=None, custom_headers=None):
+             customer_statement_id, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type customer_statement_id: int
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -4499,7 +4465,7 @@ class CustomerStatementExportContent(model.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id,
                                                         monetary_account_id,
                                                         customer_statement_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -4605,8 +4571,8 @@ class CustomerStatementExport(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CustomerStatementExport]]
         """
@@ -4754,8 +4720,8 @@ class InstallationServerPublicKey(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type installation_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[InstallationServerPublicKey]]
         """
@@ -4976,8 +4942,8 @@ class ShareInviteBankInquiry(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ShareInviteBankInquiry]]
         """
@@ -5181,8 +5147,8 @@ class ShareInviteBankResponse(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ShareInviteBankResponse]]
         """
@@ -5432,8 +5398,8 @@ class MonetaryAccountBank(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[MonetaryAccountBank]]
         """
@@ -5700,8 +5666,8 @@ class MonetaryAccount(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[MonetaryAccount]]
         """
@@ -5843,8 +5809,8 @@ class PaymentBatch(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[PaymentBatch]]
         """
@@ -6010,8 +5976,8 @@ class Payment(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Payment]]
         """
@@ -6311,8 +6277,8 @@ class PaymentChat(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[PaymentChat]]
         """
@@ -6446,8 +6412,8 @@ class PermittedIp(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type credential_password_ip_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[PermittedIp]]
         """
@@ -6630,8 +6596,8 @@ class RequestInquiryBatch(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestInquiryBatch]]
         """
@@ -6818,8 +6784,8 @@ class RequestInquiry(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestInquiry]]
         """
@@ -7168,8 +7134,8 @@ class RequestInquiryChat(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestInquiryChat]]
         """
@@ -7326,8 +7292,8 @@ class RequestResponseChat(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestResponseChat]]
         """
@@ -7493,8 +7459,8 @@ class RequestResponse(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[RequestResponse]]
         """
@@ -7836,8 +7802,8 @@ class ScheduleInstance(model.BunqModel):
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ScheduleInstance]]
         """
@@ -8130,8 +8096,8 @@ class SchedulePayment(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[SchedulePayment]]
         """
@@ -8244,8 +8210,8 @@ class Schedule(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Schedule]]
         """
@@ -8287,8 +8253,8 @@ class ScheduleUser(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[ScheduleUser]]
         """
@@ -8557,8 +8523,8 @@ class TabItemShop(model.BunqModel):
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabItemShop]]
         """
@@ -8727,8 +8693,8 @@ class TabResultInquiry(model.BunqModel):
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabResultInquiry]]
         """
@@ -8821,8 +8787,8 @@ class TabResultResponse(model.BunqModel):
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[TabResultResponse]]
         """
@@ -8873,7 +8839,7 @@ class TabQrCodeContent(model.BunqModel):
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id,
-             tab_uuid, params=None, custom_headers=None):
+             tab_uuid, custom_headers=None):
         """
         Returns the raw content of the QR code that links to this Tab. The raw
         content is the binary representation of a file, without any JSON
@@ -8885,13 +8851,9 @@ class TabQrCodeContent(model.BunqModel):
         :type cash_register_id: int
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
-        :type params: dict[str, str]|None
 
         :rtype: client.BunqResponse[bytes]
         """
-
-        if params is None:
-            params = {}
 
         if custom_headers is None:
             custom_headers = {}
@@ -8901,7 +8863,7 @@ class TabQrCodeContent(model.BunqModel):
                                                         monetary_account_id,
                                                         cash_register_id,
                                                         tab_uuid)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return client.BunqResponse(response_raw.body_bytes,
                                    response_raw.headers)
@@ -9560,8 +9522,8 @@ class Customer(model.BunqModel):
         """
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[Customer]]
         """
@@ -9682,8 +9644,8 @@ class CustomerLimit(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[CustomerLimit]]
         """
@@ -9786,8 +9748,8 @@ class BillingContractSubscription(model.BunqModel):
 
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[BillingContractSubscription]]
         """
@@ -9918,8 +9880,8 @@ class UserCredentialPasswordIp(model.BunqModel):
         """
         :type api_context: context.ApiContext
         :type user_id: int
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[UserCredentialPasswordIp]]
         """
@@ -10445,8 +10407,8 @@ class User(model.BunqModel):
         Get a collection of all available users.
 
         :type api_context: context.ApiContext
-        :type custom_headers: dict[str, str]|None
         :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
 
         :rtype: client.BunqResponse[list[User]]
         """
@@ -10554,7 +10516,8 @@ class UserLight(model.BunqModel):
     FIELD_SUB_STATUS = "sub_status"
     FIELD_LEGAL_GUARDIAN_ALIAS = "legal_guardian_alias"
     FIELD_SESSION_TIMEOUT = "session_timeout"
-    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
+    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = \
+        "daily_limit_without_confirmation_login"
     FIELD_NOTIFICATION_FILTERS = "notification_filters"
 
     # Endpoint constants.
