@@ -9685,6 +9685,7 @@ class CustomerLimit(model.BunqModel):
 
         return self._limit_card_debit_mastercard
 
+
 class BillingContractSubscription(model.BunqModel):
     """
     Show the subscription billing contract for the authenticated user.
