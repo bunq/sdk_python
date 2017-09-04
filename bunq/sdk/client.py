@@ -1,22 +1,13 @@
 import uuid
-
-# Due to compatibility requirements, we are importing a class here.
-try:
-    from json import JSONDecodeError
-except ImportError:
-    from simplejson import JSONDecodeError
+from json import JSONDecodeError
+from urllib.parse import urlencode
 
 import requests
 
-from bunq.sdk.json import converter
-from bunq.sdk import security
 from bunq.sdk import context
 from bunq.sdk import exception
-
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
+from bunq.sdk import security
+from bunq.sdk.json import converter
 
 
 class ApiClient(object):
