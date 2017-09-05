@@ -32,7 +32,7 @@ def run():
     for payment in payments_response.value:
         print(payment.id_)
 
-    if payments_response.pagination.has_previous_item():
+    if payments_response.pagination.has_previous_page():
         print(_MESSAGE_SECOND_LATEST_PAGE_IDS)
         payments_response_previous = generated.Payment.list(
             api_context,
