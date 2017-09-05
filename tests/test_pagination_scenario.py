@@ -19,4 +19,6 @@ class TestPaginationScenario(BunqSdkTestCase):
         cls._PAYMENT_LISTING_PAGE_SIZE = 2
         cls._PAYMENT_REQUIRED_COUNT_MINIMUM = cls._PAYMENT_LISTING_PAGE_SIZE * 2
         cls._NUMBER_ZERO = 0
-        cls._AMOUNT_EUR = "0.01"
+        cls._AMOUNT_EUR = '0.01'
+        cls._CURRENCY = 'EUR'
+        cls._PAYMENT_DESCRIPTION = 'Python test Payment'
