@@ -14,7 +14,7 @@ class TestRequestEnquiry(BunqSdkTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._REQUEST_AMOUNT_IN_EUR = '0.01'
+        cls._REQUEST_AMOUNT_EUR = '0.01'
         cls._REQUEST_CURRENCY = 'EUR'
         cls._FIELD_DESCRIPTION = 'Python unit test request'
         cls._FIELD_STATUS = 'ACCEPTED'
@@ -51,7 +51,7 @@ class TestRequestEnquiry(BunqSdkTestCase):
 
         request_map = {
             RequestInquiry.FIELD_AMOUNT_INQUIRED: Amount(
-                self._REQUEST_AMOUNT_IN_EUR, self._REQUEST_CURRENCY
+                self._REQUEST_AMOUNT_EUR, self._REQUEST_CURRENCY
             ),
             RequestInquiry.FIELD_DESCRIPTION: self._FIELD_DESCRIPTION,
             RequestInquiry.FIELD_COUNTERPARTY_ALIAS:

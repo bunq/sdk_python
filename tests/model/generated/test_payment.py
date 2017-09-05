@@ -16,7 +16,7 @@ class TestPayment(BunqSdkTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._PAYMENT_AMOUNT_IN_EUR = '0.01'
+        cls._PAYMENT_AMOUNT_EUR = '0.01'
         cls._PAYMENT_CURRENCY = 'EUR'
         cls._FIELD_DESCRIPTION = 'Python unit test'
         cls._PAYMENT_CHAT_TEXT_MESSAGE = 'send from python test'
@@ -36,7 +36,7 @@ class TestPayment(BunqSdkTestCase):
 
         request_map = {
             Payment.FIELD_COUNTERPARTY_ALIAS: self._COUNTER_PARTY_OTHER_USER,
-            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_IN_EUR,
+            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_EUR,
                                          self._PAYMENT_CURRENCY),
             Payment.FIELD_DESCRIPTION: self._FIELD_DESCRIPTION,
         }
@@ -54,7 +54,7 @@ class TestPayment(BunqSdkTestCase):
         request_map = {
             Payment.FIELD_COUNTERPARTY_ALIAS: self._COUNTER_PARTY_SAME_USER,
             Payment.FIELD_DESCRIPTION: self._FIELD_DESCRIPTION,
-            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_IN_EUR,
+            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_EUR,
                                          self._PAYMENT_CURRENCY),
         }
         Payment.create(self._API_CONTEXT, request_map, self._USER_ID,
@@ -70,7 +70,7 @@ class TestPayment(BunqSdkTestCase):
 
         request_map = {
             Payment.FIELD_COUNTERPARTY_ALIAS: self._COUNTER_PARTY_OTHER_USER,
-            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_IN_EUR,
+            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_EUR,
                                          self._PAYMENT_CURRENCY),
             Payment.FIELD_DESCRIPTION: self._FIELD_DESCRIPTION,
         }

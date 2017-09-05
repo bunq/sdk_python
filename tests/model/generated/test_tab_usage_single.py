@@ -17,7 +17,7 @@ class TestTabUsageSingle(BunqSdkTestCase):
         cls._USER_ID = Config.get_user_id()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
         cls._CASH_REGISTER_ID = Config.get_cash_register_id()
-        cls._AMOUNT_IN_EUR = '0.02'
+        cls._AMOUNT_EUR = '0.02'
         cls._CURRENCY = 'EUR'
         cls._STATUS_OPEN = 'OPEN'
         cls._TAB_ITEM_FIELD_DESCRIPTION = 'Super expensive python tea'
@@ -36,7 +36,7 @@ class TestTabUsageSingle(BunqSdkTestCase):
         create_map = {
             TabUsageSingle.FIELD_STATUS: self._STATUS_OPEN,
             TabUsageSingle.FIELD_DESCRIPTION: self._TAB_FIELD_DESCRIPTION,
-            TabUsageSingle.FIELD_AMOUNT_TOTAL: Amount(self._AMOUNT_IN_EUR,
+            TabUsageSingle.FIELD_AMOUNT_TOTAL: Amount(self._AMOUNT_EUR,
                                                       self._CURRENCY)
         }
         tab_uuid = TabUsageSingle.create(self._API_CONTEXT, create_map,
@@ -54,7 +54,7 @@ class TestTabUsageSingle(BunqSdkTestCase):
         """
 
         tab_item_map = {
-            TabItemShop.FIELD_AMOUNT: Amount(self._AMOUNT_IN_EUR,
+            TabItemShop.FIELD_AMOUNT: Amount(self._AMOUNT_EUR,
                                              self._CURRENCY),
             TabItemShop.FIELD_DESCRIPTION: self._TAB_ITEM_FIELD_DESCRIPTION,
         }
