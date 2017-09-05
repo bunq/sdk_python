@@ -22,3 +22,5 @@ class TestPaginationScenario(BunqSdkTestCase):
         cls._AMOUNT_EUR = '0.01'
         cls._CURRENCY = 'EUR'
         cls._PAYMENT_DESCRIPTION = 'Python test Payment'
+
+    

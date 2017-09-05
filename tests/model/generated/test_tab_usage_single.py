@@ -1,5 +1,5 @@
-from bunq.sdk.model.generated.endpoint import TabUsageSingle
 from bunq.sdk.model.generated.endpoint import TabItemShop
+from bunq.sdk.model.generated.endpoint import TabUsageSingle
 from bunq.sdk.model.generated.object_ import Amount
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config

@@ -1,6 +1,6 @@
+from bunq.sdk.model.generated.endpoint import ChatMessageText
 from bunq.sdk.model.generated.endpoint import Payment
 from bunq.sdk.model.generated.endpoint import PaymentChat
-from bunq.sdk.model.generated.endpoint import ChatMessageText
 from bunq.sdk.model.generated.object_ import Amount
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config

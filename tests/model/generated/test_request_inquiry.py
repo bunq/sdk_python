@@ -1,8 +1,8 @@
+from bunq.sdk.model.generated.endpoint import RequestInquiry
+from bunq.sdk.model.generated.endpoint import RequestResponse
 from bunq.sdk.model.generated.object_ import Amount
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
-from bunq.sdk.model.generated.endpoint import RequestInquiry
-from bunq.sdk.model.generated.endpoint import RequestResponse
 
 
 class TestRequestEnquiry(BunqSdkTestCase):

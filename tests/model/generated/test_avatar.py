@@ -1,7 +1,7 @@
 from bunq.sdk.client import ApiClient
-from bunq.sdk.model.generated.endpoint import Avatar
 from bunq.sdk.model.generated.endpoint import AttachmentPublic
 from bunq.sdk.model.generated.endpoint import AttachmentPublicContent
+from bunq.sdk.model.generated.endpoint import Avatar
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 

@@ -1644,6 +1644,7 @@ class Card(model.BunqModel):
     :type _public_uuid: str
     :type _second_line: str
     :type _status: str
+    :type _sub_status: str
     :type _order_status: str
     :type _expiry_date: str
     :type _name_on_card: str
@@ -1683,6 +1684,7 @@ class Card(model.BunqModel):
         self._public_uuid = None
         self._second_line = None
         self._status = None
+        self._sub_status = None
         self._order_status = None
         self._expiry_date = None
         self._name_on_card = None
@@ -1820,6 +1822,14 @@ class Card(model.BunqModel):
         """
 
         return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
 
     @property
     def order_status(self):
@@ -3509,10 +3519,15 @@ class DeviceServer(model.BunqModel):
     @classmethod
     def create(cls, api_context, request_map, custom_headers=None):
         """
-        Create a new DeviceServer. Provide the Installation token in the
-        "X-Bunq-Client-Authentication" header. And sign this request with the
-        key of which you used the public part to create the Installation. Your
-        API key will be bound to the ip address of this DeviceServer.
+        Create a new DeviceServer providing the installation token in the header
+        and signing the request with the private part of the key you used to
+        create the installation. The API Key that you are using will be bound to
+        the IP address of the DeviceServer which you have
+        created.<br/><br/>Using a Wildcard API Key gives you the freedom to make
+        API calls even if the IP address has changed after the POST
+        device-server.<br/><br/>Find out more at this link <a
+        href="https://bunq.com/en/apikey-dynamic-ip"
+        target="_blank">https://bunq.com/en/apikey-dynamic-ip</a>.
 
         :type api_context: context.ApiContext
         :type request_map: dict[str, object]
@@ -9623,6 +9638,7 @@ class CustomerLimit(model.BunqModel):
     :type _limit_monetary_account: int
     :type _limit_card_debit_maestro: int
     :type _limit_card_debit_mastercard: int
+    :type _limit_card_debit_replacement: int
     """
 
     # Endpoint constants.
@@ -9685,6 +9701,14 @@ class CustomerLimit(model.BunqModel):
         """
 
         return self._limit_card_debit_mastercard
+
+    @property
+    def limit_card_debit_replacement(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_card_debit_replacement
 
 
 class BillingContractSubscription(model.BunqModel):
