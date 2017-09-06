@@ -122,15 +122,15 @@ class Config:
     @classmethod
     def get_permitted_ips(cls):
         """
-        :rtype: str[]
+        :rtype: list[str]
         """
 
         permitted_ips_str = cls._get_config_file()[cls._FIELD_PERMITTED_IPS]
 
         if not permitted_ips_str:
             return []
-        else:
-            return permitted_ips_str.split(cls._DELIMITER_IPS)
+
+        return permitted_ips_str.split(cls._DELIMITER_IPS)
 
     @classmethod
     def _get_config_file(cls):

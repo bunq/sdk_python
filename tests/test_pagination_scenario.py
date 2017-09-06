@@ -55,7 +55,7 @@ class TestPaginationScenario(BunqSdkTestCase):
         :rtype: None
         """
 
-        for i in range(self._payment_missing_count):
+        for _ in range(self._payment_missing_count):
             self._create_payment()
 
     @property
