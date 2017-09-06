@@ -31,7 +31,7 @@ class ApiClient(object):
     HEADER_AUTHENTICATION = 'X-Bunq-Client-Authentication'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.10.0'
+    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.11.0'
     _GEOLOCATION_ZERO = '0 0 0 0 NL'
     _LANGUAGE_EN_US = 'en_US'
     _REGION_NL_NL = 'nl_NL'
