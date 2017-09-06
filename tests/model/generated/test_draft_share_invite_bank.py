@@ -1,11 +1,11 @@
 from datetime import datetime
 from datetime import timedelta
 
-from bunq.sdk.model.generated.object_ import ShareDetailReadOnly
-from bunq.sdk.model.generated.object_ import ShareDetail
-from bunq.sdk.model.generated.object_ import DraftShareInviteBankEntry
 from bunq.sdk.model.generated.endpoint import DraftShareInviteBank
 from bunq.sdk.model.generated.endpoint import DraftShareInviteBankQrCodeContent
+from bunq.sdk.model.generated.object_ import DraftShareInviteBankEntry
+from bunq.sdk.model.generated.object_ import ShareDetail
+from bunq.sdk.model.generated.object_ import ShareDetailReadOnly
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 

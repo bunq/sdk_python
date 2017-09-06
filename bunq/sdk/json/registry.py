@@ -1,5 +1,6 @@
 import datetime
 
+from bunq.sdk import client
 from bunq.sdk import context
 from bunq.sdk import model
 from bunq.sdk.json import adapters
@@ -36,3 +37,4 @@ def initialize():
     )
     converter.register_adapter(object_.ShareDetail, adapters.ShareDetailAdapter)
     converter.register_adapter(datetime.datetime, adapters.DateTimeAdapter)
+    converter.register_adapter(client.Pagination, adapters.PaginationAdapter)
