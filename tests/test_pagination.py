@@ -117,6 +117,7 @@ class TestPagination(BunqSdkTestCase):
         def access_url_params_previous_page():
             _ = pagination.url_params_previous_page
 
+        self.assertFalse(pagination.has_previous_page())
         self.assertRaises(exception.BunqException,
                           access_url_params_previous_page)
 
