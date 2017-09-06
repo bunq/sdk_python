@@ -22,8 +22,8 @@ class TestPaginationScenario(BunqSdkTestCase):
         cls._PAYMENT_LISTING_PAGE_SIZE = 2
         cls._PAYMENT_REQUIRED_COUNT_MINIMUM = cls._PAYMENT_LISTING_PAGE_SIZE * 2
         cls._NUMBER_ZERO = 0
-        cls._AMOUNT_EUR = '0.01'
-        cls._CURRENCY = 'EUR'
+        cls._PAYMENT_AMOUNT_EUR = '0.01'
+        cls._PAYMENT_CURRENCY = 'EUR'
         cls._PAYMENT_DESCRIPTION = 'Python test Payment'
 
     def test_api_scenario_payment_listing_with_pagination(self):
@@ -65,7 +65,7 @@ class TestPaginationScenario(BunqSdkTestCase):
         """
 
         return self._PAYMENT_REQUIRED_COUNT_MINIMUM - \
-               len(self._payments_required())
+            len(self._payments_required())
 
     def _payments_required(self):
         """
@@ -94,7 +94,8 @@ class TestPaginationScenario(BunqSdkTestCase):
 
         request_map = {
             endpoint.Payment.FIELD_AMOUNT:
-                object_.Amount(self._AMOUNT_EUR, self._CURRENCY),
+                object_.Amount(self._PAYMENT_AMOUNT_EUR,
+                               self._PAYMENT_CURRENCY),
             endpoint.Payment.FIELD_DESCRIPTION: self._PAYMENT_DESCRIPTION,
             endpoint.Payment.FIELD_COUNTERPARTY_ALIAS:
                 self._COUNTER_PARTY_ALIAS_OTHER,
