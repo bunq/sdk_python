@@ -5,7 +5,11 @@ from bunq.sdk.model.generated.object_ import Pointer
 
 
 class Config:
-    _FIELD_IP_ADDRESS_ALLOWED = "ipAddress"
+    # Delimiter between the IP addresses in the PERMITTED_IPS field.
+    _DELIMITER_IPS = ","
+
+    # Field constants
+    _FIELD_PERMITTED_IPS = "PERMITTED_IPS"
     _FIELD_COUNTER_PARTY_OTHER = "CounterPartyOther"
     _FIELD_COUNTER_PARTY_SELF = "CounterPartySelf"
     _FIELD_TYPE = "Type"
@@ -116,12 +120,17 @@ class Config:
         return Pointer(type_, alias)
 
     @classmethod
-    def get_ip_address(cls):
+    def get_permitted_ips(cls):
         """
-        :rtype: str
+        :rtype: list[str]
         """
 
-        return cls._get_config_file()[cls._FIELD_IP_ADDRESS_ALLOWED]
+        permitted_ips_str = cls._get_config_file()[cls._FIELD_PERMITTED_IPS]
+
+        if not permitted_ips_str:
+            return []
+
+        return permitted_ips_str.split(cls._DELIMITER_IPS)
 
     @classmethod
     def _get_config_file(cls):

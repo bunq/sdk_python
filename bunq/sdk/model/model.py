@@ -1,12 +1,12 @@
 from bunq.sdk import client
 from bunq.sdk import context
-from bunq.sdk.client import BunqResponse
 from bunq.sdk.json import converter
 
 
 class BunqModel(object):
     # Field constants
     _FIELD_RESPONSE = 'Response'
+    _FIELD_PAGINATION = 'Pagination'
     _FIELD_ID = 'Id'
     _FIELD_UUID = 'Uuid'
 
@@ -32,7 +32,7 @@ class BunqModel(object):
         obj = converter.json_to_class(dict, json)
         value = converter.deserialize(cls, obj[cls._FIELD_RESPONSE])
 
-        return BunqResponse(value, response_raw.headers)
+        return client.BunqResponse(value, response_raw.headers)
 
     @classmethod
     def _from_json(cls, response_raw, wrapper=None):
@@ -40,7 +40,7 @@ class BunqModel(object):
         :type response_raw: client.BunqResponseRaw
         :type wrapper: str|None
 
-        :rtype: BunqResponse[cls]
+        :rtype: client.BunqResponse[cls]
         """
 
         json = response_raw.body_bytes.decode()
@@ -50,7 +50,7 @@ class BunqModel(object):
             cls._unwrap_response_single(obj, wrapper)
         )
 
-        return BunqResponse(value, response_raw.headers)
+        return client.BunqResponse(value, response_raw.headers)
 
     @classmethod
     def _unwrap_response_single(cls, obj, wrapper=None):
@@ -71,7 +71,7 @@ class BunqModel(object):
         """
         :type response_raw: client.BunqResponseRaw
 
-        :rtype: BunqResponse[int]
+        :rtype: client.BunqResponse[int]
         """
 
         json = response_raw.body_bytes.decode()
@@ -81,14 +81,14 @@ class BunqModel(object):
             cls._unwrap_response_single(obj, cls._FIELD_ID)
         )
 
-        return BunqResponse(id_.id_, response_raw.headers)
+        return client.BunqResponse(id_.id_, response_raw.headers)
 
     @classmethod
     def _process_for_uuid(cls, response_raw):
         """
         :type response_raw: client.BunqResponseRaw
 
-        :rtype: BunqResponse[str]
+        :rtype: client.BunqResponse[str]
         """
 
         json = response_raw.body_bytes.decode()
@@ -98,7 +98,7 @@ class BunqModel(object):
             cls._unwrap_response_single(obj, cls._FIELD_UUID)
         )
 
-        return BunqResponse(uuid.uuid, response_raw.headers)
+        return client.BunqResponse(uuid.uuid, response_raw.headers)
 
     @classmethod
     def _from_json_list(cls, response_raw, wrapper=None):
@@ -106,7 +106,7 @@ class BunqModel(object):
         :type response_raw: client.BunqResponseRaw
         :type wrapper: str|None
 
-        :rtype: BunqResponse[list[cls]]
+        :rtype: client.BunqResponse[list[cls]]
         """
 
         json = response_raw.body_bytes.decode()
@@ -119,7 +119,11 @@ class BunqModel(object):
             item_deserialized = converter.deserialize(cls, item_unwrapped)
             array_deserialized.append(item_deserialized)
 
-        return BunqResponse(array_deserialized, response_raw.headers)
+        pagination = converter.deserialize(client.Pagination,
+                                           obj[cls._FIELD_PAGINATION])
+
+        return client.BunqResponse(array_deserialized, response_raw.headers,
+                                   pagination)
 
 
 class Id(BunqModel):
@@ -158,11 +162,41 @@ class Uuid(BunqModel):
 
 class SessionToken(BunqModel):
     """
+    :type _id_: int
+    :type _created: str
+    :type _updated: str
     :type _token: str
     """
 
     def __init__(self):
+        self._id_ = None
+        self._created = None
+        self._updated = None
         self._token = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
 
     @property
     def token(self):
@@ -238,7 +272,7 @@ class Installation(BunqModel):
         :type api_context: context.ApiContext
         :type public_key_string: str
 
-        :rtype: BunqResponse[Installation]
+        :rtype: client.BunqResponse[Installation]
         """
 
         api_client = client.ApiClient(api_context)
@@ -321,7 +355,7 @@ class SessionServer(BunqModel):
         """
         :type api_context: context.ApiContext
 
-        :rtype: BunqResponse[SessionServer]
+        :rtype: client.BunqResponse[SessionServer]
         """
 
         api_client = client.ApiClient(api_context)

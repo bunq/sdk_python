@@ -1,10 +1,10 @@
 import random
 import string
 
-from bunq.sdk.model.generated.endpoint import User
-from bunq.sdk.model.generated.endpoint import CardName
 from bunq.sdk.model.generated.endpoint import Card
 from bunq.sdk.model.generated.endpoint import CardDebit
+from bunq.sdk.model.generated.endpoint import CardName
+from bunq.sdk.model.generated.endpoint import User
 from bunq.sdk.model.generated.object_ import Pointer
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config

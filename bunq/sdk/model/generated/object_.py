@@ -72,6 +72,7 @@ class LabelMonetaryAccount(model.BunqModel):
     :type label_user: LabelUser
     :type country: str
     :type bunq_me: MonetaryAccountReference
+    :type is_light: bool
     """
 
     def __init__(self):
@@ -81,6 +82,7 @@ class LabelMonetaryAccount(model.BunqModel):
         self.label_user = None
         self.country = None
         self.bunq_me = None
+        self.is_light = None
 
 
 class Avatar(model.BunqModel):
@@ -164,6 +166,7 @@ class Address(model.BunqModel):
     :type postal_code: str
     :type city: str
     :type country: str
+    :type province: str
     """
 
     def __init__(self, street, house_number, postal_code, city, country):
@@ -181,6 +184,7 @@ class Address(model.BunqModel):
         self.city = city
         self.country = country
         self.po_box = None
+        self.province = None
 
 
 class BunqId(model.BunqModel):
@@ -212,6 +216,7 @@ class CardLimit(model.BunqModel):
     :type daily_limit: str
     :type currency: str
     :type type_: str
+    :type id_: int
     """
 
     def __init__(self, daily_limit, currency, type_):
@@ -224,12 +229,14 @@ class CardLimit(model.BunqModel):
         self.daily_limit = daily_limit
         self.currency = currency
         self.type_ = type_
+        self.id_ = None
 
 
 class CardCountryPermission(model.BunqModel):
     """
     :type country: str
     :type expiry_time: str
+    :type id_: int
     """
 
     def __init__(self, country):
@@ -239,15 +246,7 @@ class CardCountryPermission(model.BunqModel):
 
         self.country = country
         self.expiry_time = None
-
-
-class CardMagStripePermission(model.BunqModel):
-    """
-    :type expiry_time: str
-    """
-
-    def __init__(self):
-        self.expiry_time = None
+        self.id_ = None
 
 
 class CardPinAssignment(model.BunqModel):
@@ -265,6 +264,15 @@ class CardPinAssignment(model.BunqModel):
         self.type_ = type_
         self.pin_code = None
         self.monetary_account_id = None
+
+
+class CardMagStripePermission(model.BunqModel):
+    """
+    :type expiry_time: str
+    """
+
+    def __init__(self):
+        self.expiry_time = None
 
 
 class Geolocation(model.BunqModel):
@@ -373,6 +381,63 @@ class Certificate(model.BunqModel):
         """
 
         self.certificate = certificate
+
+
+class DraftPaymentResponse(model.BunqModel):
+    """
+    :type status: str
+    :type user_alias_created: LabelUser
+    """
+
+    def __init__(self):
+        self.status = None
+        self.user_alias_created = None
+
+
+class DraftPaymentEntry(model.BunqModel):
+    """
+    :type amount: Amount
+    :type counterparty_alias: MonetaryAccountReference
+    :type description: str
+    :type merchant_reference: str
+    :type attachment: list[AttachmentMonetaryAccountPayment]
+    :type allow_bunqto: bool
+    :type id_: int
+    :type alias: MonetaryAccountReference
+    :type type_: str
+    """
+
+    def __init__(self, amount, counterparty_alias, description):
+        """
+        :type amount: Amount
+        :type counterparty_alias: MonetaryAccountReference
+        :type description: str
+        """
+
+        self.amount = amount
+        self.counterparty_alias = counterparty_alias
+        self.description = description
+        self.merchant_reference = None
+        self.attachment = None
+        self.allow_bunqto = None
+        self.id_ = None
+        self.alias = None
+        self.type_ = None
+
+
+class AttachmentMonetaryAccountPayment(model.BunqModel):
+    """
+    :type id_: int
+    :type monetary_account_id: int
+    """
+
+    def __init__(self, id_):
+        """
+        :type id_: int
+        """
+
+        self.id_ = id_
+        self.monetary_account_id = None
 
 
 class DraftShareInviteBankEntry(model.BunqModel):
@@ -559,21 +624,6 @@ class MonetaryAccountSetting(model.BunqModel):
         self.color = None
         self.default_avatar_status = None
         self.restriction_chat = None
-
-
-class AttachmentMonetaryAccountPayment(model.BunqModel):
-    """
-    :type id_: int
-    :type monetary_account_id: int
-    """
-
-    def __init__(self, id_):
-        """
-        :type id_: int
-        """
-
-        self.id_ = id_
-        self.monetary_account_id = None
 
 
 class Error(model.BunqModel):

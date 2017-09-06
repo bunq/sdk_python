@@ -1,17 +1,13 @@
 import uuid
-
-# Due to compatibility requirements, we are importing a class here.
-try:
-    from json import JSONDecodeError
-except ImportError:
-    from simplejson import JSONDecodeError
+from json import JSONDecodeError
+from urllib.parse import urlencode
 
 import requests
 
-from bunq.sdk.json import converter
-from bunq.sdk import security
 from bunq.sdk import context
 from bunq.sdk import exception
+from bunq.sdk import security
+from bunq.sdk.json import converter
 
 
 class ApiClient(object):
@@ -35,7 +31,7 @@ class ApiClient(object):
     HEADER_AUTHENTICATION = 'X-Bunq-Client-Authentication'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.10.0'
+    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.11.0'
     _GEOLOCATION_ZERO = '0 0 0 0 NL'
     _LANGUAGE_EN_US = 'en_US'
     _REGION_NL_NL = 'nl_NL'
@@ -46,6 +42,9 @@ class ApiClient(object):
     _METHOD_PUT = 'PUT'
     _METHOD_GET = 'GET'
     _METHOD_DELETE = 'DELETE'
+
+    # Delimiter between path and params in URL
+    _DELIMITER_URL_QUERY = '?'
 
     # Status code for successful execution
     _STATUS_CODE_OK = 200
@@ -76,30 +75,35 @@ class ApiClient(object):
             self._METHOD_POST,
             uri_relative,
             request_bytes,
+            {},
             custom_headers
         )
 
-    def _request(self, method, uri_relative, request_bytes, custom_headers):
+    def _request(self, method, uri_relative, request_bytes, params,
+                 custom_headers):
         """
         :type method: str
         :type uri_relative: str
         :type request_bytes: bytes
+        :type params: dict[str, str]
         :type custom_headers: dict[str, str]
 
         :return: BunqResponseRaw
         """
 
+        uri_relative_with_params = self._append_params_to_uri(uri_relative,
+                                                              params)
         self._api_context.ensure_session_active()
         all_headers = self._get_all_headers(
             method,
-            uri_relative,
+            uri_relative_with_params,
             request_bytes,
             custom_headers
         )
 
         response = requests.request(
             method,
-            self._get_uri_full(uri_relative),
+            self._get_uri_full(uri_relative_with_params),
             data=request_bytes,
             headers=all_headers,
             proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url}
@@ -116,6 +120,20 @@ class ApiClient(object):
             )
 
         return self._create_bunq_response_raw(response)
+
+    @classmethod
+    def _append_params_to_uri(cls, uri, params):
+        """
+        :type uri: str
+        :type params: dict[str, str]
+
+        :rtype: str
+        """
+
+        if params:
+            return uri + cls._DELIMITER_URL_QUERY + urlencode(params)
+
+        return uri
 
     def _get_all_headers(self, method, endpoint, request_bytes, custom_headers):
         """
@@ -242,12 +260,14 @@ class ApiClient(object):
             self._METHOD_PUT,
             uri_relative,
             request_bytes,
+            {},
             custom_headers
         )
 
-    def get(self, uri_relative, custom_headers):
+    def get(self, uri_relative, params, custom_headers):
         """
         :type uri_relative: str
+        :type params: dict[str, str]
         :type custom_headers: dict[str, str]
 
         :rtype: BunqResponseRaw
@@ -257,6 +277,7 @@ class ApiClient(object):
             self._METHOD_GET,
             uri_relative,
             self._BYTES_EMPTY,
+            params,
             custom_headers
         )
 
@@ -272,6 +293,7 @@ class ApiClient(object):
             self._METHOD_DELETE,
             uri_relative,
             self._BYTES_EMPTY,
+            {},
             custom_headers
         )
 
@@ -312,16 +334,19 @@ class BunqResponse(object):
     """
     :type _value: T
     :type _headers: dict[str, str]
+    :type _pagination: Pagination|None
     """
 
-    def __init__(self, value, headers):
+    def __init__(self, value, headers, pagination=None):
         """
         :type value: T
         :type headers: dict[str, str]
+        :type pagination Pagination|None
         """
 
         self._value = value
         self._headers = headers
+        self._pagination = pagination
 
     @property
     def value(self):
@@ -338,3 +363,125 @@ class BunqResponse(object):
         """
 
         return self._headers
+
+    @property
+    def pagination(self):
+        """
+        :rtype: Pagination
+        """
+
+        return self._pagination
+
+
+class Pagination(object):
+    """
+    :type older_id: int|None
+    :type newer_id: int|None
+    :type future_id: int|None
+    :type count: int|None
+    """
+
+    # Error constants
+    _ERROR_NO_PREVIOUS_PAGE = 'Could not generate previous page URL params: ' \
+                              'there is no previous page.'
+    _ERROR_NO_NEXT_PAGE = 'Could not generate next page URL params: ' \
+                          'there is no next page.'
+
+    # URL Param constants
+    PARAM_OLDER_ID = 'older_id'
+    PARAM_NEWER_ID = 'newer_id'
+    PARAM_COUNT = 'count'
+
+    def __init__(self):
+        self.older_id = None
+        self.newer_id = None
+        self.future_id = None
+        self.count = None
+
+    @property
+    def url_params_previous_page(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        self.assert_has_previous_page()
+
+        params = {self.PARAM_OLDER_ID: str(self.older_id)}
+        self._add_count_to_params_if_needed(params)
+
+        return params
+
+    def assert_has_previous_page(self):
+        """
+        :raise: exception.BunqException
+        """
+
+        if not self.has_previous_page():
+            raise exception.BunqException(self._ERROR_NO_PREVIOUS_PAGE)
+
+    def has_previous_page(self):
+        """
+        :rtype: bool
+        """
+
+        return self.older_id is not None
+
+    @property
+    def url_params_count_only(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        params = {}
+        self._add_count_to_params_if_needed(params)
+
+        return params
+
+    def _add_count_to_params_if_needed(self, params):
+        """
+        :type params: dict[str, str]
+
+        :rtype: None
+        """
+
+        if self.count is not None:
+            params[self.PARAM_COUNT] = str(self.count)
+
+    def has_next_page_assured(self):
+        """
+        :rtype: bool
+        """
+
+        return self.newer_id is not None
+
+    @property
+    def url_params_next_page(self):
+        """
+        :rtype: dict[str, str]
+        """
+
+        self.assert_has_next_page()
+
+        params = {self.PARAM_NEWER_ID: str(self._next_id)}
+        self._add_count_to_params_if_needed(params)
+
+        return params
+
+    def assert_has_next_page(self):
+        """
+        :raise: exception.BunqException
+        """
+
+        if self._next_id is None:
+            raise exception.BunqException(self._ERROR_NO_NEXT_PAGE)
+
+    @property
+    def _next_id(self):
+        """
+        :rtype: int
+        """
+
+        if self.has_next_page_assured():
+            return self.newer_id
+
+        return self.future_id
