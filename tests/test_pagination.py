@@ -15,7 +15,7 @@ class TestPagination(BunqSdkTestCase):
     _PAGINATION_COUNT_CUSTOM = 5
 
     def test_get_url_params_count_only(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         url_params_count_only_expected = {
             client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
         }
@@ -23,7 +23,7 @@ class TestPagination(BunqSdkTestCase):
         self.assertEqual(url_params_count_only_expected,
                          pagination.url_params_count_only)
 
-    def create_pagination_with_all_properties_set(self):
+    def _create_pagination_with_all_properties_set(self):
         """
         :rtype: Pagination
         """
@@ -37,7 +37,7 @@ class TestPagination(BunqSdkTestCase):
         return pagination
 
     def test_get_url_params_previous_page(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         url_params_previous_page_expected = {
             client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
             client.Pagination.PARAM_OLDER_ID:
@@ -49,7 +49,7 @@ class TestPagination(BunqSdkTestCase):
                          pagination.url_params_previous_page)
 
     def test_get_url_params_previous_page_no_count(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         pagination.count = None
         url_params_previous_page_expected = {
             client.Pagination.PARAM_OLDER_ID:
@@ -61,7 +61,7 @@ class TestPagination(BunqSdkTestCase):
                          pagination.url_params_previous_page)
 
     def test_get_url_params_next_page_newer(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         url_params_next_page_expected = {
             client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
             client.Pagination.PARAM_NEWER_ID:
@@ -73,7 +73,7 @@ class TestPagination(BunqSdkTestCase):
                          pagination.url_params_next_page)
 
     def test_get_url_params_next_page_newer_no_count(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         pagination.count = None
         url_params_next_page_expected = {
             client.Pagination.PARAM_NEWER_ID:
@@ -85,7 +85,7 @@ class TestPagination(BunqSdkTestCase):
                          pagination.url_params_next_page)
 
     def test_get_url_params_next_page_future(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         pagination.newer_id = None
         url_params_next_page_expected = {
             client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
@@ -98,7 +98,7 @@ class TestPagination(BunqSdkTestCase):
                          pagination.url_params_next_page)
 
     def test_get_url_params_next_page_future_no_count(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         pagination.newer_id = None
         pagination.count = None
         url_params_next_page_expected = {
@@ -111,7 +111,7 @@ class TestPagination(BunqSdkTestCase):
                          pagination.url_params_next_page)
 
     def test_get_url_params_prev_page_from_pagination_with_no_prev_page(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         pagination.older_id = None
 
         def access_url_params_previous_page():
@@ -122,7 +122,7 @@ class TestPagination(BunqSdkTestCase):
                           access_url_params_previous_page)
 
     def test_get_url_params_next_page_from_pagination_with_no_next_page(self):
-        pagination = self.create_pagination_with_all_properties_set()
+        pagination = self._create_pagination_with_all_properties_set()
         pagination.newer_id = None
         pagination.future_id = None
 
