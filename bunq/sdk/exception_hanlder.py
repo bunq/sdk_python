@@ -6,6 +6,7 @@ from bunq.sdk.exception import MethodNotAllowedException
 from bunq.sdk.exception import ToManyRequestsException
 from bunq.sdk.exception import PleaseContactBunqException
 from bunq.sdk.exception import ApiException
+from bunq.sdk.exception import BunqError
 
 
 class ExceptionHandler(Exception):
@@ -24,6 +25,14 @@ class ExceptionHandler(Exception):
 
     @classmethod
     def create_exception_for_response(cls, response_code, messages):
+        """
+        :type response_code: int
+        :type messages: list[str]
+
+        :return: The exception according to the status code.
+        :rtype:  BunqError
+        """
+
         error_message = cls._generate_message_error(response_code, messages)
 
         if response_code == cls._HTTP_RESPONSE_CODE_BAD_REQUEST:

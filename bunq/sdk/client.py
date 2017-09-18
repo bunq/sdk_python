@@ -208,10 +208,6 @@ class ApiClient(object):
             )
 
             raise exception_
-            # raise exception.ApiException(
-            #     response.status_code,
-            #     self._fetch_error_messages(response)
-            # )
 
     @classmethod
     def _create_bunq_response_raw(cls, response):

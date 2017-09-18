@@ -1,5 +1,10 @@
 class BunqError(Exception):
     def __init__(self, message, response_code):
+        """
+        :type message: str
+        :type response_code: int
+        """
+
         self._response_code = response_code
         self._message = message
 
@@ -7,10 +12,18 @@ class BunqError(Exception):
 
     @property
     def message(self):
+        """
+        :rtype: str
+        """
+
         return self._message
 
     @property
     def response_code(self):
+        """
+        :rtype: int
+        """
+
         return self._response_code
 
 
