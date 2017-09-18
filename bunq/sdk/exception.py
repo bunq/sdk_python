@@ -1,54 +1,52 @@
-class ApiException(Exception):
-    """
-    :type _response_code: int
-    """
-
-    # Constants for formatting messages
-    _FORMAT_RESPONSE_CODE_LINE = 'HTTP Response Code: {}'
-    _GLUE_ERROR_MESSAGES = '\n'
-
-    def __init__(self, response_code, messages):
-        """
-        :type response_code: int
-        :type messages: list[str]
-        """
-
-        super(ApiException, self).__init__(
-            self.generate_message_error(response_code, messages)
-        )
+class BunqError(Exception):
+    def __init__(self, message, response_code):
         self._response_code = response_code
+        self._message = message
 
-    def generate_message_error(self, response_code, messages):
-        """
-        :type response_code: int
-        :type messages: list[str]
+        super(BunqError, self).__init__(message)
 
-        :rtype: str
-        """
-
-        line_response_code = self._FORMAT_RESPONSE_CODE_LINE \
-            .format(response_code)
-
-        return self.glue_messages([line_response_code] + messages)
-
-    def glue_messages(self, messages):
-        """
-        :type messages: list[str]
-
-        :rtype: str
-        """
-
-        return self._GLUE_ERROR_MESSAGES.join(messages)
+    @property
+    def message(self):
+        return self._message
 
     @property
     def response_code(self):
-        """
-        :rtype: int
-        """
-
         return self._response_code
 
 
 class BunqException(Exception):
     def __init__(self, message):
         super(BunqException, self).__init__(message)
+
+
+class ApiException(BunqError):
+    pass
+
+
+class BadRequestException(BunqError):
+    pass
+
+
+class UnauthorizedException(BunqError):
+    pass
+
+
+class ForbiddenException(BunqError):
+    pass
+
+
+class NotFoundException(BunqError):
+    pass
+
+
+class MethodNotAllowedException(BunqError):
+    pass
+
+
+class ToManyRequestsException(BunqError):
+    pass
+
+
+class PleaseContactBunqException(BunqError):
+    pass
+
