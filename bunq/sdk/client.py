@@ -202,12 +202,10 @@ class ApiClient(object):
         """
 
         if response.status_code != self._STATUS_CODE_OK:
-            exception_ = ExceptionHandler.create_exception_for_response(
+            raise ExceptionHandler.create_exception_for_response(
                 response.status_code,
                 self._fetch_error_messages(response)
             )
-
-            raise exception_
 
     @classmethod
     def _create_bunq_response_raw(cls, response):
