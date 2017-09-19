@@ -6,7 +6,7 @@ import requests
 
 from bunq.sdk import context
 from bunq.sdk import exception
-from bunq.sdk.exception_hanlder import ExceptionHandler
+from bunq.sdk.exception_factory import ExceptionFactory
 from bunq.sdk import security
 from bunq.sdk.json import converter
 
@@ -202,7 +202,7 @@ class ApiClient(object):
         """
 
         if response.status_code != self._STATUS_CODE_OK:
-            raise ExceptionHandler.create_exception_for_response(
+            raise ExceptionFactory.create_exception_for_response(
                 response.status_code,
                 self._fetch_error_messages(response)
             )

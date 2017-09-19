@@ -5,11 +5,11 @@ from bunq.sdk.exception import NotFoundException
 from bunq.sdk.exception import MethodNotAllowedException
 from bunq.sdk.exception import ToManyRequestsException
 from bunq.sdk.exception import PleaseContactBunqException
+from bunq.sdk.exception import UnknownApiErrorException
 from bunq.sdk.exception import ApiException
-from bunq.sdk.exception import BunqError
 
 
-class ExceptionHandler(Exception):
+class ExceptionFactory:
     # Error response code constants
     _HTTP_RESPONSE_CODE_BAD_REQUEST = 400
     _HTTP_RESPONSE_CODE_UNAUTHORIZED = 401
@@ -30,7 +30,7 @@ class ExceptionHandler(Exception):
         :type messages: list[str]
 
         :return: The exception according to the status code.
-        :rtype:  BunqError
+        :rtype:  ApiException
         """
 
         error_message = cls._generate_message_error(response_code, messages)
@@ -50,7 +50,7 @@ class ExceptionHandler(Exception):
         if response_code == cls._HTTP_RESPONSE_CODE_INTERNAL_SERVER_ERROR:
             return PleaseContactBunqException(error_message, response_code)
 
-        return ApiException(error_message, response_code)
+        return UnknownApiErrorException(error_message, response_code)
 
     @classmethod
     def _generate_message_error(cls, response_code, messages):

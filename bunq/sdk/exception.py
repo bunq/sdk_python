@@ -1,4 +1,4 @@
-class BunqError(Exception):
+class ApiException(Exception):
     def __init__(self, message, response_code):
         """
         :type message: str
@@ -8,7 +8,7 @@ class BunqError(Exception):
         self._response_code = response_code
         self._message = message
 
-        super(BunqError, self).__init__(message)
+        super(ApiException, self).__init__(message)
 
     @property
     def message(self):
@@ -32,34 +32,33 @@ class BunqException(Exception):
         super(BunqException, self).__init__(message)
 
 
-class ApiException(BunqError):
+class UnknownApiErrorException(ApiException):
     pass
 
 
-class BadRequestException(BunqError):
+class BadRequestException(ApiException):
     pass
 
 
-class UnauthorizedException(BunqError):
+class UnauthorizedException(ApiException):
     pass
 
 
-class ForbiddenException(BunqError):
+class ForbiddenException(ApiException):
     pass
 
 
-class NotFoundException(BunqError):
+class NotFoundException(ApiException):
     pass
 
 
-class MethodNotAllowedException(BunqError):
+class MethodNotAllowedException(ApiException):
     pass
 
 
-class ToManyRequestsException(BunqError):
+class ToManyRequestsException(ApiException):
     pass
 
 
-class PleaseContactBunqException(BunqError):
+class PleaseContactBunqException(ApiException):
     pass
-
