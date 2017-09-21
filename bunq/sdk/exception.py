@@ -56,7 +56,7 @@ class MethodNotAllowedException(ApiException):
     pass
 
 
-class ToManyRequestsException(ApiException):
+class TooManyRequestsException(ApiException):
     pass
 
 

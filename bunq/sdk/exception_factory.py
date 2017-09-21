@@ -3,7 +3,7 @@ from bunq.sdk.exception import UnauthorizedException
 from bunq.sdk.exception import ForbiddenException
 from bunq.sdk.exception import NotFoundException
 from bunq.sdk.exception import MethodNotAllowedException
-from bunq.sdk.exception import ToManyRequestsException
+from bunq.sdk.exception import TooManyRequestsException
 from bunq.sdk.exception import PleaseContactBunqException
 from bunq.sdk.exception import UnknownApiErrorException
 from bunq.sdk.exception import ApiException
@@ -46,7 +46,7 @@ class ExceptionFactory:
         if response_code == cls._HTTP_RESPONSE_CODE_METHOD_NOT_ALLOWED:
             return MethodNotAllowedException(error_message, response_code)
         if response_code == cls._HTTP_RESPONSE_CODE_TOO_MANY_REQUESTS:
-            return ToManyRequestsException(error_message, response_code)
+            return TooManyRequestsException(error_message, response_code)
         if response_code == cls._HTTP_RESPONSE_CODE_INTERNAL_SERVER_ERROR:
             return PleaseContactBunqException(error_message, response_code)
 
