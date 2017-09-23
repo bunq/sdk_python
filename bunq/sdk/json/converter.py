@@ -614,6 +614,8 @@ def set_initializer_function(initializer_function):
 def create_initializer(initializer_function):
     """
     :type initializer_function: callable
+
+    :rtype: bool
     """
 
     is_disposed = False
