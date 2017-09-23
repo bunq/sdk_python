@@ -948,7 +948,7 @@ class TaxResident(core.BunqModel):
         self.tax_number = tax_number
 
 
-class MonetaryAccountReference(model.BunqModel):
+class MonetaryAccountReference(core.BunqModel):
     """
     :type pointer: Pointer
     :type label_monetary_account: LabelMonetaryAccount
