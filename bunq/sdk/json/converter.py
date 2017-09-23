@@ -605,7 +605,7 @@ class ValueSpecs(object):
 
 def set_initializer(initializer):
     """
-    :type initializer: callable
+    :type initializer: Generator[bool, None, None]
     """
 
     JsonAdapter.set_initializer(initializer)
