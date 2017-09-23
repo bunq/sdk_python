@@ -5,7 +5,7 @@ import os
 
 from bunq.sdk import client
 from bunq.sdk import context
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 
 _CONTENT_TYPE_IMAGE_JPEG = 'image/jpeg'
 _DESCRIPTION_TEST_JPG_ATTACHMENT = 'A test JPG attachment.'
@@ -24,12 +24,12 @@ def run():
     }
 
     attachment_bytes = read_attachment_in_bytes()
-    attachment_uuid = generated.AttachmentPublic.create(
+    attachment_uuid = endpoint.AttachmentPublic.create(
         api_context,
         attachment_bytes,
         custom_headers
     ).value
-    attachment_bytes2 = generated.AttachmentPublicContent.list(
+    attachment_bytes2 = endpoint.AttachmentPublicContent.list(
         api_context,
         attachment_uuid
     ).value

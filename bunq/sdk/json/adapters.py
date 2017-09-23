@@ -3,10 +3,10 @@ import urllib.parse as urlparse
 
 from bunq.sdk import client
 from bunq.sdk import context
-from bunq.sdk import model
+from bunq.sdk.model import core
 from bunq.sdk import security
 from bunq.sdk.json import converter
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
 
@@ -29,25 +29,25 @@ class InstallationAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, array):
         """
-        :type target_class: model.Installation|type
+        :type target_class: core.Installation|type
         :type array: list
 
-        :rtype: model.Installation
+        :rtype: core.Installation
         """
 
         installation = target_class.__new__(target_class)
         server_public_key_wrapped = array[cls._INDEX_SERVER_PUBLIC_KEY]
         installation.__dict__ = {
             cls._ATTRIBUTE_ID: converter.deserialize(
-                model.Id,
+                core.Id,
                 array[cls._INDEX_ID][cls._FIELD_ID]
             ),
             cls._ATTRIBUTE_TOKEN: converter.deserialize(
-                model.SessionToken,
+                core.SessionToken,
                 array[cls._INDEX_TOKEN][cls._FIELD_TOKEN]
             ),
             cls._ATTRIBUTE_SERVER_PUBLIC_KEY: converter.deserialize(
-                model.PublicKeyServer,
+                core.PublicKeyServer,
                 server_public_key_wrapped[cls._FIELD_SERVER_PUBLIC_KEY]
             ),
         }
@@ -57,7 +57,7 @@ class InstallationAdapter(converter.JsonAdapter):
     @classmethod
     def serialize(cls, installation):
         """
-        :type installation: model.Installation
+        :type installation: core.Installation
 
         :rtype: list
         """
@@ -98,20 +98,20 @@ class SessionServerAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, array):
         """
-        :type target_class: model.SessionServer|type
+        :type target_class: core.SessionServer|type
         :type array: list
 
-        :rtype: model.SessionServer
+        :rtype: core.SessionServer
         """
 
         session_server = target_class.__new__(target_class)
         session_server.__dict__ = {
             cls._ATTRIBUTE_ID: converter.deserialize(
-                model.Id,
+                core.Id,
                 array[cls._INDEX_ID][cls._FIELD_ID]
             ),
             cls._ATTRIBUTE_TOKEN: converter.deserialize(
-                model.SessionToken,
+                core.SessionToken,
                 array[cls._INDEX_TOKEN][cls._FIELD_TOKEN]
             ),
             cls._ATTRIBUTE_USER_COMPANY: None,
@@ -123,13 +123,13 @@ class SessionServerAdapter(converter.JsonAdapter):
         if cls._FIELD_USER_COMPANY in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_COMPANY] = \
                 converter.deserialize(
-                    generated.UserCompany,
+                    endpoint.UserCompany,
                     user_dict_wrapped[cls._FIELD_USER_COMPANY]
                 )
         elif cls._FIELD_USER_PERSON in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_PERSON] = \
                 converter.deserialize(
-                    generated.UserPerson,
+                    endpoint.UserPerson,
                     user_dict_wrapped[cls._FIELD_USER_PERSON]
                 )
 
@@ -138,7 +138,7 @@ class SessionServerAdapter(converter.JsonAdapter):
     @classmethod
     def serialize(cls, session_server):
         """
-        :type session_server: model.SessionServer
+        :type session_server: core.SessionServer
 
         :rtype: list
         """

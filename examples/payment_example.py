@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from bunq.sdk import context
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
 _PAYMENT_AMOUNT = '0.01'
@@ -16,18 +16,18 @@ _MONETARY_ACCOUNT_ITEM_ID = 0  # Put your monetary account ID here
 def run():
     api_context = context.ApiContext.restore()
     request_map = {
-        generated.Payment.FIELD_AMOUNT: object_.Amount(
+        endpoint.Payment.FIELD_AMOUNT: object_.Amount(
             _PAYMENT_AMOUNT,
             _PAYMENT_CURRENCY
         ),
-        generated.Payment.FIELD_COUNTERPARTY_ALIAS: object_.Pointer(
+        endpoint.Payment.FIELD_COUNTERPARTY_ALIAS: object_.Pointer(
             _COUNTERPARTY_POINTER_TYPE,
             _COUNTERPARTY_EMAIL
         ),
-        generated.Payment.FIELD_DESCRIPTION: _PAYMENT_DESCRIPTION,
+        endpoint.Payment.FIELD_DESCRIPTION: _PAYMENT_DESCRIPTION,
     }
 
-    payment_id = generated.Payment.create(
+    payment_id = endpoint.Payment.create(
         api_context,
         request_map,
         _USER_ITEM_ID,
@@ -35,7 +35,7 @@ def run():
     ).value
 
     print(
-        generated.Payment.get(
+        endpoint.Payment.get(
             api_context,
             _USER_ITEM_ID,
             _MONETARY_ACCOUNT_ITEM_ID,

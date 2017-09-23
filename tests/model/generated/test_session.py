@@ -1,6 +1,6 @@
 import time
 
-from bunq.sdk.model.generated import Session
+from bunq.sdk.model.generated.endpoint import Session
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 

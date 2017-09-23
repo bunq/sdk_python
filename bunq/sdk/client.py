@@ -4,7 +4,6 @@ from urllib.parse import urlencode
 
 import requests
 
-from bunq.sdk import context
 from bunq.sdk import exception
 from bunq.sdk import security
 from bunq.sdk.json import converter
@@ -12,7 +11,7 @@ from bunq.sdk.json import converter
 
 class ApiClient(object):
     """
-    :type _api_context: context.ApiContext
+    :type _api_context: bunq.sdk.context.ApiContext
     """
 
     # HTTPS type of proxy, the only used at bunq
@@ -371,6 +370,18 @@ class BunqResponse(object):
         """
 
         return self._pagination
+
+    @classmethod
+    def cast_from_bunq_response(cls, bunq_response):
+        """
+        :type bunq_response: BunqResponse
+        """
+
+        return cls(
+            bunq_response.value,
+            bunq_response.headers,
+            bunq_response.pagination
+        )
 
 
 class Pagination(object):

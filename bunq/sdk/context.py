@@ -3,10 +3,10 @@ import datetime
 import aenum
 from Cryptodome.PublicKey import RSA
 
-from bunq.sdk import model
+from bunq.sdk.model import core
 from bunq.sdk import security
 from bunq.sdk.json import converter
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 
 
 class ApiEnvironmentType(aenum.AutoNumberEnum):
@@ -95,7 +95,7 @@ class ApiContext(object):
         """
 
         private_key_client = security.generate_rsa_private_key()
-        installation = model.Installation.create(
+        installation = core.Installation.create(
             self,
             security.public_key_to_string(private_key_client.publickey())
         ).value
@@ -119,12 +119,12 @@ class ApiContext(object):
         :rtype: None
         """
 
-        generated.DeviceServer.create(
+        endpoint.DeviceServer.create(
             self,
             {
-                generated.DeviceServer.FIELD_DESCRIPTION: device_description,
-                generated.DeviceServer.FIELD_SECRET: self.api_key,
-                generated.DeviceServer.FIELD_PERMITTED_IPS: permitted_ips,
+                endpoint.DeviceServer.FIELD_DESCRIPTION: device_description,
+                endpoint.DeviceServer.FIELD_SECRET: self.api_key,
+                endpoint.DeviceServer.FIELD_PERMITTED_IPS: permitted_ips,
             }
         )
 
@@ -133,7 +133,7 @@ class ApiContext(object):
         :rtype: None
         """
 
-        session_server = model.SessionServer.create(self).value
+        session_server = core.SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
 
@@ -142,7 +142,7 @@ class ApiContext(object):
     @classmethod
     def _get_expiry_timestamp(cls, session_server):
         """
-        :type session_server: model.SessionServer
+        :type session_server: core.SessionServer
 
         :rtype: datetime.datetime
         """
@@ -155,7 +155,7 @@ class ApiContext(object):
     @classmethod
     def _get_session_timeout_seconds(cls, session_server):
         """
-        :type session_server: model.SessionServer
+        :type session_server: core.SessionServer
 
         :rtype: int
         """
@@ -210,7 +210,7 @@ class ApiContext(object):
         :rtype: None
         """
 
-        generated.Session.delete(self, self._SESSION_ID_DUMMY)
+        endpoint.Session.delete(self, self._SESSION_ID_DUMMY)
 
     @property
     def environment_type(self):
@@ -300,7 +300,7 @@ class ApiContext(object):
 
         with open(path, cls._FILE_MODE_READ) as file_:
             return cls.from_json(file_.read())
-        
+
     @classmethod
     def from_json(cls, json_str):
         """

@@ -89,6 +89,6 @@ bunq.conf
 bunq-test.conf
 **/tmp
 config.json
-tests/connectQr.png
+connectQr.png
 .DS_Store
 bunq_sdk.egg-info
