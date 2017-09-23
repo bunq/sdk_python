@@ -52,7 +52,7 @@ class JsonAdapter(object):
     @classmethod
     def set_initializer(cls, initializer):
         """
-        :type initializer: function
+        :type initializer: Generator[bool, None, None]
         """
 
         cls._initializer = initializer
@@ -603,12 +603,26 @@ class ValueSpecs(object):
         return self._types
 
 
-def set_initializer(initializer):
+def set_initializer_function(initializer_function):
     """
-    :type initializer: Generator[bool, None, None]
+    :type initializer_function: callable
     """
 
-    JsonAdapter.set_initializer(initializer)
+    JsonAdapter.set_initializer(create_initializer(initializer_function))
+
+
+def create_initializer(initializer_function):
+    """
+    :type initializer_function: callable
+    """
+
+    is_initialized = False
+
+    if not is_initialized:
+        initializer_function()
+        is_initialized = True
+
+    yield is_initialized
 
 
 def register_adapter(target_class, adapter):
