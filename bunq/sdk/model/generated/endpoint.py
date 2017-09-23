@@ -81,7 +81,9 @@ class Invoice(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseInvoiceList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, invoice_id, custom_headers=None):
@@ -102,7 +104,9 @@ class Invoice(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, invoice_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseInvoice.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -301,7 +305,9 @@ class InvoiceByUser(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseInvoiceByUserList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, invoice_by_user_id, custom_headers=None):
@@ -321,7 +327,9 @@ class InvoiceByUser(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, invoice_by_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseInvoiceByUser.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -492,7 +500,9 @@ class ChatConversation(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw)
+        return BunqResponseChatConversationList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, chat_conversation_id, custom_headers=None):
@@ -512,7 +522,9 @@ class ChatConversation(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, chat_conversation_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw)
+        return BunqResponseChatConversation.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
 
     @property
     def SupportConversationExternal(self):
@@ -629,7 +641,9 @@ class ChatMessage(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, chat_conversation_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw)
+        return BunqResponseChatMessageList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
 
     @property
     def ChatMessageAnnouncement(self):
@@ -811,7 +825,9 @@ class CardDebit(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardDebit.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -999,7 +1015,9 @@ class CardPinChange(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, card_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardPinChangeList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, card_id, card_pin_change_id, custom_headers=None):
@@ -1020,7 +1038,9 @@ class CardPinChange(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, card_id, card_pin_change_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardPinChange.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -1137,7 +1157,9 @@ class CardResult(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, card_result_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardResult.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -1161,7 +1183,9 @@ class CardResult(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardResultList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def monetary_account_id(self):
@@ -1354,7 +1378,9 @@ class DraftPayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, draft_payment_id, custom_headers=None):
@@ -1379,7 +1405,9 @@ class DraftPayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, draft_payment_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -1405,7 +1433,9 @@ class DraftPayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDraftPaymentList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, draft_payment_id, custom_headers=None):
@@ -1428,7 +1458,9 @@ class DraftPayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, draft_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDraftPayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -1563,7 +1595,9 @@ class IdealMerchantTransaction(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, ideal_merchant_transaction_id, custom_headers=None):
@@ -1584,7 +1618,9 @@ class IdealMerchantTransaction(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, ideal_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseIdealMerchantTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -1608,7 +1644,9 @@ class IdealMerchantTransaction(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseIdealMerchantTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def monetary_account_id(self):
@@ -1821,7 +1859,9 @@ class Payment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, payment_id, custom_headers=None):
@@ -1844,7 +1884,9 @@ class Payment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -1871,7 +1913,9 @@ class Payment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePaymentList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -2104,7 +2148,9 @@ class PaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, payment_batch_id, custom_headers=None):
@@ -2130,7 +2176,9 @@ class PaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, payment_batch_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, payment_batch_id, custom_headers=None):
@@ -2153,7 +2201,9 @@ class PaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, payment_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePaymentBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -2179,7 +2229,9 @@ class PaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePaymentBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def payments(self):
@@ -2234,7 +2286,9 @@ class PromotionDisplay(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, promotion_display_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePromotionDisplay.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, promotion_display_id, custom_headers=None):
@@ -2256,7 +2310,9 @@ class PromotionDisplay(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, promotion_display_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -2341,7 +2397,9 @@ class RequestInquiryBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, request_inquiry_batch_id, custom_headers=None):
@@ -2367,7 +2425,9 @@ class RequestInquiryBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, request_inquiry_batch_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, request_inquiry_batch_id, custom_headers=None):
@@ -2390,7 +2450,9 @@ class RequestInquiryBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, request_inquiry_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiryBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -2416,7 +2478,9 @@ class RequestInquiryBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiryBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def request_inquiries(self):
@@ -2544,7 +2608,9 @@ class RequestInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, request_inquiry_id, custom_headers=None):
@@ -2569,7 +2635,9 @@ class RequestInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, request_inquiry_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -2595,7 +2663,9 @@ class RequestInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, request_inquiry_id, custom_headers=None):
@@ -2618,7 +2688,9 @@ class RequestInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, request_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -2920,7 +2992,9 @@ class RequestResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, request_response_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -2946,7 +3020,9 @@ class RequestResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestResponseList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, request_response_id, custom_headers=None):
@@ -2969,7 +3045,9 @@ class RequestResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, request_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -3216,7 +3294,9 @@ class SchedulePaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, schedule_payment_batch_id, custom_headers=None):
@@ -3239,7 +3319,9 @@ class SchedulePaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, schedule_payment_batch_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, schedule_payment_batch_id, custom_headers=None):
@@ -3260,7 +3342,9 @@ class SchedulePaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @property
     def payments(self):
@@ -3325,7 +3409,9 @@ class SchedulePayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, schedule_payment_id, custom_headers=None):
@@ -3346,7 +3432,9 @@ class SchedulePayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, schedule_payment_id, custom_headers=None):
@@ -3367,7 +3455,9 @@ class SchedulePayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, schedule_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseSchedulePayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -3391,7 +3481,9 @@ class SchedulePayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseSchedulePaymentList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, schedule_payment_id, custom_headers=None):
@@ -3414,7 +3506,9 @@ class SchedulePayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, schedule_payment_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def payment(self):
@@ -3571,7 +3665,9 @@ class ScheduleInstance(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, schedule_id, schedule_instance_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseScheduleInstance.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, schedule_id, schedule_instance_id, custom_headers=None):
@@ -3595,7 +3691,9 @@ class ScheduleInstance(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, schedule_id, schedule_instance_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, schedule_id, params=None, custom_headers=None):
@@ -3620,7 +3718,9 @@ class ScheduleInstance(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, schedule_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseScheduleInstanceList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def state(self):
@@ -3744,7 +3844,9 @@ class ShareInviteBankInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, share_invite_bank_inquiry_id, custom_headers=None):
@@ -3767,7 +3869,9 @@ class ShareInviteBankInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, share_invite_bank_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseShareInviteBankInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, share_invite_bank_inquiry_id, custom_headers=None):
@@ -3793,7 +3897,9 @@ class ShareInviteBankInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, share_invite_bank_inquiry_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseShareInviteBankInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -3821,7 +3927,9 @@ class ShareInviteBankInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseShareInviteBankInquiryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def alias(self):
@@ -3971,7 +4079,9 @@ class ShareInviteBankResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, share_invite_bank_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseShareInviteBankResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, share_invite_bank_response_id, custom_headers=None):
@@ -3995,7 +4105,9 @@ class ShareInviteBankResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, share_invite_bank_response_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseShareInviteBankResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -4020,7 +4132,9 @@ class ShareInviteBankResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseShareInviteBankResponseList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def counter_alias(self):
@@ -4143,7 +4257,9 @@ class UserCredentialPasswordIp(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, user_credential_password_ip_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseUserCredentialPasswordIp.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -4166,7 +4282,9 @@ class UserCredentialPasswordIp(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseUserCredentialPasswordIpList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -4470,7 +4588,9 @@ class ChatMessageAttachment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, chat_conversation_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -4523,7 +4643,9 @@ class ChatMessageText(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, chat_conversation_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -4567,7 +4689,9 @@ class AttachmentConversationContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, chat_conversation_id, attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class AttachmentPublicContent(core.BunqModel):
@@ -4601,7 +4725,9 @@ class AttachmentPublicContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(attachment_public_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class AttachmentTabContent(core.BunqModel):
@@ -4637,7 +4763,9 @@ class AttachmentTabContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class TabAttachmentTabContent(core.BunqModel):
@@ -4672,7 +4800,9 @@ class TabAttachmentTabContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(tab_uuid, attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class AttachmentMonetaryAccount(core.BunqModel):
@@ -4720,7 +4850,9 @@ class AttachmentMonetaryAccount(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def attachment(self):
@@ -4788,7 +4920,9 @@ class AttachmentPublic(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_uuid(response_raw)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, attachment_public_uuid, custom_headers=None):
@@ -4811,7 +4945,9 @@ class AttachmentPublic(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(attachment_public_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseAttachmentPublic.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def uuid(self):
@@ -4897,7 +5033,9 @@ class AttachmentTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, attachment_tab_id, custom_headers=None):
@@ -4921,7 +5059,9 @@ class AttachmentTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseAttachmentTab.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -4999,7 +5139,9 @@ class TabAttachmentTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid, tab_attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabAttachmentTab.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -5079,7 +5221,9 @@ class Avatar(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_uuid(response_raw)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, avatar_uuid, custom_headers=None):
@@ -5098,7 +5242,9 @@ class Avatar(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(avatar_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseAvatar.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def uuid(self):
@@ -5178,7 +5324,9 @@ class BunqMeTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, bunq_me_tab_id, custom_headers=None):
@@ -5201,7 +5349,9 @@ class BunqMeTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, bunq_me_tab_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseBunqMeTab.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -5225,7 +5375,9 @@ class BunqMeTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseBunqMeTabList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, bunq_me_tab_id, custom_headers=None):
@@ -5246,7 +5398,9 @@ class BunqMeTab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, bunq_me_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseBunqMeTab.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -5480,7 +5634,9 @@ class CardName(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardNameList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def possible_card_name_array(self):
@@ -5539,7 +5695,9 @@ class CardReplace(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, card_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -5639,7 +5797,9 @@ class Card(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, card_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCard.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, card_id, custom_headers=None):
@@ -5661,7 +5821,9 @@ class Card(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, card_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCard.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -5686,7 +5848,9 @@ class Card(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCardList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -5867,7 +6031,9 @@ class CashRegisterQrCodeContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id, qr_code_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class CashRegisterQrCode(core.BunqModel):
@@ -5929,7 +6095,9 @@ class CashRegisterQrCode(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, cash_register_id, cash_register_qr_code_id, custom_headers=None):
@@ -5956,7 +6124,9 @@ class CashRegisterQrCode(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, cash_register_id, cash_register_qr_code_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id, cash_register_qr_code_id, custom_headers=None):
@@ -5981,7 +6151,9 @@ class CashRegisterQrCode(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id, cash_register_qr_code_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCashRegisterQrCode.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id, params=None, custom_headers=None):
@@ -6008,7 +6180,9 @@ class CashRegisterQrCode(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCashRegisterQrCodeList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -6130,7 +6304,9 @@ class CashRegister(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id, custom_headers=None):
@@ -6153,7 +6329,9 @@ class CashRegister(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCashRegister.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, cash_register_id, custom_headers=None):
@@ -6180,7 +6358,9 @@ class CashRegister(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -6206,7 +6386,9 @@ class CashRegister(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCashRegisterList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -6328,7 +6510,9 @@ class Tab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw)
+        return BunqResponseTab.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id, params=None, custom_headers=None):
@@ -6355,7 +6539,9 @@ class Tab(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw)
+        return BunqResponseTabList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
 
     @property
     def TabUsageSingle(self):
@@ -6476,7 +6662,9 @@ class TabUsageSingle(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_uuid(response_raw)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid, custom_headers=None):
@@ -6505,7 +6693,9 @@ class TabUsageSingle(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_uuid(response_raw)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid, custom_headers=None):
@@ -6530,7 +6720,9 @@ class TabUsageSingle(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid, custom_headers=None):
@@ -6554,7 +6746,9 @@ class TabUsageSingle(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabUsageSingle.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id, params=None, custom_headers=None):
@@ -6581,7 +6775,9 @@ class TabUsageSingle(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabUsageSingleList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def uuid(self):
@@ -6917,7 +7113,9 @@ class TabUsageMultiple(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_uuid(response_raw)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid, custom_headers=None):
@@ -6948,7 +7146,9 @@ class TabUsageMultiple(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_uuid(response_raw)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid, custom_headers=None):
@@ -6973,7 +7173,9 @@ class TabUsageMultiple(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid, custom_headers=None):
@@ -6997,7 +7199,9 @@ class TabUsageMultiple(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabUsageMultiple.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id, params=None, custom_headers=None):
@@ -7024,7 +7228,9 @@ class TabUsageMultiple(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabUsageMultipleList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def uuid(self):
@@ -7210,7 +7416,9 @@ class CertificatePinned(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, certificate_pinned_id, custom_headers=None):
@@ -7232,7 +7440,9 @@ class CertificatePinned(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, certificate_pinned_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -7257,7 +7467,9 @@ class CertificatePinned(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCertificatePinnedList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, certificate_pinned_id, custom_headers=None):
@@ -7279,7 +7491,9 @@ class CertificatePinned(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, certificate_pinned_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCertificatePinned.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def certificate_chain(self):
@@ -7360,7 +7574,9 @@ class DeviceServer(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, device_server_id, custom_headers=None):
@@ -7381,7 +7597,9 @@ class DeviceServer(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_server_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDeviceServer.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, params=None, custom_headers=None):
@@ -7405,7 +7623,9 @@ class DeviceServer(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDeviceServerList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -7495,7 +7715,9 @@ class Device(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw)
+        return BunqResponseDevice.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, params=None, custom_headers=None):
@@ -7520,7 +7742,9 @@ class Device(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw)
+        return BunqResponseDeviceList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
 
     @property
     def DevicePhone(self):
@@ -7663,7 +7887,9 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class DraftShareInviteBank(core.BunqModel):
@@ -7724,7 +7950,9 @@ class DraftShareInviteBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, draft_share_invite_bank_id, custom_headers=None):
@@ -7746,7 +7974,9 @@ class DraftShareInviteBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDraftShareInviteBank.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, draft_share_invite_bank_id, custom_headers=None):
@@ -7771,7 +8001,9 @@ class DraftShareInviteBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, draft_share_invite_bank_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDraftShareInviteBank.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -7794,7 +8026,9 @@ class DraftShareInviteBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseDraftShareInviteBankList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def user_alias_created(self):
@@ -7886,7 +8120,9 @@ class ExportAnnualOverviewContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class ExportAnnualOverview(core.BunqModel):
@@ -7942,7 +8178,9 @@ class ExportAnnualOverview(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, export_annual_overview_id, custom_headers=None):
@@ -7964,7 +8202,9 @@ class ExportAnnualOverview(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseExportAnnualOverview.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -7989,7 +8229,9 @@ class ExportAnnualOverview(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseExportAnnualOverviewList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -8065,7 +8307,9 @@ class CustomerStatementExportContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, customer_statement_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class CustomerStatementExport(core.BunqModel):
@@ -8132,7 +8376,9 @@ class CustomerStatementExport(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, customer_statement_export_id, custom_headers=None):
@@ -8153,7 +8399,9 @@ class CustomerStatementExport(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, customer_statement_export_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCustomerStatementExport.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -8177,7 +8425,9 @@ class CustomerStatementExport(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCustomerStatementExportList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, customer_statement_export_id, custom_headers=None):
@@ -8198,7 +8448,9 @@ class CustomerStatementExport(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, customer_statement_export_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @property
     def id_(self):
@@ -8321,7 +8573,9 @@ class InstallationServerPublicKey(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(installation_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseInstallationServerPublicKeyList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def server_public_key(self):
@@ -8369,7 +8623,9 @@ class ShareInviteBankAmountUsed(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, share_invite_bank_inquiry_id, share_invite_bank_amount_used_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
 
 class MonetaryAccountBank(core.BunqModel):
@@ -8471,7 +8727,9 @@ class MonetaryAccountBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_bank_id, custom_headers=None):
@@ -8493,7 +8751,9 @@ class MonetaryAccountBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseMonetaryAccountBank.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_bank_id, custom_headers=None):
@@ -8517,7 +8777,9 @@ class MonetaryAccountBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_bank_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -8542,7 +8804,9 @@ class MonetaryAccountBank(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseMonetaryAccountBankList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -8785,7 +9049,9 @@ class MonetaryAccount(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw)
+        return BunqResponseMonetaryAccount.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -8810,7 +9076,9 @@ class MonetaryAccount(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw)
+        return BunqResponseMonetaryAccountList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
 
     @property
     def MonetaryAccountBank(self):
@@ -8871,7 +9139,9 @@ class PaymentChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, payment_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, payment_id, payment_chat_id, custom_headers=None):
@@ -8897,7 +9167,9 @@ class PaymentChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, payment_id, payment_chat_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePaymentChat.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, payment_id, params=None, custom_headers=None):
@@ -8924,7 +9196,9 @@ class PaymentChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePaymentChatList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -9004,7 +9278,9 @@ class PermittedIp(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, credential_password_ip_id, permitted_ip_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePermittedIp.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def create(cls, api_context, request_map, user_id, credential_password_ip_id, custom_headers=None):
@@ -9026,7 +9302,9 @@ class PermittedIp(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, credential_password_ip_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, credential_password_ip_id, params=None, custom_headers=None):
@@ -9050,7 +9328,9 @@ class PermittedIp(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, credential_password_ip_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponsePermittedIpList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, credential_password_ip_id, permitted_ip_id, custom_headers=None):
@@ -9073,7 +9353,9 @@ class PermittedIp(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, credential_password_ip_id, permitted_ip_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def ip(self):
@@ -9146,7 +9428,9 @@ class RequestInquiryChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, request_inquiry_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, request_inquiry_id, request_inquiry_chat_id, custom_headers=None):
@@ -9172,7 +9456,9 @@ class RequestInquiryChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, request_inquiry_id, request_inquiry_chat_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiryChat.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, request_inquiry_id, params=None, custom_headers=None):
@@ -9199,7 +9485,9 @@ class RequestInquiryChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, request_inquiry_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestInquiryChatList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -9288,7 +9576,9 @@ class RequestResponseChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, request_response_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, request_response_id, request_response_chat_id, custom_headers=None):
@@ -9314,7 +9604,9 @@ class RequestResponseChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, request_response_id, request_response_chat_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestResponseChat.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, request_response_id, params=None, custom_headers=None):
@@ -9341,7 +9633,9 @@ class RequestResponseChat(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, request_response_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseRequestResponseChatList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -9409,7 +9703,9 @@ class Schedule(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, schedule_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseSchedule.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -9439,7 +9735,9 @@ class Schedule(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseScheduleList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
 
 class ScheduleUser(core.BunqModel):
@@ -9481,7 +9779,9 @@ class ScheduleUser(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseScheduleUserList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
 
 class Session(core.BunqModel):
@@ -9514,7 +9814,9 @@ class Session(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(session_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
 
 class TabItemShopBatch(core.BunqModel):
@@ -9560,7 +9862,9 @@ class TabItemShopBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, cash_register_id, tab_uuid)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def tab_items(self):
@@ -9641,7 +9945,9 @@ class TabItemShop(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id, cash_register_id, tab_uuid)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id, custom_headers=None):
@@ -9668,7 +9974,9 @@ class TabItemShop(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id, custom_headers=None):
@@ -9694,7 +10002,9 @@ class TabItemShop(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
-        return client.BunqResponse(None, response_raw.headers)
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_uuid, params=None, custom_headers=None):
@@ -9722,7 +10032,9 @@ class TabItemShop(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabItemShopList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id, custom_headers=None):
@@ -9747,7 +10059,9 @@ class TabItemShop(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabItemShop.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -9850,7 +10164,9 @@ class TabResultInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, cash_register_id, tab_uuid, tab_result_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabResultInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_uuid, params=None, custom_headers=None):
@@ -9878,7 +10194,9 @@ class TabResultInquiry(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabResultInquiryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def tab(self):
@@ -9939,7 +10257,9 @@ class TabResultResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, tab_result_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabResultResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
@@ -9965,7 +10285,9 @@ class TabResultResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTabResultResponseList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def tab(self):
@@ -10021,7 +10343,9 @@ class TabQrCodeContent(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id, cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
 
 
 class TokenQrRequestIdeal(core.BunqModel):
@@ -10107,7 +10431,9 @@ class TokenQrRequestIdeal(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseTokenQrRequestIdeal.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def time_responded(self):
@@ -10380,7 +10706,9 @@ class UserCompany(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_company_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseUserCompany.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_company_id, custom_headers=None):
@@ -10403,7 +10731,9 @@ class UserCompany(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_company_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -10686,7 +11016,9 @@ class Customer(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCustomerList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def get(cls, api_context, user_id, customer_id, custom_headers=None):
@@ -10706,7 +11038,9 @@ class Customer(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, customer_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCustomer.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_id, customer_id, custom_headers=None):
@@ -10728,7 +11062,9 @@ class Customer(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, customer_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -10808,7 +11144,9 @@ class CustomerLimit(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseCustomerLimitList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def limit_monetary_account(self):
@@ -10894,7 +11232,9 @@ class BillingContractSubscription(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseBillingContractSubscription.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def list(cls, api_context, user_id, params=None, custom_headers=None):
@@ -10919,7 +11259,9 @@ class BillingContractSubscription(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseBillingContractSubscriptionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
@@ -11103,7 +11445,9 @@ class UserPerson(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_person_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseUserPerson.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @classmethod
     def update(cls, api_context, request_map, user_person_id, custom_headers=None):
@@ -11126,7 +11470,9 @@ class UserPerson(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_person_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return cls._process_for_id(response_raw)
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @property
     def id_(self):
@@ -11418,7 +11764,9 @@ class User(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw)
+        return BunqResponseUser.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
 
     @classmethod
     def list(cls, api_context, params=None, custom_headers=None):
@@ -11442,7 +11790,9 @@ class User(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_LISTING
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return cls._from_json_list(response_raw)
+        return BunqResponseUserList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
 
     @property
     def UserLight(self):
@@ -11596,7 +11946,9 @@ class UserLight(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_light_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
-        return cls._from_json(response_raw, cls._OBJECT_TYPE)
+        return BunqResponseUserLight.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
 
     @property
     def id_(self):
