@@ -616,13 +616,13 @@ def create_initializer(initializer_function):
     :type initializer_function: callable
     """
 
-    is_initialized = False
+    is_disposed = False
 
-    if not is_initialized:
+    if not is_disposed:
         initializer_function()
-        is_initialized = True
+        is_disposed = True
 
-    yield is_initialized
+    yield is_disposed
 
 
 def register_adapter(target_class, adapter):
