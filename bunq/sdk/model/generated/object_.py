@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from bunq.sdk.model import core
+from bunq.sdk.model.generated import endpoint
 
 
 class InvoiceItemGroup(core.BunqModel):
@@ -225,26 +226,26 @@ class ChatMessageContentAnchorEvent(core.BunqModel):
 
 class AnchoredObject(core.BunqModel):
     """
-    :type CardDebit: generated.CardDebit
-    :type CardPinChange: generated.CardPinChange
-    :type CardResult: generated.CardResult
-    :type DraftPayment: generated.DraftPayment
-    :type IdealMerchantTransaction: generated.IdealMerchantTransaction
-    :type Invoice: generated.Invoice
-    :type Payment: generated.Payment
-    :type PaymentBatch: generated.PaymentBatch
-    :type PromotionDisplay: generated.PromotionDisplay
-    :type RequestInquiryBatch: generated.RequestInquiryBatch
-    :type RequestInquiry: generated.RequestInquiry
-    :type RequestResponse: generated.RequestResponse
-    :type ScheduledPaymentBatch: generated.SchedulePaymentBatch
-    :type ScheduledPayment: generated.SchedulePayment
-    :type ScheduledRequestInquiryBatch: generated.ScheduleRequestInquiryBatch
-    :type ScheduledRequestInquiry: generated.ScheduleRequestInquiry
-    :type ScheduledInstance: generated.ScheduleInstance
-    :type ShareInviteBankInquiry: generated.ShareInviteBankInquiry
-    :type ShareInviteBankResponse: generated.ShareInviteBankResponse
-    :type UserCredentialPasswordIp: generated.UserCredentialPasswordIp
+    :type CardDebit: endpoint.CardDebit
+    :type CardPinChange: endpoint.CardPinChange
+    :type CardResult: endpoint.CardResult
+    :type DraftPayment: endpoint.DraftPayment
+    :type IdealMerchantTransaction: endpoint.IdealMerchantTransaction
+    :type Invoice: endpoint.Invoice
+    :type Payment: endpoint.Payment
+    :type PaymentBatch: endpoint.PaymentBatch
+    :type PromotionDisplay: endpoint.PromotionDisplay
+    :type RequestInquiryBatch: endpoint.RequestInquiryBatch
+    :type RequestInquiry: endpoint.RequestInquiry
+    :type RequestResponse: endpoint.RequestResponse
+    :type ScheduledPaymentBatch: endpoint.SchedulePaymentBatch
+    :type ScheduledPayment: endpoint.SchedulePayment
+    :type ScheduledRequestInquiryBatch: endpoint.ScheduleRequestInquiryBatch
+    :type ScheduledRequestInquiry: endpoint.ScheduleRequestInquiry
+    :type ScheduledInstance: endpoint.ScheduleInstance
+    :type ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
+    :type ShareInviteBankResponse: endpoint.ShareInviteBankResponse
+    :type UserCredentialPasswordIp: endpoint.UserCredentialPasswordIp
     """
 
     def __init__(self):
