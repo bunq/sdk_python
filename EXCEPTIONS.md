@@ -1,4 +1,4 @@
-##Exceptions
+## Exceptions
 
 When you make a request via the SDK, there is a chance of request failing
 due to various reasons. When such a failure happens, an exception
@@ -6,7 +6,7 @@ corresponding to the error occurred is raised.
 
 
 ----
-####Possible Exceptions
+#### Possible Exceptions
 
 * `BadRequestException` If the request returns with status code `400`
 * `UnauthorizedException` If the request returns with status code `401`
@@ -23,7 +23,7 @@ For more information regarding these errors, please take a look on the documenta
 page here: https://doc.bunq.com/api/1/page/errors
 
 ---
-####Base exception
+#### Base exception
 All the exceptions have the same base exception which looks like this:
 ```python
 class ApiException(Exception):
@@ -50,7 +50,7 @@ This means that each exception will have the response code and the error message
 related to the specific exception that has been raised.
 
 ---
-####Exception handling
+#### Exception handling
 Because we raise different exceptions for each error, you can catch an error
 if you expect it to be raised.
 
