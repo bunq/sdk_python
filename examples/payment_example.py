@@ -42,3 +42,6 @@ def run():
             payment_id
         ).value.to_json()
     )
+    
+    # Save the API context to account for all the changes that might have occurred to it during the example execution
+    api_context.save()
