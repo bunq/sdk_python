@@ -1,5 +1,4 @@
 ## Exceptions
-
 When you make a request via the SDK, there is a chance of request failing
 due to various reasons. When such a failure happens, an exception
 corresponding to the error occurred is raised.
@@ -7,7 +6,6 @@ corresponding to the error occurred is raised.
 
 ----
 #### Possible Exceptions
-
 * `BadRequestException` If the request returns with status code `400`
 * `UnauthorizedException` If the request returns with status code `401`
 * `ForbiddenException` If the request returns with status code `403`

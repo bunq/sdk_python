@@ -1,7 +1,7 @@
 import uuid
 from json import JSONDecodeError
-from urllib.parse import urlencode
 
+from urllib.parse import urlencode
 import requests
 
 from bunq.sdk import context
