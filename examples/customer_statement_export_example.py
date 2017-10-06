@@ -2,7 +2,7 @@
 import datetime
 
 from bunq.sdk import context
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 
 # Desired format of customer statement
 _CUSTOMER_STATEMENT_FORMAT = 'PDF'
@@ -19,9 +19,9 @@ _INDEX_FIRST = 0
 
 def run():
     api_context = context.ApiContext.restore()
-    user_id = generated.User.list(api_context).value[_INDEX_FIRST]\
+    user_id = endpoint.User.list(api_context).value[_INDEX_FIRST]\
         .UserCompany.id_
-    monetary_account_id = generated.MonetaryAccountBank.list(
+    monetary_account_id = endpoint.MonetaryAccountBank.list(
         api_context,
         user_id
     ).value[_INDEX_FIRST].id_
@@ -30,22 +30,22 @@ def run():
     date_start -= datetime.timedelta(_DAYS_IN_WEEK)
     date_end = datetime.datetime.now()
     customer_statement_map = {
-        generated.CustomerStatementExport.FIELD_STATEMENT_FORMAT:
+        endpoint.CustomerStatementExport.FIELD_STATEMENT_FORMAT:
             _CUSTOMER_STATEMENT_FORMAT,
-        generated.CustomerStatementExport.FIELD_DATE_START: date_start.strftime(
+        endpoint.CustomerStatementExport.FIELD_DATE_START: date_start.strftime(
             _FORMAT_DATE
         ),
-        generated.CustomerStatementExport.FIELD_DATE_END: date_end.strftime(
+        endpoint.CustomerStatementExport.FIELD_DATE_END: date_end.strftime(
             _FORMAT_DATE
         ),
     }
-    customer_statement_id = generated.CustomerStatementExport.create(
+    customer_statement_id = endpoint.CustomerStatementExport.create(
         api_context,
         customer_statement_map,
         user_id,
         monetary_account_id
     ).value
-    generated.CustomerStatementExport.delete(
+    endpoint.CustomerStatementExport.delete(
         api_context,
         user_id,
         monetary_account_id,

@@ -2,7 +2,7 @@
 
 from bunq.sdk import client
 from bunq.sdk import context
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 
 # Console messages
 _MESSAGE_LATEST_PAGE_IDS = 'Latest page IDs:'
@@ -20,7 +20,7 @@ def run():
     api_context = context.ApiContext.restore()
     pagination = client.Pagination()
     pagination.count = _PAGE_SIZE
-    payments_response = generated.Payment.list(
+    payments_response = endpoint.Payment.list(
         api_context,
         _USER_ITEM_ID,
         _MONETARY_ACCOUNT_ITEM_ID,
@@ -34,7 +34,7 @@ def run():
 
     if payments_response.pagination.has_previous_page():
         print(_MESSAGE_SECOND_LATEST_PAGE_IDS)
-        payments_response_previous = generated.Payment.list(
+        payments_response_previous = endpoint.Payment.list(
             api_context,
             _USER_ITEM_ID,
             _MONETARY_ACCOUNT_ITEM_ID,

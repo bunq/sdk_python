@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from bunq.sdk import context
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
 _REQUEST_AMOUNT = '0.01'
@@ -17,25 +17,25 @@ _STATUS_REVOKED = 'REVOKED'
 def run():
     api_context = context.ApiContext.restore()
     request_map = {
-        generated.RequestInquiry.FIELD_AMOUNT_INQUIRED: object_.Amount(
+        endpoint.RequestInquiry.FIELD_AMOUNT_INQUIRED: object_.Amount(
             _REQUEST_AMOUNT,
             _REQUEST_CURRENCY
         ),
-        generated.RequestInquiry.FIELD_COUNTERPARTY_ALIAS: object_.Pointer(
+        endpoint.RequestInquiry.FIELD_COUNTERPARTY_ALIAS: object_.Pointer(
             _COUNTERPARTY_POINTER_TYPE,
             _COUNTERPARTY_EMAIL
         ),
-        generated.RequestInquiry.FIELD_DESCRIPTION: _REQUEST_DESCRIPTION,
-        generated.RequestInquiry.FIELD_ALLOW_BUNQME: True,
+        endpoint.RequestInquiry.FIELD_DESCRIPTION: _REQUEST_DESCRIPTION,
+        endpoint.RequestInquiry.FIELD_ALLOW_BUNQME: True,
     }
-    request_id = generated.RequestInquiry.create(
+    request_id = endpoint.RequestInquiry.create(
         api_context,
         request_map,
         _USER_ITEM_ID,
         _MONETARY_ACCOUNT_ITEM_ID
     ).value
     print(
-        generated.RequestInquiry.get(
+        endpoint.RequestInquiry.get(
             api_context,
             _USER_ITEM_ID,
             _MONETARY_ACCOUNT_ITEM_ID,
@@ -44,10 +44,10 @@ def run():
     )
 
     request_update_map = {
-        generated.RequestInquiry.FIELD_STATUS: _STATUS_REVOKED,
+        endpoint.RequestInquiry.FIELD_STATUS: _STATUS_REVOKED,
     }
     print(
-        generated.RequestInquiry.update(
+        endpoint.RequestInquiry.update(
             api_context,
             request_update_map,
             _USER_ITEM_ID,
