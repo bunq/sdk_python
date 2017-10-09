@@ -67,5 +67,3 @@ except BadRequestException as error:
     print(error.response_code)
     print(error.message) # or just print(error)
 ```
-
-This will ensure that you are ready for anything that might go wrong!
