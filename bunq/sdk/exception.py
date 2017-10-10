@@ -5,8 +5,8 @@ class ApiException(Exception):
         :type response_code: int
         """
 
-        self._response_code = response_code
         self._message = message
+        self._response_code = response_code
 
         super(ApiException, self).__init__(message)
 
