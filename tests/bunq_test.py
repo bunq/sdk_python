@@ -4,8 +4,6 @@ import unittest
 from tests.config import Config
 from bunq.sdk.context import ApiContext
 from bunq.sdk.context import ApiEnvironmentType
-from bunq.sdk.model.generated import endpoint
-from bunq.sdk.exception import ApiException
 
 
 class BunqSdkTestCase(unittest.TestCase):
@@ -35,10 +33,11 @@ class BunqSdkTestCase(unittest.TestCase):
 
         try:
             api_context = ApiContext.restore(filename_bunq_config_full)
-            endpoint.User.list(api_context)
-        except (ApiException, FileNotFoundError):
+        except FileNotFoundError:
             api_context = ApiContext(ApiEnvironmentType.SANDBOX, cls._API_KEY,
                                      cls._DEVICE_DESCRIPTION, [])
+        else:
+            api_context.ensure_session_active()
 
         api_context.save(filename_bunq_config_full)
 

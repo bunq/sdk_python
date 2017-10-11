@@ -18,6 +18,9 @@ class JsonAdapter(object):
     _custom_serializers = {}
     _custom_deserializers = {}
 
+    # Initializer
+    _initializer = None
+
     # Warning for when a key from raw object is unknown
     _WARNING_KEY_UNKNOWN = '[bunq SDK beta] Key "{}" in "{}" is unknown.'
 
@@ -29,7 +32,8 @@ class JsonAdapter(object):
     _PREFIX_KEY_PROTECTED = '_'
 
     # Constants to fetch param types from the docstrings
-    _TEMPLATE_PATTERN_PARAM_TYPES = ':type (_?{}): ([\w.]+)(?:\[([\w.]+)\])?'
+    _TEMPLATE_PATTERN_PARAM_TYPES = \
+        ':type (_?{}):[\s\n\r]+([\w.]+)(?:\[([\w.]+)\])?'
     _PATTERN_PARAM_NAME_TYPED_ANY = ':type (\w+):'
     _SUBMATCH_INDEX_NAME = 1
     _SUBMATCH_INDEX_TYPE_MAIN = 2
@@ -44,6 +48,14 @@ class JsonAdapter(object):
 
     # List of byte-array type names
     _TYPE_NAMES_BYTES = {'bytes', 'unicode'}
+
+    @classmethod
+    def set_initializer(cls, initializer):
+        """
+        :type initializer: Generator[bool, None, None]
+        """
+
+        cls._initializer = initializer
 
     @classmethod
     def register_custom_adapter(cls, target_class, adapter):
@@ -105,12 +117,21 @@ class JsonAdapter(object):
         :rtype: T
         """
 
+        cls._initialize()
         deserializer = cls._get_deserializer(cls_target)
 
         if deserializer == cls:
             return cls._deserialize_default(cls_target, obj_raw)
         else:
             return deserializer.deserialize(cls_target, obj_raw)
+
+    @classmethod
+    def _initialize(cls):
+        """
+        :rtype: None
+        """
+
+        next(cls._initializer, None)
 
     @classmethod
     def _deserialize_default(cls, cls_target, obj_raw):
@@ -404,6 +425,7 @@ class JsonAdapter(object):
         :rtype: int|str|bool|list|dict
         """
 
+        cls._initialize()
         serializer = cls._get_serializer(type(obj))
 
         if serializer == cls:
@@ -579,6 +601,30 @@ class ValueSpecs(object):
         """
 
         return self._types
+
+
+def set_initializer_function(initializer_function):
+    """
+    :type initializer_function: callable
+    """
+
+    JsonAdapter.set_initializer(create_initializer(initializer_function))
+
+
+def create_initializer(initializer_function):
+    """
+    :type initializer_function: callable
+
+    :rtype: bool
+    """
+
+    is_disposed = False
+
+    if not is_disposed:
+        initializer_function()
+        is_disposed = True
+
+    yield is_disposed
 
 
 def register_adapter(target_class, adapter):

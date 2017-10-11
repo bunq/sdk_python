@@ -4,15 +4,15 @@ from urllib.parse import urlencode
 
 import requests
 
-from bunq.sdk import context
 from bunq.sdk import exception
 from bunq.sdk import security
+from bunq.sdk.exception_factory import ExceptionFactory
 from bunq.sdk.json import converter
 
 
 class ApiClient(object):
     """
-    :type _api_context: context.ApiContext
+    :type _api_context: bunq.sdk.context.ApiContext
     """
 
     # HTTPS type of proxy, the only used at bunq
@@ -31,7 +31,7 @@ class ApiClient(object):
     HEADER_AUTHENTICATION = 'X-Bunq-Client-Authentication'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.11.0'
+    _USER_AGENT_BUNQ = 'bunq-sdk-python/0.12.0'
     _GEOLOCATION_ZERO = '0 0 0 0 NL'
     _LANGUAGE_EN_US = 'en_US'
     _REGION_NL_NL = 'nl_NL'
@@ -201,7 +201,7 @@ class ApiClient(object):
         """
 
         if response.status_code != self._STATUS_CODE_OK:
-            raise exception.ApiException(
+            raise ExceptionFactory.create_exception_for_response(
                 response.status_code,
                 self._fetch_error_messages(response)
             )
@@ -371,6 +371,18 @@ class BunqResponse(object):
         """
 
         return self._pagination
+
+    @classmethod
+    def cast_from_bunq_response(cls, bunq_response):
+        """
+        :type bunq_response: BunqResponse
+        """
+
+        return cls(
+            bunq_response.value,
+            bunq_response.headers,
+            bunq_response.pagination
+        )
 
 
 class Pagination(object):

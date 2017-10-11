@@ -4,7 +4,7 @@ import random
 import string
 
 from bunq.sdk import context
-from bunq.sdk.model import generated
+from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
 # Empty string to join the random values of second string
@@ -25,14 +25,14 @@ def run():
     pointer = object_.Pointer(_POINTER_TYPE_EMAIL, _EMAIL_YOUR_COMPANY)
     pointer.name = _POINTER_NAME_TEST
     request_map = {
-        generated.CardDebit.FIELD_ALIAS: pointer,
-        generated.CardDebit.FIELD_NAME_ON_CARD: _NAME_YOUR_COMPANY,
-        generated.CardDebit.FIELD_PIN_CODE: _PIN_CODE,
-        generated.CardDebit.FIELD_SECOND_LINE: _make_second_line()
+        endpoint.CardDebit.FIELD_ALIAS: pointer,
+        endpoint.CardDebit.FIELD_NAME_ON_CARD: _NAME_YOUR_COMPANY,
+        endpoint.CardDebit.FIELD_PIN_CODE: _PIN_CODE,
+        endpoint.CardDebit.FIELD_SECOND_LINE: _make_second_line()
     }
 
-    print(generated.CardDebit.create(api_context, request_map,
-                                     _USER_ITEM_ID).value.to_json())
+    print(endpoint.CardDebit.create(api_context, request_map,
+                                    _USER_ITEM_ID).value.to_json())
 
 
 def _make_second_line():
