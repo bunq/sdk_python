@@ -240,8 +240,6 @@ class AnchoredObject(core.BunqModel):
     :type RequestResponse: endpoint.RequestResponse
     :type ScheduledPaymentBatch: endpoint.SchedulePaymentBatch
     :type ScheduledPayment: endpoint.SchedulePayment
-    :type ScheduledRequestInquiryBatch: endpoint.ScheduleRequestInquiryBatch
-    :type ScheduledRequestInquiry: endpoint.ScheduleRequestInquiry
     :type ScheduledInstance: endpoint.ScheduleInstance
     :type ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
     :type ShareInviteBankResponse: endpoint.ShareInviteBankResponse
@@ -263,8 +261,6 @@ class AnchoredObject(core.BunqModel):
         self.RequestResponse = None
         self.ScheduledPaymentBatch = None
         self.ScheduledPayment = None
-        self.ScheduledRequestInquiryBatch = None
-        self.ScheduledRequestInquiry = None
         self.ScheduledInstance = None
         self.ShareInviteBankInquiry = None
         self.ShareInviteBankResponse = None
@@ -491,61 +487,6 @@ class Schedule(core.BunqModel):
         self.time_end = None
         self.status = None
         self.object_ = None
-
-
-class ScheduleRequestInquiryEntry(core.BunqModel):
-    """
-    :type amount_inquired: Amount
-    :type counterparty_alias: MonetaryAccountReference
-    :type description: str
-    :type attachment: AttachmentScheduleRequestInquiryEntry
-    :type merchant_reference: str
-    :type minimum_age: int
-    :type require_address: str
-    :type want_tip: bool
-    :type allow_amount_lower: bool
-    :type allow_amount_higher: bool
-    :type allow_bunqme: bool
-    :type redirect_url: str
-    :type user_alias_created: LabelUser
-    :type user_alias_revoked: LabelUser
-    """
-
-    def __init__(self, amount_inquired, counterparty_alias, description, allow_bunqme):
-        """
-        :type amount_inquired: Amount
-        :type counterparty_alias: MonetaryAccountReference
-        :type description: str
-        :type allow_bunqme: bool
-        """
-
-        self.amount_inquired = amount_inquired
-        self.counterparty_alias = counterparty_alias
-        self.description = description
-        self.allow_bunqme = allow_bunqme
-        self.attachment = None
-        self.merchant_reference = None
-        self.minimum_age = None
-        self.require_address = None
-        self.want_tip = None
-        self.allow_amount_lower = None
-        self.allow_amount_higher = None
-        self.redirect_url = None
-        self.user_alias_created = None
-        self.user_alias_revoked = None
-
-
-class AttachmentScheduleRequestInquiryEntry(core.BunqModel):
-    """
-    :type id_: int
-    """
-
-    def __init__(self, id_):
-        """
-        :type id_: int
-        """
-
-        self.id_ = id_
 
 
 class Error(core.BunqModel):
