@@ -166,8 +166,17 @@ class ApiContext(object):
             return session_server.user_person.session_timeout
 
     def ensure_session_active(self):
+        if self.is_session_expired() and self.session_context is not None:
+            self.reset_session()
+
+    def is_session_expired(self):
+        """
+        :return: True if it has expired, otherwise false
+        :rtype: bool
+        """
+
         if self.session_context is None:
-            return
+            return False
 
         time_now = datetime.datetime.now()
         time_to_expiry = self.session_context.expiry_time - time_now
@@ -175,8 +184,7 @@ class ApiContext(object):
             seconds=self._TIME_TO_SESSION_EXPIRY_MINIMUM_SECONDS
         )
 
-        if time_to_expiry < time_to_expiry_minimum:
-            self.reset_session()
+        return time_to_expiry < time_to_expiry_minimum
 
     def reset_session(self):
         """
