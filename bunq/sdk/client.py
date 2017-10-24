@@ -15,6 +15,16 @@ class ApiClient(object):
     :type _api_context: bunq.sdk.context.ApiContext
     """
 
+    # Endpoints not requiring active session for the request to succeed.
+    _URL_DEVICE_SERVER = 'device-server'
+    _URI_INSTALLATION = 'installation'
+    _URI_SESSION_SERVER = 'session-server'
+    _URIS_NOT_REQUIRING_ACTIVE_SESSION = [
+        _URI_INSTALLATION,
+        _URI_SESSION_SERVER,
+        _URL_DEVICE_SERVER,
+    ]
+
     # HTTPS type of proxy, the only used at bunq
     _FIELD_PROXY_HTTPS = 'https'
 
@@ -93,7 +103,9 @@ class ApiClient(object):
 
         uri_relative_with_params = self._append_params_to_uri(uri_relative,
                                                               params)
-        self._api_context.ensure_session_active()
+        if uri_relative not in self._URIS_NOT_REQUIRING_ACTIVE_SESSION:
+            self._api_context.ensure_session_active()
+
         all_headers = self._get_all_headers(
             method,
             uri_relative_with_params,
