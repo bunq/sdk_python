@@ -105,6 +105,7 @@ class ApiClient(object):
                                                               params)
         if uri_relative not in self._URIS_NOT_REQUIRING_ACTIVE_SESSION:
             self._api_context.ensure_session_active()
+
         all_headers = self._get_all_headers(
             method,
             uri_relative_with_params,

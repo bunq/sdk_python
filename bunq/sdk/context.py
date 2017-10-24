@@ -175,7 +175,6 @@ class ApiContext(object):
 
     def is_session_active(self):
         """
-        :return: True if it has expired, otherwise false
         :rtype: bool
         """
 
