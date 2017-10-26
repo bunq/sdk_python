@@ -754,6 +754,7 @@ class CardDebit(core.BunqModel):
     :type _created: str
     :type _updated: str
     :type _public_uuid: str
+    :type _type_: str
     :type _second_line: str
     :type _name_on_card: str
     :type _primary_account_number_four_digit: str
@@ -789,6 +790,7 @@ class CardDebit(core.BunqModel):
         self._created = None
         self._updated = None
         self._public_uuid = None
+        self._type_ = None
         self._second_line = None
         self._name_on_card = None
         self._primary_account_number_four_digit = None
@@ -860,6 +862,14 @@ class CardDebit(core.BunqModel):
         """
 
         return self._public_uuid
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
 
     @property
     def second_line(self):
@@ -5505,6 +5515,133 @@ class BunqMeTabResultInquiry(core.BunqModel):
         return self._payment
 
 
+class CardGeneratedCvc2(core.BunqModel):
+    """
+    Endpoint for generating and retrieving a new CVC2 code.
+    
+    :type _cvc2: str
+    :type _status: str
+    :type _expiry_time: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/card/{}/generated-cvc2"
+    _ENDPOINT_URL_READ = "user/{}/card/{}/generated-cvc2/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/card/{}/generated-cvc2"
+
+    # Object type.
+    _OBJECT_TYPE = "CardGeneratedCvc2"
+
+    def __init__(self):
+        self._cvc2 = None
+        self._status = None
+        self._expiry_time = None
+
+    @classmethod
+    def create(cls, api_context, request_map, user_id, card_id, custom_headers=None):
+        """
+        Generate a new CVC2 code for a card.
+        
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type card_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCardGeneratedCvc2
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        request_bytes = security.encrypt(api_context, request_bytes, custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, card_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseCardGeneratedCvc2.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
+
+    @classmethod
+    def get(cls, api_context, user_id, card_id, card_generated_cvc2_id, custom_headers=None):
+        """
+        Get the details for a specific generated CVC2 code.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type card_id: int
+        :type card_generated_cvc2_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCardGeneratedCvc2
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, card_id, card_generated_cvc2_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseCardGeneratedCvc2.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
+
+    @classmethod
+    def list(cls, api_context, user_id, card_id, params=None, custom_headers=None):
+        """
+        Get all generated CVC2 codes for a card.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type card_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCardGeneratedCvc2List
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, card_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseCardGeneratedCvc2List.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
+
+    @property
+    def cvc2(self):
+        """
+        :rtype: str
+        """
+
+        return self._cvc2
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def expiry_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_time
+
+
 class CardName(core.BunqModel):
     """
     Endpoint for getting all the accepted card names for a user. As bunq do not
@@ -5629,6 +5766,7 @@ class Card(core.BunqModel):
     :type _created: str
     :type _updated: str
     :type _public_uuid: str
+    :type _type_: str
     :type _second_line: str
     :type _status: str
     :type _sub_status: str
@@ -5669,6 +5807,7 @@ class Card(core.BunqModel):
         self._created = None
         self._updated = None
         self._public_uuid = None
+        self._type_ = None
         self._second_line = None
         self._status = None
         self._sub_status = None
@@ -5796,6 +5935,14 @@ class Card(core.BunqModel):
         """
 
         return self._public_uuid
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
 
     @property
     def second_line(self):
@@ -6148,9 +6295,14 @@ class CashRegisterQrCode(core.BunqModel):
 
 class CashRegister(core.BunqModel):
     """
-    CashRegisters act as an point of sale. They have a specific name and avatar,
-    and optionally a location. A CashRegister is used to create Tabs. A
-    CashRegister can have an QR code that links to one of its Tabs.
+    CashRegisters are virtual points of sale. They have a specific name and
+    avatar, and optionally, a location.<br/>With a CashRegister you can create a
+    Tab and then use a QR code to receive payments.<br/>Check out our Quickstart
+    example to learn how you can easily <a
+    href="/api/1/page/usecase-tab-payment">create Tab
+    payments</a>.<br/><br/>Notification filters can be set on a CashRegister to
+    receive callbacks. For more information check the <a
+    href="/api/1/page/callbacks">dedicated callbacks page</a>.
     
     :type _id_: int
     :type _created: str
@@ -8549,7 +8701,7 @@ class MonetaryAccountBank(core.BunqModel):
     updated are the description, the daily limit and the avatar of the
     account.<br/><br/>Notification filters can be set on a monetary account
     level to receive callbacks. For more information check the <a
-    href="/api/2/page/callbacks">dedicated callbacks page</a>.
+    href="/api/1/page/callbacks">dedicated callbacks page</a>.
     
     :type _id_: int
     :type _created: str
@@ -10511,7 +10663,10 @@ class TokenQrRequestIdeal(core.BunqModel):
 
 class UserCompany(core.BunqModel):
     """
-    Show the authenticated user, if it is a company.
+    With UserCompany you can retrieve information regarding the authenticated
+    UserCompany and update specific fields.<br/><br/>Notification filters can be
+    set on a UserCompany level to receive callbacks. For more information check
+    the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
     
     :type _id_: int
     :type _created: str
@@ -11235,7 +11390,10 @@ class BillingContractSubscription(core.BunqModel):
 
 class UserPerson(core.BunqModel):
     """
-    Show the authenticated user, if it is a person.
+    With UserPerson you can retrieve information regarding the authenticated
+    UserPerson and update specific fields.<br/><br/>Notification filters can be
+    set on a UserPerson level to receive callbacks. For more information check
+    the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
     
     :type _id_: int
     :type _created: str
@@ -12584,6 +12742,26 @@ class BunqResponseBunqMeTabList(client.BunqResponse):
     def value(self):
         """
         :rtype: list[BunqMeTab]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCardGeneratedCvc2(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: CardGeneratedCvc2
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCardGeneratedCvc2List(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[CardGeneratedCvc2]
         """
  
         return super().value
