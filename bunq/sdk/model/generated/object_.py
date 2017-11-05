@@ -398,6 +398,17 @@ class AttachmentMonetaryAccountPayment(core.BunqModel):
         self.monetary_account_id = None
 
 
+class DraftPaymentAnchorObject(core.BunqModel):
+    """
+    :type Payment: endpoint.Payment
+    :type PaymentBatch: endpoint.PaymentBatch
+    """
+
+    def __init__(self):
+        self.Payment = None
+        self.PaymentBatch = None
+
+
 class Geolocation(core.BunqModel):
     """
     :type latitude: float
