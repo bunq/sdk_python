@@ -1338,7 +1338,7 @@ class DraftPayment(core.BunqModel):
     :type _status: str
     :type _type_: str
     :type _entries: list[object_.DraftPaymentEntry]
-    :type _object_: core.BunqModel
+    :type _object_: object_.DraftPaymentAnchorObject
     """
 
     # Field constants.
@@ -1531,244 +1531,10 @@ class DraftPayment(core.BunqModel):
     @property
     def object_(self):
         """
-        :rtype: core.BunqModel
+        :rtype: object_.DraftPaymentAnchorObject
         """
 
         return self._object_
-
-
-class IdealMerchantTransaction(core.BunqModel):
-    """
-    View for requesting iDEAL transactions and polling their status.
-    
-    :type _monetary_account_id: int
-    :type _alias: object_.MonetaryAccountReference
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :type _amount_guaranteed: object_.Amount
-    :type _amount_requested: object_.Amount
-    :type _expiration: str
-    :type _issuer: str
-    :type _issuer_name: str
-    :type _issuer_authentication_url: str
-    :type _purchase_identifier: str
-    :type _status: str
-    :type _status_timestamp: str
-    :type _transaction_identifier: str
-    :type _allow_chat: bool
-    """
-
-    # Field constants.
-    FIELD_AMOUNT_REQUESTED = "amount_requested"
-    FIELD_ISSUER = "issuer"
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/ideal-merchant-transaction"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/ideal-merchant-transaction/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/ideal-merchant-transaction"
-
-    # Object type.
-    _OBJECT_TYPE = "IdealMerchantTransaction"
-
-    def __init__(self):
-        self._monetary_account_id = None
-        self._alias = None
-        self._counterparty_alias = None
-        self._amount_guaranteed = None
-        self._amount_requested = None
-        self._expiration = None
-        self._issuer = None
-        self._issuer_name = None
-        self._issuer_authentication_url = None
-        self._purchase_identifier = None
-        self._status = None
-        self._status_timestamp = None
-        self._transaction_identifier = None
-        self._allow_chat = None
-
-    @classmethod
-    def create(cls, api_context, request_map, user_id, monetary_account_id, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type request_map: dict[str, object]
-        :type user_id: int
-        :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(api_context)
-        request_bytes = converter.class_to_json(request_map).encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, api_context, user_id, monetary_account_id, ideal_merchant_transaction_id, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type ideal_merchant_transaction_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseIdealMerchantTransaction
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(api_context)
-        endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, ideal_merchant_transaction_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseIdealMerchantTransaction.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE)
-        )
-
-    @classmethod
-    def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseIdealMerchantTransactionList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(api_context)
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseIdealMerchantTransactionList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
-        )
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def amount_guaranteed(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_guaranteed
-
-    @property
-    def amount_requested(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_requested
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def issuer(self):
-        """
-        :rtype: str
-        """
-
-        return self._issuer
-
-    @property
-    def issuer_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._issuer_name
-
-    @property
-    def issuer_authentication_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._issuer_authentication_url
-
-    @property
-    def purchase_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._purchase_identifier
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def status_timestamp(self):
-        """
-        :rtype: str
-        """
-
-        return self._status_timestamp
-
-    @property
-    def transaction_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._transaction_identifier
-
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
 
 
 class Payment(core.BunqModel):
@@ -2250,6 +2016,240 @@ class PaymentBatch(core.BunqModel):
         """
 
         return self._payments
+
+
+class IdealMerchantTransaction(core.BunqModel):
+    """
+    View for requesting iDEAL transactions and polling their status.
+    
+    :type _monetary_account_id: int
+    :type _alias: object_.MonetaryAccountReference
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :type _amount_guaranteed: object_.Amount
+    :type _amount_requested: object_.Amount
+    :type _expiration: str
+    :type _issuer: str
+    :type _issuer_name: str
+    :type _issuer_authentication_url: str
+    :type _purchase_identifier: str
+    :type _status: str
+    :type _status_timestamp: str
+    :type _transaction_identifier: str
+    :type _allow_chat: bool
+    """
+
+    # Field constants.
+    FIELD_AMOUNT_REQUESTED = "amount_requested"
+    FIELD_ISSUER = "issuer"
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/ideal-merchant-transaction"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/ideal-merchant-transaction/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/ideal-merchant-transaction"
+
+    # Object type.
+    _OBJECT_TYPE = "IdealMerchantTransaction"
+
+    def __init__(self):
+        self._monetary_account_id = None
+        self._alias = None
+        self._counterparty_alias = None
+        self._amount_guaranteed = None
+        self._amount_requested = None
+        self._expiration = None
+        self._issuer = None
+        self._issuer_name = None
+        self._issuer_authentication_url = None
+        self._purchase_identifier = None
+        self._status = None
+        self._status_timestamp = None
+        self._transaction_identifier = None
+        self._allow_chat = None
+
+    @classmethod
+    def create(cls, api_context, request_map, user_id, monetary_account_id, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type monetary_account_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id, monetary_account_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, api_context, user_id, monetary_account_id, ideal_merchant_transaction_id, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type ideal_merchant_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseIdealMerchantTransaction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(user_id, monetary_account_id, ideal_merchant_transaction_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseIdealMerchantTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
+        )
+
+    @classmethod
+    def list(cls, api_context, user_id, monetary_account_id, params=None, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseIdealMerchantTransactionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(user_id, monetary_account_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseIdealMerchantTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE)
+        )
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def amount_guaranteed(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_guaranteed
+
+    @property
+    def amount_requested(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_requested
+
+    @property
+    def expiration(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiration
+
+    @property
+    def issuer(self):
+        """
+        :rtype: str
+        """
+
+        return self._issuer
+
+    @property
+    def issuer_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._issuer_name
+
+    @property
+    def issuer_authentication_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._issuer_authentication_url
+
+    @property
+    def purchase_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._purchase_identifier
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def status_timestamp(self):
+        """
+        :rtype: str
+        """
+
+        return self._status_timestamp
+
+    @property
+    def transaction_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._transaction_identifier
+
+    @property
+    def allow_chat(self):
+        """
+        :rtype: bool
+        """
+
+        return self._allow_chat
 
 
 class PromotionDisplay(core.BunqModel):
@@ -12457,26 +12457,6 @@ class BunqResponseDraftPayment(client.BunqResponse):
         return super().value
 
     
-class BunqResponseIdealMerchantTransaction(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: IdealMerchantTransaction
-        """
- 
-        return super().value
-
-    
-class BunqResponseIdealMerchantTransactionList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[IdealMerchantTransaction]
-        """
- 
-        return super().value
-
-    
 class BunqResponsePayment(client.BunqResponse):
     @property
     def value(self):
@@ -12512,6 +12492,26 @@ class BunqResponsePaymentBatchList(client.BunqResponse):
     def value(self):
         """
         :rtype: list[PaymentBatch]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseIdealMerchantTransaction(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: IdealMerchantTransaction
+        """
+ 
+        return super().value
+
+    
+class BunqResponseIdealMerchantTransactionList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[IdealMerchantTransaction]
         """
  
         return super().value
