@@ -5519,6 +5519,9 @@ class CardGeneratedCvc2(core.BunqModel):
     """
     Endpoint for generating and retrieving a new CVC2 code.
     
+    :type _id_: int
+    :type _created: str
+    :type _updated: str
     :type _cvc2: str
     :type _status: str
     :type _expiry_time: str
@@ -5533,6 +5536,9 @@ class CardGeneratedCvc2(core.BunqModel):
     _OBJECT_TYPE = "CardGeneratedCvc2"
 
     def __init__(self):
+        self._id_ = None
+        self._created = None
+        self._updated = None
         self._cvc2 = None
         self._status = None
         self._expiry_time = None
@@ -5616,6 +5622,30 @@ class CardGeneratedCvc2(core.BunqModel):
         return BunqResponseCardGeneratedCvc2List.cast_from_bunq_response(
             cls._from_json_list(response_raw, cls._OBJECT_TYPE)
         )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
 
     @property
     def cvc2(self):
