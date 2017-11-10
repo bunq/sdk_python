@@ -1,0 +1,231 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "SCHEDULE_STATUS",
+        "event_type": "SCHEDULE_INSTANCE_PAYMENT_BATCH_SUCCEEDED",
+        "object": {
+            "ScheduledInstance": {
+                "id": 2,
+                "created": "2017-07-16 21:02:06.511789",
+                "updated": "2017-07-16 21:02:06.625282",
+                "state": "FINISHED_SUCCESSFULLY",
+                "error_message": null,
+                "time_start": "2017-07-15 21:02:06.022814",
+                "time_end": "2017-07-16 21:02:06.022814",
+                "scheduled_object": {
+                    "ScheduledPayment": {
+                        "id": 1,
+                        "created": "2017-07-11 21:02:06.384325",
+                        "updated": "2017-07-16 21:02:06.630454",
+                        "monetary_account_id": 42,
+                        "schedule": {
+                            "time_start": "2017-07-15 21:02:06.022814",
+                            "time_next": null,
+                            "time_end": "2017-07-16 21:02:06.022814",
+                            "recurrence_unit": "DAILY",
+                            "recurrence_size": 1
+                        },
+                        "status": "FINISHED",
+                        "label_schedule_user_create": {
+                            "uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5",
+                            "display_name": "G. Mason",
+                            "country": "NL",
+                            "avatar": {
+                                "uuid": "4605580d-014c-42f1-a4d4-7b398f3b37e5",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "d6b930f4-1fd0-4b29-8455-e900ed0aced5",
+                                        "height": 480,
+                                        "width": 480,
+                                        "content_type": "image\/jpeg"
+                                    }
+                                ],
+                                "anchor_uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5"
+                            },
+                            "public_nick_name": "Griffin (nickname)"
+                        },
+                        "label_schedule_user_canceled": null,
+                        "payment": {
+                            "amount": {
+                                "currency": "EUR",
+                                "value": "-34.42"
+                            },
+                            "alias": {
+                                "iban": "NL16BUNQ2025103794",
+                                "is_light": false,
+                                "display_name": "G. Mason",
+                                "avatar": {
+                                    "uuid": "e3bc865a-83a8-4788-af62-4f0c38df8f0d",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "62c88a57-3cd9-49f7-81dc-8f1a4fcc80ac",
+                                            "height": 1024,
+                                            "width": 1024,
+                                            "content_type": "image\/png"
+                                        }
+                                    ],
+                                    "anchor_uuid": null
+                                },
+                                "label_user": {
+                                    "uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5",
+                                    "display_name": "G. Mason",
+                                    "country": "NL",
+                                    "avatar": {
+                                        "uuid": "4605580d-014c-42f1-a4d4-7b398f3b37e5",
+                                        "image": [
+                                            {
+                                                "attachment_public_uuid": "d6b930f4-1fd0-4b29-8455-e900ed0aced5",
+                                                "height": 480,
+                                                "width": 480,
+                                                "content_type": "image\/jpeg"
+                                            }
+                                        ],
+                                        "anchor_uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5"
+                                    },
+                                    "public_nick_name": "Griffin (nickname)"
+                                },
+                                "country": "NL"
+                            },
+                            "counterparty_aliasl": {
+                                "iba": "NL60BUNQ2025103972",
+                                "is_light": false,
+                                "display_name": "Charlie CH Arl (nickname)",
+                                "avatar": {
+                                    "uuid": "5188b2d7-5cf9-49ca-ba47-625fee317e79",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "f427ccd8-81e7-46a7-a9bc-9c52e66f15ae",
+                                            "height": 1024,
+                                            "width": 1024,
+                                            "content_type": "image\/png"
+                                        }
+                                    ],
+                                    "anchor_uuid": null
+                                },
+                                "label_user": {
+                                    "uuid": "3f4973b4-7503-4317-bf4c-bc63e4f6a858",
+                                    "display_name": "Charlie CH Arl (nickname)",
+                                    "country": "NL",
+                                    "avatar": {
+                                        "uuid": "cf4eedd8-afea-4374-9505-7ea5af898091",
+                                        "image": [
+                                            {
+                                                "attachment_public_uuid": "e6f69b18-0aba-4001-98d6-968d464b706c",
+                                                "height": 480,
+                                                "width": 480,
+                                                "content_type": "image\/jpeg"
+                                            }
+                                        ],
+                                        "anchor_uuid": "3f4973b4-7503-4317-bf4c-bc63e4f6a858"
+                                    },
+                                    "public_nick_name": "Charlie CH Arl (nickname)"
+                                },
+                                "country": "NL"
+                            },
+                            "description": "Test payment to NL60BUNQ2025103972",
+                            "merchant_reference": null,
+                            "type": "BUNQ",
+                            "sub_type": "PAYMENT"
+                        }
+                    }
+                },
+                "result_object": {
+                    "Payment": {
+                        "id": 133,
+                        "created": "2017-07-16 21:02:06.579658",
+                        "updated": "2017-07-16 21:02:06.579658",
+                        "monetary_account_id": 42,
+                        "amount": {
+                            "currency": "EUR",
+                            "value": "-34.42"
+                        },
+                        "description": "Test payment to NL60BUNQ2025103972",
+                        "type": "BUNQ",
+                        "merchant_reference": null,
+                        "maturity_date": "2017-07-16",
+                        "alias": {
+                            "iban": "NL16BUNQ2025103794",
+                            "is_light": false,
+                            "display_name": "G. Mason",
+                            "avatar": {
+                                "uuid": "e3bc865a-83a8-4788-af62-4f0c38df8f0d",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "62c88a57-3cd9-49f7-81dc-8f1a4fcc80ac",
+                                        "height": 1024,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5",
+                                "display_name": "G. Mason",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "4605580d-014c-42f1-a4d4-7b398f3b37e5",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "d6b930f4-1fd0-4b29-8455-e900ed0aced5",
+                                            "heigh": 480,
+                                            "width": 480,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5"
+                                },
+                                "public_nick_name": "Griffin (nickname)"
+                            },
+                            "country": "NL"
+                        },
+                        "counterparty_alias": {
+                            "iban": "NL60BUNQ2025103972",
+                            "is_light": false,
+                            "display_name": "Charlie CH Arl (nickname)",
+                            "avatar": {
+                                "uuid": "5188b2d7-5cf9-49ca-ba47-625fee317e79",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "f427ccd8-81e7-46a7-a9bc-9c52e66f15ae",
+                                        "height": 1024,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "3f4973b4-7503-4317-bf4c-bc63e4f6a858",
+                                "display_name": "Charlie CH Arl (nickname)",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "cf4eedd8-afea-4374-9505-7ea5af898091",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "e6f69b18-0aba-4001-98d6-968d464b706c",
+                                            "height": 480,
+                                            "width": 480,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "3f4973b4-7503-4317-bf4c-bc63e4f6a858"
+                                },
+                                "public_nick_name": "Charlie CH Arl (nickname)"
+                            },
+                            "country": "NL"
+                        },
+                        "attachment": [],
+                        "geolocation": null,
+                        "batch_id": null,
+                        "conversation": null,
+                        "allow_chat": true,
+                        "scheduled_id": 2,
+                        "address_billing": null,
+                        "address_shipping": null
+                    }
+                }
+            }
+        }
+    }
+}

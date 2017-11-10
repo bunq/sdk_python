@@ -1,0 +1,102 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "SHARE",
+        "event_type": "SHARE_INVITE_BANK_INQUIRY_ACCEPTED",
+        "object": {
+            "ShareInviteBankInquiry": {
+                "id": 1,
+                "created": "2017-07-20 02:32:32.074527",
+                "updated": "2017-07-20 02:32:32.074527",
+                "alias": {
+                    "iban": "NL59BUNQ2025104669",
+                    "is_light": false,
+                    "display_name": "Alpha Corp.",
+                    "avatar": {
+                        "uuid": "26789d97-ec34-4fe8-9a71-ca145a23ba7a",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "3965b302-7a77-4813-8b00-ad3f9b84f439",
+                                "height": 1024,
+                                "width": 1024,
+                                "content_type": "image\/png"
+                            }
+                        ],
+                        "anchor_uuid": null
+                    },
+                    "label_user": {
+                        "uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3",
+                        "display_name": "Alpha Corp.",
+                        "country": "NL",
+                        "avatar": {
+                            "uuid": "829fee85-ffa6-473b-ac5b-b464c7b0a3a9",
+                            "image": [
+                                {
+                                    "attachment_public_uuid": "89347f1e-fd96-4c28-b9f5-bc9ec1f4443a",
+                                    "height": 640,
+                                    "width": 640,
+                                    "content_type": "image\/png"
+                                }
+                            ],
+                            "anchor_uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3"
+                        },
+                        "public_nick_name": "Alpha Corp."
+                    },
+                    "country": "NL"
+                },
+                "user_alias_created": {
+                    "uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3",
+                    "display_name": "Alpha Corp.",
+                    "country": "NL",
+                    "avatar": {
+                        "uuid": "829fee85-ffa6-473b-ac5b-b464c7b0a3a9",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "89347f1e-fd96-4c28-b9f5-bc9ec1f4443a",
+                                "height": 640,
+                                "width": 640,
+                                "content_type": "image\/png"
+                            }
+                        ],
+                        "anchor_uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3"
+                    },
+                    "public_nick_name": "Alpha Corp."
+                },
+                "user_alias_revoked": null,
+                "counter_user_alias": {
+                    "uuid": "688e4bdc-ec27-4d8e-942b-3aee7b5d15e9",
+                    "display_name": "Echo (nickname)",
+                    "country": "000",
+                    "avatar": {
+                        "uuid": "3da21898-1535-43c9-9023-83333e776b8b",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "6bb2b5d6-faee-4d5d-8284-af026bde3640",
+                                "height": 480,
+                                "width": 480,
+                                "content_type": "image\/jpeg"
+                            }
+                        ],
+                        "anchor_uuid": "688e4bdc-ec27-4d8e-942b-3aee7b5d15e9"
+                    },
+                    "public_nick_name": "Echo (nickname)"
+                },
+                "monetary_account_id": 46,
+                "draft_share_invite_bank_id": null,
+                "share_type": "STANDARD",
+                "status": "PENDING",
+                "share_detail": {
+                    "ShareDetailPayment": {
+                        "view_balance": true,
+                        "view_old_events": true,
+                        "view_new_events": true,
+                        "budget": null,
+                        "make_payments": true
+                    }
+                },
+                "start_date": "2017-07-20 02:34:05.864029",
+                "end_date": "2017-11-11 02:34:05.864029"
+            }
+        }
+    }
+}
