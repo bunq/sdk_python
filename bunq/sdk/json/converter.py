@@ -25,7 +25,7 @@ class JsonAdapter(object):
     _WARNING_KEY_UNKNOWN = '[bunq SDK beta] Key "{}" in "{}" is unknown.'
 
     # Overlapping key names to be suffixed by and underscore
-    _KEYS_OVERLAPPING = {'id', 'type'}
+    _KEYS_OVERLAPPING = {'id', 'type', 'object'}
 
     # Suffix to strip from the keys during serialization
     _SUFFIX_KEY_OVERLAPPING = '_'
