@@ -170,3 +170,10 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.MonetaryAccountBank.__name__,
             self._GET_MONETARY_ACCOUNT_BANK
         )
+
+    def test_payment_batch_model(self):
+        self.execute_test(
+            self.JSON_PATH_PAYMENT_BATCH_MODEL,
+            endpoint.PaymentBatch.__name__,
+            self._GET_PAYMENT_BATCH
+        )
