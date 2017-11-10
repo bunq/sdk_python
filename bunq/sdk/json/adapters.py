@@ -387,19 +387,30 @@ class ShareDetailAdapter(converter.JsonAdapter):
         share_detail.__dict__ = {
             cls._ATTRIBUTE_PAYMENT: converter.deserialize(
                 object_.ShareDetailPayment,
-                obj[cls._FIELD_PAYMENT]
+                cls._get_field_or_none(cls._FIELD_DRAFT_PAYMENT, obj)
             ),
             cls._ATTRIBUTE_READ_ONLY: converter.deserialize(
                 object_.ShareDetailReadOnly,
-                obj[cls._FIELD_READ_ONLY]
+                cls._get_field_or_none(cls._FIELD_READ_ONLY, obj)
             ),
             cls._ATTRIBUTE_DRAFT_PAYMENT: converter.deserialize(
                 object_.ShareDetailDraftPayment,
-                obj[cls._FIELD_DRAFT_PAYMENT]
+                cls._get_field_or_none(cls._FIELD_DRAFT_PAYMENT, obj)
             ),
         }
 
         return share_detail
+
+    @staticmethod
+    def _get_field_or_none(field, obj):
+        """
+        :type field: str
+        :type obj: dict
+
+        :return: None|dict
+        """
+
+        return obj[field] if field in obj else None
 
     @classmethod
     def serialize(cls, share_detail):
