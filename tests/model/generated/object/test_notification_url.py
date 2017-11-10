@@ -205,3 +205,17 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.ScheduleInstance.__name__,
             self._GET_SCHEDULE_INSTANCE
         )
+
+    def test_share_invite_bank_inquiry(self):
+        self.execute_test(
+            self.JSON_PATH_SHARE_INVITE_BANK_INQUIRY_MODEL,
+            endpoint.ShareInviteBankInquiry.__name__,
+            self._GET_SHARE_INVITE_BANK_INQUIRY
+        )
+
+    def test_share_invite_bank_response(self):
+        self.execute_test(
+            self.JSON_PATH_SHARE_INVITE_BANK_RESPONSE_MODEL,
+            endpoint.ShareInviteBankResponse.__name__,
+            self._GET_SHARE_INVITE_BANK_RESPONSE
+        )
