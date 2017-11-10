@@ -142,3 +142,10 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.BunqMeTab.__name__,
             self._GET_BUNQ_ME_TAB
         )
+
+    def test_chat_message_announcement_model(self):
+        self.execute_test(
+            self.JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL,
+            endpoint.ChatMessageAnnouncement.__name__,
+            self._GET_CHAT_MESSAGE_ANNOUNCEMENT
+        )
