@@ -191,3 +191,17 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.RequestResponse.__name__,
             self._GET_REQUEST_RESPONSE
         )
+
+    def test_scheduled_payment_model(self):
+        self.execute_test(
+            self.JSON_PATH_SCHEDULE_PAYMENT_MODEL,
+            endpoint.SchedulePayment.__name__,
+            self._GET_SCHEDULE_PAYMENT
+        )
+
+    def test_scheduled_instance_model(self):
+        self.execute_test(
+            self.JSON_PATH_SCHEDULE_INSTANCE_MODEL,
+            endpoint.ScheduleInstance.__name__,
+            self._GET_SCHEDULE_INSTANCE
+        )
