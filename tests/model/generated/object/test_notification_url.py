@@ -163,3 +163,10 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.MasterCardAction.__name__,
             self._GET_MASTER_CARD_ACTION
         )
+
+    def test_monetary_account_bank_model(self):
+        self.execute_test(
+            self.JSON_PATH_MONETARY_ACCOUNT_BANK_MODEL,
+            endpoint.MonetaryAccountBank.__name__,
+            self._GET_MONETARY_ACCOUNT_BANK
+        )
