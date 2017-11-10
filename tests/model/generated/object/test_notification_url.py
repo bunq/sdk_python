@@ -177,3 +177,17 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.PaymentBatch.__name__,
             self._GET_PAYMENT_BATCH
         )
+
+    def test_request_inquiry_model(self):
+        self.execute_test(
+            self.JSON_PATH_REQUEST_INQUIRY_MODEL,
+            endpoint.RequestInquiry.__name__,
+            self._GET_REQUEST_INQUIRY
+        )
+
+    def test_request_response_model(self):
+        self.execute_test(
+            self.JSON_PATH_REQUEST_RESPONSE_MODEL,
+            endpoint.RequestResponse.__name__,
+            self._GET_REQUEST_RESPONSE
+        )
