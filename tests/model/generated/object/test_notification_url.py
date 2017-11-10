@@ -149,3 +149,10 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.ChatMessageAnnouncement.__name__,
             self._GET_CHAT_MESSAGE_ANNOUNCEMENT
         )
+
+    def test_draft_payment_model(self):
+        self.execute_test(
+            self.JSON_PATH_DRAFT_PAYMENT_MODEL,
+            endpoint.DraftPayment.__name__,
+            self._GET_DRAFT_PAYMENT
+        )
