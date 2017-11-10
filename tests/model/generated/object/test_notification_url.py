@@ -135,3 +135,10 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             endpoint.Payment.__name__,
             self._GET_PAYMENT
         )
+
+    def test_bunq_me_tab_model(self):
+        self.execute_test(
+            self.JSON_PATH_BUNQ_ME_TAB_MODEL,
+            endpoint.BunqMeTab.__name__,
+            self._GET_BUNQ_ME_TAB
+        )
