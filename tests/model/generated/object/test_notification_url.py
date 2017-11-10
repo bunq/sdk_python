@@ -129,3 +129,9 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
                 json_string
             )
 
+    def test_mutation_model(self):
+        self.execute_test(
+            self.JSON_PATH_MUTATION_MODEL,
+            endpoint.Payment.__name__,
+            self._GET_PAYMENT
+        )
