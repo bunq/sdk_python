@@ -1,14 +1,13 @@
 import os
 import unittest
 
-from tests.config import Config
-from bunq.sdk.context import ApiContext
-from bunq.sdk.context import ApiEnvironmentType
+from tests import config
+from bunq.sdk import context
 
 
 class BunqSdkTestCase(unittest.TestCase):
     # Config values
-    _API_KEY = Config.get_api_key()
+    _API_KEY = config.Config.get_api_key()
 
     # Name of bunq config file
     _FILENAME_BUNQ_CONFIG = "/bunq-test.conf"
@@ -20,21 +19,21 @@ class BunqSdkTestCase(unittest.TestCase):
     def _get_api_context(cls):
         """
         Calls IsSessionActive to check if the session token is still active
-        and returns the ApiContext.
+        and returns the context.ApiContext.
 
         Catches ApiException if the session is inactive.
         Catches BunqException if the conf file does not exist.
 
-        :rtype: ApiContext
+        :rtype: context.ApiContext
         """
 
         filename_bunq_config_full = (cls._get_directory_test_root() +
                                      cls._FILENAME_BUNQ_CONFIG)
 
         try:
-            api_context = ApiContext.restore(filename_bunq_config_full)
+            api_context = context.ApiContext.restore(filename_bunq_config_full)
         except FileNotFoundError:
-            api_context = ApiContext(ApiEnvironmentType.SANDBOX, cls._API_KEY,
+            api_context = context.ApiContext(context.ApiEnvironmentType.SANDBOX, cls._API_KEY,
                                      cls._DEVICE_DESCRIPTION, [])
         else:
             api_context.ensure_session_active()
