@@ -59,7 +59,10 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     # Model root key.
     _KEY_NOTIFICATION_URL_MODEL = 'NotificationUrl'
 
-    def execute_test(self, file_path, class_name, getter_name):
+    def execute_notification_url_test(self,
+                                      file_path,
+                                      class_name,
+                                      getter_name):
         """
         :type file_path: str
         :type class_name: str
@@ -130,91 +133,91 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             )
 
     def test_mutation_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_MUTATION_MODEL,
             endpoint.Payment.__name__,
             self._GET_PAYMENT
         )
 
     def test_bunq_me_tab_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_BUNQ_ME_TAB_MODEL,
             endpoint.BunqMeTab.__name__,
             self._GET_BUNQ_ME_TAB
         )
 
     def test_chat_message_announcement_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL,
             endpoint.ChatMessageAnnouncement.__name__,
             self._GET_CHAT_MESSAGE_ANNOUNCEMENT
         )
 
     def test_draft_payment_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_DRAFT_PAYMENT_MODEL,
             endpoint.DraftPayment.__name__,
             self._GET_DRAFT_PAYMENT
         )
 
     def test_mastercard_action(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_MASTER_CARD_ACTION_MODEL,
             endpoint.MasterCardAction.__name__,
             self._GET_MASTER_CARD_ACTION
         )
 
     def test_monetary_account_bank_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_MONETARY_ACCOUNT_BANK_MODEL,
             endpoint.MonetaryAccountBank.__name__,
             self._GET_MONETARY_ACCOUNT_BANK
         )
 
     def test_payment_batch_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_PAYMENT_BATCH_MODEL,
             endpoint.PaymentBatch.__name__,
             self._GET_PAYMENT_BATCH
         )
 
     def test_request_inquiry_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_REQUEST_INQUIRY_MODEL,
             endpoint.RequestInquiry.__name__,
             self._GET_REQUEST_INQUIRY
         )
 
     def test_request_response_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_REQUEST_RESPONSE_MODEL,
             endpoint.RequestResponse.__name__,
             self._GET_REQUEST_RESPONSE
         )
 
     def test_scheduled_payment_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_SCHEDULE_PAYMENT_MODEL,
             endpoint.SchedulePayment.__name__,
             self._GET_SCHEDULE_PAYMENT
         )
 
     def test_scheduled_instance_model(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_SCHEDULE_INSTANCE_MODEL,
             endpoint.ScheduleInstance.__name__,
             self._GET_SCHEDULE_INSTANCE
         )
 
     def test_share_invite_bank_inquiry(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_INQUIRY_MODEL,
             endpoint.ShareInviteBankInquiry.__name__,
             self._GET_SHARE_INVITE_BANK_INQUIRY
         )
 
     def test_share_invite_bank_response(self):
-        self.execute_test(
+        self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_RESPONSE_MODEL,
             endpoint.ShareInviteBankResponse.__name__,
             self._GET_SHARE_INVITE_BANK_RESPONSE
