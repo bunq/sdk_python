@@ -1,4 +1,5 @@
-{"NotificationUrl": {
+{
+    "NotificationUrl": {
         "target_url": "nope",
         "category": "REQUEST",
         "event_type": "REQUEST_INQUIRY_ACCEPTED",

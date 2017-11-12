@@ -1,4 +1,5 @@
-{"NotificationUrl": {
+{
+    "NotificationUrl": {
         "target_url": "nope",
         "category": "DRAFT_PAYMENT",
         "event_type": "DRAFT_PAYMENT_ACCEPTED",
