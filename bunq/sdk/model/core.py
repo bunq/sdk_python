@@ -1,5 +1,4 @@
 from bunq.sdk import client
-from bunq.sdk import context
 from bunq.sdk.json import converter
 
 
@@ -269,7 +268,7 @@ class Installation(BunqModel):
     @classmethod
     def create(cls, api_context, public_key_string):
         """
-        :type api_context: context.ApiContext
+        :type api_context: bunq.sdk.context.ApiContext
         :type public_key_string: str
 
         :rtype: client.BunqResponse[Installation]
@@ -353,7 +352,7 @@ class SessionServer(BunqModel):
     @classmethod
     def create(cls, api_context):
         """
-        :type api_context: context.ApiContext
+        :type api_context: bunq.sdk.context.ApiContext
 
         :rtype: client.BunqResponse[SessionServer]
         """

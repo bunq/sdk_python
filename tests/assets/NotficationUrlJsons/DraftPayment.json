@@ -1,0 +1,203 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "DRAFT_PAYMENT",
+        "event_type": "DRAFT_PAYMENT_ACCEPTED",
+        "object": {
+            "DraftPayment": {
+                "id": 1,
+                "created": "2017-07-13 21:44:31.314437",
+                "updated": "2017-07-13 21:44:31.314437",
+                "monetary_account_id": 42,
+                "status": "PENDING",
+                "type": "BUNQ",
+                "user_alias_created": {
+                    "uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5",
+                    "display_name": "G. Mason",
+                    "country": "NL",
+                    "avatar": {
+                        "uuid": "4605580d-014c-42f1-a4d4-7b398f3b37e5",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "d6b930f4-1fd0-4b29-8455-e900ed0aced5",
+                                "height": 480,
+                                "width": 480,
+                                "content_type": "image\/jpeg"
+                            }
+                        ],
+                        "anchor_uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5"
+                    },
+                    "public_nick_name": "Griffin (nickname)"
+                },
+                "responses": null,
+                "entries": [
+                    {
+                        "amount": {
+                            "currency": "EUR",
+                            "value": "46.26"
+                        },
+                        "alias": {
+                            "iban": "NL16BUNQ2025103794",
+                            "is_light": false,
+                            "display_name": "G. Mason",
+                            "avatar": {
+                                "uuid": "e3bc865a-83a8-4788-af62-4f0c38df8f0d",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "62c88a57-3cd9-49f7-81dc-8f1a4fcc80ac",
+                                        "height": 1024,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5",
+                                "display_name": "G. Mason",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "4605580d-014c-42f1-a4d4-7b398f3b37e5",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "d6b930f4-1fd0-4b29-8455-e900ed0aced5",
+                                            "height": 480,
+                                            "width": 480,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5"
+                                },
+                                "public_nick_name": "Griffin (nickname)"
+                            },
+                            "country": "NL"
+                        },
+                        "counterparty_alias": {
+                            "iban": "NL49BUNQ2025104073",
+                            "is_light": false,
+                            "display_name": "Echo (nickname)",
+                            "avatar": {
+                                "uuid": "11ec9a66-3c18-4711-8586-36f32e262830",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "63eb3676-058a-45f0-b81d-8b26ee2e4f21",
+                                        "height": 1024,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "688e4bdc-ec27-4d8e-942b-3aee7b5d15e9",
+                                "display_name": "Echo (nickname)",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "3da21898-1535-43c9-9023-83333e776b8b",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "6bb2b5d6-faee-4d5d-8284-af026bde3640",
+                                            "height": 480,
+                                            "width": 480,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "688e4bdc-ec27-4d8e-942b-3aee7b5d15e9"
+                                },
+                                "public_nick_name": "Echo (nickname)"
+                            },
+                            "country": "NL"
+                        },
+                        "description": "Test payment to NL49BUNQ2025104073",
+                        "type": "BUNQ",
+                        "attachment": [],
+                        "merchant_reference": null
+                    },
+                    {
+                        "amount": {
+                            "currency": "EUR",
+                            "value": "2.56"
+                        },
+                        "alias": {
+                            "iban": "NL16BUNQ2025103794",
+                            "is_light": false,
+                            "display_name": "G. Mason",
+                            "avatar": {
+                                "uuid": "e3bc865a-83a8-4788-af62-4f0c38df8f0d",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "62c88a57-3cd9-49f7-81dc-8f1a4fcc80ac",
+                                        "height": 1024,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5",
+                                "display_name": "G. Mason",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "4605580d-014c-42f1-a4d4-7b398f3b37e5",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "d6b930f4-1fd0-4b29-8455-e900ed0aced5",
+                                            "height": 480,
+                                            "width": 480,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "fbff5c27-e5c1-44c6-be6f-ddd2c6615bf5"
+                                },
+                                "public_nick_name": "Griffin (nickname)"
+                            },
+                            "country": "NL"
+                        },
+                        "counterparty_alias": {
+                            "iban": "NL32BUNQ2025103506",
+                            "is_light": false,
+                            "display_name": "Niels (nickname)",
+                            "avatar": {
+                                "uuid": "e47f5214-2198-4605-886c-9950714476f3",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "3c7d4d11-d203-4ed4-b471-5b5e24079bf6",
+                                        "height": 1024,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "398e4411-6d98-40b9-bb48-9b33a4cb82da",
+                                "display_name": "Niels (nickname)",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "ad92c001-a4ec-4344-89ad-bf6a6b0e5628",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "2b7bc30e-d6af-4440-90ba-a801cba3d8d7",
+                                            "height": 480,
+                                            "width": 480,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "398e4411-6d98-40b9-bb48-9b33a4cb82da"
+                                },
+                                "public_nick_name": "Niels (nickname)"
+                            },
+                            "country": "NL"
+                        },
+                        "description": "Test payment to NL32BUNQ2025103506",
+                        "type": "BUNQ",
+                        "attachment": [],
+                        "merchant_reference": null
+                    }
+                ],
+                "object": null
+            }
+        }
+    }
+}

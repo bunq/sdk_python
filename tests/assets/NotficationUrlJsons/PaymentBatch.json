@@ -1,0 +1,247 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "PAYMENT",
+        "event_type": "PAYMENT_BATCH_CREATED",
+        "object": {
+            "PaymentBatch": {
+                "id": 1,
+                "created": "2017-07-13 01:57:39.399256",
+                "updated": "2017-07-13 01:57:39.399256",
+                "payments": [
+                    {
+                        "id": 108864,
+                        "created": "2017-11-08 11:20:03.950184",
+                        "updated": "2017-11-08 11:20:03.950184",
+                        "monetary_account_id": 213,
+                        "amount": {
+                            "currency": "EUR",
+                            "value": "-24.95"
+                        },
+                        "description": "73d6df4a 680498 Your order #1234567",
+                        "type": "IDEAL",
+                        "merchant_reference": null,
+                        "maturity_date": "2017-11-08",
+                        "alias": {
+                            "iban": "NL86BUNQ2025105541",
+                            "is_light": false,
+                            "display_name": "D. Howard",
+                            "avatar": {
+                                "uuid": "cd028f6d-52f3-4b55-be76-56223b7adeec",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "54b3fbaa-a427-4115-a04d-08372f706a42",
+                                        "height": 1023,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "0f4540c4-e81d-4aca-ad12-144fb73635a1",
+                                "display_name": "D. Howard",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "514aaa28-c2da-42ce-aa76-7b6fd6f528cc",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "14847000-40da-4f63-9137-817683acd980",
+                                            "height": 456,
+                                            "width": 456,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "0f4540c4-e81d-4aca-ad12-144fb73635a1"
+                                },
+                                "public_nick_name": "Dominic (nick) premium \u2728"
+                            },
+                            "country": "NL"
+                        },
+                        "counterparty_alias": {
+                            "iban": null,
+                            "is_light": null,
+                            "display_name": "BoekenGigant",
+                            "label_user": {
+                                "uuid": null,
+                                "display_name": "BoekenGigant",
+                                "country": "NL",
+                                "avatar": null,
+                                "public_nick_name": "BoekenGigant"
+                            },
+                            "avatar": null,
+                            "country": "NL"
+                        },
+                        "attachment": [],
+                        "geolocation": {
+                            "latitude": 52.387862883215,
+                            "longitude": 4.8333778222355,
+                            "altitude": 0,
+                            "radius": 65
+                        },
+                        "batch_id": null,
+                        "conversation": null,
+                        "allow_chat": true,
+                        "scheduled_id": null,
+                        "address_billing": null,
+                        "address_shipping": null
+                    },
+                    {
+                        "id": 108864,
+                        "created": "2017-11-08 11:20:03.950184",
+                        "updated": "2017-11-08 11:20:03.950184",
+                        "monetary_account_id": 213,
+                        "amount": {
+                            "currency": "EUR",
+                            "value": "-24.95"
+                        },
+                        "description": "73d6df4a 680498 Your order #1234567",
+                        "type": "IDEAL",
+                        "merchant_reference": null,
+                        "maturity_date": "2017-11-08",
+                        "alias": {
+                            "iban": "NL86BUNQ2025105541",
+                            "is_light": false,
+                            "display_name": "D. Howard",
+                            "avatar": {
+                                "uuid": "cd028f6d-52f3-4b55-be76-56223b7adeec",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "54b3fbaa-a427-4115-a04d-08372f706a42",
+                                        "height": 1023,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "0f4540c4-e81d-4aca-ad12-144fb73635a1",
+                                "display_name": "D. Howard",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "514aaa28-c2da-42ce-aa76-7b6fd6f528cc",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "14847000-40da-4f63-9137-817683acd980",
+                                            "height": 456,
+                                            "width": 456,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "0f4540c4-e81d-4aca-ad12-144fb73635a1"
+                                },
+                                "public_nick_name": "Dominic (nick) premium \u2728"
+                            },
+                            "country": "NL"
+                        },
+                        "counterparty_alias": {
+                            "iban": null,
+                            "is_light": null,
+                            "display_name": "BoekenGigant",
+                            "label_user": {
+                                "uuid": null,
+                                "display_name": "BoekenGigant",
+                                "country": "NL",
+                                "avatar": null,
+                                "public_nick_name": "BoekenGigant"
+                            },
+                            "avatar": null,
+                            "country": "NL"
+                        },
+                        "attachment": [],
+                        "geolocation": {
+                            "latitude": 52.387862883215,
+                            "longitude": 4.8333778222355,
+                            "altitude": 0,
+                            "radius": 65
+                        },
+                        "batch_id": null,
+                        "conversation": null,
+                        "allow_chat": true,
+                        "scheduled_id": null,
+                        "address_billing": null,
+                        "address_shipping": null
+                    },
+                    {
+                        "id": 108864,
+                        "created": "2017-11-08 11:20:03.950184",
+                        "updated": "2017-11-08 11:20:03.950184",
+                        "monetary_account_id": 213,
+                        "amount": {
+                            "currency": "EUR",
+                            "value": "-24.95"
+                        },
+                        "description": "73d6df4a 680498 Your order #1234567",
+                        "type": "IDEAL",
+                        "merchant_reference": null,
+                        "maturity_date": "2017-11-08",
+                        "alias": {
+                            "iban": "NL86BUNQ2025105541",
+                            "is_light": false,
+                            "display_name": "D. Howard",
+                            "avatar": {
+                                "uuid": "cd028f6d-52f3-4b55-be76-56223b7adeec",
+                                "image": [
+                                    {
+                                        "attachment_public_uuid": "54b3fbaa-a427-4115-a04d-08372f706a42",
+                                        "height": 1023,
+                                        "width": 1024,
+                                        "content_type": "image\/png"
+                                    }
+                                ],
+                                "anchor_uuid": null
+                            },
+                            "label_user": {
+                                "uuid": "0f4540c4-e81d-4aca-ad12-144fb73635a1",
+                                "display_name": "D. Howard",
+                                "country": "NL",
+                                "avatar": {
+                                    "uuid": "514aaa28-c2da-42ce-aa76-7b6fd6f528cc",
+                                    "image": [
+                                        {
+                                            "attachment_public_uuid": "14847000-40da-4f63-9137-817683acd980",
+                                            "height": 456,
+                                            "width": 456,
+                                            "content_type": "image\/jpeg"
+                                        }
+                                    ],
+                                    "anchor_uuid": "0f4540c4-e81d-4aca-ad12-144fb73635a1"
+                                },
+                                "public_nick_name": "Dominic (nick) premium \u2728"
+                            },
+                            "country": "NL"
+                        },
+                        "counterparty_alias": {
+                            "iban": null,
+                            "is_light": null,
+                            "display_name": "BoekenGigant",
+                            "label_user": {
+                                "uuid": null,
+                                "display_name": "BoekenGigant",
+                                "country": "NL",
+                                "avatar": null,
+                                "public_nick_name": "BoekenGigant"
+                            },
+                            "avatar": null,
+                            "country": "NL"
+                        },
+                        "attachment": [],
+                        "geolocation": {
+                            "latitude": 52.387862883215,
+                            "longitude": 4.8333778222355,
+                            "altitude": 0,
+                            "radius": 65
+                        },
+                        "batch_id": null,
+                        "conversation": null,
+                        "allow_chat": true,
+                        "scheduled_id": null,
+                        "address_billing": null,
+                        "address_shipping": null
+                    }
+                ]
+            }
+        }
+    }
+}

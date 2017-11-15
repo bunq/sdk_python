@@ -1,7 +1,7 @@
 import json
 import os
 
-from bunq.sdk.model.generated.object_ import Pointer
+from bunq.sdk.model.generated import object_
 
 
 class Config:
@@ -104,7 +104,7 @@ class Config:
         alias = cls._get_config_file()[cls._FIELD_COUNTER_PARTY_SELF][
             cls._FIELD_ALIAS]
 
-        return Pointer(type_, alias)
+        return object_.Pointer(type_, alias)
 
     @classmethod
     def get_pointer_counter_party_other(cls):
@@ -117,7 +117,7 @@ class Config:
         alias = cls._get_config_file()[cls._FIELD_COUNTER_PARTY_OTHER][
             cls._FIELD_ALIAS]
 
-        return Pointer(type_, alias)
+        return object_.Pointer(type_, alias)
 
     @classmethod
     def get_permitted_ips(cls):

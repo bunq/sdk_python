@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from bunq.sdk.model import core
+from bunq.sdk import exception
 from bunq.sdk.model.generated import endpoint
 
 
@@ -205,6 +206,10 @@ class ChatMessageContent(core.BunqModel):
     :type ChatMessageContentText: ChatMessageContentText
     """
 
+    # Error constants.
+    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+
+
     def __init__(self):
         self.ChatMessageContentAnchorEvent = None
         self.ChatMessageContentAttachment = None
@@ -213,6 +218,35 @@ class ChatMessageContent(core.BunqModel):
         self.ChatMessageContentStatusConversation = None
         self.ChatMessageContentStatusMembership = None
         self.ChatMessageContentText = None
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self.ChatMessageContentAnchorEvent is not None:
+            return self.ChatMessageContentAnchorEvent
+
+        if self.ChatMessageContentAttachment is not None:
+            return self.ChatMessageContentAttachment
+
+        if self.ChatMessageContentGeolocation is not None:
+            return self.ChatMessageContentGeolocation
+
+        if self.ChatMessageContentStatusConversationTitle is not None:
+            return self.ChatMessageContentStatusConversationTitle
+
+        if self.ChatMessageContentStatusConversation is not None:
+            return self.ChatMessageContentStatusConversation
+
+        if self.ChatMessageContentStatusMembership is not None:
+            return self.ChatMessageContentStatusMembership
+
+        if self.ChatMessageContentText is not None:
+            return self.ChatMessageContentText
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
 
 class ChatMessageContentAnchorEvent(core.BunqModel):
@@ -246,6 +280,10 @@ class AnchoredObject(core.BunqModel):
     :type UserCredentialPasswordIp: endpoint.UserCredentialPasswordIp
     """
 
+    # Error constants.
+    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+
+
     def __init__(self):
         self.CardDebit = None
         self.CardPinChange = None
@@ -265,6 +303,68 @@ class AnchoredObject(core.BunqModel):
         self.ShareInviteBankInquiry = None
         self.ShareInviteBankResponse = None
         self.UserCredentialPasswordIp = None
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self.CardDebit is not None:
+            return self.CardDebit
+
+        if self.CardPinChange is not None:
+            return self.CardPinChange
+
+        if self.CardResult is not None:
+            return self.CardResult
+
+        if self.DraftPayment is not None:
+            return self.DraftPayment
+
+        if self.IdealMerchantTransaction is not None:
+            return self.IdealMerchantTransaction
+
+        if self.Invoice is not None:
+            return self.Invoice
+
+        if self.Payment is not None:
+            return self.Payment
+
+        if self.PaymentBatch is not None:
+            return self.PaymentBatch
+
+        if self.PromotionDisplay is not None:
+            return self.PromotionDisplay
+
+        if self.RequestInquiryBatch is not None:
+            return self.RequestInquiryBatch
+
+        if self.RequestInquiry is not None:
+            return self.RequestInquiry
+
+        if self.RequestResponse is not None:
+            return self.RequestResponse
+
+        if self.ScheduledPaymentBatch is not None:
+            return self.ScheduledPaymentBatch
+
+        if self.ScheduledPayment is not None:
+            return self.ScheduledPayment
+
+        if self.ScheduledInstance is not None:
+            return self.ScheduledInstance
+
+        if self.ShareInviteBankInquiry is not None:
+            return self.ShareInviteBankInquiry
+
+        if self.ShareInviteBankResponse is not None:
+            return self.ShareInviteBankResponse
+
+        if self.UserCredentialPasswordIp is not None:
+            return self.UserCredentialPasswordIp
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
 
 class CardLimit(core.BunqModel):
@@ -404,9 +504,27 @@ class DraftPaymentAnchorObject(core.BunqModel):
     :type PaymentBatch: endpoint.PaymentBatch
     """
 
+    # Error constants.
+    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+
+
     def __init__(self):
         self.Payment = None
         self.PaymentBatch = None
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self.Payment is not None:
+            return self.Payment
+
+        if self.PaymentBatch is not None:
+            return self.PaymentBatch
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
 
 class Geolocation(core.BunqModel):
@@ -475,29 +593,33 @@ class SchedulePaymentEntry(core.BunqModel):
         self.alias = None
 
 
-class Schedule(core.BunqModel):
+class ScheduleAnchorObject(core.BunqModel):
     """
-    :type time_start: str
-    :type time_end: str
-    :type recurrence_unit: str
-    :type recurrence_size: int
-    :type status: str
-    :type object_: core.BunqModel
+    :type Payment: endpoint.Payment
+    :type PaymentBatch: endpoint.PaymentBatch
     """
 
-    def __init__(self, time_start, recurrence_unit, recurrence_size):
+    # Error constants.
+    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+
+
+    def __init__(self):
+        self.Payment = None
+        self.PaymentBatch = None
+
+    def get_referenced_object(self):
         """
-        :type time_start: str
-        :type recurrence_unit: str
-        :type recurrence_size: int
+        :rtype: core.BunqModel
+        :raise: BunqException
         """
 
-        self.time_start = time_start
-        self.recurrence_unit = recurrence_unit
-        self.recurrence_size = recurrence_size
-        self.time_end = None
-        self.status = None
-        self.object_ = None
+        if self.Payment is not None:
+            return self.Payment
+
+        if self.PaymentBatch is not None:
+            return self.PaymentBatch
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
 
 class Error(core.BunqModel):
@@ -509,6 +631,35 @@ class Error(core.BunqModel):
     def __init__(self):
         self.error_description = None
         self.error_description_translated = None
+
+
+class ScheduleInstanceAnchorObject(core.BunqModel):
+    """
+    :type Payment: endpoint.Payment
+    :type PaymentBatch: endpoint.PaymentBatch
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+
+
+    def __init__(self):
+        self.Payment = None
+        self.PaymentBatch = None
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self.Payment is not None:
+            return self.Payment
+
+        if self.PaymentBatch is not None:
+            return self.PaymentBatch
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
 
 class ShareDetail(core.BunqModel):
@@ -872,17 +1023,158 @@ class MonetaryAccountSetting(core.BunqModel):
         self.restriction_chat = None
 
 
-class Ubo(core.BunqModel):
+class NotificationUrl(core.BunqModel):
     """
-    :type name: str
-    :type date_of_birth: str
-    :type nationality: str
+    :type target_url: str
+    :type category: str
+    :type event_type: str
+    :type object_: NotificationAnchorObject
     """
 
     def __init__(self):
-        self.name = None
-        self.date_of_birth = None
-        self.nationality = None
+        self.target_url = None
+        self.category = None
+        self.event_type = None
+        self.object_ = None
+
+
+class NotificationAnchorObject(core.BunqModel):
+    """
+    :type BunqMeTab: endpoint.BunqMeTab
+    :type BunqMeTabResultInquiry: endpoint.BunqMeTabResultInquiry
+    :type BunqMeTabResultResponse: endpoint.BunqMeTabResultResponse
+    :type ChatMessageStatus: endpoint.ChatMessageStatus
+    :type ChatMessageUser: endpoint.ChatMessageUser
+    :type ChatMessageAnnouncement: endpoint.ChatMessageAnnouncement
+    :type DraftPayment: endpoint.DraftPayment
+    :type IdealMerchantTransaction: endpoint.IdealMerchantTransaction
+    :type Invoice: endpoint.Invoice
+    :type MasterCardAction: endpoint.MasterCardAction
+    :type MonetaryAccountBank: endpoint.MonetaryAccountBank
+    :type Payment: endpoint.Payment
+    :type PaymentBatch: endpoint.PaymentBatch
+    :type RequestInquiry: endpoint.RequestInquiry
+    :type RequestInquiryBatch: endpoint.RequestInquiryBatch
+    :type RequestResponse: endpoint.RequestResponse
+    :type ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
+    :type ShareInviteBankResponse: endpoint.ShareInviteBankResponse
+    :type ScheduledPayment: endpoint.SchedulePayment
+    :type ScheduledInstance: endpoint.ScheduleInstance
+    :type TabResultInquiry: endpoint.TabResultInquiry
+    :type TabResultResponse: endpoint.TabResultResponse
+    :type UserPerson: endpoint.UserPerson
+    :type UserCompany: endpoint.UserCompany
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+
+
+    def __init__(self):
+        self.BunqMeTab = None
+        self.BunqMeTabResultInquiry = None
+        self.BunqMeTabResultResponse = None
+        self.ChatMessageStatus = None
+        self.ChatMessageUser = None
+        self.ChatMessageAnnouncement = None
+        self.DraftPayment = None
+        self.IdealMerchantTransaction = None
+        self.Invoice = None
+        self.MasterCardAction = None
+        self.MonetaryAccountBank = None
+        self.Payment = None
+        self.PaymentBatch = None
+        self.RequestInquiry = None
+        self.RequestInquiryBatch = None
+        self.RequestResponse = None
+        self.ShareInviteBankInquiry = None
+        self.ShareInviteBankResponse = None
+        self.ScheduledPayment = None
+        self.ScheduledInstance = None
+        self.TabResultInquiry = None
+        self.TabResultResponse = None
+        self.UserPerson = None
+        self.UserCompany = None
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self.BunqMeTab is not None:
+            return self.BunqMeTab
+
+        if self.BunqMeTabResultInquiry is not None:
+            return self.BunqMeTabResultInquiry
+
+        if self.BunqMeTabResultResponse is not None:
+            return self.BunqMeTabResultResponse
+
+        if self.ChatMessageStatus is not None:
+            return self.ChatMessageStatus
+
+        if self.ChatMessageUser is not None:
+            return self.ChatMessageUser
+
+        if self.ChatMessageAnnouncement is not None:
+            return self.ChatMessageAnnouncement
+
+        if self.DraftPayment is not None:
+            return self.DraftPayment
+
+        if self.IdealMerchantTransaction is not None:
+            return self.IdealMerchantTransaction
+
+        if self.Invoice is not None:
+            return self.Invoice
+
+        if self.MasterCardAction is not None:
+            return self.MasterCardAction
+
+        if self.MonetaryAccountBank is not None:
+            return self.MonetaryAccountBank
+
+        if self.Payment is not None:
+            return self.Payment
+
+        if self.PaymentBatch is not None:
+            return self.PaymentBatch
+
+        if self.RequestInquiry is not None:
+            return self.RequestInquiry
+
+        if self.RequestInquiryBatch is not None:
+            return self.RequestInquiryBatch
+
+        if self.RequestResponse is not None:
+            return self.RequestResponse
+
+        if self.ShareInviteBankInquiry is not None:
+            return self.ShareInviteBankInquiry
+
+        if self.ShareInviteBankResponse is not None:
+            return self.ShareInviteBankResponse
+
+        if self.ScheduledPayment is not None:
+            return self.ScheduledPayment
+
+        if self.ScheduledInstance is not None:
+            return self.ScheduledInstance
+
+        if self.TabResultInquiry is not None:
+            return self.TabResultInquiry
+
+        if self.TabResultResponse is not None:
+            return self.TabResultResponse
+
+        if self.UserPerson is not None:
+            return self.UserPerson
+
+        if self.UserCompany is not None:
+            return self.UserCompany
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
 
 class TaxResident(core.BunqModel):
@@ -899,6 +1191,19 @@ class TaxResident(core.BunqModel):
 
         self.country = country
         self.tax_number = tax_number
+
+
+class Ubo(core.BunqModel):
+    """
+    :type name: str
+    :type date_of_birth: str
+    :type nationality: str
+    """
+
+    def __init__(self):
+        self.name = None
+        self.date_of_birth = None
+        self.nationality = None
 
 
 class MonetaryAccountReference(core.BunqModel):

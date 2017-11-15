@@ -1,0 +1,57 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "DRAFT_PAYMENT",
+        "event_type": "DRAFT_PAYMENT_ACCEPTED",
+        "object": {
+            "MonetaryAccountBank": {
+                "id": 21,
+                "created": "2017-07-08 00:42:33.951277",
+                "updated": "2017-07-08 00:42:33.951277",
+                "alias": [
+                    {
+                        "type": "IBAN",
+                        "value": "NL18BUNQ2025104049",
+                        "name": "bunq"
+                    }
+                ],
+                "avatar": {
+                    "uuid": "246519c2-1280-4fd8-a864-ed9d313ceeba",
+                    "image": [
+                        {
+                            "attachment_public_uuid": "52613480-7bd1-4da4-be8a-4a15f78c085d",
+                            "height": 126,
+                            "width": 200,
+                            "content_type|": "image\/jpeg"
+                        }
+                    ],
+                    "anchor_uuid": "45631547-6bdb-479e-859b-192273964ed4"
+                },
+                "balance": null,
+                "country": "NL",
+                "currency": "EUR",
+                "daily_limit": {
+                    "currency": "EUR",
+                    "value": "10000.00"
+                },
+                "daily_spent": {
+                    "currency": "EUR",
+                    "value": "0.00"
+                },
+                "description": "sofort",
+                "public_uuid": "45631547-6bdb-479e-859b-192273964ed4",
+                "status": "ACTIVE",
+                "sub_status": "NONE",
+                "timezone": "europe\/amsterdam",
+                "user_id": 214,
+                "monetary_account_profile": null,
+                "notification_filters": [],
+                "setting": null,
+                "overdraft_limit": {
+                    "currency": "EUR",
+                    "value": "0.00"
+                }
+            }
+        }
+    }
+}
