@@ -791,6 +791,7 @@ class CardDebit(core.BunqModel):
     :type _updated: str
     :type _public_uuid: str
     :type _type_: str
+    :type _sub_type: str
     :type _second_line: str
     :type _name_on_card: str
     :type _primary_account_number_four_digit: str
@@ -829,6 +830,7 @@ class CardDebit(core.BunqModel):
         self._updated = None
         self._public_uuid = None
         self._type_ = None
+        self._sub_type = None
         self._second_line = None
         self._name_on_card = None
         self._primary_account_number_four_digit = None
@@ -909,6 +911,14 @@ class CardDebit(core.BunqModel):
         """
 
         return self._type_
+
+    @property
+    def sub_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_type
 
     @property
     def second_line(self):
