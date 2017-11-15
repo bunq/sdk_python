@@ -9,26 +9,25 @@ from bunq.sdk.json.converter import json_to_class
 
 class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     # Getter string constants
-    _GET_PAYMENT = 'Payment'
-    _GET_BUNQ_ME_TAB = 'BunqMeTab'
-    _GET_CHAT_MESSAGE_ANNOUNCEMENT = 'ChatMessageAnnouncement'
-    _GET_DRAFT_PAYMENT = 'DraftPayment'
-    _GET_MASTER_CARD_ACTION = 'MasterCardAction'
-    _GET_MONETARY_ACCOUNT_BANK = 'MonetaryAccountBank'
-    _GET_PAYMENT_BATCH = 'PaymentBatch'
-    _GET_REQUEST_INQUIRY = 'RequestInquiry'
-    _GET_REQUEST_RESPONSE = 'RequestResponse'
-    _GET_SCHEDULE_PAYMENT = 'ScheduledPayment'
-    _GET_SCHEDULE_INSTANCE = 'ScheduledInstance'
-    _GET_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteBankInquiry'
-    _GET_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
-
     # Assertion errors
     _ASSERT_SHOULD_NOT_REACH_THIS_CODE_ERROR = \
         'Something super weird just happen'
     _ASSERT_JSON_DECODE_ERROR = \
         'Might be that the JSON file is not a valid json.'
     _ASSERT_OBJECT_IS_NULL_ERROR = 'Object seems to be null.'
+    _GETTER_PAYMENT = 'Payment'
+    _GETTER_BUNQ_ME_TAB = 'BunqMeTab'
+    _GETTER_CHAT_MESSAGE_ANNOUNCEMENT = 'ChatMessageAnnouncement'
+    _GETTER_DRAFT_PAYMENT = 'DraftPayment'
+    _GETTER_MASTER_CARD_ACTION = 'MasterCardAction'
+    _GETTER_MONETARY_ACCOUNT_BANK = 'MonetaryAccountBank'
+    _GETTER_PAYMENT_BATCH = 'PaymentBatch'
+    _GETTER_REQUEST_INQUIRY = 'RequestInquiry'
+    _GETTER_REQUEST_RESPONSE = 'RequestResponse'
+    _GETTER_SCHEDULE_PAYMENT = 'ScheduledPayment'
+    _GETTER_SCHEDULE_INSTANCE = 'ScheduledInstance'
+    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteBankInquiry'
+    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
 
     # Model json paths constants.
     BASE_PATH_JSON_MODEL = '../../../assets/NotficationUrlJsons'
@@ -136,89 +135,89 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         self.execute_notification_url_test(
             self.JSON_PATH_MUTATION_MODEL,
             endpoint.Payment.__name__,
-            self._GET_PAYMENT
+            self._GETTER_PAYMENT
         )
 
     def test_bunq_me_tab_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_BUNQ_ME_TAB_MODEL,
             endpoint.BunqMeTab.__name__,
-            self._GET_BUNQ_ME_TAB
+            self._GETTER_BUNQ_ME_TAB
         )
 
     def test_chat_message_announcement_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL,
             endpoint.ChatMessageAnnouncement.__name__,
-            self._GET_CHAT_MESSAGE_ANNOUNCEMENT
+            self._GETTER_CHAT_MESSAGE_ANNOUNCEMENT
         )
 
     def test_draft_payment_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_DRAFT_PAYMENT_MODEL,
             endpoint.DraftPayment.__name__,
-            self._GET_DRAFT_PAYMENT
+            self._GETTER_DRAFT_PAYMENT
         )
 
     def test_mastercard_action(self):
         self.execute_notification_url_test(
             self.JSON_PATH_MASTER_CARD_ACTION_MODEL,
             endpoint.MasterCardAction.__name__,
-            self._GET_MASTER_CARD_ACTION
+            self._GETTER_MASTER_CARD_ACTION
         )
 
     def test_monetary_account_bank_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_MONETARY_ACCOUNT_BANK_MODEL,
             endpoint.MonetaryAccountBank.__name__,
-            self._GET_MONETARY_ACCOUNT_BANK
+            self._GETTER_MONETARY_ACCOUNT_BANK
         )
 
     def test_payment_batch_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_PAYMENT_BATCH_MODEL,
             endpoint.PaymentBatch.__name__,
-            self._GET_PAYMENT_BATCH
+            self._GETTER_PAYMENT_BATCH
         )
 
     def test_request_inquiry_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_REQUEST_INQUIRY_MODEL,
             endpoint.RequestInquiry.__name__,
-            self._GET_REQUEST_INQUIRY
+            self._GETTER_REQUEST_INQUIRY
         )
 
     def test_request_response_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_REQUEST_RESPONSE_MODEL,
             endpoint.RequestResponse.__name__,
-            self._GET_REQUEST_RESPONSE
+            self._GETTER_REQUEST_RESPONSE
         )
 
     def test_scheduled_payment_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SCHEDULE_PAYMENT_MODEL,
             endpoint.SchedulePayment.__name__,
-            self._GET_SCHEDULE_PAYMENT
+            self._GETTER_SCHEDULE_PAYMENT
         )
 
     def test_scheduled_instance_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SCHEDULE_INSTANCE_MODEL,
             endpoint.ScheduleInstance.__name__,
-            self._GET_SCHEDULE_INSTANCE
+            self._GETTER_SCHEDULE_INSTANCE
         )
 
     def test_share_invite_bank_inquiry(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_INQUIRY_MODEL,
             endpoint.ShareInviteBankInquiry.__name__,
-            self._GET_SHARE_INVITE_BANK_INQUIRY
+            self._GETTER_SHARE_INVITE_BANK_INQUIRY
         )
 
     def test_share_invite_bank_response(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_RESPONSE_MODEL,
             endpoint.ShareInviteBankResponse.__name__,
-            self._GET_SHARE_INVITE_BANK_RESPONSE
+            self._GETTER_SHARE_INVITE_BANK_RESPONSE
         )
