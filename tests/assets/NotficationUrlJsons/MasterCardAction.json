@@ -1,0 +1,137 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "DRAFT_PAYMENT",
+        "event_type": "DRAFT_PAYMENT_ACCEPTED",
+        "object": {
+            "MasterCardAction": {
+                "id": 1,
+                "created": "2017-07-10 06:33:10.497530",
+                "updated": "2017-07-10 06:33:10.676651",
+                "monetary_account_id": 31,
+                "card_id": 2,
+                "amount_local": {
+                    "currency": "EUR",
+                    "value": "2.00"
+                },
+                "amount_billing": {
+                    "currency": "EUR",
+                    "value": "2.00"
+                },
+                "amount_original_local": {
+                    "currency": "EUR",
+                    "value": "2.00"
+                },
+                "amount_original_billing": {
+                    "currency": "EUR",
+                    "value": "2.00"
+                },
+                "amount_fee": {
+                    "currency": "EUR",
+                    "value": "0.00"
+                },
+                "decision": "COUNTRY_NOT_PERMITTED",
+                "decision_description": "Card transaction was denied, because the country was not permitted in card settings.",
+                "decision_description_translated": "Card transaction was denied, because the country was not permitted in card settings.",
+                "description": "Spar city Sloterdijk Amsterdam, NL",
+                "authorisation_status": "BLOCKED",
+                "authorisation_type": "NORMAL_AUTHORISATION",
+                "city": "Amsterdam",
+                "alias": {
+                    "iban": "NL88BUNQ2025103565",
+                    "is_light": false,
+                    "display_name": "B.O. Varb",
+                    "avatar": {
+                        "uuid": "0c245e21-e3bc-4bab-8880-7ca6d09691b5",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "1441cea4-3f24-43d4-9f35-2dfd8ff7bc8c",
+                                "height": 1024,
+                                "width": 1024,
+                                "content_type": "image\/png"
+                            }
+                        ],
+                        "anchor_uuid": null
+                    },
+                    "label_user": {
+                        "uuid": "353f4064-96bd-49d7-ac69-f87513726c80",
+                        "display_name": "B.O. Varb",
+                        "country": "NL",
+                        "avatar": {
+                            "uuid": "ec2dc709-c8dd-4868-b3e7-601338d88881",
+                            "image": [
+                                {
+                                    "attachment_public_uuid": "7444998c-ff1d-4708-afe3-7b56e33c6f89",
+                                    "height": 480,
+                                    "width": 480,
+                                    "content_type": "image\/jpeg"
+                                }
+                            ],
+                            "anchor_uuid": "353f4064-96bd-49d7-ac69-f87513726c80"
+                        },
+                        "public_nick_name": "Bravo O (nickname)"
+                    },
+                    "country": "NL"
+                },
+                "counterparty_alias": {
+                    "iban": null,
+                    "is_light": null,
+                    "display_name": "Spar city Sloterdijk",
+                    "avatar": {
+                        "uuid": "ed91da5e-6100-42ab-a5b1-bcbeab62cb96",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "58b3df6c-bfa4-4a42-91b3-db0e7f2ac64e",
+                                "height": 640,
+                                "width": 640,
+                                "content_type": "image\/jpeg"
+                            }
+                        ],
+                        "anchor_uuid": null
+                    },
+                    "label_user": {
+                        "uuid": null,
+                        "display_name": "Spar city Sloterdijk",
+                        "country": "NL",
+                        "avatar": null,
+                        "public_nick_name": "Spar city Sloterdijk"
+                    },
+                    "country": "NL",
+                    "merchant_category_code": "5411"
+                },
+                "label_card": {
+                    "uuid": "c3b99cac-3677-4311-841c-4a7bba7397f2",
+                    "type": "MAESTRO",
+                    "second_line": "Pets",
+                    "expiry_date": "2021-07-31",
+                    "status": "ACTIVE",
+                    "label_user": {
+                        "uuid": "353f4064-96bd-49d7-ac69-f87513726c80",
+                        "display_name": "B.O. Varb",
+                        "country": "NL",
+                        "avatar": {
+                            "uuid": "ec2dc709-c8dd-4868-b3e7-601338d88881",
+                            "image": [
+                                {
+                                    "attachment_public_uuid": "7444998c-ff1d-4708-afe3-7b56e33c6f89",
+                                    "height": 480,
+                                    "width": 480,
+                                    "content_type": "image\/jpeg"
+                                }
+                            ],
+                            "anchor_uuid": "353f4064-96bd-49d7-ac69-f87513726c80"
+                        },
+                        "public_nick_name": "Bravo O (nickname)"
+                    }
+                },
+                "token_status": null,
+                "reservation_expiry_time": null,
+                "applied_limit": null,
+                "conversation": null,
+                "allow_chat": true,
+                "pan_entry_mode_user": "ICC",
+                "eligible_whitelist_id": null
+            }
+        }
+    }
+}

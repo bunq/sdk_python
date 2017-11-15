@@ -1,0 +1,108 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "REQUEST",
+        "event_type": "REQUEST_INQUIRY_ACCEPTED",
+        "object": {
+            "RequestResponse": {
+                "id": 2,
+                "created": "2017-07-13 21:44:31.840439",
+                "updated": "2017-07-13 21:44:31.840439",
+                "time_responded": null,
+                "time_expiry": null,
+                "monetary_account_id": 36,
+                "amount_inquired": {
+                    "currency": "EUR",
+                    "value": "3.31"
+                },
+                "amount_responded": null,
+                "status": "PENDING",
+                "description": "Test request inquiry to NL15BUNQ2025104200",
+                "alias": {
+                    "iban": "NL15BUNQ2025104200",
+                    "is_light": false,
+                    "display_name": "Delta \u0644\u0623\u0628\u062c\u062f\u064a\u0629 \u0627 \u0639\u0631\u0628\u064a\u0629 (nickname)",
+                    "avatar": {
+                        "uuid": "11ab9e94-a90e-4334-9e70-b81ad7c4dc0a",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "423b6870-a938-41d4-812b-f9b090e03d07",
+                                "height": 1024,
+                                "width": 1024,
+                                "content_type": "image\/png"
+                            }
+                        ],
+                        "anchor_uuid": null
+                    },
+                    "label_user": {
+                        "uuid": "e3281b2c-d552-49b4-b575-33b87cfee463",
+                        "display_name": "Delta \u0644\u0623\u0628\u062c\u062f\u064a\u0629 \u0627 \u0639\u0631\u0628\u064a\u0629 (nickname)",
+                        "country": "NL",
+                        "avatar": {
+                            "uuid": "a94240e9-360f-4097-9caa-7974946de533",
+                            "image": [
+                                {
+                                    "attachment_public_uuid": "4f25125b-ce8b-43e9-b726-317c9eb0fd46",
+                                    "height": 480,
+                                    "width": 480,
+                                    "content_type": "image\/jpeg"
+                                }
+                            ],
+                            "anchor_uuid": "e3281b2c-d552-49b4-b575-33b87cfee463"
+                        },
+                        "public_nick_name": "Delta \u0644\u0623\u0628\u062c\u062f\u064a\u0629 \u0627 \u0639\u0631\u0628\u064a\u0629 (nickname)"
+                    },
+                    "country": "NL"
+                },
+                "counterparty_alias": {
+                    "iban": "NL59BUNQ2025104669",
+                    "is_light": false,
+                    "display_name": "Alpha Corp.",
+                    "avatar": {
+                        "uuid": "26789d97-ec34-4fe8-9a71-ca145a23ba7a",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "3965b302-7a77-4813-8b00-ad3f9b84f439",
+                                "height": 1024,
+                                "width": 1024,
+                                "content_type": "image\/png"
+                            }
+                        ],
+                        "anchor_uuid": null
+                    },
+                    "label_user": {
+                        "uuid|": "2711664e-885e-4b5c-bf2c-581ba39061d3",
+                        "display_name": "Alpha Corp.",
+                        "country": "NL",
+                        "avatar": {
+                            "uuid": "829fee85-ffa6-473b-ac5b-b464c7b0a3a9",
+                            "image": [
+                                {
+                                    "attachment_public_uuid": "89347f1e-fd96-4c28-b9f5-bc9ec1f4443a",
+                                    "height": 640,
+                                    "width": 640,
+                                    "content_type": "image\/png"
+                                }
+                            ],
+                            "anchor_uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3"
+                        },
+                        "public_nick_name": "Alpha Corp."
+                    },
+                    "country": "NL"
+                },
+                "attachment": null,
+                "minimum_age": null,
+                "require_address": null,
+                "geolocation": null,
+                "type": "INTERNAL",
+                "sub_type": "NONE",
+                "redirect_url": null,
+                "address_billing": null,
+                "address_shipping": null,
+                "conversation": null,
+                "allow_chat": true,
+                "eligible_whitelist_id": null
+            }
+        }
+    }
+}

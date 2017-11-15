@@ -3,7 +3,7 @@ from bunq.sdk.json import converter
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 from tests.bunq_test import BunqSdkTestCase
-from tests.bunq_test import Config
+from tests.config import Config
 
 
 class TestPaginationScenario(BunqSdkTestCase):

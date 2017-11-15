@@ -1,0 +1,67 @@
+{
+    "NotificationUrl": {
+        "target_url": "nope",
+        "category": "SHARE",
+        "event_type": "SHARE_INVITE_BANK_INQUIRY_ACCEPTED",
+        "object": {
+            "ShareInviteBankResponse": {
+                "id": 2,
+                "created": "2017-07-20 02:32:32.114297",
+                "updated": "2017-07-20 02:32:32.114297",
+                "monetary_account_id": null,
+                "draft_share_invite_bank_id": null,
+                "counter_alias": {
+                    "iban": "NL59BUNQ2025104669",
+                    "is_light": false,
+                    "display_name": "Alpha Corp.",
+                    "avatar": {
+                        "uuid": "26789d97-ec34-4fe8-9a71-ca145a23ba7a",
+                        "image": [
+                            {
+                                "attachment_public_uuid": "3965b302-7a77-4813-8b00-ad3f9b84f439",
+                                "height": 1024,
+                                "width": 1024,
+                                "content_type": "image\/png"
+                            }
+                        ],
+                        "anchor_uuid": null
+                    },
+                    "label_user": {
+                        "uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3",
+                        "display_name": "Alpha Corp.",
+                        "country": "NL",
+                        "avatar": {
+                            "uuid": "829fee85-ffa6-473b-ac5b-b464c7b0a3a9",
+                            "image": [
+                                {
+                                    "attachment_public_uuid": "89347f1e-fd96-4c28-b9f5-bc9ec1f4443a",
+                                    "height": 640,
+                                    "width": 640,
+                                    "content_type": "image\/png"
+                                }
+                            ],
+                            "anchor_uuid": "2711664e-885e-4b5c-bf2c-581ba39061d3"
+                        },
+                        "public_nick_name": "Alpha Corp."
+                    },
+                    "country": "NL"
+                },
+                "user_alias_cancelled": null,
+                "description": "bunq account",
+                "share_type": "STANDARD",
+                "status": "PENDING",
+                "share_detail": {
+                    "ShareDetailPayment": {
+                        "view_balance": true,
+                        "view_old_events": true,
+                        "view_new_events": true,
+                        "budget": null,
+                        "make_payments": true
+                    }
+                },
+                "start_date": "2017-07-20 02:34:05.864029",
+                "end_date": "2017-11-11 02:34:05.864029"
+            }
+        }
+    }
+}
