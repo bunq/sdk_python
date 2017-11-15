@@ -3,9 +3,9 @@ import urllib.parse as urlparse
 
 from bunq.sdk import client
 from bunq.sdk import context
-from bunq.sdk.model import core
 from bunq.sdk import security
 from bunq.sdk.json import converter
+from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
@@ -407,7 +407,7 @@ class ShareDetailAdapter(converter.JsonAdapter):
         :type field: str
         :type obj: dict
 
-        :return: None|dict
+        :return: dict|None
         """
 
         return obj[field] if field in obj else None
