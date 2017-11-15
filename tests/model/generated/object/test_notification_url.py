@@ -2,6 +2,7 @@ import json
 import os
 
 from bunq.sdk.json.converter import json_to_class
+from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 from tests import bunq_test
@@ -91,34 +92,33 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
 
     @classmethod
     def isModelReference(cls, referenced_model, class_name):
-        model_class = cls.getModelClassOrNone(class_name)
+        """
+        :type referenced_model: core.BunqModel
+        :type class_name: str
 
-        if model_class is None:
+        :rtype: bool
+        """
+
+        model_type = cls.getModelTypeOrNone(class_name)
+
+        if model_type is None:
             return False
 
-        return isinstance(referenced_model, model_class)
+        return isinstance(referenced_model, model_type)
 
     @classmethod
-    def getModelClassOrNone(cls, class_name):
+    def getModelTypeOrNone(cls, class_name):
+        """
+        :type class_name: str
+
+        :rtype: type|None
+        """
+
         for module_ in cls._MODEL_MODULES:
             if hasattr(module_, class_name):
                 return getattr(module_, class_name)
 
         return None
-
-    @staticmethod
-    def assertInstanceOfReferencedObject(referenced_model, class_name):
-        try:
-            return isinstance(referenced_model, getattr(object_, class_name))
-        except AttributeError:
-            return False
-
-    @staticmethod
-    def assertInstanceOfReferencedEndpoint(referenced_model, class_name):
-        try:
-            return isinstance(referenced_model, getattr(endpoint, class_name))
-        except AttributeError:
-            return False
 
     def getNotificationUrl(self, file_path):
         """
