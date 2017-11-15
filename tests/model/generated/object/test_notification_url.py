@@ -9,12 +9,6 @@ from bunq.sdk.json.converter import json_to_class
 
 class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     # Getter string constants
-    # Assertion errors
-    _ASSERT_SHOULD_NOT_REACH_THIS_CODE_ERROR = \
-        'Something super weird just happen'
-    _ASSERT_JSON_DECODE_ERROR = \
-        'Might be that the JSON file is not a valid json.'
-    _ASSERT_OBJECT_IS_NULL_ERROR = 'Object seems to be null.'
     _GETTER_PAYMENT = 'Payment'
     _GETTER_BUNQ_ME_TAB = 'BunqMeTab'
     _GETTER_CHAT_MESSAGE_ANNOUNCEMENT = 'ChatMessageAnnouncement'
