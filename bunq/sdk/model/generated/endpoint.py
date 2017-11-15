@@ -265,7 +265,7 @@ class InvoiceByUser(core.BunqModel):
     _ENDPOINT_URL_READ = "user/{}/invoice/{}"
 
     # Object type.
-    _OBJECT_TYPE = "InvoiceByUser"
+    _OBJECT_TYPE = "Invoice"
 
     def __init__(self):
         self._id_ = None
@@ -571,7 +571,7 @@ class ChatConversationSupportExternal(core.BunqModel):
     """
 
     # Object type.
-    _OBJECT_TYPE = "ChatConversationSupportExternal"
+    _OBJECT_TYPE = "SupportConversationExternal"
 
     def __init__(self):
         self._id_ = None
@@ -719,7 +719,7 @@ class ChatMessageAnnouncement(core.BunqModel):
     """
 
     # Object type.
-    _OBJECT_TYPE = "ChatMessageAnnouncement"
+    _OBJECT_TYPE = "ChatMessageUser"
 
     def __init__(self):
         self._id_ = None
@@ -3325,7 +3325,7 @@ class SchedulePaymentBatch(core.BunqModel):
     FIELD_SCHEDULE = "schedule"
 
     # Object type.
-    _OBJECT_TYPE = "SchedulePaymentBatch"
+    _OBJECT_TYPE = "ScheduledPaymentBatch"
 
     def __init__(self):
         self._payments = None
@@ -3365,7 +3365,7 @@ class SchedulePaymentBatch(core.BunqModel):
         :type schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseInt
+        :rtype: BunqResponseSchedulePaymentBatch
         """
 
         if custom_headers is None:
@@ -3376,8 +3376,8 @@ class SchedulePaymentBatch(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, schedule_payment_batch_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
+        return BunqResponseSchedulePaymentBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
         )
 
     @classmethod
@@ -3579,7 +3579,7 @@ class SchedulePayment(core.BunqModel):
     FIELD_SCHEDULE = "schedule"
 
     # Object type.
-    _OBJECT_TYPE = "SchedulePayment"
+    _OBJECT_TYPE = "ScheduledPayment"
 
     def __init__(self):
         self._payment = None
@@ -3691,7 +3691,7 @@ class SchedulePayment(core.BunqModel):
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseInt
+        :rtype: BunqResponseSchedulePayment
         """
 
         if custom_headers is None:
@@ -3702,8 +3702,8 @@ class SchedulePayment(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, schedule_payment_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
+        return BunqResponseSchedulePayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
         )
 
     @property
@@ -3744,7 +3744,7 @@ class ScheduleInstance(core.BunqModel):
     FIELD_STATE = "state"
 
     # Object type.
-    _OBJECT_TYPE = "ScheduleInstance"
+    _OBJECT_TYPE = "ScheduledInstance"
 
     def __init__(self):
         self._state = None
@@ -3789,7 +3789,7 @@ class ScheduleInstance(core.BunqModel):
         :type schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseInt
+        :rtype: BunqResponseScheduleInstance
         """
 
         if custom_headers is None:
@@ -3800,8 +3800,8 @@ class ScheduleInstance(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, schedule_id, schedule_instance_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
+        return BunqResponseScheduleInstance.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE)
         )
 
     @classmethod
@@ -4358,7 +4358,7 @@ class UserCredentialPasswordIp(core.BunqModel):
     _ENDPOINT_URL_LISTING = "user/{}/credential-password-ip"
 
     # Object type.
-    _OBJECT_TYPE = "UserCredentialPasswordIp"
+    _OBJECT_TYPE = "CredentialPasswordIp"
 
     def __init__(self):
         self._id_ = None
@@ -4486,7 +4486,7 @@ class ChatMessageStatus(core.BunqModel):
     """
 
     # Object type.
-    _OBJECT_TYPE = "ChatMessageStatus"
+    _OBJECT_TYPE = "ChatMessageUser"
 
     def __init__(self):
         self._id_ = None
@@ -4641,7 +4641,7 @@ class ChatConversationReference(core.BunqModel):
     """
 
     # Object type.
-    _OBJECT_TYPE = "ChatConversationReference"
+    _OBJECT_TYPE = "SupportConversationReference"
 
     def __init__(self):
         self._id_ = None
@@ -4690,7 +4690,7 @@ class ChatMessageAttachment(core.BunqModel):
     FIELD_ATTACHMENT = "attachment"
 
     # Object type.
-    _OBJECT_TYPE = "ChatMessageAttachment"
+    _OBJECT_TYPE = "Id"
 
     def __init__(self):
         self._id_ = None
@@ -4746,7 +4746,7 @@ class ChatMessageText(core.BunqModel):
     FIELD_TEXT = "text"
 
     # Object type.
-    _OBJECT_TYPE = "ChatMessageText"
+    _OBJECT_TYPE = "Id"
 
     def __init__(self):
         self._id_ = None
@@ -5626,7 +5626,7 @@ class BunqMeTabEntry(core.BunqModel):
     FIELD_REDIRECT_URL = "redirect_url"
 
     # Object type.
-    _OBJECT_TYPE = "BunqMeTabEntry"
+    _OBJECT_TYPE = "BunqMeTab"
 
     def __init__(self):
         self._uuid = None
@@ -5893,7 +5893,7 @@ class CardName(core.BunqModel):
     _ENDPOINT_URL_LISTING = "user/{}/card-name"
 
     # Object type.
-    _OBJECT_TYPE = "CardName"
+    _OBJECT_TYPE = "CardUserNameArray"
 
     def __init__(self):
         self._possible_card_name_array = None
@@ -6039,7 +6039,7 @@ class Card(core.BunqModel):
     FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
 
     # Object type.
-    _OBJECT_TYPE = "Card"
+    _OBJECT_TYPE = "CardDebit"
 
     def __init__(self):
         self._id_ = None
@@ -6378,7 +6378,7 @@ class CashRegisterQrCode(core.BunqModel):
     FIELD_STATUS = "status"
 
     # Object type.
-    _OBJECT_TYPE = "CashRegisterQrCode"
+    _OBJECT_TYPE = "TokenQrCashRegister"
 
     def __init__(self):
         self._id_ = None
@@ -8019,7 +8019,6 @@ class Device(core.BunqModel):
     Used to get a Device or a listing of Devices. Creating a DeviceServer should
     happen via /device-server
     
-    :type _DevicePhone: DevicePhone
     :type _DeviceServer: DeviceServer
     """
 
@@ -8034,7 +8033,6 @@ class Device(core.BunqModel):
     _OBJECT_TYPE = "Device"
 
     def __init__(self):
-        self._DevicePhone = None
         self._DeviceServer = None
 
     @classmethod
@@ -8088,14 +8086,6 @@ class Device(core.BunqModel):
         )
 
     @property
-    def DevicePhone(self):
-        """
-        :rtype: DevicePhone
-        """
-
-        return self._DevicePhone
-
-    @property
     def DeviceServer(self):
         """
         :rtype: DeviceServer
@@ -8108,102 +8098,10 @@ class Device(core.BunqModel):
         :raise: BunqException
         """
 
-        if self._DevicePhone is not None:
-            return self._DevicePhone
-
         if self._DeviceServer is not None:
             return self._DeviceServer
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
-
-
-class DevicePhone(core.BunqModel):
-    """
-    Used to register a device. This is the only unsigned/verified request.
-    
-    :type _id_: int
-    :type _created: str
-    :type _updated: str
-    :type _description: str
-    :type _phone_number: str
-    :type _os: str
-    :type _status: str
-    """
-
-    # Field constants.
-    FIELD_DESCRIPTION = "description"
-    FIELD_PHONE_NUMBER = "phone_number"
-    FIELD_REMOVE_OLD_DEVICES = "remove_old_devices"
-
-    # Object type.
-    _OBJECT_TYPE = "DevicePhone"
-
-    def __init__(self):
-        self._id_ = None
-        self._created = None
-        self._updated = None
-        self._description = None
-        self._phone_number = None
-        self._os = None
-        self._status = None
-
-
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def phone_number(self):
-        """
-        :rtype: str
-        """
-
-        return self._phone_number
-
-    @property
-    def os(self):
-        """
-        :rtype: str
-        """
-
-        return self._os
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
 
 
 class DraftShareInviteBankQrCodeContent(core.BunqModel):
@@ -8899,7 +8797,7 @@ class InstallationServerPublicKey(core.BunqModel):
     _ENDPOINT_URL_LISTING = "installation/{}/server-public-key"
 
     # Object type.
-    _OBJECT_TYPE = "InstallationServerPublicKey"
+    _OBJECT_TYPE = "ServerPublicKey"
 
     def __init__(self):
         self._server_public_key = None
@@ -11125,7 +11023,7 @@ class PaymentChat(core.BunqModel):
     FIELD_LAST_READ_MESSAGE_ID = "last_read_message_id"
 
     # Object type.
-    _OBJECT_TYPE = "PaymentChat"
+    _OBJECT_TYPE = "ChatConversationPayment"
 
     def __init__(self):
         self._id_ = None
@@ -11857,7 +11755,7 @@ class TabItemShop(core.BunqModel):
     FIELD_AMOUNT = "amount"
 
     # Object type.
-    _OBJECT_TYPE = "TabItemShop"
+    _OBJECT_TYPE = "TabItem"
 
     def __init__(self):
         self._id_ = None
@@ -12544,7 +12442,7 @@ class UserLight(core.BunqModel):
     FIELD_NOTIFICATION_FILTERS = "notification_filters"
 
     # Object type.
-    _OBJECT_TYPE = "UserLight"
+    _OBJECT_TYPE = "UserPerson"
 
     def __init__(self):
         self._id_ = None
@@ -13134,6 +13032,16 @@ class BunqResponseRequestResponseList(client.BunqResponse):
     def value(self):
         """
         :rtype: list[RequestResponse]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseSchedulePaymentBatch(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: SchedulePaymentBatch
         """
  
         return super().value
