@@ -1,10 +1,10 @@
 import json
 import os
 
-from tests import bunq_test
-from bunq.sdk.model.generated import object_
-from bunq.sdk.model.generated import endpoint
 from bunq.sdk.json.converter import json_to_class
+from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated import object_
+from tests import bunq_test
 
 
 class TestNotificationUrl(bunq_test.BunqSdkTestCase):
@@ -52,6 +52,15 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     # Model root key.
     _KEY_NOTIFICATION_URL_MODEL = 'NotificationUrl'
 
+    # Model modules constants.
+    _MODEL_MODULES = [
+        object_,
+        endpoint,
+    ]
+
+    # File mode constants.
+    _FILE_MODE_READ = 'r'
+
     def execute_notification_url_test(self,
                                       file_path,
                                       class_name,
@@ -74,16 +83,28 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         self.assertIsNotNone(expected_model)
         self.assertIsNotNone(referenced_model)
         self.assertTrue(
-            self.assertInstanceOfReferencedObject(
-                referenced_model,
-                class_name
-            )
-            or
-            self.assertInstanceOfReferencedEndpoint(
+            self.isModelReference(
                 referenced_model,
                 class_name
             )
         )
+
+    @classmethod
+    def isModelReference(cls, referenced_model, class_name):
+        model_class = cls.getModelClassOrNone(class_name)
+
+        if model_class is None:
+            return False
+
+        return isinstance(referenced_model, model_class)
+
+    @classmethod
+    def getModelClassOrNone(cls, class_name):
+        for module_ in cls._MODEL_MODULES:
+            if hasattr(module_, class_name):
+                return getattr(module_, class_name)
+
+        return None
 
     @staticmethod
     def assertInstanceOfReferencedObject(referenced_model, class_name):
@@ -109,12 +130,12 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         base_path = os.path.dirname(__file__)
         file_path = os.path.abspath(os.path.join(base_path, file_path))
 
-        with open(file_path, 'r') as f:
+        with open(file_path, self._FILE_MODE_READ) as f:
             json_string = f.read()
             json_object = json.loads(json_string)
-            json_string = json.dumps(json_object[
-                                         self._KEY_NOTIFICATION_URL_MODEL
-                                     ])
+            json_string = json.dumps(
+                json_object[self._KEY_NOTIFICATION_URL_MODEL]
+            )
 
             self.assertTrue(
                 self._KEY_NOTIFICATION_URL_MODEL in json_object
