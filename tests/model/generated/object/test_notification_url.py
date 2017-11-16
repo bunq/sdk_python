@@ -74,7 +74,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         :return: None
         """
 
-        notification_url = self.getNotificationUrl(file_path)
+        notification_url = self.get_notification_url(file_path)
         self.assertIsNotNone(notification_url)
         self.assertIsNotNone(notification_url.object_)
 
@@ -84,14 +84,14 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         self.assertIsNotNone(expected_model)
         self.assertIsNotNone(referenced_model)
         self.assertTrue(
-            self.isModelReference(
+            self.is_model_reference(
                 referenced_model,
                 class_name
             )
         )
 
     @classmethod
-    def isModelReference(cls, referenced_model, class_name):
+    def is_model_reference(cls, referenced_model, class_name):
         """
         :type referenced_model: core.BunqModel
         :type class_name: str
@@ -99,7 +99,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         :rtype: bool
         """
 
-        model_type = cls.getModelTypeOrNone(class_name)
+        model_type = cls.get_model_type_or_none(class_name)
 
         if model_type is None:
             return False
@@ -107,7 +107,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         return isinstance(referenced_model, model_type)
 
     @classmethod
-    def getModelTypeOrNone(cls, class_name):
+    def get_model_type_or_none(cls, class_name):
         """
         :type class_name: str
 
@@ -120,7 +120,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
 
         return None
 
-    def getNotificationUrl(self, file_path):
+    def get_notification_url(self, file_path):
         """
         :type file_path: str
 
