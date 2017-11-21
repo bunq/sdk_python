@@ -25,6 +25,35 @@ class InvoiceItemGroup(core.BunqModel):
         self.item = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.type_ is not None:
+            return False
+
+        if self.type_description is not None:
+            return False
+
+        if self.type_description_translated is not None:
+            return False
+
+        if self.instance_description is not None:
+            return False
+
+        if self.product_vat_exclusive is not None:
+            return False
+
+        if self.product_vat_inclusive is not None:
+            return False
+
+        if self.item is not None:
+            return False
+
+        return True
+
+
 class Amount(core.BunqModel):
     """
     :type value: str
@@ -39,6 +68,20 @@ class Amount(core.BunqModel):
 
         self.value = value
         self.currency = currency
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.value is not None:
+            return False
+
+        if self.currency is not None:
+            return False
+
+        return True
 
 
 class InvoiceItem(core.BunqModel):
@@ -66,6 +109,41 @@ class InvoiceItem(core.BunqModel):
         self.total_vat_inclusive = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.billing_date is not None:
+            return False
+
+        if self.type_description is not None:
+            return False
+
+        if self.type_description_translated is not None:
+            return False
+
+        if self.unit_vat_exclusive is not None:
+            return False
+
+        if self.unit_vat_inclusive is not None:
+            return False
+
+        if self.vat is not None:
+            return False
+
+        if self.quantity is not None:
+            return False
+
+        if self.total_vat_exclusive is not None:
+            return False
+
+        if self.total_vat_inclusive is not None:
+            return False
+
+        return True
+
+
 class LabelMonetaryAccount(core.BunqModel):
     """
     :type iban: str
@@ -91,6 +169,41 @@ class LabelMonetaryAccount(core.BunqModel):
         self.swift_account_number = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.iban is not None:
+            return False
+
+        if self.display_name is not None:
+            return False
+
+        if self.avatar is not None:
+            return False
+
+        if self.label_user is not None:
+            return False
+
+        if self.country is not None:
+            return False
+
+        if self.bunq_me is not None:
+            return False
+
+        if self.is_light is not None:
+            return False
+
+        if self.swift_bic is not None:
+            return False
+
+        if self.swift_account_number is not None:
+            return False
+
+        return True
+
+
 class Avatar(core.BunqModel):
     """
     :type uuid: str
@@ -108,6 +221,23 @@ class Avatar(core.BunqModel):
         self.image = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.uuid is not None:
+            return False
+
+        if self.anchor_uuid is not None:
+            return False
+
+        if self.image is not None:
+            return False
+
+        return True
+
+
 class Image(core.BunqModel):
     """
     :type attachment_public_uuid: str
@@ -121,6 +251,26 @@ class Image(core.BunqModel):
         self.content_type = None
         self.height = None
         self.width = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.attachment_public_uuid is not None:
+            return False
+
+        if self.content_type is not None:
+            return False
+
+        if self.height is not None:
+            return False
+
+        if self.width is not None:
+            return False
+
+        return True
 
 
 class LabelUser(core.BunqModel):
@@ -146,6 +296,29 @@ class LabelUser(core.BunqModel):
         self.public_nick_name = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.uuid is not None:
+            return False
+
+        if self.avatar is not None:
+            return False
+
+        if self.public_nick_name is not None:
+            return False
+
+        if self.display_name is not None:
+            return False
+
+        if self.country is not None:
+            return False
+
+        return True
+
+
 class Pointer(core.BunqModel):
     """
     :type type_: str
@@ -162,6 +335,23 @@ class Pointer(core.BunqModel):
         self.type_ = type_
         self.value = value
         self.name = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.type_ is not None:
+            return False
+
+        if self.value is not None:
+            return False
+
+        if self.name is not None:
+            return False
+
+        return True
 
 
 class Address(core.BunqModel):
@@ -193,7 +383,36 @@ class Address(core.BunqModel):
         self.province = None
 
 
-class ChatMessageContent(core.BunqModel):
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.street is not None:
+            return False
+
+        if self.house_number is not None:
+            return False
+
+        if self.po_box is not None:
+            return False
+
+        if self.postal_code is not None:
+            return False
+
+        if self.city is not None:
+            return False
+
+        if self.country is not None:
+            return False
+
+        if self.province is not None:
+            return False
+
+        return True
+
+
+class ChatMessageContent(core.BunqModel, core.AnchoredObjectInterface):
     """
     :type ChatMessageContentAnchorEvent: ChatMessageContentAnchorEvent
     :type ChatMessageContentAttachment: ChatMessageContentAttachment
@@ -248,6 +467,34 @@ class ChatMessageContent(core.BunqModel):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.ChatMessageContentAnchorEvent is not None:
+            return False
+
+        if self.ChatMessageContentAttachment is not None:
+            return False
+
+        if self.ChatMessageContentGeolocation is not None:
+            return False
+
+        if self.ChatMessageContentStatusConversationTitle is not None:
+            return False
+
+        if self.ChatMessageContentStatusConversation is not None:
+            return False
+
+        if self.ChatMessageContentStatusMembership is not None:
+            return False
+
+        if self.ChatMessageContentText is not None:
+            return False
+
+        return True
+
 
 class ChatMessageContentAnchorEvent(core.BunqModel):
     """
@@ -258,7 +505,18 @@ class ChatMessageContentAnchorEvent(core.BunqModel):
         self.anchored_object = None
 
 
-class AnchoredObject(core.BunqModel):
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.anchored_object is not None:
+            return False
+
+        return True
+
+
+class AnchoredObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :type CardDebit: endpoint.CardDebit
     :type CardPinChange: endpoint.CardPinChange
@@ -366,6 +624,67 @@ class AnchoredObject(core.BunqModel):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.CardDebit is not None:
+            return False
+
+        if self.CardPinChange is not None:
+            return False
+
+        if self.CardResult is not None:
+            return False
+
+        if self.DraftPayment is not None:
+            return False
+
+        if self.IdealMerchantTransaction is not None:
+            return False
+
+        if self.Invoice is not None:
+            return False
+
+        if self.Payment is not None:
+            return False
+
+        if self.PaymentBatch is not None:
+            return False
+
+        if self.PromotionDisplay is not None:
+            return False
+
+        if self.RequestInquiryBatch is not None:
+            return False
+
+        if self.RequestInquiry is not None:
+            return False
+
+        if self.RequestResponse is not None:
+            return False
+
+        if self.ScheduledPaymentBatch is not None:
+            return False
+
+        if self.ScheduledPayment is not None:
+            return False
+
+        if self.ScheduledInstance is not None:
+            return False
+
+        if self.ShareInviteBankInquiry is not None:
+            return False
+
+        if self.ShareInviteBankResponse is not None:
+            return False
+
+        if self.UserCredentialPasswordIp is not None:
+            return False
+
+        return True
+
 
 class CardLimit(core.BunqModel):
     """
@@ -388,6 +707,26 @@ class CardLimit(core.BunqModel):
         self.id_ = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.id_ is not None:
+            return False
+
+        if self.daily_limit is not None:
+            return False
+
+        if self.currency is not None:
+            return False
+
+        if self.type_ is not None:
+            return False
+
+        return True
+
+
 class CardCountryPermission(core.BunqModel):
     """
     :type country: str
@@ -405,6 +744,23 @@ class CardCountryPermission(core.BunqModel):
         self.id_ = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.id_ is not None:
+            return False
+
+        if self.country is not None:
+            return False
+
+        if self.expiry_time is not None:
+            return False
+
+        return True
+
+
 class CardPinAssignment(core.BunqModel):
     """
     :type type_: str
@@ -420,6 +776,20 @@ class CardPinAssignment(core.BunqModel):
         self.type_ = type_
         self.pin_code = None
         self.monetary_account_id = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.type_ is not None:
+            return False
+
+        if self.monetary_account_id is not None:
+            return False
+
+        return True
 
 
 class LabelCard(core.BunqModel):
@@ -441,6 +811,32 @@ class LabelCard(core.BunqModel):
         self.label_user = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.uuid is not None:
+            return False
+
+        if self.type_ is not None:
+            return False
+
+        if self.second_line is not None:
+            return False
+
+        if self.expiry_date is not None:
+            return False
+
+        if self.status is not None:
+            return False
+
+        if self.label_user is not None:
+            return False
+
+        return True
+
+
 class DraftPaymentResponse(core.BunqModel):
     """
     :type status: str
@@ -450,6 +846,20 @@ class DraftPaymentResponse(core.BunqModel):
     def __init__(self):
         self.status = None
         self.user_alias_created = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.status is not None:
+            return False
+
+        if self.user_alias_created is not None:
+            return False
+
+        return True
 
 
 class DraftPaymentEntry(core.BunqModel):
@@ -483,6 +893,38 @@ class DraftPaymentEntry(core.BunqModel):
         self.type_ = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.id_ is not None:
+            return False
+
+        if self.amount is not None:
+            return False
+
+        if self.alias is not None:
+            return False
+
+        if self.counterparty_alias is not None:
+            return False
+
+        if self.description is not None:
+            return False
+
+        if self.merchant_reference is not None:
+            return False
+
+        if self.type_ is not None:
+            return False
+
+        if self.attachment is not None:
+            return False
+
+        return True
+
+
 class AttachmentMonetaryAccountPayment(core.BunqModel):
     """
     :type id_: int
@@ -498,7 +940,21 @@ class AttachmentMonetaryAccountPayment(core.BunqModel):
         self.monetary_account_id = None
 
 
-class DraftPaymentAnchorObject(core.BunqModel):
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.id_ is not None:
+            return False
+
+        if self.monetary_account_id is not None:
+            return False
+
+        return True
+
+
+class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :type Payment: endpoint.Payment
     :type PaymentBatch: endpoint.PaymentBatch
@@ -526,6 +982,19 @@ class DraftPaymentAnchorObject(core.BunqModel):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.Payment is not None:
+            return False
+
+        if self.PaymentBatch is not None:
+            return False
+
+        return True
+
 
 class Geolocation(core.BunqModel):
     """
@@ -542,6 +1011,26 @@ class Geolocation(core.BunqModel):
         self.radius = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.latitude is not None:
+            return False
+
+        if self.longitude is not None:
+            return False
+
+        if self.altitude is not None:
+            return False
+
+        if self.radius is not None:
+            return False
+
+        return True
+
+
 class BunqId(core.BunqModel):
     """
     :type id_: int
@@ -555,6 +1044,17 @@ class BunqId(core.BunqModel):
         self.id_ = id_
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.id_ is not None:
+            return False
+
+        return True
+
+
 class Attachment(core.BunqModel):
     """
     :type description: str
@@ -564,6 +1064,20 @@ class Attachment(core.BunqModel):
     def __init__(self):
         self.description = None
         self.content_type = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.description is not None:
+            return False
+
+        if self.content_type is not None:
+            return False
+
+        return True
 
 
 class SchedulePaymentEntry(core.BunqModel):
@@ -593,7 +1107,33 @@ class SchedulePaymentEntry(core.BunqModel):
         self.alias = None
 
 
-class ScheduleAnchorObject(core.BunqModel):
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.amount is not None:
+            return False
+
+        if self.alias is not None:
+            return False
+
+        if self.counterparty_alias is not None:
+            return False
+
+        if self.description is not None:
+            return False
+
+        if self.attachment is not None:
+            return False
+
+        if self.merchant_reference is not None:
+            return False
+
+        return True
+
+
+class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :type Payment: endpoint.Payment
     :type PaymentBatch: endpoint.PaymentBatch
@@ -620,6 +1160,19 @@ class ScheduleAnchorObject(core.BunqModel):
             return self.PaymentBatch
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.Payment is not None:
+            return False
+
+        if self.PaymentBatch is not None:
+            return False
+
+        return True
 
 
 class Error(core.BunqModel):
@@ -633,7 +1186,21 @@ class Error(core.BunqModel):
         self.error_description_translated = None
 
 
-class ScheduleInstanceAnchorObject(core.BunqModel):
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.error_description is not None:
+            return False
+
+        if self.error_description_translated is not None:
+            return False
+
+        return True
+
+
+class ScheduleInstanceAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :type Payment: endpoint.Payment
     :type PaymentBatch: endpoint.PaymentBatch
@@ -661,6 +1228,19 @@ class ScheduleInstanceAnchorObject(core.BunqModel):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.Payment is not None:
+            return False
+
+        if self.PaymentBatch is not None:
+            return False
+
+        return True
+
 
 class ShareDetail(core.BunqModel):
     """
@@ -673,6 +1253,23 @@ class ShareDetail(core.BunqModel):
         self.payment = None
         self.read_only = None
         self.draft_payment = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.payment is not None:
+            return False
+
+        if self.read_only is not None:
+            return False
+
+        if self.draft_payment is not None:
+            return False
+
+        return True
 
 
 class ShareDetailPayment(core.BunqModel):
@@ -701,6 +1298,32 @@ class ShareDetailPayment(core.BunqModel):
         self.budget = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.make_payments is not None:
+            return False
+
+        if self.make_draft_payments is not None:
+            return False
+
+        if self.view_balance is not None:
+            return False
+
+        if self.view_old_events is not None:
+            return False
+
+        if self.view_new_events is not None:
+            return False
+
+        if self.budget is not None:
+            return False
+
+        return True
+
+
 class BudgetRestriction(core.BunqModel):
     """
     :type amount: Amount
@@ -710,6 +1333,20 @@ class BudgetRestriction(core.BunqModel):
     def __init__(self):
         self.amount = None
         self.frequency = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.amount is not None:
+            return False
+
+        if self.frequency is not None:
+            return False
+
+        return True
 
 
 class ShareDetailReadOnly(core.BunqModel):
@@ -729,6 +1366,23 @@ class ShareDetailReadOnly(core.BunqModel):
         self.view_balance = view_balance
         self.view_old_events = view_old_events
         self.view_new_events = view_new_events
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.view_balance is not None:
+            return False
+
+        if self.view_old_events is not None:
+            return False
+
+        if self.view_new_events is not None:
+            return False
+
+        return True
 
 
 class ShareDetailDraftPayment(core.BunqModel):
@@ -753,6 +1407,26 @@ class ShareDetailDraftPayment(core.BunqModel):
         self.view_new_events = view_new_events
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.make_draft_payments is not None:
+            return False
+
+        if self.view_balance is not None:
+            return False
+
+        if self.view_old_events is not None:
+            return False
+
+        if self.view_new_events is not None:
+            return False
+
+        return True
+
+
 class PermittedDevice(core.BunqModel):
     """
     :type description: str
@@ -764,6 +1438,20 @@ class PermittedDevice(core.BunqModel):
         self.ip = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.description is not None:
+            return False
+
+        if self.ip is not None:
+            return False
+
+        return True
+
+
 class ChatMessageContentAttachment(core.BunqModel):
     """
     :type attachment: Attachment
@@ -771,6 +1459,17 @@ class ChatMessageContentAttachment(core.BunqModel):
 
     def __init__(self):
         self.attachment = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.attachment is not None:
+            return False
+
+        return True
 
 
 class ChatMessageContentGeolocation(core.BunqModel):
@@ -782,6 +1481,17 @@ class ChatMessageContentGeolocation(core.BunqModel):
         self.geolocation = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.geolocation is not None:
+            return False
+
+        return True
+
+
 class ChatMessageContentStatusConversationTitle(core.BunqModel):
     """
     :type title: str
@@ -791,6 +1501,17 @@ class ChatMessageContentStatusConversationTitle(core.BunqModel):
         self.title = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.title is not None:
+            return False
+
+        return True
+
+
 class ChatMessageContentStatusConversation(core.BunqModel):
     """
     :type action: str
@@ -798,6 +1519,17 @@ class ChatMessageContentStatusConversation(core.BunqModel):
 
     def __init__(self):
         self.action = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.action is not None:
+            return False
+
+        return True
 
 
 class ChatMessageContentStatusMembership(core.BunqModel):
@@ -811,6 +1543,20 @@ class ChatMessageContentStatusMembership(core.BunqModel):
         self.member = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.action is not None:
+            return False
+
+        if self.member is not None:
+            return False
+
+        return True
+
+
 class ChatMessageContentText(core.BunqModel):
     """
     :type text: str
@@ -818,6 +1564,17 @@ class ChatMessageContentText(core.BunqModel):
 
     def __init__(self):
         self.text = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.text is not None:
+            return False
+
+        return True
 
 
 class BunqMeMerchantAvailable(core.BunqModel):
@@ -831,6 +1588,20 @@ class BunqMeMerchantAvailable(core.BunqModel):
         self.available = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.merchant_type is not None:
+            return False
+
+        if self.available is not None:
+            return False
+
+        return True
+
+
 class CardMagStripePermission(core.BunqModel):
     """
     :type expiry_time: str
@@ -838,6 +1609,17 @@ class CardMagStripePermission(core.BunqModel):
 
     def __init__(self):
         self.expiry_time = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.expiry_time is not None:
+            return False
+
+        return True
 
 
 class NotificationFilter(core.BunqModel):
@@ -859,6 +1641,23 @@ class NotificationFilter(core.BunqModel):
         self.category = category
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.notification_delivery_method is not None:
+            return False
+
+        if self.notification_target is not None:
+            return False
+
+        if self.category is not None:
+            return False
+
+        return True
+
+
 class TabTextWaitingScreen(core.BunqModel):
     """
     :type language: str
@@ -873,6 +1672,20 @@ class TabTextWaitingScreen(core.BunqModel):
 
         self.language = language
         self.description = description
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.language is not None:
+            return False
+
+        if self.description is not None:
+            return False
+
+        return True
 
 
 class TabVisibility(core.BunqModel):
@@ -893,6 +1706,23 @@ class TabVisibility(core.BunqModel):
         self.location = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.cash_register_qr_code is not None:
+            return False
+
+        if self.tab_qr_code is not None:
+            return False
+
+        if self.location is not None:
+            return False
+
+        return True
+
+
 class AttachmentPublic(core.BunqModel):
     """
     :type uuid: str
@@ -904,6 +1734,23 @@ class AttachmentPublic(core.BunqModel):
         self.uuid = None
         self.description = None
         self.content_type = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.uuid is not None:
+            return False
+
+        if self.description is not None:
+            return False
+
+        if self.content_type is not None:
+            return False
+
+        return True
 
 
 class AttachmentTab(core.BunqModel):
@@ -919,6 +1766,23 @@ class AttachmentTab(core.BunqModel):
         self.content_type = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.id_ is not None:
+            return False
+
+        if self.description is not None:
+            return False
+
+        if self.content_type is not None:
+            return False
+
+        return True
+
+
 class Certificate(core.BunqModel):
     """
     :type certificate: str
@@ -930,6 +1794,17 @@ class Certificate(core.BunqModel):
         """
 
         self.certificate = certificate
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.certificate is not None:
+            return False
+
+        return True
 
 
 class DraftShareInviteBankEntry(core.BunqModel):
@@ -947,6 +1822,23 @@ class DraftShareInviteBankEntry(core.BunqModel):
         self.share_detail = share_detail
         self.start_date = None
         self.end_date = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.share_detail is not None:
+            return False
+
+        if self.start_date is not None:
+            return False
+
+        if self.end_date is not None:
+            return False
+
+        return True
 
 
 class MonetaryAccountProfileFill(core.BunqModel):
@@ -973,6 +1865,29 @@ class MonetaryAccountProfileFill(core.BunqModel):
         self.issuer = None
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.status is not None:
+            return False
+
+        if self.balance_preferred is not None:
+            return False
+
+        if self.balance_threshold_low is not None:
+            return False
+
+        if self.method_fill is not None:
+            return False
+
+        if self.issuer is not None:
+            return False
+
+        return True
+
+
 class Issuer(core.BunqModel):
     """
     :type bic: str
@@ -986,6 +1901,20 @@ class Issuer(core.BunqModel):
 
         self.bic = bic
         self.name = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.bic is not None:
+            return False
+
+        if self.name is not None:
+            return False
+
+        return True
 
 
 class MonetaryAccountProfileDrain(core.BunqModel):
@@ -1010,6 +1939,26 @@ class MonetaryAccountProfileDrain(core.BunqModel):
         self.savings_account_alias = savings_account_alias
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.status is not None:
+            return False
+
+        if self.balance_preferred is not None:
+            return False
+
+        if self.balance_threshold_high is not None:
+            return False
+
+        if self.savings_account_alias is not None:
+            return False
+
+        return True
+
+
 class MonetaryAccountSetting(core.BunqModel):
     """
     :type color: str
@@ -1021,6 +1970,23 @@ class MonetaryAccountSetting(core.BunqModel):
         self.color = None
         self.default_avatar_status = None
         self.restriction_chat = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.color is not None:
+            return False
+
+        if self.default_avatar_status is not None:
+            return False
+
+        if self.restriction_chat is not None:
+            return False
+
+        return True
 
 
 class NotificationUrl(core.BunqModel):
@@ -1038,19 +2004,38 @@ class NotificationUrl(core.BunqModel):
         self.object_ = None
 
 
-class NotificationAnchorObject(core.BunqModel):
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.target_url is not None:
+            return False
+
+        if self.category is not None:
+            return False
+
+        if self.event_type is not None:
+            return False
+
+        if self.object_ is not None:
+            return False
+
+        return True
+
+
+class NotificationAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
+    :type BunqMeFundraiserResult: endpoint.BunqMeFundraiserResult
     :type BunqMeTab: endpoint.BunqMeTab
     :type BunqMeTabResultInquiry: endpoint.BunqMeTabResultInquiry
     :type BunqMeTabResultResponse: endpoint.BunqMeTabResultResponse
-    :type ChatMessageStatus: endpoint.ChatMessageStatus
-    :type ChatMessageUser: endpoint.ChatMessageUser
-    :type ChatMessageAnnouncement: endpoint.ChatMessageAnnouncement
+    :type ChatMessage: endpoint.ChatMessage
     :type DraftPayment: endpoint.DraftPayment
     :type IdealMerchantTransaction: endpoint.IdealMerchantTransaction
     :type Invoice: endpoint.Invoice
     :type MasterCardAction: endpoint.MasterCardAction
-    :type MonetaryAccountBank: endpoint.MonetaryAccountBank
+    :type MonetaryAccount: endpoint.MonetaryAccount
     :type Payment: endpoint.Payment
     :type PaymentBatch: endpoint.PaymentBatch
     :type RequestInquiry: endpoint.RequestInquiry
@@ -1062,8 +2047,7 @@ class NotificationAnchorObject(core.BunqModel):
     :type ScheduledInstance: endpoint.ScheduleInstance
     :type TabResultInquiry: endpoint.TabResultInquiry
     :type TabResultResponse: endpoint.TabResultResponse
-    :type UserPerson: endpoint.UserPerson
-    :type UserCompany: endpoint.UserCompany
+    :type User: endpoint.User
     """
 
     # Error constants.
@@ -1071,17 +2055,16 @@ class NotificationAnchorObject(core.BunqModel):
 
 
     def __init__(self):
+        self.BunqMeFundraiserResult = None
         self.BunqMeTab = None
         self.BunqMeTabResultInquiry = None
         self.BunqMeTabResultResponse = None
-        self.ChatMessageStatus = None
-        self.ChatMessageUser = None
-        self.ChatMessageAnnouncement = None
+        self.ChatMessage = None
         self.DraftPayment = None
         self.IdealMerchantTransaction = None
         self.Invoice = None
         self.MasterCardAction = None
-        self.MonetaryAccountBank = None
+        self.MonetaryAccount = None
         self.Payment = None
         self.PaymentBatch = None
         self.RequestInquiry = None
@@ -1093,14 +2076,16 @@ class NotificationAnchorObject(core.BunqModel):
         self.ScheduledInstance = None
         self.TabResultInquiry = None
         self.TabResultResponse = None
-        self.UserPerson = None
-        self.UserCompany = None
+        self.User = None
 
     def get_referenced_object(self):
         """
         :rtype: core.BunqModel
         :raise: BunqException
         """
+
+        if self.BunqMeFundraiserResult is not None:
+            return self.BunqMeFundraiserResult
 
         if self.BunqMeTab is not None:
             return self.BunqMeTab
@@ -1111,14 +2096,8 @@ class NotificationAnchorObject(core.BunqModel):
         if self.BunqMeTabResultResponse is not None:
             return self.BunqMeTabResultResponse
 
-        if self.ChatMessageStatus is not None:
-            return self.ChatMessageStatus
-
-        if self.ChatMessageUser is not None:
-            return self.ChatMessageUser
-
-        if self.ChatMessageAnnouncement is not None:
-            return self.ChatMessageAnnouncement
+        if self.ChatMessage is not None:
+            return self.ChatMessage
 
         if self.DraftPayment is not None:
             return self.DraftPayment
@@ -1132,8 +2111,8 @@ class NotificationAnchorObject(core.BunqModel):
         if self.MasterCardAction is not None:
             return self.MasterCardAction
 
-        if self.MonetaryAccountBank is not None:
-            return self.MonetaryAccountBank
+        if self.MonetaryAccount is not None:
+            return self.MonetaryAccount
 
         if self.Payment is not None:
             return self.Payment
@@ -1168,13 +2147,83 @@ class NotificationAnchorObject(core.BunqModel):
         if self.TabResultResponse is not None:
             return self.TabResultResponse
 
-        if self.UserPerson is not None:
-            return self.UserPerson
-
-        if self.UserCompany is not None:
-            return self.UserCompany
+        if self.User is not None:
+            return self.User
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.BunqMeFundraiserResult is not None:
+            return False
+
+        if self.BunqMeTab is not None:
+            return False
+
+        if self.BunqMeTabResultInquiry is not None:
+            return False
+
+        if self.BunqMeTabResultResponse is not None:
+            return False
+
+        if self.ChatMessage is not None:
+            return False
+
+        if self.DraftPayment is not None:
+            return False
+
+        if self.IdealMerchantTransaction is not None:
+            return False
+
+        if self.Invoice is not None:
+            return False
+
+        if self.MasterCardAction is not None:
+            return False
+
+        if self.MonetaryAccount is not None:
+            return False
+
+        if self.Payment is not None:
+            return False
+
+        if self.PaymentBatch is not None:
+            return False
+
+        if self.RequestInquiry is not None:
+            return False
+
+        if self.RequestInquiryBatch is not None:
+            return False
+
+        if self.RequestResponse is not None:
+            return False
+
+        if self.ShareInviteBankInquiry is not None:
+            return False
+
+        if self.ShareInviteBankResponse is not None:
+            return False
+
+        if self.ScheduledPayment is not None:
+            return False
+
+        if self.ScheduledInstance is not None:
+            return False
+
+        if self.TabResultInquiry is not None:
+            return False
+
+        if self.TabResultResponse is not None:
+            return False
+
+        if self.User is not None:
+            return False
+
+        return True
 
 
 class TaxResident(core.BunqModel):
@@ -1193,6 +2242,20 @@ class TaxResident(core.BunqModel):
         self.tax_number = tax_number
 
 
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.country is not None:
+            return False
+
+        if self.tax_number is not None:
+            return False
+
+        return True
+
+
 class Ubo(core.BunqModel):
     """
     :type name: str
@@ -1204,6 +2267,23 @@ class Ubo(core.BunqModel):
         self.name = None
         self.date_of_birth = None
         self.nationality = None
+
+
+    def are_all_fields_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self.name is not None:
+            return False
+
+        if self.date_of_birth is not None:
+            return False
+
+        if self.nationality is not None:
+            return False
+
+        return True
 
 
 class MonetaryAccountReference(core.BunqModel):
@@ -1259,3 +2339,12 @@ class MonetaryAccountReference(core.BunqModel):
         instance.pointer.name = label_monetary_account.display_name
 
         return instance
+
+    def are_all_fields_none(self):
+        if self.pointer is not None:
+            return False
+
+        if self.label_monetary_account is not None:
+            return False
+
+        return True
