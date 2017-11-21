@@ -13,6 +13,8 @@ from bunq.sdk.exception import BunqException
 
 class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
+    _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object'
+
     _override_field_map = {
         'ScheduledPayment': 'SchedulePayment',
         'ScheduledInstance': 'ScheduleInstance',
@@ -53,8 +55,8 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
     def can_serialize(cls):
         return False
 
-    @staticmethod
-    def _get_object_class(class_name):
+    @classmethod
+    def _get_object_class(cls, class_name):
         """
         :type class_name: str
         :rtype: core.BunqModel
@@ -70,6 +72,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
         except AttributeError:
             pass
 
+        raise BunqException(cls._ERROR_MODEL_NOT_FOUND.format(class_name))
 
 
 class InstallationAdapter(converter.JsonAdapter):
