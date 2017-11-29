@@ -36,6 +36,9 @@ _HEADER_USER_AGENT = 'User-Agent'
 _AES_KEY_SIZE = 32
 _BLOCK_SIZE = 16
 
+# Regex constants
+_REGEX_FOR_LOWERCASE_HEADERS = r'(-[a-z])'
+
 # Encryption-specific headers
 _HEADER_CLIENT_ENCRYPTION_KEY = 'X-Bunq-Client-Encryption-Key'
 _HEADER_CLIENT_ENCRYPTION_IV = 'X-Bunq-Client-Encryption-Iv'
@@ -260,10 +263,28 @@ def _generate_response_head_bytes(status_code, headers):
     header_tuples = sorted((k, headers[k]) for k in headers)
 
     for name, value in header_tuples:
+        name = _ensure_header_is_correctly_cased(name)
+
         if _should_sign_response_header(name):
             head_string += _FORMAT_HEADER_STRING.format(name, value)
 
     return (head_string + _DELIMITER_NEWLINE).encode()
+
+
+def _ensure_header_is_correctly_cased(header_name):
+    """
+    :type header_name: str
+    :rtype:  str
+    """
+
+    header_name = header_name.capitalize()
+
+    matches = re.findall(_REGEX_FOR_LOWERCASE_HEADERS, header_name)
+
+    for match in matches:
+        header_name = (re.sub(match, match.upper(), header_name))
+
+    return header_name
 
 
 def _should_sign_response_header(header_name):
