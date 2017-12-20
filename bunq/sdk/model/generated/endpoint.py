@@ -6,6 +6,7 @@ from bunq.sdk import exception
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import object_
+from bunq.sdk.json import converter
 
 
 class Invoice(core.BunqModel):
@@ -237,7 +238,7 @@ class Invoice(core.BunqModel):
 
         return self._vat_number
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -291,6 +292,16 @@ class Invoice(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Invoice
+        """
+
+        return converter.json_to_class(Invoice, json_str)
 
 
 class InvoiceByUser(core.BunqModel):
@@ -515,7 +526,7 @@ class InvoiceByUser(core.BunqModel):
 
         return self._vat_number
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -570,6 +581,16 @@ class InvoiceByUser(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: InvoiceByUser
+        """
+
+        return converter.json_to_class(InvoiceByUser, json_str)
+
 
 class ChatConversation(core.BunqModel, core.AnchoredObjectInterface):
     """
@@ -580,7 +601,7 @@ class ChatConversation(core.BunqModel, core.AnchoredObjectInterface):
     """
 
     # Error constants.
-    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
     # Endpoint constants.
     _ENDPOINT_URL_LISTING = "user/{}/chat-conversation"
@@ -669,7 +690,7 @@ class ChatConversation(core.BunqModel, core.AnchoredObjectInterface):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -681,6 +702,16 @@ class ChatConversation(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatConversation
+        """
+
+        return converter.json_to_class(ChatConversation, json_str)
 
 
 class ChatConversationSupportExternal(core.BunqModel):
@@ -736,7 +767,7 @@ class ChatConversationSupportExternal(core.BunqModel):
 
         return self._last_message
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -755,6 +786,16 @@ class ChatConversationSupportExternal(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatConversationSupportExternal
+        """
+
+        return converter.json_to_class(ChatConversationSupportExternal, json_str)
+
 
 class ChatMessage(core.BunqModel, core.AnchoredObjectInterface):
     """
@@ -766,7 +807,7 @@ class ChatMessage(core.BunqModel, core.AnchoredObjectInterface):
     """
 
     # Error constants.
-    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
     # Endpoint constants.
     _ENDPOINT_URL_LISTING = "user/{}/chat-conversation/{}/message"
@@ -847,7 +888,7 @@ class ChatMessage(core.BunqModel, core.AnchoredObjectInterface):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -862,6 +903,16 @@ class ChatMessage(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessage
+        """
+
+        return converter.json_to_class(ChatMessage, json_str)
 
 
 class ChatMessageAnnouncement(core.BunqModel):
@@ -937,7 +988,7 @@ class ChatMessageAnnouncement(core.BunqModel):
 
         return self._content
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -961,6 +1012,16 @@ class ChatMessageAnnouncement(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessageAnnouncement
+        """
+
+        return converter.json_to_class(ChatMessageAnnouncement, json_str)
 
 
 class CardDebit(core.BunqModel):
@@ -1215,7 +1276,7 @@ class CardDebit(core.BunqModel):
 
         return self._country
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -1281,6 +1342,16 @@ class CardDebit(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardDebit
+        """
+
+        return converter.json_to_class(CardDebit, json_str)
 
 
 class CardPinChange(core.BunqModel):
@@ -1407,7 +1478,7 @@ class CardPinChange(core.BunqModel):
 
         return self._status
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -1431,6 +1502,16 @@ class CardPinChange(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardPinChange
+        """
+
+        return converter.json_to_class(CardPinChange, json_str)
 
 
 class CardResult(core.BunqModel):
@@ -1657,7 +1738,7 @@ class CardResult(core.BunqModel):
 
         return self._reservation_expiry_time
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -1711,6 +1792,16 @@ class CardResult(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardResult
+        """
+
+        return converter.json_to_class(CardResult, json_str)
 
 
 class DraftPayment(core.BunqModel):
@@ -1923,7 +2014,7 @@ class DraftPayment(core.BunqModel):
 
         return self._object_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -1953,6 +2044,16 @@ class DraftPayment(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: DraftPayment
+        """
+
+        return converter.json_to_class(DraftPayment, json_str)
 
 
 class Payment(core.BunqModel):
@@ -2295,7 +2396,7 @@ class Payment(core.BunqModel):
 
         return self._allow_chat
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -2370,6 +2471,16 @@ class Payment(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Payment
+        """
+
+        return converter.json_to_class(Payment, json_str)
 
 
 class PaymentBatch(core.BunqModel):
@@ -2511,7 +2622,7 @@ class PaymentBatch(core.BunqModel):
 
         return self._payments
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -2520,6 +2631,16 @@ class PaymentBatch(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatch
+        """
+
+        return converter.json_to_class(PaymentBatch, json_str)
 
 
 class IdealMerchantTransaction(core.BunqModel):
@@ -2755,7 +2876,7 @@ class IdealMerchantTransaction(core.BunqModel):
 
         return self._allow_chat
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -2803,6 +2924,16 @@ class IdealMerchantTransaction(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: IdealMerchantTransaction
+        """
+
+        return converter.json_to_class(IdealMerchantTransaction, json_str)
 
 
 class PromotionDisplay(core.BunqModel):
@@ -2909,7 +3040,7 @@ class PromotionDisplay(core.BunqModel):
 
         return self._status
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -2927,6 +3058,16 @@ class PromotionDisplay(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PromotionDisplay
+        """
+
+        return converter.json_to_class(PromotionDisplay, json_str)
 
 
 class RequestInquiryBatch(core.BunqModel):
@@ -3080,7 +3221,7 @@ class RequestInquiryBatch(core.BunqModel):
 
         return self._total_amount_inquired
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -3092,6 +3233,16 @@ class RequestInquiryBatch(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestInquiryBatch
+        """
+
+        return converter.json_to_class(RequestInquiryBatch, json_str)
 
 
 class RequestInquiry(core.BunqModel):
@@ -3487,7 +3638,7 @@ class RequestInquiry(core.BunqModel):
 
         return self._allow_chat
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -3568,6 +3719,16 @@ class RequestInquiry(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestInquiry
+        """
+
+        return converter.json_to_class(RequestInquiry, json_str)
 
 
 class RequestResponse(core.BunqModel):
@@ -3926,7 +4087,7 @@ class RequestResponse(core.BunqModel):
 
         return self._eligible_whitelist_id
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -4007,6 +4168,16 @@ class RequestResponse(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestResponse
+        """
+
+        return converter.json_to_class(RequestResponse, json_str)
 
 
 class SchedulePaymentBatch(core.BunqModel):
@@ -4121,7 +4292,7 @@ class SchedulePaymentBatch(core.BunqModel):
 
         return self._schedule
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -4133,6 +4304,16 @@ class SchedulePaymentBatch(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SchedulePaymentBatch
+        """
+
+        return converter.json_to_class(SchedulePaymentBatch, json_str)
 
 
 class Schedule(core.BunqModel):
@@ -4273,7 +4454,7 @@ class Schedule(core.BunqModel):
 
         return self._object_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -4297,6 +4478,16 @@ class Schedule(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Schedule
+        """
+
+        return converter.json_to_class(Schedule, json_str)
 
 
 class SchedulePayment(core.BunqModel):
@@ -4462,7 +4653,7 @@ class SchedulePayment(core.BunqModel):
 
         return self._schedule
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -4474,6 +4665,16 @@ class SchedulePayment(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SchedulePayment
+        """
+
+        return converter.json_to_class(SchedulePayment, json_str)
 
 
 class ScheduleInstance(core.BunqModel):
@@ -4632,7 +4833,7 @@ class ScheduleInstance(core.BunqModel):
 
         return self._result_object
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -4656,6 +4857,16 @@ class ScheduleInstance(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ScheduleInstance
+        """
+
+        return converter.json_to_class(ScheduleInstance, json_str)
 
 
 class ShareInviteBankInquiry(core.BunqModel):
@@ -4917,7 +5128,7 @@ class ShareInviteBankInquiry(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -4959,6 +5170,16 @@ class ShareInviteBankInquiry(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareInviteBankInquiry
+        """
+
+        return converter.json_to_class(ShareInviteBankInquiry, json_str)
 
 
 class ShareInviteBankResponse(core.BunqModel):
@@ -5159,7 +5380,7 @@ class ShareInviteBankResponse(core.BunqModel):
 
         return self._description
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5195,6 +5416,16 @@ class ShareInviteBankResponse(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareInviteBankResponse
+        """
+
+        return converter.json_to_class(ShareInviteBankResponse, json_str)
 
 
 class UserCredentialPasswordIp(core.BunqModel):
@@ -5330,7 +5561,7 @@ class UserCredentialPasswordIp(core.BunqModel):
 
         return self._permitted_device
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5357,6 +5588,16 @@ class UserCredentialPasswordIp(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserCredentialPasswordIp
+        """
+
+        return converter.json_to_class(UserCredentialPasswordIp, json_str)
 
 
 class ChatMessageStatus(core.BunqModel):
@@ -5432,7 +5673,7 @@ class ChatMessageStatus(core.BunqModel):
 
         return self._content
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5456,6 +5697,16 @@ class ChatMessageStatus(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessageStatus
+        """
+
+        return converter.json_to_class(ChatMessageStatus, json_str)
 
 
 class ChatMessageUser(core.BunqModel):
@@ -5541,7 +5792,7 @@ class ChatMessageUser(core.BunqModel):
 
         return self._content
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5568,6 +5819,16 @@ class ChatMessageUser(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessageUser
+        """
+
+        return converter.json_to_class(ChatMessageUser, json_str)
 
 
 class ChatConversationReference(core.BunqModel):
@@ -5613,7 +5874,7 @@ class ChatConversationReference(core.BunqModel):
 
         return self._updated
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5628,6 +5889,16 @@ class ChatConversationReference(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatConversationReference
+        """
+
+        return converter.json_to_class(ChatConversationReference, json_str)
 
 
 class ChatMessageAttachment(core.BunqModel):
@@ -5685,7 +5956,7 @@ class ChatMessageAttachment(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5694,6 +5965,16 @@ class ChatMessageAttachment(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessageAttachment
+        """
+
+        return converter.json_to_class(ChatMessageAttachment, json_str)
 
 
 class ChatMessageText(core.BunqModel):
@@ -5750,7 +6031,7 @@ class ChatMessageText(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -5759,6 +6040,16 @@ class ChatMessageText(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessageText
+        """
+
+        return converter.json_to_class(ChatMessageText, json_str)
 
 
 class AttachmentConversationContent(core.BunqModel):
@@ -5799,12 +6090,22 @@ class AttachmentConversationContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentConversationContent
+        """
+
+        return converter.json_to_class(AttachmentConversationContent, json_str)
 
 
 class AttachmentPublicContent(core.BunqModel):
@@ -5843,12 +6144,22 @@ class AttachmentPublicContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentPublicContent
+        """
+
+        return converter.json_to_class(AttachmentPublicContent, json_str)
 
 
 class AttachmentTabContent(core.BunqModel):
@@ -5889,12 +6200,22 @@ class AttachmentTabContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentTabContent
+        """
+
+        return converter.json_to_class(AttachmentTabContent, json_str)
 
 
 class TabAttachmentTabContent(core.BunqModel):
@@ -5934,12 +6255,22 @@ class TabAttachmentTabContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabAttachmentTabContent
+        """
+
+        return converter.json_to_class(TabAttachmentTabContent, json_str)
 
 
 class AttachmentMonetaryAccount(core.BunqModel):
@@ -6007,7 +6338,7 @@ class AttachmentMonetaryAccount(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6019,6 +6350,16 @@ class AttachmentMonetaryAccount(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentMonetaryAccount
+        """
+
+        return converter.json_to_class(AttachmentMonetaryAccount, json_str)
 
 
 class AttachmentPublic(core.BunqModel):
@@ -6131,7 +6472,7 @@ class AttachmentPublic(core.BunqModel):
 
         return self._attachment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6149,6 +6490,16 @@ class AttachmentPublic(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentPublic
+        """
+
+        return converter.json_to_class(AttachmentPublic, json_str)
 
 
 class AttachmentTab(core.BunqModel):
@@ -6264,7 +6615,7 @@ class AttachmentTab(core.BunqModel):
 
         return self._attachment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6282,6 +6633,16 @@ class AttachmentTab(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentTab
+        """
+
+        return converter.json_to_class(AttachmentTab, json_str)
 
 
 class TabAttachmentTab(core.BunqModel):
@@ -6363,7 +6724,7 @@ class TabAttachmentTab(core.BunqModel):
 
         return self._attachment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6381,6 +6742,16 @@ class TabAttachmentTab(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabAttachmentTab
+        """
+
+        return converter.json_to_class(TabAttachmentTab, json_str)
 
 
 class Avatar(core.BunqModel):
@@ -6469,7 +6840,7 @@ class Avatar(core.BunqModel):
 
         return self._image
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6481,6 +6852,16 @@ class Avatar(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Avatar
+        """
+
+        return converter.json_to_class(Avatar, json_str)
 
 
 class BunqMeTab(core.BunqModel):
@@ -6694,7 +7075,7 @@ class BunqMeTab(core.BunqModel):
 
         return self._result_inquiries
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6727,6 +7108,16 @@ class BunqMeTab(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqMeTab
+        """
+
+        return converter.json_to_class(BunqMeTab, json_str)
 
 
 class BunqMeTabEntry(core.BunqModel):
@@ -6819,7 +7210,7 @@ class BunqMeTabEntry(core.BunqModel):
 
         return self._merchant_available
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6847,6 +7238,16 @@ class BunqMeTabEntry(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqMeTabEntry
+        """
+
+        return converter.json_to_class(BunqMeTabEntry, json_str)
+
 
 class BunqMeTabResultInquiry(core.BunqModel):
     """
@@ -6873,7 +7274,7 @@ class BunqMeTabResultInquiry(core.BunqModel):
 
         return self._payment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -6882,6 +7283,16 @@ class BunqMeTabResultInquiry(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqMeTabResultInquiry
+        """
+
+        return converter.json_to_class(BunqMeTabResultInquiry, json_str)
 
 
 class CardGeneratedCvc2(core.BunqModel):
@@ -7040,7 +7451,7 @@ class CardGeneratedCvc2(core.BunqModel):
 
         return self._expiry_time
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -7064,6 +7475,16 @@ class CardGeneratedCvc2(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardGeneratedCvc2
+        """
+
+        return converter.json_to_class(CardGeneratedCvc2, json_str)
 
 
 class CardName(core.BunqModel):
@@ -7120,7 +7541,7 @@ class CardName(core.BunqModel):
 
         return self._possible_card_name_array
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -7129,6 +7550,16 @@ class CardName(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardName
+        """
+
+        return converter.json_to_class(CardName, json_str)
 
 
 class CardReplace(core.BunqModel):
@@ -7191,7 +7622,7 @@ class CardReplace(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -7200,6 +7631,16 @@ class CardReplace(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardReplace
+        """
+
+        return converter.json_to_class(CardReplace, json_str)
 
 
 class Card(core.BunqModel):
@@ -7520,7 +7961,7 @@ class Card(core.BunqModel):
 
         return self._country
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -7590,6 +8031,16 @@ class Card(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Card
+        """
+
+        return converter.json_to_class(Card, json_str)
+
 
 class CashRegisterQrCodeContent(core.BunqModel):
     """
@@ -7630,12 +8081,22 @@ class CashRegisterQrCodeContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CashRegisterQrCodeContent
+        """
+
+        return converter.json_to_class(CashRegisterQrCodeContent, json_str)
 
 
 class CashRegisterQrCode(core.BunqModel):
@@ -7834,7 +8295,7 @@ class CashRegisterQrCode(core.BunqModel):
 
         return self._tab_object
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -7858,6 +8319,16 @@ class CashRegisterQrCode(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CashRegisterQrCode
+        """
+
+        return converter.json_to_class(CashRegisterQrCode, json_str)
 
 
 class CashRegister(core.BunqModel):
@@ -8094,7 +8565,7 @@ class CashRegister(core.BunqModel):
 
         return self._tab_text_waiting_screen
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -8128,6 +8599,16 @@ class CashRegister(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CashRegister
+        """
+
+        return converter.json_to_class(CashRegister, json_str)
+
 
 class Tab(core.BunqModel, core.AnchoredObjectInterface):
     """
@@ -8144,7 +8625,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
     """
 
     # Error constants.
-    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
     # Endpoint constants.
     _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/cash-register/{}/tab/{}"
@@ -8241,7 +8722,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -8253,6 +8734,16 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Tab
+        """
+
+        return converter.json_to_class(Tab, json_str)
 
 
 class TabUsageSingle(core.BunqModel):
@@ -8626,7 +9117,7 @@ class TabUsageSingle(core.BunqModel):
 
         return self._tab_attachment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -8689,6 +9180,16 @@ class TabUsageSingle(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabUsageSingle
+        """
+
+        return converter.json_to_class(TabUsageSingle, json_str)
 
 
 class TabItem(core.BunqModel):
@@ -8774,7 +9275,7 @@ class TabItem(core.BunqModel):
 
         return self._amount
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -8801,6 +9302,16 @@ class TabItem(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabItem
+        """
+
+        return converter.json_to_class(TabItem, json_str)
 
 
 class TabUsageMultiple(core.BunqModel):
@@ -9155,7 +9666,7 @@ class TabUsageMultiple(core.BunqModel):
 
         return self._tab_attachment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -9212,6 +9723,16 @@ class TabUsageMultiple(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabUsageMultiple
+        """
+
+        return converter.json_to_class(TabUsageMultiple, json_str)
 
 
 class CertificatePinned(core.BunqModel):
@@ -9356,7 +9877,7 @@ class CertificatePinned(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -9368,6 +9889,16 @@ class CertificatePinned(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CertificatePinned
+        """
+
+        return converter.json_to_class(CertificatePinned, json_str)
 
 
 class DeviceServer(core.BunqModel):
@@ -9533,7 +10064,7 @@ class DeviceServer(core.BunqModel):
 
         return self._status
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -9558,6 +10089,16 @@ class DeviceServer(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: DeviceServer
+        """
+
+        return converter.json_to_class(DeviceServer, json_str)
+
 
 class Device(core.BunqModel, core.AnchoredObjectInterface):
     """
@@ -9568,7 +10109,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
     """
 
     # Error constants.
-    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
     # Endpoint constants.
     _ENDPOINT_URL_READ = "device/{}"
@@ -9648,7 +10189,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -9657,6 +10198,16 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Device
+        """
+
+        return converter.json_to_class(Device, json_str)
 
 
 class DraftShareInviteBankQrCodeContent(core.BunqModel):
@@ -9699,12 +10250,22 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: DraftShareInviteBankQrCodeContent
+        """
+
+        return converter.json_to_class(DraftShareInviteBankQrCodeContent, json_str)
 
 
 class DraftShareInviteBank(core.BunqModel):
@@ -9901,7 +10462,7 @@ class DraftShareInviteBank(core.BunqModel):
 
         return self._id_
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -9928,6 +10489,16 @@ class DraftShareInviteBank(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: DraftShareInviteBank
+        """
+
+        return converter.json_to_class(DraftShareInviteBank, json_str)
 
 
 class ExportAnnualOverviewContent(core.BunqModel):
@@ -9968,12 +10539,22 @@ class ExportAnnualOverviewContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ExportAnnualOverviewContent
+        """
+
+        return converter.json_to_class(ExportAnnualOverviewContent, json_str)
 
 
 class ExportAnnualOverview(core.BunqModel):
@@ -10124,7 +10705,7 @@ class ExportAnnualOverview(core.BunqModel):
 
         return self._alias_user
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -10145,6 +10726,16 @@ class ExportAnnualOverview(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ExportAnnualOverview
+        """
+
+        return converter.json_to_class(ExportAnnualOverview, json_str)
 
 
 class CustomerStatementExportContent(core.BunqModel):
@@ -10185,12 +10776,22 @@ class CustomerStatementExportContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CustomerStatementExportContent
+        """
+
+        return converter.json_to_class(CustomerStatementExportContent, json_str)
 
 
 class CustomerStatementExport(core.BunqModel):
@@ -10413,7 +11014,7 @@ class CustomerStatementExport(core.BunqModel):
 
         return self._alias_monetary_account
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -10449,6 +11050,16 @@ class CustomerStatementExport(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CustomerStatementExport
+        """
+
+        return converter.json_to_class(CustomerStatementExport, json_str)
 
 
 class InstallationServerPublicKey(core.BunqModel):
@@ -10503,7 +11114,7 @@ class InstallationServerPublicKey(core.BunqModel):
 
         return self._server_public_key
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -10512,6 +11123,16 @@ class InstallationServerPublicKey(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: InstallationServerPublicKey
+        """
+
+        return converter.json_to_class(InstallationServerPublicKey, json_str)
 
 
 class ShareInviteBankAmountUsed(core.BunqModel):
@@ -10556,12 +11177,22 @@ class ShareInviteBankAmountUsed(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareInviteBankAmountUsed
+        """
+
+        return converter.json_to_class(ShareInviteBankAmountUsed, json_str)
 
 
 class MonetaryAccountBank(core.BunqModel):
@@ -10904,7 +11535,7 @@ class MonetaryAccountBank(core.BunqModel):
 
         return self._setting
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -10971,6 +11602,16 @@ class MonetaryAccountBank(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountBank
+        """
+
+        return converter.json_to_class(MonetaryAccountBank, json_str)
+
 
 class MonetaryAccountProfile(core.BunqModel):
     """
@@ -11010,7 +11651,7 @@ class MonetaryAccountProfile(core.BunqModel):
 
         return self._profile_drain
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11022,6 +11663,16 @@ class MonetaryAccountProfile(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountProfile
+        """
+
+        return converter.json_to_class(MonetaryAccountProfile, json_str)
 
 
 class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
@@ -11036,7 +11687,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
     """
 
     # Error constants.
-    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
     # Endpoint constants.
     _ENDPOINT_URL_READ = "user/{}/monetary-account/{}"
@@ -11117,7 +11768,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11126,6 +11777,16 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccount
+        """
+
+        return converter.json_to_class(MonetaryAccount, json_str)
 
 
 class BunqMeFundraiserResult(core.BunqModel):
@@ -11191,7 +11852,7 @@ class BunqMeFundraiserResult(core.BunqModel):
 
         return self._payments
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11212,6 +11873,16 @@ class BunqMeFundraiserResult(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqMeFundraiserResult
+        """
+
+        return converter.json_to_class(BunqMeFundraiserResult, json_str)
 
 
 class BunqMeFundraiserProfile(core.BunqModel):
@@ -11300,7 +11971,7 @@ class BunqMeFundraiserProfile(core.BunqModel):
 
         return self._redirect_url
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11328,6 +11999,16 @@ class BunqMeFundraiserProfile(core.BunqModel):
 
         return True
 
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqMeFundraiserProfile
+        """
+
+        return converter.json_to_class(BunqMeFundraiserProfile, json_str)
+
 
 class BunqMeTabResultResponse(core.BunqModel):
     """
@@ -11354,7 +12035,7 @@ class BunqMeTabResultResponse(core.BunqModel):
 
         return self._payment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11363,6 +12044,16 @@ class BunqMeTabResultResponse(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqMeTabResultResponse
+        """
+
+        return converter.json_to_class(BunqMeTabResultResponse, json_str)
 
 
 class MasterCardAction(core.BunqModel):
@@ -11659,7 +12350,7 @@ class MasterCardAction(core.BunqModel):
 
         return self._eligible_whitelist_id
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11734,6 +12425,16 @@ class MasterCardAction(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MasterCardAction
+        """
+
+        return converter.json_to_class(MasterCardAction, json_str)
 
 
 class TabResultInquiry(core.BunqModel):
@@ -11830,7 +12531,7 @@ class TabResultInquiry(core.BunqModel):
 
         return self._payment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11842,6 +12543,16 @@ class TabResultInquiry(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabResultInquiry
+        """
+
+        return converter.json_to_class(TabResultInquiry, json_str)
 
 
 class TabResultResponse(core.BunqModel):
@@ -11934,7 +12645,7 @@ class TabResultResponse(core.BunqModel):
 
         return self._payment
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -11946,6 +12657,16 @@ class TabResultResponse(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabResultResponse
+        """
+
+        return converter.json_to_class(TabResultResponse, json_str)
 
 
 class User(core.BunqModel, core.AnchoredObjectInterface):
@@ -11959,7 +12680,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     """
 
     # Error constants.
-    _ERROR_NULL_FIELDS = 'All fields of an extended model or object are null.'
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
     # Endpoint constants.
     _ENDPOINT_URL_READ = "user/{}"
@@ -12062,7 +12783,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
 
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -12077,6 +12798,16 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: User
+        """
+
+        return converter.json_to_class(User, json_str)
 
 
 class UserLight(core.BunqModel):
@@ -12466,7 +13197,7 @@ class UserLight(core.BunqModel):
 
         return self._notification_filters
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -12568,6 +13299,16 @@ class UserLight(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserLight
+        """
+
+        return converter.json_to_class(UserLight, json_str)
 
 
 class UserPerson(core.BunqModel):
@@ -12975,7 +13716,7 @@ class UserPerson(core.BunqModel):
 
         return self._notification_filters
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -13074,6 +13815,16 @@ class UserPerson(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserPerson
+        """
+
+        return converter.json_to_class(UserPerson, json_str)
 
 
 class UserCompany(core.BunqModel):
@@ -13450,7 +14201,7 @@ class UserCompany(core.BunqModel):
 
         return self._billing_contract
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -13543,6 +14294,16 @@ class UserCompany(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserCompany
+        """
+
+        return converter.json_to_class(UserCompany, json_str)
 
 
 class Customer(core.BunqModel):
@@ -13675,7 +14436,7 @@ class Customer(core.BunqModel):
 
         return self._billing_account_id
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -13693,6 +14454,16 @@ class Customer(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Customer
+        """
+
+        return converter.json_to_class(Customer, json_str)
 
 
 class CustomerLimit(core.BunqModel):
@@ -13786,7 +14557,7 @@ class CustomerLimit(core.BunqModel):
 
         return self._limit_card_debit_replacement
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -13807,6 +14578,16 @@ class CustomerLimit(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CustomerLimit
+        """
+
+        return converter.json_to_class(CustomerLimit, json_str)
 
 
 class BillingContractSubscription(core.BunqModel):
@@ -13947,7 +14728,7 @@ class BillingContractSubscription(core.BunqModel):
 
         return self._subscription_type
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -13974,6 +14755,16 @@ class BillingContractSubscription(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BillingContractSubscription
+        """
+
+        return converter.json_to_class(BillingContractSubscription, json_str)
 
 
 class PaymentChat(core.BunqModel):
@@ -14119,7 +14910,7 @@ class PaymentChat(core.BunqModel):
 
         return self._unread_message_count
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -14137,6 +14928,16 @@ class PaymentChat(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentChat
+        """
+
+        return converter.json_to_class(PaymentChat, json_str)
 
 
 class PermittedIp(core.BunqModel):
@@ -14279,7 +15080,7 @@ class PermittedIp(core.BunqModel):
 
         return self._status
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -14291,6 +15092,16 @@ class PermittedIp(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PermittedIp
+        """
+
+        return converter.json_to_class(PermittedIp, json_str)
 
 
 class RequestInquiryChat(core.BunqModel):
@@ -14440,7 +15251,7 @@ class RequestInquiryChat(core.BunqModel):
 
         return self._unread_message_count
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -14458,6 +15269,16 @@ class RequestInquiryChat(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestInquiryChat
+        """
+
+        return converter.json_to_class(RequestInquiryChat, json_str)
 
 
 class RequestResponseChat(core.BunqModel):
@@ -14607,7 +15428,7 @@ class RequestResponseChat(core.BunqModel):
 
         return self._unread_message_count
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -14625,6 +15446,16 @@ class RequestResponseChat(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestResponseChat
+        """
+
+        return converter.json_to_class(RequestResponseChat, json_str)
 
 
 class ScheduleUser(core.BunqModel):
@@ -14671,12 +15502,22 @@ class ScheduleUser(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ScheduleUser
+        """
+
+        return converter.json_to_class(ScheduleUser, json_str)
 
 
 class Session(core.BunqModel):
@@ -14714,12 +15555,22 @@ class Session(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Session
+        """
+
+        return converter.json_to_class(Session, json_str)
 
 
 class TabItemShopBatch(core.BunqModel):
@@ -14777,7 +15628,7 @@ class TabItemShopBatch(core.BunqModel):
 
         return self._tab_items
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -14786,6 +15637,16 @@ class TabItemShopBatch(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabItemShopBatch
+        """
+
+        return converter.json_to_class(TabItemShopBatch, json_str)
 
 
 class TabItemShop(core.BunqModel):
@@ -15032,7 +15893,7 @@ class TabItemShop(core.BunqModel):
 
         return self._amount
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -15059,6 +15920,16 @@ class TabItemShop(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabItemShop
+        """
+
+        return converter.json_to_class(TabItemShop, json_str)
 
 
 class TabQrCodeContent(core.BunqModel):
@@ -15103,12 +15974,22 @@ class TabQrCodeContent(core.BunqModel):
         )
 
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabQrCodeContent
+        """
+
+        return converter.json_to_class(TabQrCodeContent, json_str)
 
 
 class TokenQrRequestIdeal(core.BunqModel):
@@ -15358,7 +16239,7 @@ class TokenQrRequestIdeal(core.BunqModel):
 
         return self._eligible_whitelist_id
 
-    def are_all_fields_none(self):
+    def is_all_field_none(self):
         """
         :rtype: bool
         """
@@ -15424,6 +16305,16 @@ class TokenQrRequestIdeal(core.BunqModel):
             return False
 
         return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TokenQrRequestIdeal
+        """
+
+        return converter.json_to_class(TokenQrRequestIdeal, json_str)
     
 class BunqResponseInvoiceList(client.BunqResponse):
     @property
