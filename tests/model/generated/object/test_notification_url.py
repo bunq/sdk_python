@@ -103,12 +103,11 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             self.assertTrue(
                 isinstance(
                     sub_class_model,
-                    self.getModelTypeOrNone(
+                    self.get_model_type_or_none(
                         sub_class_expected_object_name
                     )
                 )
             )
-
 
     @classmethod
     def is_model_reference(cls, referenced_model, class_name):
@@ -161,10 +160,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
                 self._KEY_NOTIFICATION_URL_MODEL in json_object
             )
 
-            return json_to_class(
-                object_.NotificationUrl,
-                json_string
-            )
+            return object_.NotificationUrl.from_json(json_string)
 
     def test_mutation_model(self):
         self.execute_notification_url_test(

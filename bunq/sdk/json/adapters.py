@@ -31,7 +31,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
         model_ = super()._deserialize_default(cls_target, obj_raw)
 
-        if isinstance(model_, core.AnchoredObjectInterface) and model_.are_all_fields_none():
+        if isinstance(model_, core.AnchoredObjectInterface) and model_.is_all_field_none():
             for field in model_.__dict__:
                 field_ = None
                 if field in cls._override_field_map:
@@ -44,7 +44,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
                 contents = super()._deserialize_default(object_class, obj_raw)
 
-                if contents.are_all_fields_none():
+                if contents.is_all_field_none():
                     setattr(model_, field, None)
                 else:
                     setattr(model_, field, contents)
