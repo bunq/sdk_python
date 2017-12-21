@@ -8,6 +8,71 @@ from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
+from bunq.sdk.exception import BunqException
+
+
+class AnchoredObjectModelAdapter(converter.JsonAdapter):
+
+    _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object.'
+
+    _override_field_map = {
+        'ScheduledPayment': 'SchedulePayment',
+        'ScheduledInstance': 'ScheduleInstance',
+        }
+
+    @classmethod
+    def deserialize(cls, cls_target, obj_raw):
+        """
+        :type cls_target: core.BunqModel
+        :type obj_raw: int|str|bool|float|list|dict|None
+
+        :rtype: T
+        """
+
+        model_ = super()._deserialize_default(cls_target, obj_raw)
+
+        if isinstance(model_, core.AnchoredObjectInterface) and model_.is_all_field_none():
+            for field in model_.__dict__:
+                field_ = None
+                if field in cls._override_field_map:
+                    field_ = cls._override_field_map[field]
+
+                if field_ is None:
+                    object_class = cls._get_object_class(field)
+                else:
+                    object_class = cls._get_object_class(field_)
+
+                contents = super()._deserialize_default(object_class, obj_raw)
+
+                if contents.is_all_field_none():
+                    setattr(model_, field, None)
+                else:
+                    setattr(model_, field, contents)
+
+        return model_
+
+    @classmethod
+    def can_serialize(cls):
+        return False
+
+    @classmethod
+    def _get_object_class(cls, class_name):
+        """
+        :type class_name: str
+        :rtype: core.BunqModel
+        """
+
+        try:
+            return getattr(endpoint, class_name)
+        except AttributeError:
+            pass
+
+        try:
+            return getattr(object_, class_name)
+        except AttributeError:
+            pass
+
+        raise BunqException(cls._ERROR_MODEL_NOT_FOUND.format(class_name))
 
 
 class InstallationAdapter(converter.JsonAdapter):

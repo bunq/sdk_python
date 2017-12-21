@@ -2,6 +2,10 @@ from bunq.sdk import client
 from bunq.sdk.json import converter
 
 
+class AnchoredObjectInterface:
+    pass
+
+
 class BunqModel(object):
     # Field constants
     _FIELD_RESPONSE = 'Response'
@@ -12,12 +16,19 @@ class BunqModel(object):
     # The very first index of an array
     _INDEX_FIRST = 0
 
+    def is_all_field_none(self):
+        raise NotImplementedError
+
     def to_json(self):
         """
         :rtype: str
         """
 
         return converter.class_to_json(self)
+
+    @staticmethod
+    def from_json(json_str):
+        raise NotImplementedError
 
     @classmethod
     def _from_json_array_nested(cls, response_raw):
@@ -141,6 +152,13 @@ class Id(BunqModel):
 
         return self._id_
 
+    def is_all_field_none(self):
+        if self.id_ is not None:
+            return False
+
+        return True
+
+
 
 class Uuid(BunqModel):
     """
@@ -158,6 +176,11 @@ class Uuid(BunqModel):
 
         return self._uuid
 
+    def is_all_field_none(self):
+        if self.uuid is not None:
+            return False
+
+        return True
 
 class SessionToken(BunqModel):
     """
@@ -205,6 +228,21 @@ class SessionToken(BunqModel):
 
         return self._token
 
+    def is_all_field_none(self):
+        if self.id_ is not None:
+            return False
+
+        if self.created is not None:
+            return False
+
+        if self.updated is not None:
+            return False
+
+        if self.token is not None:
+            return False
+
+        return True
+
 
 class PublicKeyServer(BunqModel):
     """
@@ -221,6 +259,12 @@ class PublicKeyServer(BunqModel):
         """
 
         return self._server_public_key
+
+    def is_all_field_none(self):
+        if self.server_public_key is not None:
+            return False
+
+        return True
 
 
 class Installation(BunqModel):
@@ -296,6 +340,17 @@ class Installation(BunqModel):
             }
         ).encode()
 
+    def is_all_field_none(self):
+        if self.id_ is not None:
+            return False
+
+        if self.token is not None:
+            return False
+
+        if self.server_public_key is not None:
+            return False
+
+        return True
 
 class SessionServer(BunqModel):
     """
@@ -373,4 +428,17 @@ class SessionServer(BunqModel):
 
         return converter.class_to_json({cls.FIELD_SECRET: secret}).encode()
 
+    def is_all_field_none(self):
+        if self.id_ is not None:
+            return False
 
+        if self.token is not None:
+            return False
+
+        if self.user_person is not None:
+            return False
+
+        if self.user_company is not None:
+            return False
+
+        return True
