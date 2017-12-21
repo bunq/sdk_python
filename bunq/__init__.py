@@ -39,32 +39,28 @@ def initialize_converter():
     converter.register_adapter(object_.ShareDetail, adapters.ShareDetailAdapter)
     converter.register_adapter(datetime.datetime, adapters.DateTimeAdapter)
     converter.register_adapter(client.Pagination, adapters.PaginationAdapter)
-    # converter.register_adapter(core.AnchoredObjectInterface,
-    #                            adapters.AnchoredObjectModelAdapter)
 
-    for class_string in dir(object_):
-        class_ = getattr(object_, class_string)
+    def register_anchor_adapter(class_to_regsiter):
+        if issubclass(class_to_regsiter, core.AnchoredObjectInterface):
+            converter.register_adapter(
+                class_to_regsiter,
+                adapters.AnchoredObjectModelAdapter
+            )
+
+    def get_class(class_string_to_get):
+        if hasattr(object_, class_string_to_get):
+            return getattr(object_, class_string_to_get)
+
+        if hasattr(endpoint, class_string_to_get):
+            return getattr(endpoint, class_string_to_get)
+
+    for class_string in list(dir(object_) + dir(endpoint)):
+        class_ = get_class(class_string)
 
         if not inspect.isclass(class_):
             continue
 
-        if issubclass(class_, core.AnchoredObjectInterface):
-            converter.register_adapter(
-                class_,
-                adapters.AnchoredObjectModelAdapter
-            )
-
-    for class_string in dir(endpoint):
-        class_ = getattr(endpoint, class_string)
-
-        if not inspect.isclass(class_):
-            continue
-
-        if issubclass(class_, core.AnchoredObjectInterface):
-            converter.register_adapter(
-                class_,
-                adapters.AnchoredObjectModelAdapter
-            )
+        register_anchor_adapter(class_)
 
 
 converter.set_initializer_function(initialize_converter)
