@@ -1,5 +1,27 @@
 # Change Log
 
+## [0.12.4](https://github.com/bunq/sdk_python/tree/0.12.4) (2017-12-21)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.3...0.12.4)
+
+**Implemented enhancements:**
+
+- Make sure received signatures headers are correctly cased [\#51](https://github.com/bunq/sdk_python/issues/51)
+- Introduce from\_json method  [\#50](https://github.com/bunq/sdk_python/issues/50)
+- Return base class from createFromJsonString [\#49](https://github.com/bunq/sdk_python/issues/49)
+- CHANGELOG.md is empty [\#46](https://github.com/bunq/sdk_python/issues/46)
+- Improve decoder to recognise child object  [\#42](https://github.com/bunq/sdk_python/issues/42)
+
+**Closed issues:**
+
+- Python doesn't want CamelCase  [\#45](https://github.com/bunq/sdk_python/issues/45)
+
+**Merged pull requests:**
+
+- Feature/make sure headers are correctly cased bunq/sdk python\#51 [\#57](https://github.com/bunq/sdk_python/pull/57) ([OGKevin](https://github.com/OGKevin))
+- Feature/improve decoder bunq/sdk python\#42 [\#56](https://github.com/bunq/sdk_python/pull/56) ([OGKevin](https://github.com/OGKevin))
+- Renamed camelCase methods. \(bunq/sdk\_python\#45\) [\#48](https://github.com/bunq/sdk_python/pull/48) ([OGKevin](https://github.com/OGKevin))
+- Generated CHANGELOG.md :clap:. \(bunq/sdk\_python\#46\) [\#47](https://github.com/bunq/sdk_python/pull/47) ([OGKevin](https://github.com/OGKevin))
+
 ## [0.12.3](https://github.com/bunq/sdk_python/tree/0.12.3) (2017-11-15)
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.2...0.12.3)
 
