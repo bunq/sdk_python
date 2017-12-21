@@ -13,9 +13,11 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     _GETTER_PAYMENT = 'Payment'
     _GETTER_BUNQ_ME_TAB = 'BunqMeTab'
     _GETTER_CHAT_MESSAGE_ANNOUNCEMENT = 'ChatMessageAnnouncement'
+    _GETTER_CHAT_MESSAGE = 'ChatMessage'
     _GETTER_DRAFT_PAYMENT = 'DraftPayment'
     _GETTER_MASTER_CARD_ACTION = 'MasterCardAction'
     _GETTER_MONETARY_ACCOUNT_BANK = 'MonetaryAccountBank'
+    _GETTER_MONETARY_ACCOUNT = 'MonetaryAccount'
     _GETTER_PAYMENT_BATCH = 'PaymentBatch'
     _GETTER_REQUEST_INQUIRY = 'RequestInquiry'
     _GETTER_REQUEST_RESPONSE = 'RequestResponse'
@@ -65,8 +67,12 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     def execute_notification_url_test(self,
                                       file_path,
                                       class_name,
-                                      getter_name):
+                                      getter_name,
+                                      sub_class_expected_object_name=None,
+                                      sub_class_getter_name=None):
         """
+        :type sub_class_getter_name: str
+        :type sub_class_expected_object_name: str
         :type file_path: str
         :type class_name: str
         :type getter_name: str
@@ -74,7 +80,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         :return: None
         """
 
-        notification_url = self.getNotificationUrl(file_path)
+        notification_url = self.get_notification_url(file_path)
         self.assertIsNotNone(notification_url)
         self.assertIsNotNone(notification_url.object_)
 
@@ -84,14 +90,27 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         self.assertIsNotNone(expected_model)
         self.assertIsNotNone(referenced_model)
         self.assertTrue(
-            self.isModelReference(
+            self.is_model_reference(
                 referenced_model,
                 class_name
             )
         )
 
+        if sub_class_expected_object_name is not None:
+            sub_class_model = getattr(referenced_model, sub_class_getter_name)
+
+            self.assertIsNotNone(sub_class_model)
+            self.assertTrue(
+                isinstance(
+                    sub_class_model,
+                    self.get_model_type_or_none(
+                        sub_class_expected_object_name
+                    )
+                )
+            )
+
     @classmethod
-    def isModelReference(cls, referenced_model, class_name):
+    def is_model_reference(cls, referenced_model, class_name):
         """
         :type referenced_model: core.BunqModel
         :type class_name: str
@@ -99,7 +118,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         :rtype: bool
         """
 
-        model_type = cls.getModelTypeOrNone(class_name)
+        model_type = cls.get_model_type_or_none(class_name)
 
         if model_type is None:
             return False
@@ -107,7 +126,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         return isinstance(referenced_model, model_type)
 
     @classmethod
-    def getModelTypeOrNone(cls, class_name):
+    def get_model_type_or_none(cls, class_name):
         """
         :type class_name: str
 
@@ -120,7 +139,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
 
         return None
 
-    def getNotificationUrl(self, file_path):
+    def get_notification_url(self, file_path):
         """
         :type file_path: str
 
@@ -141,10 +160,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
                 self._KEY_NOTIFICATION_URL_MODEL in json_object
             )
 
-            return json_to_class(
-                object_.NotificationUrl,
-                json_string
-            )
+            return object_.NotificationUrl.from_json(json_string)
 
     def test_mutation_model(self):
         self.execute_notification_url_test(
@@ -163,6 +179,8 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     def test_chat_message_announcement_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL,
+            endpoint.ChatMessage.__name__,
+            self._GETTER_CHAT_MESSAGE,
             endpoint.ChatMessageAnnouncement.__name__,
             self._GETTER_CHAT_MESSAGE_ANNOUNCEMENT
         )
@@ -184,6 +202,8 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     def test_monetary_account_bank_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_MONETARY_ACCOUNT_BANK_MODEL,
+            endpoint.MonetaryAccount.__name__,
+            self._GETTER_MONETARY_ACCOUNT,
             endpoint.MonetaryAccountBank.__name__,
             self._GETTER_MONETARY_ACCOUNT_BANK
         )
