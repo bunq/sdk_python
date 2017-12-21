@@ -7,6 +7,7 @@ def initialize_converter():
     """
 
     import datetime
+    import inspect
 
     from bunq.sdk import client
     from bunq.sdk import context
@@ -15,7 +16,6 @@ def initialize_converter():
     from bunq.sdk.json import converter
     from bunq.sdk.model.generated import object_
     from bunq.sdk.model.generated import endpoint
-    import inspect
 
     converter.register_adapter(core.Installation, adapters.InstallationAdapter)
     converter.register_adapter(
