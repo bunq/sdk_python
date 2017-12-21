@@ -13,7 +13,7 @@ from bunq.sdk.exception import BunqException
 
 class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
-    _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object'
+    _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object.'
 
     _override_field_map = {
         'ScheduledPayment': 'SchedulePayment',
