@@ -263,7 +263,7 @@ def _generate_response_head_bytes(status_code, headers):
     header_tuples = sorted((k, headers[k]) for k in headers)
 
     for name, value in header_tuples:
-        name = _ensure_header_is_correctly_cased(name)
+        name = _get_header_correctly_cased(name)
 
         if _should_sign_response_header(name):
             head_string += _FORMAT_HEADER_STRING.format(name, value)
@@ -271,7 +271,7 @@ def _generate_response_head_bytes(status_code, headers):
     return (head_string + _DELIMITER_NEWLINE).encode()
 
 
-def _ensure_header_is_correctly_cased(header_name):
+def _get_header_correctly_cased(header_name):
     """
     :type header_name: str
     :rtype:  str
