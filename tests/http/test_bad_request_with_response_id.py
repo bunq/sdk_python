@@ -4,10 +4,17 @@ from tests.bunq_test import BunqSdkTestCase
 
 
 class TestPagination(BunqSdkTestCase):
+    """
+    Tests if the response id from a failed request can be retrieved
+    successfully.
+    """
 
     _INVALID_USER_PERSON_ID = 0
 
     def test_bad_request_with_response_id(self):
+        """
+        """
+
         caught_exception = None
 
         try:

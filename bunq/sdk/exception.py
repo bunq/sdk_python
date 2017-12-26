@@ -30,6 +30,10 @@ class ApiException(Exception):
 
     @property
     def response_id(self):
+        """
+        :rtype: str
+        """
+
         return self._response_id
 
 
