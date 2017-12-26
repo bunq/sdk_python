@@ -15,6 +15,13 @@ class ApiClient(object):
     :type _api_context: bunq.sdk.context.ApiContext
     """
 
+    # Error constants
+    _ERROR_COULD_NOT_DETERMINE_RESPONSE_ID_HEADER = ('The response header'
+                                                     '"X-Bunq-Client-Response-'
+                                                     'Id" or "x-bunq-client-'
+                                                     'response-id" could not '
+                                                     'be found.')
+
     # Endpoints not requiring active session for the request to succeed.
     _URL_DEVICE_SERVER = 'device-server'
     _URI_INSTALLATION = 'installation'
