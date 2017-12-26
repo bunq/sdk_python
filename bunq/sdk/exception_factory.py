@@ -27,8 +27,14 @@ class ExceptionFactory:
     _GLUE_ERROR_MESSAGES_STRING_EMPTY = ''
 
     @classmethod
-    def create_exception_for_response(cls, response_code, messages):
+    def create_exception_for_response(
+            cls,
+            response_code,
+            messages,
+            response_id
+    ):
         """
+        :type response_id: str
         :type response_code: int
         :type messages: list[str]
 
@@ -36,22 +42,54 @@ class ExceptionFactory:
         :rtype:  ApiException
         """
 
-        error_message = cls._generate_message_error(response_code, messages)
+        error_message = cls._generate_message_error(
+            response_code,
+            messages,
+            response_id
+        )
 
         if response_code == cls._HTTP_RESPONSE_CODE_BAD_REQUEST:
-            return BadRequestException(error_message, response_code)
+            return BadRequestException(
+                error_message,
+                response_code,
+                response_id
+            )
         if response_code == cls._HTTP_RESPONSE_CODE_UNAUTHORIZED:
-            return UnauthorizedException(error_message, response_code)
+            return UnauthorizedException(
+                error_message,
+                response_code,
+                response_id
+            )
         if response_code == cls._HTTP_RESPONSE_CODE_FORBIDDEN:
-            return ForbiddenException(error_message, response_code)
+            return ForbiddenException(
+                error_message,
+                response_code,
+                response_id
+            )
         if response_code == cls._HTTP_RESPONSE_CODE_NOT_FOUND:
-            return NotFoundException(error_message, response_code)
+            return NotFoundException(
+                error_message,
+                response_code,
+                response_id
+            )
         if response_code == cls._HTTP_RESPONSE_CODE_METHOD_NOT_ALLOWED:
-            return MethodNotAllowedException(error_message, response_code)
+            return MethodNotAllowedException(
+                error_message,
+                response_code,
+                response_id
+            )
         if response_code == cls._HTTP_RESPONSE_CODE_TOO_MANY_REQUESTS:
-            return TooManyRequestsException(error_message, response_code)
+            return TooManyRequestsException(
+                error_message,
+                response_code,
+                response_id
+            )
         if response_code == cls._HTTP_RESPONSE_CODE_INTERNAL_SERVER_ERROR:
-            return PleaseContactBunqException(error_message, response_code)
+            return PleaseContactBunqException(
+                error_message,
+                response_code,
+                response_id
+            )
 
         return UnknownApiErrorException(error_message, response_code)
 
