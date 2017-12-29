@@ -91,7 +91,11 @@ class ExceptionFactory:
                 response_id
             )
 
-        return UnknownApiErrorException(error_message, response_code)
+        return UnknownApiErrorException(
+            error_message,
+            response_code,
+            response_id
+        )
 
     @classmethod
     def _generate_message_error(cls, response_code, messages, response_id):
