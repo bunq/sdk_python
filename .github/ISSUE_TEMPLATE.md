@@ -8,7 +8,7 @@
 1.
 
 ## Traceback
-[//]: # (If there is a traceback please share it in a quote! You can do this by pasting the traceback text, then highlight it and press the quote button.)
+[//]: # (If there is a traceback please share it in a quote! You can do this by pasting the traceback text, highlighting it and pressing the quote button.)
 
 ## SDK version and environment
 - Tested on [0.12.4](https://github.com/bunq/sdk_python/releases/tag/0.12.4)
