@@ -12060,6 +12060,7 @@ class MasterCardAction(core.BunqModel):
     """
     MasterCard transaction view.
     
+    :type _id_: int
     :type _monetary_account_id: int
     :type _card_id: int
     :type _amount_local: object_.Amount
@@ -12093,6 +12094,7 @@ class MasterCardAction(core.BunqModel):
     _OBJECT_TYPE = "MasterCardAction"
 
     def __init__(self):
+        self._id_ = None
         self._monetary_account_id = None
         self._card_id = None
         self._amount_local = None
@@ -12165,6 +12167,14 @@ class MasterCardAction(core.BunqModel):
         return BunqResponseMasterCardActionList.cast_from_bunq_response(
             cls._from_json_list(response_raw, cls._OBJECT_TYPE)
         )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
 
     @property
     def monetary_account_id(self):
@@ -12354,6 +12364,9 @@ class MasterCardAction(core.BunqModel):
         """
         :rtype: bool
         """
+
+        if self._id_ is not None:
+            return False
 
         if self._monetary_account_id is not None:
             return False
