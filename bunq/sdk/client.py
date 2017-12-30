@@ -224,7 +224,7 @@ class ApiClient(object):
         if response.status_code != self._STATUS_CODE_OK:
             raise ExceptionFactory.create_exception_for_response(
                 response.status_code,
-                self._fetch_error_messages(response),
+                self._fetch_all_error_message(response),
                 self._fetch_response_id(response)
             )
 
@@ -238,7 +238,7 @@ class ApiClient(object):
 
         return BunqResponseRaw(response.content, response.headers)
 
-    def _fetch_error_messages(self, response):
+    def _fetch_all_error_message(self, response):
         """
         :type response: requests.Response
 

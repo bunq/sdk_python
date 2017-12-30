@@ -23,8 +23,8 @@ class ExceptionFactory:
     _FORMAT_RESPONSE_CODE_LINE = 'HTTP Response Code: {}'
     _FORMAT_RESPONSE_ID_LINE = 'The response id to help bunq debug: {}'
     _FORMAT_ERROR_MESSAGE_LINE = 'Error message: {}'
-    _GLUE_ERROR_MESSAGES_NEW_LINE = '\n'
-    _GLUE_ERROR_MESSAGES_STRING_EMPTY = ''
+    _GLUE_ERROR_MESSAGE_NEW_LINE = '\n'
+    _GLUE_ERROR_MESSAGE_STRING_EMPTY = ''
 
     @classmethod
     def create_exception_for_response(
@@ -111,19 +111,19 @@ class ExceptionFactory:
             .format(response_code)
         line_response_id = cls._FORMAT_RESPONSE_ID_LINE.format(response_id)
         line_error_message = cls._FORMAT_ERROR_MESSAGE_LINE.format(
-            cls._GLUE_ERROR_MESSAGES_STRING_EMPTY.join(messages)
+            cls._GLUE_ERROR_MESSAGE_STRING_EMPTY.join(messages)
         )
 
-        return cls._glue_messages(
+        return cls._glue_all_error_message(
             [line_response_code, line_response_id, line_error_message]
         )
 
     @classmethod
-    def _glue_messages(cls, messages):
+    def _glue_all_error_message(cls, messages):
         """
         :type messages: list[str]
 
         :rtype: str
         """
 
-        return cls._GLUE_ERROR_MESSAGES_NEW_LINE.join(messages)
+        return cls._GLUE_ERROR_MESSAGE_NEW_LINE.join(messages)
