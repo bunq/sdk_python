@@ -1,4 +1,4 @@
-from bunq.sdk.exception import BadRequestException
+from bunq.sdk.exception import ApiException
 from bunq.sdk.model.generated.endpoint import UserPerson
 from tests.bunq_test import BunqSdkTestCase
 
@@ -15,15 +15,12 @@ class TestPagination(BunqSdkTestCase):
         """
         """
 
-        caught_exception = None
-
-        try:
+        with self.assertRaises(ApiException) as caught_exception:
             UserPerson.get(
                 self._get_api_context(),
                 self._INVALID_USER_PERSON_ID
             )
-        except BadRequestException as exception:
-            caught_exception = exception
 
         self.assertIsNotNone(caught_exception)
-        self.assertIsNotNone(caught_exception.response_id)
+        self.assertIsNotNone(caught_exception.exception)
+        self.assertIsNotNone(caught_exception.exception.response_id)
