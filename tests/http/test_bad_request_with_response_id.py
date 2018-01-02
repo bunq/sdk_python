@@ -21,6 +21,4 @@ class TestPagination(BunqSdkTestCase):
                 self._INVALID_USER_PERSON_ID
             )
 
-        self.assertIsNotNone(caught_exception)
-        self.assertIsNotNone(caught_exception.exception)
         self.assertIsNotNone(caught_exception.exception.response_id)
