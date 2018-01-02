@@ -34,9 +34,9 @@ class ExceptionFactory:
             response_id
     ):
         """
-        :type response_id: str
         :type response_code: int
         :type messages: list[str]
+        :type response_id: str
 
         :return: The exception according to the status code.
         :rtype:  ApiException
@@ -100,9 +100,9 @@ class ExceptionFactory:
     @classmethod
     def _generate_message_error(cls, response_code, messages, response_id):
         """
-        :type response_id: str
         :type response_code: int
         :type messages: list[str]
+        :type response_id: str
 
         :rtype: str
         """
