@@ -22,5 +22,4 @@ pull-request:
   labels:
     additional: true
     required:
-      - Reviewed by André
       - Can be merged
