@@ -16014,6 +16014,7 @@ class TokenQrRequestIdeal(core.BunqModel):
     It's very important to keep these points in mind when you are using the
     endpoint to make iDEAL payments from your application.
     
+    :type _id_: int
     :type _time_responded: str
     :type _time_expiry: str
     :type _monetary_account_id: int
@@ -16046,6 +16047,7 @@ class TokenQrRequestIdeal(core.BunqModel):
     _OBJECT_TYPE = "TokenQrRequestIdeal"
 
     def __init__(self):
+        self._id_ = None
         self._time_responded = None
         self._time_expiry = None
         self._monetary_account_id = None
@@ -16091,6 +16093,14 @@ class TokenQrRequestIdeal(core.BunqModel):
         return BunqResponseTokenQrRequestIdeal.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE)
         )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
 
     @property
     def time_responded(self):
@@ -16256,6 +16266,9 @@ class TokenQrRequestIdeal(core.BunqModel):
         """
         :rtype: bool
         """
+
+        if self._id_ is not None:
+            return False
 
         if self._time_responded is not None:
             return False
