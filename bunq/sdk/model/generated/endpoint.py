@@ -724,8 +724,6 @@ class ChatConversationSupportExternal(core.BunqModel):
     :type _last_message: ChatMessage
     """
 
-    # Object type.
-
     def __init__(self):
         self._id_ = None
         self._created = None
@@ -925,8 +923,6 @@ class ChatMessageAnnouncement(core.BunqModel):
     :type _creator: object_.LabelUser
     :type _content: object_.ChatMessageContent
     """
-
-    # Object type.
 
     def __init__(self):
         self._id_ = None
@@ -3777,6 +3773,7 @@ class RequestResponse(core.BunqModel):
     FIELD_ADDRESS_BILLING = "address_billing"
 
     # Object type.
+    _OBJECT_TYPE_PUT = "RequestResponse"
     _OBJECT_TYPE_GET = "RequestResponse"
 
     def __init__(self):
@@ -3818,7 +3815,7 @@ class RequestResponse(core.BunqModel):
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseInt
+        :rtype: BunqResponseRequestResponse
         """
 
         if custom_headers is None:
@@ -3829,8 +3826,8 @@ class RequestResponse(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(user_id, monetary_account_id, request_response_id)
         response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
+        return BunqResponseRequestResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
         )
 
     @classmethod
@@ -4196,7 +4193,6 @@ class SchedulePaymentBatch(core.BunqModel):
     FIELD_PAYMENTS = "payments"
     FIELD_SCHEDULE = "schedule"
 
-    # Object type.
 
     def __init__(self):
         self._payments = None
@@ -5610,8 +5606,6 @@ class ChatMessageStatus(core.BunqModel):
     :type _content: object_.ChatMessageContent
     """
 
-    # Object type.
-
     def __init__(self):
         self._id_ = None
         self._created = None
@@ -5718,8 +5712,6 @@ class ChatMessageUser(core.BunqModel):
     :type _displayed_sender: object_.LabelUser
     :type _content: object_.ChatMessageContent
     """
-
-    # Object type.
 
     def __init__(self):
         self._id_ = None
@@ -5836,8 +5828,6 @@ class ChatConversationReference(core.BunqModel):
     :type _updated: str
     """
 
-    # Object type.
-
     def __init__(self):
         self._id_ = None
         self._created = None
@@ -5910,7 +5900,6 @@ class ChatMessageAttachment(core.BunqModel):
     FIELD_CLIENT_MESSAGE_UUID = "client_message_uuid"
     FIELD_ATTACHMENT = "attachment"
 
-    # Object type.
 
     def __init__(self):
         self._id_ = None
@@ -5985,7 +5974,6 @@ class ChatMessageText(core.BunqModel):
     FIELD_CLIENT_MESSAGE_UUID = "client_message_uuid"
     FIELD_TEXT = "text"
 
-    # Object type.
 
     def __init__(self):
         self._id_ = None
@@ -6279,7 +6267,6 @@ class AttachmentMonetaryAccount(core.BunqModel):
     # Endpoint constants.
     _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/attachment"
 
-    # Object type.
 
     def __init__(self):
         self._attachment = None
@@ -6371,6 +6358,7 @@ class AttachmentPublic(core.BunqModel):
     _ENDPOINT_URL_READ = "attachment-public/{}"
 
     # Object type.
+    _OBJECT_TYPE_POST = "Uuid"
     _OBJECT_TYPE_GET = "AttachmentPublic"
 
     def __init__(self):
@@ -6393,7 +6381,7 @@ class AttachmentPublic(core.BunqModel):
         :type request_bytes: bytes
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseAttachmentPublic
+        :rtype: BunqResponseStr
         """
 
         if custom_headers is None:
@@ -6403,8 +6391,8 @@ class AttachmentPublic(core.BunqModel):
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseAttachmentPublic.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
         )
 
     @classmethod
@@ -7133,7 +7121,6 @@ class BunqMeTabEntry(core.BunqModel):
     FIELD_DESCRIPTION = "description"
     FIELD_REDIRECT_URL = "redirect_url"
 
-    # Object type.
 
     def __init__(self):
         self._uuid = None
@@ -7248,12 +7235,12 @@ class BunqMeTabResultInquiry(core.BunqModel):
     single payment made for that tab.
     
     :type _payment: Payment
+    :type _bunq_me_tab_id: int
     """
-
-    # Object type.
 
     def __init__(self):
         self._payment = None
+        self._bunq_me_tab_id = None
 
 
 
@@ -7265,12 +7252,23 @@ class BunqMeTabResultInquiry(core.BunqModel):
 
         return self._payment
 
+    @property
+    def bunq_me_tab_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._bunq_me_tab_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         if self._payment is not None:
+            return False
+
+        if self._bunq_me_tab_id is not None:
             return False
 
         return True
@@ -7572,7 +7570,6 @@ class CardReplace(core.BunqModel):
     FIELD_PIN_CODE = "pin_code"
     FIELD_SECOND_LINE = "second_line"
 
-    # Object type.
 
     def __init__(self):
         self._id_ = None
@@ -8878,6 +8875,8 @@ class TabUsageSingle(core.BunqModel):
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_usage_single_uuid, custom_headers=None):
         """
+        Cancel a specific TabUsageSingle.
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
@@ -9194,8 +9193,6 @@ class TabItem(core.BunqModel):
     :type _amount: object_.Amount
     """
 
-    # Object type.
-
     def __init__(self):
         self._id_ = None
         self._description = None
@@ -9441,6 +9438,8 @@ class TabUsageMultiple(core.BunqModel):
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_usage_multiple_uuid, custom_headers=None):
         """
+        Close a specific TabUsageMultiple.
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
@@ -9776,6 +9775,8 @@ class CertificatePinned(core.BunqModel):
     @classmethod
     def delete(cls, api_context, user_id, certificate_pinned_id, custom_headers=None):
         """
+        Remove the pinned certificate chain with the specific ID.
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type certificate_pinned_id: int
@@ -11131,11 +11132,13 @@ class ShareInviteBankAmountUsed(core.BunqModel):
     # Endpoint constants.
     _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/share-invite-bank-inquiry/{}/amount-used/{}"
 
-    # Object type.
 
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, share_invite_bank_inquiry_id, share_invite_bank_amount_used_id, custom_headers=None):
         """
+        Reset the available budget for a bank account share. To be called
+        without any ID at the end of the path.
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
@@ -11607,7 +11610,6 @@ class MonetaryAccountProfile(core.BunqModel):
     FIELD_PROFILE_FILL = "profile_fill"
     FIELD_PROFILE_DRAIN = "profile_drain"
 
-    # Object type.
 
     def __init__(self):
         self._profile_fill = None
@@ -11780,8 +11782,6 @@ class BunqMeFundraiserResult(core.BunqModel):
     :type _payments: list[Payment]
     """
 
-    # Object type.
-
     def __init__(self):
         self._id_ = None
         self._created = None
@@ -11880,7 +11880,6 @@ class BunqMeFundraiserProfile(core.BunqModel):
     # Field constants.
     FIELD_POINTER = "pointer"
 
-    # Object type.
 
     def __init__(self):
         self._color = None
@@ -11996,8 +11995,6 @@ class BunqMeTabResultResponse(core.BunqModel):
     
     :type _payment: Payment
     """
-
-    # Object type.
 
     def __init__(self):
         self._payment = None
@@ -15518,11 +15515,12 @@ class Session(core.BunqModel):
     # Endpoint constants.
     _ENDPOINT_URL_DELETE = "session/{}"
 
-    # Object type.
 
     @classmethod
     def delete(cls, api_context, session_id, custom_headers=None):
         """
+        Deletes the current session.
+        
         :type api_context: context.ApiContext
         :type session_id: int
         :type custom_headers: dict[str, str]|None
@@ -15573,7 +15571,6 @@ class TabItemShopBatch(core.BunqModel):
     # Field constants.
     FIELD_TAB_ITEMS = "tab_items"
 
-    # Object type.
 
     def __init__(self):
         self._tab_items = None
@@ -15741,6 +15738,8 @@ class TabItemShop(core.BunqModel):
     @classmethod
     def delete(cls, api_context, user_id, monetary_account_id, cash_register_id, tab_uuid, tab_item_shop_id, custom_headers=None):
         """
+        Delete a specific TabItem from a Tab.
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
@@ -16572,21 +16571,21 @@ class BunqResponseRequestInquiryList(client.BunqResponse):
         return super().value
 
     
-class BunqResponseRequestResponseList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[RequestResponse]
-        """
- 
-        return super().value
-
-    
 class BunqResponseRequestResponse(client.BunqResponse):
     @property
     def value(self):
         """
         :rtype: RequestResponse
+        """
+ 
+        return super().value
+
+    
+class BunqResponseRequestResponseList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RequestResponse]
         """
  
         return super().value
@@ -16732,6 +16731,16 @@ class BunqResponseBytes(client.BunqResponse):
         return super().value
 
     
+class BunqResponseStr(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: str
+        """
+ 
+        return super().value
+
+    
 class BunqResponseAttachmentPublic(client.BunqResponse):
     @property
     def value(self):
@@ -16757,16 +16766,6 @@ class BunqResponseTabAttachmentTab(client.BunqResponse):
     def value(self):
         """
         :rtype: TabAttachmentTab
-        """
- 
-        return super().value
-
-    
-class BunqResponseStr(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: str
         """
  
         return super().value
