@@ -1052,7 +1052,6 @@ class CardDebit(core.BunqModel):
     # Field constants.
     FIELD_SECOND_LINE = "second_line"
     FIELD_NAME_ON_CARD = "name_on_card"
-    FIELD_PIN_CODE = "pin_code"
     FIELD_ALIAS = "alias"
     FIELD_TYPE = "type"
     FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
@@ -12058,6 +12057,7 @@ class MasterCardAction(core.BunqModel):
     :type _applied_limit: str
     :type _allow_chat: bool
     :type _eligible_whitelist_id: int
+    :type _secure_code_id: int
     """
 
     # Endpoint constants.
@@ -12092,6 +12092,7 @@ class MasterCardAction(core.BunqModel):
         self._applied_limit = None
         self._allow_chat = None
         self._eligible_whitelist_id = None
+        self._secure_code_id = None
 
     @classmethod
     def get(cls, api_context, user_id, monetary_account_id, master_card_action_id, custom_headers=None):
@@ -12334,6 +12335,14 @@ class MasterCardAction(core.BunqModel):
 
         return self._eligible_whitelist_id
 
+    @property
+    def secure_code_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._secure_code_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -12409,6 +12418,9 @@ class MasterCardAction(core.BunqModel):
             return False
 
         if self._eligible_whitelist_id is not None:
+            return False
+
+        if self._secure_code_id is not None:
             return False
 
         return True
@@ -13367,6 +13379,8 @@ class UserPerson(core.BunqModel):
     FIELD_SUB_STATUS = "sub_status"
     FIELD_LEGAL_GUARDIAN_ALIAS = "legal_guardian_alias"
     FIELD_SESSION_TIMEOUT = "session_timeout"
+    FIELD_CARD_IDS = "card_ids"
+    FIELD_CARD_LIMITS = "card_limits"
     FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
     FIELD_COUNTER_BANK_IBAN = "counter_bank_iban"
     FIELD_NOTIFICATION_FILTERS = "notification_filters"
@@ -13845,6 +13859,8 @@ class UserCompany(core.BunqModel):
     :type _status: str
     :type _sub_status: str
     :type _session_timeout: int
+    :type _card_ids: list[object_.BunqId]
+    :type _card_limits: list[object_.CardLimit]
     :type _daily_limit_without_confirmation_login: object_.Amount
     :type _notification_filters: list[object_.NotificationFilter]
     :type _customer: Customer
@@ -13902,6 +13918,8 @@ class UserCompany(core.BunqModel):
         self._status = None
         self._sub_status = None
         self._session_timeout = None
+        self._card_ids = None
+        self._card_limits = None
         self._daily_limit_without_confirmation_login = None
         self._notification_filters = None
         self._customer = None
@@ -14149,6 +14167,22 @@ class UserCompany(core.BunqModel):
         return self._session_timeout
 
     @property
+    def card_ids(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._card_ids
+
+    @property
+    def card_limits(self):
+        """
+        :rtype: list[object_.CardLimit]
+        """
+
+        return self._card_limits
+
+    @property
     def daily_limit_without_confirmation_login(self):
         """
         :rtype: object_.Amount
@@ -14263,6 +14297,12 @@ class UserCompany(core.BunqModel):
             return False
 
         if self._session_timeout is not None:
+            return False
+
+        if self._card_ids is not None:
+            return False
+
+        if self._card_limits is not None:
             return False
 
         if self._daily_limit_without_confirmation_login is not None:
@@ -16310,6 +16350,65 @@ class TokenQrRequestIdeal(core.BunqModel):
         """
 
         return converter.json_to_class(TokenQrRequestIdeal, json_str)
+
+
+class TokenQrRequestSofort(core.BunqModel):
+    """
+    Using this call you can create a SOFORT Request assigned to your User by
+    providing the Token of the request.
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/token-qr-request-sofort"
+
+    # Field constants.
+    FIELD_TOKEN = "token"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "RequestResponse"
+
+    @classmethod
+    def create(cls, api_context, request_map, user_id, custom_headers=None):
+        """
+        Create a request from an SOFORT transaction.
+        
+        :type api_context: context.ApiContext
+        :type request_map: dict[str, object]
+        :type user_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTokenQrRequestSofort
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(api_context)
+        request_bytes = converter.class_to_json(request_map).encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(user_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseTokenQrRequestSofort.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
+        )
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TokenQrRequestSofort
+        """
+
+        return converter.json_to_class(TokenQrRequestSofort, json_str)
     
 class BunqResponseInvoiceList(client.BunqResponse):
     @property
@@ -17356,6 +17455,16 @@ class BunqResponseTokenQrRequestIdeal(client.BunqResponse):
     def value(self):
         """
         :rtype: TokenQrRequestIdeal
+        """
+ 
+        return super().value
+
+    
+class BunqResponseTokenQrRequestSofort(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TokenQrRequestSofort
         """
  
         return super().value
