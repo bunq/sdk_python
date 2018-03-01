@@ -6,6 +6,7 @@ from bunq.sdk.model.generated.endpoint import CardDebit
 from bunq.sdk.model.generated.endpoint import CardName
 from bunq.sdk.model.generated.endpoint import User
 from bunq.sdk.model.generated.object_ import Pointer
+from bunq.sdk.model.generated.object_ import CardPinAssignment
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
@@ -26,6 +27,8 @@ class TestCardDebit(BunqSdkTestCase):
         cls._STRING_EMPTY = ''
         cls._USER_ID = Config.get_user_id()
         cls._API_CONTEXT = cls._get_api_context()
+        cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
+        cls._PIN_CODE_ASSIGNMENT_TYPE_PRIMARY = 'PRIMARY'
 
     def test_order_debit_card(self):
         """
@@ -36,10 +39,16 @@ class TestCardDebit(BunqSdkTestCase):
 
         second_line = self.second_line_random
 
+        pin_code_assignment = CardPinAssignment(
+            self._PIN_CODE_ASSIGNMENT_TYPE_PRIMARY,
+            self._CARD_PIN_CODE,
+            self._MONETARY_ACCOUNT_ID
+        )
+
         card_debit_map = {
             CardDebit.FIELD_NAME_ON_CARD: self.card_name_allowed,
             CardDebit.FIELD_ALIAS: self.alias_first,
-            CardDebit.FIELD_PIN_CODE: self._CARD_PIN_CODE,
+            CardDebit.FIELD_PIN_CODE_ASSIGNMENT: [pin_code_assignment],
             CardDebit.FIELD_SECOND_LINE: second_line
         }
         card_debit = CardDebit.create(self._API_CONTEXT, card_debit_map,
