@@ -906,7 +906,7 @@ class CardPinAssignment(core.BunqModel):
     """
     :type type_: str
     :type pin_code: str
-    :type monetary_account_id: str
+    :type monetary_account_id: int
     """
 
     def __init__(self, type_, pin_code, monetary_account_id):

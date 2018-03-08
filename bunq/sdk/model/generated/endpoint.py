@@ -2664,6 +2664,7 @@ class IdealMerchantTransaction(core.BunqModel):
     # Field constants.
     FIELD_AMOUNT_REQUESTED = "amount_requested"
     FIELD_ISSUER = "issuer"
+    FIELD_CALLBACK_TYPE = "callback_type"
 
     # Object type.
     _OBJECT_TYPE_GET = "IdealMerchantTransaction"
