@@ -906,17 +906,19 @@ class CardPinAssignment(core.BunqModel):
     """
     :type type_: str
     :type pin_code: str
-    :type monetary_account_id: str
+    :type monetary_account_id: int
     """
 
-    def __init__(self, type_):
+    def __init__(self, type_, pin_code, monetary_account_id):
         """
         :type type_: str
+        :type pin_code: str
+        :type monetary_account_id: int
         """
 
         self.type_ = type_
-        self.pin_code = None
-        self.monetary_account_id = None
+        self.pin_code = pin_code
+        self.monetary_account_id = monetary_account_id
 
 
     def is_all_field_none(self):
