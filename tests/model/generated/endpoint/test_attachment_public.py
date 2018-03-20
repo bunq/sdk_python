@@ -1,4 +1,5 @@
 from bunq.sdk.client import ApiClient
+from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import AttachmentPublic
 from bunq.sdk.model.generated.endpoint import AttachmentPublicContent
 from tests.bunq_test import BunqSdkTestCase
@@ -20,7 +21,8 @@ class TestAttachmentPublic(BunqSdkTestCase):
         cls._CONTENT_TYPE = Config.get_attachment_content_type()
         cls._ATTACHMENT_DESCRIPTION = Config.get_attachment_description()
         cls._ATTACHMENT_PATH_IN = Config.get_attachment_path_in()
-        cls._API_CONTEXT = cls._get_api_context()
+
+        BunqContext.load_api_context(cls._get_api_context())
 
     def test_file_upload_and_retrieval(self):
         """
@@ -35,14 +37,11 @@ class TestAttachmentPublic(BunqSdkTestCase):
                 self._ATTACHMENT_DESCRIPTION,
         }
 
-        attachment_uuid = AttachmentPublic.create(self._API_CONTEXT,
-                                                  self.attachment_contents,
+        attachment_uuid = AttachmentPublic.create(self.attachment_contents,
                                                   custom_headers).value
 
         contents_from_response = AttachmentPublicContent.list(
-            self._API_CONTEXT,
-            attachment_uuid
-        ).value
+            attachment_uuid).value
 
         self.assertEqual(self.attachment_contents, contents_from_response)
 

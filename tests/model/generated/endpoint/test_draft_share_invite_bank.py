@@ -1,9 +1,10 @@
 from datetime import datetime
 from datetime import timedelta
 
+from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import DraftShareInviteBank
 from bunq.sdk.model.generated.endpoint import DraftShareInviteBankQrCodeContent
-from bunq.sdk.model.generated.object_ import DraftShareInviteBankEntry
+from bunq.sdk.model.generated.object_ import DraftShareInviteEntry
 from bunq.sdk.model.generated.object_ import ShareDetail
 from bunq.sdk.model.generated.object_ import ShareDetailReadOnly
 from tests.bunq_test import BunqSdkTestCase
@@ -23,7 +24,7 @@ class TestDraftShareInvite(BunqSdkTestCase):
         cls._WRITE_BYTES = 'wb'
         cls._EXPIRATION_ADDED_TIME = 1
         cls._USER_ID = Config.get_user_id()
-        cls._API_CONTEXT = cls._get_api_context()
+        BunqContext.load_api_context(cls._get_api_context())
 
     def test_draft_share_invite_bank(self):
         """
@@ -34,20 +35,15 @@ class TestDraftShareInvite(BunqSdkTestCase):
         without errors
         """
 
-        read_only = ShareDetailReadOnly(True, True, True)
-        share_detail = ShareDetail()
-        share_detail.read_only = read_only
-        share_settings = DraftShareInviteBankEntry(share_detail)
-        draft_map = {
-            DraftShareInviteBank.FIELD_DRAFT_SHARE_SETTINGS: share_settings,
-            DraftShareInviteBank.FIELD_EXPIRATION: self.expiration_date
-        }
-        draft_id = DraftShareInviteBank.create(self._API_CONTEXT, draft_map,
-                                               self._USER_ID).value
+        share_detail = ShareDetail(
+            read_only=ShareDetailReadOnly(True, True, True)
+        )
+        share_settings = DraftShareInviteEntry(share_detail)
 
-        connect_qr = DraftShareInviteBankQrCodeContent.list(self._API_CONTEXT,
-                                                            self._USER_ID,
-                                                            draft_id).value
+        draft_id = DraftShareInviteBank.create(self.expiration_date,
+                                               share_settings).value
+
+        connect_qr = DraftShareInviteBankQrCodeContent.list(draft_id).value
 
         with open(self._OUT_PUT_FILE_PATH, self._WRITE_BYTES) as f:
             f.write(connect_qr)

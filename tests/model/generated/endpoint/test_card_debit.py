@@ -1,12 +1,13 @@
 import random
 import string
 
+from bunq.sdk.context import BunqContext
+from bunq.sdk.exception import BunqException
 from bunq.sdk.model.generated.endpoint import Card
 from bunq.sdk.model.generated.endpoint import CardDebit
 from bunq.sdk.model.generated.endpoint import CardName
-from bunq.sdk.model.generated.endpoint import User
-from bunq.sdk.model.generated.object_ import Pointer
 from bunq.sdk.model.generated.object_ import CardPinAssignment
+from bunq.sdk.model.generated.object_ import Pointer
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
@@ -26,9 +27,10 @@ class TestCardDebit(BunqSdkTestCase):
         cls._SECOND_LINE_LENGTH_MAXIMUM = 20
         cls._STRING_EMPTY = ''
         cls._USER_ID = Config.get_user_id()
-        cls._API_CONTEXT = cls._get_api_context()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
         cls._PIN_CODE_ASSIGNMENT_TYPE_PRIMARY = 'PRIMARY'
+
+        BunqContext.load_api_context(cls._get_api_context())
 
     def test_order_debit_card(self):
         """
@@ -45,15 +47,10 @@ class TestCardDebit(BunqSdkTestCase):
             self._MONETARY_ACCOUNT_ID
         )
 
-        card_debit_map = {
-            CardDebit.FIELD_NAME_ON_CARD: self.card_name_allowed,
-            CardDebit.FIELD_ALIAS: self.alias_first,
-            CardDebit.FIELD_PIN_CODE_ASSIGNMENT: [pin_code_assignment],
-            CardDebit.FIELD_SECOND_LINE: second_line
-        }
-        card_debit = CardDebit.create(self._API_CONTEXT, card_debit_map,
-                                      self._USER_ID).value
-        card = Card.get(self._API_CONTEXT, self._USER_ID, card_debit.id_).value
+        card_debit = CardDebit.create(second_line, self.card_name_allowed,
+                                      self.alias_first, 'MAESTRO',
+                                      [pin_code_assignment]).value
+        card = Card.get(card_debit.id_).value
 
         self.assertEqual(self.card_name_allowed, card.name_on_card)
         self.assertEqual(second_line, card.second_line)
@@ -65,8 +62,15 @@ class TestCardDebit(BunqSdkTestCase):
         :rtype: Pointer
         """
 
-        return User.list(self._API_CONTEXT).value[self._FIRST_INDEX] \
-            .UserCompany.alias[self._FIRST_INDEX]
+        if BunqContext.user_context().is_only_user_company_set():
+            return BunqContext.user_context().user_company.alias[
+                self._FIRST_INDEX]
+
+        if BunqContext.user_context().is_only_user_person_set():
+            return BunqContext.user_context().user_person.alias[
+                self._FIRST_INDEX]
+
+        raise BunqException('Could not determine user alias.')
 
     @property
     def card_name_allowed(self):
@@ -74,8 +78,9 @@ class TestCardDebit(BunqSdkTestCase):
         :rtype: str
         """
 
-        return CardName.list(self._API_CONTEXT, self._USER_ID).value[
-            self._FIRST_INDEX].possible_card_name_array[self._FIRST_INDEX]
+        return \
+            CardName.list().value[self._FIRST_INDEX].possible_card_name_array[
+                self._FIRST_INDEX]
 
     @property
     def second_line_random(self):
