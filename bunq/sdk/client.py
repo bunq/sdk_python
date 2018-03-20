@@ -284,9 +284,7 @@ class ApiClient(object):
         if self.HEADER_RESPONSE_ID_LOWER_CASED in headers:
             return headers[self.HEADER_RESPONSE_ID_LOWER_CASED]
 
-        return exception.BunqException(
-            self._ERROR_COULD_NOT_DETERMINE_RESPONSE_ID_HEADER
-        )
+        return self._ERROR_COULD_NOT_DETERMINE_RESPONSE_ID_HEADER;
 
     def put(self, uri_relative, request_bytes, custom_headers):
         """
