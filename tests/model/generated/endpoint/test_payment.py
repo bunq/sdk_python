@@ -1,3 +1,4 @@
+from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import ChatMessageText
 from bunq.sdk.model.generated.endpoint import Payment
 from bunq.sdk.model.generated.endpoint import PaymentChat
@@ -24,7 +25,8 @@ class TestPayment(BunqSdkTestCase):
         cls._COUNTER_PARTY_OTHER_USER = Config.get_pointer_counter_party_other()
         cls._COUNTER_PARTY_SAME_USER = Config.get_pointer_counter_party_self()
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
-        cls._API_CONTEXT = cls._get_api_context()
+
+        BunqContext.load_api_context(cls._get_api_context())
 
     def test_payment_to_other_user(self):
         """
@@ -34,14 +36,11 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        request_map = {
-            Payment.FIELD_COUNTERPARTY_ALIAS: self._COUNTER_PARTY_OTHER_USER,
-            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_EUR,
-                                         self._PAYMENT_CURRENCY),
-            Payment.FIELD_DESCRIPTION: self._PAYMENT_DESCRIPTION,
-        }
-        Payment.create(self._API_CONTEXT, request_map, self._USER_ID,
-                       self._MONETARY_ACCOUNT_ID)
+        Payment.create(
+            Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
+            self._COUNTER_PARTY_OTHER_USER,
+            self._PAYMENT_DESCRIPTION
+        )
 
     def test_payment_to_other_account(self):
         """
@@ -51,14 +50,11 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        request_map = {
-            Payment.FIELD_COUNTERPARTY_ALIAS: self._COUNTER_PARTY_SAME_USER,
-            Payment.FIELD_DESCRIPTION: self._PAYMENT_DESCRIPTION,
-            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_EUR,
-                                         self._PAYMENT_CURRENCY),
-        }
-        Payment.create(self._API_CONTEXT, request_map, self._USER_ID,
-                       self._MONETARY_ACCOUNT_ID)
+        Payment.create(
+            Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
+            self._COUNTER_PARTY_SAME_USER,
+            self._PAYMENT_DESCRIPTION
+        )
 
     def test_payment_chat(self):
         """
@@ -68,30 +64,12 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        request_map = {
-            Payment.FIELD_COUNTERPARTY_ALIAS: self._COUNTER_PARTY_OTHER_USER,
-            Payment.FIELD_AMOUNT: Amount(self._PAYMENT_AMOUNT_EUR,
-                                         self._PAYMENT_CURRENCY),
-            Payment.FIELD_DESCRIPTION: self._PAYMENT_DESCRIPTION,
-        }
         payment_id = Payment.create(
-            self._API_CONTEXT,
-            request_map,
-            self._USER_ID,
-            self._MONETARY_ACCOUNT_ID
+            Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
+            self._COUNTER_PARTY_OTHER_USER,
+            self._PAYMENT_DESCRIPTION
         ).value
 
-        chat_map = {}
-        chat_id = PaymentChat.create(
-            self._API_CONTEXT,
-            chat_map,
-            self._USER_ID,
-            self._MONETARY_ACCOUNT_ID,
-            payment_id
-        ).value
+        chat_id = PaymentChat.create(payment_id).value
 
-        message_map = {
-            ChatMessageText.FIELD_TEXT: self._PAYMENT_CHAT_TEXT_MESSAGE,
-        }
-        ChatMessageText.create(self._API_CONTEXT, message_map, self._USER_ID,
-                               chat_id)
+        ChatMessageText.create(chat_id, self._PAYMENT_CHAT_TEXT_MESSAGE)

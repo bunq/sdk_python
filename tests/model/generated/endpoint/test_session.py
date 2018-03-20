@@ -1,5 +1,6 @@
 import time
 
+from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import Session
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
@@ -17,7 +18,7 @@ class TestSession(BunqSdkTestCase):
         cls._API_KEY = Config.get_api_key()
         cls._BUNQ_CONFIG_FILE = "bunq-test.conf"
         cls._DEVICE_DESCRIPTION = 'Python test device'
-        cls._API_CONTEXT = cls._get_api_context()
+        BunqContext.load_api_context(cls._get_api_context())
 
     def test_session_delete(self):
         """
@@ -32,7 +33,7 @@ class TestSession(BunqSdkTestCase):
             Session endpoint per second.
         """
 
-        Session.delete(self._API_CONTEXT, self._SESSION_ID)
+        Session.delete(self._SESSION_ID)
         time.sleep(2)
-        self._API_CONTEXT.reset_session()
-        self._API_CONTEXT.save(self._BUNQ_CONFIG_FILE)
+        BunqContext.api_context().reset_session()
+        BunqContext.api_context().save(self._BUNQ_CONFIG_FILE)

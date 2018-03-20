@@ -1,4 +1,5 @@
 from bunq.sdk import client
+from bunq.sdk.context import BunqContext
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
@@ -18,13 +19,14 @@ class TestPaginationScenario(BunqSdkTestCase):
         cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
         cls._COUNTER_PARTY_ALIAS_OTHER = \
             Config.get_pointer_counter_party_other()
-        cls._API_CONTEXT = cls._get_api_context()
         cls._PAYMENT_LISTING_PAGE_SIZE = 2
         cls._PAYMENT_REQUIRED_COUNT_MINIMUM = cls._PAYMENT_LISTING_PAGE_SIZE * 2
         cls._NUMBER_ZERO = 0
         cls._PAYMENT_AMOUNT_EUR = '0.01'
         cls._PAYMENT_CURRENCY = 'EUR'
         cls._PAYMENT_DESCRIPTION = 'Python test Payment'
+
+        BunqContext.load_api_context(cls._get_api_context())
 
     def test_api_scenario_payment_listing_with_pagination(self):
         self._ensure_enough_payments()
@@ -65,7 +67,7 @@ class TestPaginationScenario(BunqSdkTestCase):
         """
 
         return self._PAYMENT_REQUIRED_COUNT_MINIMUM - \
-            len(self._payments_required())
+               len(self._payments_required())
 
     def _payments_required(self):
         """
@@ -84,22 +86,14 @@ class TestPaginationScenario(BunqSdkTestCase):
         :rtype BunqResponse[list[Payment]]
         """
 
-        return endpoint.Payment.list(self._API_CONTEXT, self._USER_ID,
-                                     self._MONETARY_ACCOUNT_ID, params)
+        return endpoint.Payment.list(params=params)
 
     def _create_payment(self):
         """
         :rtype: None
         """
 
-        request_map = {
-            endpoint.Payment.FIELD_AMOUNT:
-                object_.Amount(self._PAYMENT_AMOUNT_EUR,
-                               self._PAYMENT_CURRENCY),
-            endpoint.Payment.FIELD_DESCRIPTION: self._PAYMENT_DESCRIPTION,
-            endpoint.Payment.FIELD_COUNTERPARTY_ALIAS:
-                self._COUNTER_PARTY_ALIAS_OTHER,
-        }
-
-        endpoint.Payment.create(self._API_CONTEXT, request_map,
-                                self._USER_ID, self._MONETARY_ACCOUNT_ID)
+        endpoint.Payment.create(object_.Amount(self._PAYMENT_AMOUNT_EUR,
+                                               self._PAYMENT_CURRENCY),
+                                self._COUNTER_PARTY_ALIAS_OTHER,
+                                self._PAYMENT_DESCRIPTION)

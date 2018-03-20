@@ -1,6 +1,7 @@
 from bunq.sdk.exception import ApiException
-from bunq.sdk.model.generated.endpoint import UserPerson
+from bunq.sdk.model.generated.endpoint import MonetaryAccountBank
 from tests.bunq_test import BunqSdkTestCase
+from bunq.sdk.context import BunqContext
 
 
 class TestPagination(BunqSdkTestCase):
@@ -9,16 +10,13 @@ class TestPagination(BunqSdkTestCase):
     successfully.
     """
 
-    _INVALID_USER_PERSON_ID = 0
+    _INVALID_MONETARY_ACCOUNT_ID = 0
 
     def test_bad_request_with_response_id(self):
         """
         """
+        BunqContext.load_api_context(self._get_api_context())
 
         with self.assertRaises(ApiException) as caught_exception:
-            UserPerson.get(
-                self._get_api_context(),
-                self._INVALID_USER_PERSON_ID
-            )
-
+            MonetaryAccountBank.get(self._INVALID_MONETARY_ACCOUNT_ID)
         self.assertIsNotNone(caught_exception.exception.response_id)

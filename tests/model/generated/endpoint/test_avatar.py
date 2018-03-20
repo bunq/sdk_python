@@ -36,21 +36,15 @@ class TestAvatar(BunqSdkTestCase):
             ApiClient.HEADER_CONTENT_TYPE: self._CONTENT_TYPE
         }
         attachment_public_uuid = AttachmentPublic.create(
-            self._API_CONTEXT,
-            self.attachment_contents,
-            custom_header
-        ).value
+            self.attachment_contents, custom_header).value
 
-        avatar_map = {
-            Avatar.FIELD_ATTACHMENT_PUBLIC_UUID: attachment_public_uuid
-        }
-        avatar_uuid = Avatar.create(self._API_CONTEXT, avatar_map).value
-        attachment_uuid_after = Avatar.get(self._API_CONTEXT, avatar_uuid) \
+        avatar_uuid = Avatar.create(attachment_public_uuid).value
+        attachment_uuid_after = Avatar.get(avatar_uuid) \
             .value.image[self._FIRST_INDEX].attachment_public_uuid
 
         file_contents_received = AttachmentPublicContent.list(
-            self._API_CONTEXT, attachment_uuid_after
-        ).value
+            attachment_uuid_after).value
+
         self.assertEqual(self.attachment_contents, file_contents_received)
 
     @property
