@@ -1,0 +1,25 @@
+autobranch:
+  pattern: 'bunq/sdk_python#{number}-{title}'
+  length: 100
+commit:
+  message:
+    patterns:
+      - '([A-Za-z0-9 ]+)\. (\(bunq\/sdk_python#[0-9]+\))'
+specification:
+  title:
+    minimum-length:
+      enabled: true
+      length: 8
+  body:
+    minimum-length:
+      enabled: true
+      length: 8
+    contains-url: true
+    contains-issue-number: true
+  template:
+    differs-from-body: true
+pull-request:
+  labels:
+    additional: true
+    required:
+      - Can be merged

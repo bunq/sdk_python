@@ -3,9 +3,11 @@ import datetime
 import aenum
 from Cryptodome.PublicKey import RSA
 
-from bunq.sdk.model import core
 from bunq.sdk import security
+from bunq.sdk.exception import BunqException
 from bunq.sdk.json import converter
+from bunq.sdk.model import core
+from bunq.sdk.model.device_server_internal import DeviceServerInternal
 from bunq.sdk.model.generated import endpoint
 
 
@@ -119,13 +121,11 @@ class ApiContext(object):
         :rtype: None
         """
 
-        endpoint.DeviceServer.create(
-            self,
-            {
-                endpoint.DeviceServer.FIELD_DESCRIPTION: device_description,
-                endpoint.DeviceServer.FIELD_SECRET: self.api_key,
-                endpoint.DeviceServer.FIELD_PERMITTED_IPS: permitted_ips,
-            }
+        DeviceServerInternal.create(
+            device_description,
+            self.api_key,
+            permitted_ips,
+            api_context=self
         )
 
     def _initialize_session(self):
@@ -136,8 +136,9 @@ class ApiContext(object):
         session_server = core.SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
+        user_id = session_server.get_referenced_object().id_
 
-        self._session_context = SessionContext(token, expiry_time)
+        self._session_context = SessionContext(token, expiry_time, user_id)
 
     @classmethod
     def _get_expiry_timestamp(cls, session_server):
@@ -377,9 +378,10 @@ class SessionContext(object):
     """
     :type _token: str
     :type _expiry_time: datetime.datetime
+    :type _user_id: int
     """
 
-    def __init__(self, token, expiry_time):
+    def __init__(self, token, expiry_time, user_id):
         """
         :type token: str
         :type expiry_time: datetime.datetime
@@ -387,6 +389,7 @@ class SessionContext(object):
 
         self._token = token
         self._expiry_time = expiry_time
+        self._user_id = user_id
 
     @property
     def token(self):
@@ -403,3 +406,146 @@ class SessionContext(object):
         """
 
         return self._expiry_time
+
+    @property
+    def user_id(self):
+        return self._user_id
+
+
+class UserContext(object):
+    _ERROR_UNEXPECTED_USER_INSTANCE = '"{}" is unexpected user instance.'
+    _ERROR_NO_ACTIVE_MONETARY_ACCOUNT_FOUND = \
+        'No active monetary account found.'
+    _STATUS_ACTIVE = 'ACTIVE'
+
+    def __init__(self, user_id):
+        """
+        :type user_id: int
+        """
+
+        self._user_id = user_id
+        self._user_person = None
+        self._user_company = None
+        self._primary_monetary_account = None
+
+        user_object = endpoint.User.list().value[0].get_referenced_object()
+        self._set_user(user_object)
+
+    def _set_user(self, user):
+        if isinstance(user, endpoint.UserPerson):
+            self._user_person = user
+
+        elif isinstance(user, endpoint.UserCompany):
+            self._user_company = user
+
+        else:
+            raise BunqException(
+                self._ERROR_UNEXPECTED_USER_INSTANCE.format(user.__class__))
+
+    def init_main_monetary_account(self):
+        all_monetary_account = endpoint.MonetaryAccountBank.list().value
+
+        for account in all_monetary_account:
+            if account.status == self._STATUS_ACTIVE:
+                self._primary_monetary_account = account
+
+                return
+
+        raise BunqException(self._ERROR_NO_ACTIVE_MONETARY_ACCOUNT_FOUND)
+
+    @property
+    def user_id(self):
+        return self._user_id
+
+    def is_only_user_person_set(self):
+        """
+        :rtype: bool
+        """
+
+        return self._user_person is not None and self._user_company is None
+
+    def is_only_user_company_set(self):
+        """
+        :rtype: bool
+        """
+
+        return self._user_company is not None and self._user_person is None
+
+    def is_both_user_type_set(self):
+        """
+        :rtype: bool
+        """
+
+        return self._user_company is not None and self._user_person is not None
+
+    @property
+    def user_company(self):
+        """
+        :rtype: endpoint.UserCompany
+        """
+
+        return self._user_company
+
+    @property
+    def user_person(self):
+        """
+        :rtype: endpoint.UserPerson
+        """
+
+        return self._user_person
+
+    @property
+    def primary_monetary_account(self):
+        """
+        :rtype: endpoint.MonetaryAccountBank
+        """
+
+        return self._primary_monetary_account
+
+
+class BunqContext(object):
+    _ERROR_CLASS_SHOULD_NOT_BE_INITIALIZED = \
+        'This class should not be instantiated'
+    _ERROR_API_CONTEXT_HAS_NOT_BEEN_LOADED = \
+        'ApiContext has not been loaded. Please load ApiContext in BunqContext'
+    _ERROR_USER_CONTEXT_HAS_NOT_BEEN_LOADED = \
+        'UserContext has not been loaded, please load this' \
+        ' by loading ApiContext.'
+
+    _api_context = None
+    _user_context = None
+
+    def __init__(self):
+        raise TypeError(self._ERROR_CLASS_SHOULD_NOT_BE_INITIALIZED)
+
+    @classmethod
+    def load_api_context(cls, api_context):
+        """
+        :type api_context: ApiContext
+        """
+
+        cls._api_context = api_context
+        cls._user_context = UserContext(api_context.session_context.user_id)
+        cls._user_context.init_main_monetary_account()
+
+    @classmethod
+    def api_context(cls):
+        """
+        :rtype: ApiContext
+        """
+
+        if cls._api_context is not None:
+            return cls._api_context
+
+        raise BunqException(cls._ERROR_API_CONTEXT_HAS_NOT_BEEN_LOADED)
+
+    @classmethod
+    def user_context(cls):
+        """
+        :rtype: UserContext
+        """
+
+        if cls._user_context is not None:
+            return cls._user_context
+
+        raise BunqException(cls._ERROR_USER_CONTEXT_HAS_NOT_BEEN_LOADED)

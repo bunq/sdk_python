@@ -15,6 +15,13 @@ class ApiClient(object):
     :type _api_context: bunq.sdk.context.ApiContext
     """
 
+    # Error constants
+    _ERROR_COULD_NOT_DETERMINE_RESPONSE_ID_HEADER = ('The response header'
+                                                     '"X-Bunq-Client-Response-'
+                                                     'Id" or "x-bunq-client-'
+                                                     'response-id" could not '
+                                                     'be found.')
+
     # Endpoints not requiring active session for the request to succeed.
     _URL_DEVICE_SERVER = 'device-server'
     _URI_INSTALLATION = 'installation'
@@ -39,6 +46,8 @@ class ApiClient(object):
     HEADER_GEOLOCATION = 'X-Bunq-Geolocation'
     HEADER_SIGNATURE = 'X-Bunq-Client-Signature'
     HEADER_AUTHENTICATION = 'X-Bunq-Client-Authentication'
+    HEADER_RESPONSE_ID_UPPER_CASED = 'X-Bunq-Client-Response-Id'
+    HEADER_RESPONSE_ID_LOWER_CASED = 'x-bunq-client-response-id'
 
     # Default header values
     _USER_AGENT_BUNQ = 'bunq-sdk-python/0.12.4'
@@ -215,7 +224,8 @@ class ApiClient(object):
         if response.status_code != self._STATUS_CODE_OK:
             raise ExceptionFactory.create_exception_for_response(
                 response.status_code,
-                self._fetch_error_messages(response)
+                self._fetch_all_error_message(response),
+                self._fetch_response_id(response)
             )
 
     @classmethod
@@ -228,7 +238,7 @@ class ApiClient(object):
 
         return BunqResponseRaw(response.content, response.headers)
 
-    def _fetch_error_messages(self, response):
+    def _fetch_all_error_message(self, response):
         """
         :type response: requests.Response
 
@@ -258,6 +268,23 @@ class ApiClient(object):
             error_descriptions.append(description)
 
         return error_descriptions
+
+    def _fetch_response_id(self, response):
+        """
+        :type response: requests.Response
+
+        :rtype: str
+        """
+
+        headers = response.headers
+
+        if self.HEADER_RESPONSE_ID_UPPER_CASED in headers:
+            return headers[self.HEADER_RESPONSE_ID_UPPER_CASED]
+
+        if self.HEADER_RESPONSE_ID_LOWER_CASED in headers:
+            return headers[self.HEADER_RESPONSE_ID_LOWER_CASED]
+
+        return self._ERROR_COULD_NOT_DETERMINE_RESPONSE_ID_HEADER;
 
     def put(self, uri_relative, request_bytes, custom_headers):
         """

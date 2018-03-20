@@ -1,5 +1,7 @@
 from bunq.sdk import client
 from bunq.sdk.json import converter
+from bunq.sdk.exception import BunqException
+from bunq.sdk import context
 
 
 class AnchoredObjectInterface:
@@ -134,6 +136,35 @@ class BunqModel(object):
 
         return client.BunqResponse(array_deserialized, response_raw.headers,
                                    pagination)
+
+    @classmethod
+    def _get_api_context(cls):
+        """
+        :rtype: context.ApiContext
+        """
+
+        return context.BunqContext.api_context()
+
+    @classmethod
+    def _determine_user_id(cls):
+        """
+        :rtype: int
+        """
+
+        return context.BunqContext.user_context().user_id
+
+    @classmethod
+    def _determine_monetary_account_id(cls, monetary_account_id=None):
+        """
+        :type monetary_account_id: int
+
+        :rtype: int
+        """
+
+        if monetary_account_id is None:
+            return context.BunqContext.user_context().primary_monetary_account.id_
+
+        return monetary_account_id
 
 
 class Id(BunqModel):
@@ -366,6 +397,9 @@ class SessionServer(BunqModel):
     # Field constants
     FIELD_SECRET = "secret"
 
+    # Error constants
+    _ERROR_ALL_FIELD_IS_NULL = 'All fields are null'
+
     def __init__(self):
         self._id_ = None
         self._token = None
@@ -442,3 +476,16 @@ class SessionServer(BunqModel):
             return False
 
         return True
+
+    def get_referenced_object(self):
+        """
+        :rtype: BunqModel
+        """
+
+        if self._user_person is not None:
+            return self._user_person
+
+        if self._user_company is not None:
+            return self._user_company
+
+        raise BunqException(self._ERROR_ALL_FIELD_IS_NULL)

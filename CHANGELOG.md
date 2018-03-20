@@ -1,5 +1,36 @@
 # Change Log
 
+## [0.13.0](https://github.com/bunq/sdk_python/tree/0.13.0) (2018-03-20)
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.4...HEAD)
+
+**Implemented enhancements:**
+
+- Add zappr integration for better quality control  [\#62](https://github.com/bunq/sdk_python/issues/62)
+- Add more information to template [\#60](https://github.com/bunq/sdk_python/issues/60)
+- Add response id to error messages from failed requests  [\#59](https://github.com/bunq/sdk_python/issues/59)
+
+**Fixed bugs:**
+
+- Token request ideal is missing id attribute in response. [\#67](https://github.com/bunq/sdk_python/issues/67)
+- Field ID is missing from MasterCardAction [\#54](https://github.com/bunq/sdk_python/issues/54)
+- TokenQrRequestIdeal returns the wrong type [\#53](https://github.com/bunq/sdk_python/issues/53)
+
+**Closed issues:**
+
+- bunq update 7  [\#75](https://github.com/bunq/sdk_python/issues/75)
+
+**Merged pull requests:**
+
+- Bunq update 7  [\#76](https://github.com/bunq/sdk_python/pull/76) ([OGKevin](https://github.com/OGKevin))
+- Regenerate code for release [\#74](https://github.com/bunq/sdk_python/pull/74) ([OGKevin](https://github.com/OGKevin))
+- Regenerated code to add object types. \(bunq/sdk\_python\#53\) [\#70](https://github.com/bunq/sdk_python/pull/70) ([OGKevin](https://github.com/OGKevin))
+- Bunq/sdk python\#67 add missing token qr id field [\#69](https://github.com/bunq/sdk_python/pull/69) ([OGKevin](https://github.com/OGKevin))
+- Added missing id field to mastercard action. \(bunq/sdk\_python\#54\) [\#66](https://github.com/bunq/sdk_python/pull/66) ([OGKevin](https://github.com/OGKevin))
+- Feature/bunq/sdk python\#59 add response id to request error [\#64](https://github.com/bunq/sdk_python/pull/64) ([OGKevin](https://github.com/OGKevin))
+- Configure Zappr [\#63](https://github.com/bunq/sdk_python/pull/63) ([OGKevin](https://github.com/OGKevin))
+- \(bunq/sdk\_python\#60\) improve issue and pr template [\#61](https://github.com/bunq/sdk_python/pull/61) ([OGKevin](https://github.com/OGKevin))
+
 ## [0.12.4](https://github.com/bunq/sdk_python/tree/0.12.4) (2017-12-21)
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.3...0.12.4)
 
@@ -10,6 +41,7 @@
 - Return base class from createFromJsonString [\#49](https://github.com/bunq/sdk_python/issues/49)
 - CHANGELOG.md is empty [\#46](https://github.com/bunq/sdk_python/issues/46)
 - Improve decoder to recognise child object  [\#42](https://github.com/bunq/sdk_python/issues/42)
+- Generated CHANGELOG.md :clap:. \(bunq/sdk\_python\#46\) [\#47](https://github.com/bunq/sdk_python/pull/47) ([OGKevin](https://github.com/OGKevin))
 
 **Closed issues:**
 
@@ -20,7 +52,6 @@
 - Feature/make sure headers are correctly cased bunq/sdk python\#51 [\#57](https://github.com/bunq/sdk_python/pull/57) ([OGKevin](https://github.com/OGKevin))
 - Feature/improve decoder bunq/sdk python\#42 [\#56](https://github.com/bunq/sdk_python/pull/56) ([OGKevin](https://github.com/OGKevin))
 - Renamed camelCase methods. \(bunq/sdk\_python\#45\) [\#48](https://github.com/bunq/sdk_python/pull/48) ([OGKevin](https://github.com/OGKevin))
-- Generated CHANGELOG.md :clap:. \(bunq/sdk\_python\#46\) [\#47](https://github.com/bunq/sdk_python/pull/47) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.12.3](https://github.com/bunq/sdk_python/tree/0.12.3) (2017-11-15)
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.2...0.12.3)
