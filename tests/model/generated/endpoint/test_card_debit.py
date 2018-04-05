@@ -50,7 +50,6 @@ class TestCardDebit(BunqSdkTestCase):
         self.assertEqual(second_line, card.second_line)
         self.assertEqual(card_debit.created, card.created)
 
-
     @property
     def card_name_allowed(self):
         """
