@@ -14,16 +14,6 @@ class TestAvatar(BunqSdkTestCase):
         AttachmentPublicContent
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls._FIRST_INDEX = 0
-        cls._PATH_ATTACHMENT = cls._get_directory_test_root() + '/assets/'
-        cls._READ_FILE_BYTES = 'rb'
-        cls._CONTENT_TYPE = Config.get_attachment_content_type()
-        cls._ATTACHMENT_DESCRIPTION = Config.get_attachment_description()
-        cls._ATTACHMENT_PATH_IN = Config.get_attachment_path_in()
-        cls._API_CONTEXT = cls._get_api_context()
-
     def test_avatar_creation(self):
         """
         Tests the creation of an avatar by uploading a picture via
@@ -54,5 +44,5 @@ class TestAvatar(BunqSdkTestCase):
         """
 
         with open(self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN,
-                  self._READ_FILE_BYTES) as f:
+                  self._READ_BYTES) as f:
             return f.read()

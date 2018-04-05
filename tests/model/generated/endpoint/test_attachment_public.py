@@ -1,9 +1,7 @@
 from bunq.sdk.client import ApiClient
-from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import AttachmentPublic
 from bunq.sdk.model.generated.endpoint import AttachmentPublicContent
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestAttachmentPublic(BunqSdkTestCase):
@@ -12,17 +10,6 @@ class TestAttachmentPublic(BunqSdkTestCase):
         AttachmentPublic
         AttachmentPublicContent
     """
-
-    @classmethod
-    def setUpClass(cls):
-        # config values
-        cls._PATH_ATTACHMENT = cls._get_directory_test_root() + '/assets/'
-        cls._READ_BYTES = "rb"
-        cls._CONTENT_TYPE = Config.get_attachment_content_type()
-        cls._ATTACHMENT_DESCRIPTION = Config.get_attachment_description()
-        cls._ATTACHMENT_PATH_IN = Config.get_attachment_path_in()
-
-        BunqContext.load_api_context(cls._get_api_context())
 
     def test_file_upload_and_retrieval(self):
         """
