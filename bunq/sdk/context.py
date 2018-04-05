@@ -428,8 +428,15 @@ class UserContext(object):
         self._user_company = None
         self._primary_monetary_account = None
 
-        user_object = endpoint.User.list().value[0].get_referenced_object()
-        self._set_user(user_object)
+        self._set_user(self.__get_user_object())
+
+    @staticmethod
+    def __get_user_object():
+        """
+        :rtype: core.BunqModel
+        """
+
+        return endpoint.User.list().value[0].get_referenced_object()
 
     def _set_user(self, user):
         if isinstance(user, endpoint.UserPerson):
@@ -477,6 +484,10 @@ class UserContext(object):
         """
 
         return self._user_company is not None and self._user_person is not None
+
+    def refresh_user_context(self):
+        self._set_user(self.__get_user_object())
+        self.init_main_monetary_account()
 
     @property
     def user_company(self):
