@@ -42,6 +42,8 @@ class TestAvatar(BunqSdkTestCase):
         :rtype: bytes
         """
 
-        with open(self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN,
-                  self._READ_BYTES) as f:
-            return f.read()
+        with open(
+                self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN,
+                self._READ_BYTES
+        ) as file:
+            return file.read()

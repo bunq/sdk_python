@@ -130,9 +130,13 @@ class BunqSdkTestCase(unittest.TestCase):
         :rtype: bytes
         """
 
-        with open(self._get_directory_test_root() + self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN,
-                  self._READ_BYTES) as f:
-            return f.read()
+        with open(
+                self._get_directory_test_root() +
+                self._PATH_ATTACHMENT +
+                self._ATTACHMENT_PATH_IN,
+                self._READ_BYTES
+        ) as file:
+            return file.read()
 
     @property
     def alias_first(self):
