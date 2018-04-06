@@ -486,6 +486,9 @@ class UserContext(object):
         return self._user_company is not None and self._user_person is not None
 
     def refresh_user_context(self):
+        """
+        """
+
         self._set_user(self.__get_user_object())
         self.init_main_monetary_account()
 
