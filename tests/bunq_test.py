@@ -14,7 +14,6 @@ class BunqSdkTestCase(unittest.TestCase):
     """
     :type _second_monetary_account: endpoint.MonetaryAccountBank
     :type _cash_register: endpoint.CashRegister
-
     """
 
     # Config values
