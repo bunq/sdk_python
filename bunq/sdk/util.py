@@ -3,9 +3,16 @@ import socket
 
 import requests
 
+from bunq.sdk.client import ApiClient
 from bunq.sdk.context import ApiContext, ApiEnvironmentType
 from bunq.sdk.exception import BunqException
 from bunq.sdk.model.generated import endpoint
+
+__UNIQUE_REQUEST_ID = "uniqueness-is-required"
+__FIELD_API_KEY = "ApiKey"
+__INDEX_FIRST = 0
+__FIELD_RESPONSE = "Response"
+__ENDPOINT_SANDBOX_USER = "sandbox-user"
 
 _ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER = "Could not create new sandbox" \
                                            " user."
@@ -29,21 +36,22 @@ def __generate_new_sandbox_user():
     :rtype: endpoint.SandboxUser
     """
 
-    url = "https://sandbox.public.api.bunq.com/v1/sandbox-user"
+    url = ApiEnvironmentType.SANDBOX.uri_base + __ENDPOINT_SANDBOX_USER
 
     headers = {
-        'x-bunq-client-request-id': "uniqueness-is-required",
-        'cache-control': "no-cache",
-        'x-bunq-geolocation': "0 0 0 0 NL",
-        'x-bunq-language': "en_US",
-        'x-bunq-region': "en_US",
+        ApiClient.HEADER_REQUEST_ID: __UNIQUE_REQUEST_ID,
+        ApiClient.HEADER_CACHE_CONTROL: ApiClient._CACHE_CONTROL_NONE,
+        ApiClient.HEADER_GEOLOCATION: ApiClient._GEOLOCATION_ZERO,
+        ApiClient.HEADER_LANGUAGE: ApiClient._LANGUAGE_EN_US,
+        ApiClient.HEADER_REGION: ApiClient._REGION_NL_NL,
     }
 
-    response = requests.request("POST", url, headers=headers)
+    response = requests.request(ApiClient._METHOD_POST, url, headers=headers)
 
-    if response.status_code is 200:
+    if response.status_code is ApiClient._STATUS_CODE_OK:
         response_json = json.loads(response.text)
         return endpoint.SandboxUser.from_json(
-            json.dumps(response_json["Response"][0]["ApiKey"]))
+            json.dumps(response_json[__FIELD_RESPONSE][__INDEX_FIRST][
+                           __FIELD_API_KEY]))
 
     raise BunqException(_ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER)

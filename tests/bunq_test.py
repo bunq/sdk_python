@@ -16,6 +16,8 @@ class BunqSdkTestCase(unittest.TestCase):
     :type _cash_register: endpoint.CashRegister
     """
 
+    __ERROR_COULD_NOT_DETERMINE_USER = 'Could not determine user alias.'
+
     # Config values
     _API_KEY = config.Config.get_api_key()
 
@@ -32,6 +34,19 @@ class BunqSdkTestCase(unittest.TestCase):
     _ATTACHMENT_DESCRIPTION = 'SDK python test'
     _FIRST_INDEX = 0
 
+    __SPENDING_MONEY_AMOUNT = '500'
+    __CURRENCY_EUR = 'EUR'
+    __POINTER_EMAIL = 'EMAIL'
+    __SPENDING_MONEY_RECIPIENT = 'sugardaddy@bunq.com'
+    __REQUEST_SPENDING_DESCRIPTION = 'sdk  python test, thanks daddy <3'
+
+    __CASH_REGISTER_STATUS = 'PENDING_APPROVAL'
+    __CASH_REGISTER_DESCRIPTION = 'python test cash register'
+
+    __SECOND_MONETARY_ACCOUNT_DESCRIPTION = 'test account python'
+
+    __EMAIL_BRAVO = 'bravo@bunq.com'
+
     _second_monetary_account = None
     _cash_register = None
 
@@ -47,8 +62,8 @@ class BunqSdkTestCase(unittest.TestCase):
 
     def __set_second_monetary_account(self):
         response = endpoint.MonetaryAccountBank.create(
-            'EUR',
-            'test account python'
+            self.__CURRENCY_EUR,
+            self.__SECOND_MONETARY_ACCOUNT_DESCRIPTION
         )
 
         self._second_monetary_account = endpoint.MonetaryAccountBank.get(
@@ -57,15 +72,21 @@ class BunqSdkTestCase(unittest.TestCase):
 
     def __request_spending_money(self):
         endpoint.RequestInquiry.create(
-            object_.Amount('500', 'EUR'),
-            object_.Pointer('EMAIL', 'sugardaddy@bunq.com'),
-            'sdk  python test, thanks daddy <3 - OG',
+            object_.Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
+            object_.Pointer(
+                self.__POINTER_EMAIL,
+                self.__SPENDING_MONEY_RECIPIENT
+            ),
+            self.__REQUEST_SPENDING_DESCRIPTION,
             False
         )
         endpoint.RequestInquiry.create(
-            object_.Amount('500', 'EUR'),
-            object_.Pointer('EMAIL', 'sugardaddy@bunq.com'),
-            'sdk  python test, thanks daddy <3 - OG',
+            object_.Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
+            object_.Pointer(
+                self.__POINTER_EMAIL,
+                self.__SPENDING_MONEY_RECIPIENT
+            ),
+            self.__REQUEST_SPENDING_DESCRIPTION,
             False,
             self._second_monetary_account.id_
         )
@@ -86,20 +107,19 @@ class BunqSdkTestCase(unittest.TestCase):
 
         return context.ApiContext.restore('bunq-test.conf')
 
-    @staticmethod
-    def _get_pointer_bravo():
+    def _get_pointer_bravo(self):
         """
         :rtype: object_.Pointer
         """
 
-        return object_.Pointer('EMAIL', 'bravo@bunq.com')
+        return object_.Pointer(self.__POINTER_EMAIL, self.__EMAIL_BRAVO)
 
     def _get_alias_second_account(self):
         """
         :rtype: object_.Pointer
         """
 
-        return self._second_monetary_account.alias[0]
+        return self._second_monetary_account.alias[self._FIRST_INDEX]
 
     @staticmethod
     def _get_directory_test_root():
@@ -116,8 +136,8 @@ class BunqSdkTestCase(unittest.TestCase):
         )
         avatar_uuid = endpoint.Avatar.create(attachment_uuid.value)
         cash_register_id = endpoint.CashRegister.create(
-            'python test cash register',
-            'PENDING_APPROVAL',
+            self.__CASH_REGISTER_DESCRIPTION,
+            self.__CASH_REGISTER_STATUS,
             avatar_uuid.value
         )
 
@@ -151,4 +171,4 @@ class BunqSdkTestCase(unittest.TestCase):
             return BunqContext.user_context().user_person.alias[
                 self._FIRST_INDEX]
 
-        raise BunqException('Could not determine user alias.')
+        raise BunqException(self.__ERROR_COULD_NOT_DETERMINE_USER)
