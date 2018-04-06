@@ -103,9 +103,7 @@ class BunqSdkTestCase(unittest.TestCase):
         :rtype: context.ApiContext
         """
 
-        util.automatic_sandbox_install('bunq-test.conf')
-
-        return context.ApiContext.restore('bunq-test.conf')
+        return util.automatic_sandbox_install()
 
     def _get_pointer_bravo(self):
         """

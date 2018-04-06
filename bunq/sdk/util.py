@@ -18,17 +18,18 @@ _ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER = "Could not create new sandbox" \
                                            " user."
 
 
-def automatic_sandbox_install(file_path=None):
+def automatic_sandbox_install():
     """
-    :type file_path: str
+    :rtype: ApiContext
     """
 
     sandbox_user = __generate_new_sandbox_user()
-    ApiContext(
+
+    return ApiContext(
         ApiEnvironmentType.SANDBOX,
         sandbox_user.api_key,
         socket.gethostname()
-    ).save(file_path)
+    )
 
 
 def __generate_new_sandbox_user():
