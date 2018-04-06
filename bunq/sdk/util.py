@@ -12,6 +12,10 @@ _ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER = "Could not create new sandbox" \
 
 
 def automatic_sandbox_install(file_path=None):
+    """
+    :type file_path: str
+    """
+
     sandbox_user = __generate_new_sandbox_user()
     ApiContext(
         ApiEnvironmentType.SANDBOX,
