@@ -48,6 +48,8 @@ class BunqSdkTestCase(unittest.TestCase):
 
     __EMAIL_BRAVO = 'bravo@bunq.com'
 
+    __TIME_OUT_AUTO_ACCEPT_SPENDING_MONEY = 0.5
+
     _second_monetary_account = None
     _cash_register = None
 
@@ -58,7 +60,7 @@ class BunqSdkTestCase(unittest.TestCase):
     def setUp(self):
         self.__set_second_monetary_account()
         self.__request_spending_money()
-        time.sleep(0.5)
+        time.sleep(self.__TIME_OUT_AUTO_ACCEPT_SPENDING_MONEY)
         context.BunqContext.user_context().refresh_user_context()
 
     def __set_second_monetary_account(self):
