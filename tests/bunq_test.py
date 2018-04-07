@@ -26,7 +26,7 @@ class BunqSdkTestCase(unittest.TestCase):
     # Device description used for python tests
     _DEVICE_DESCRIPTION = 'Python test device'
 
-    _PATH_ATTACHMENT = '/assets/'
+    _PATH_ATTACHMENT = 'tests/assets/'
     _READ_BYTES = "rb"
     _ATTACHMENT_PATH_IN = 'bunq_App_Icon_Square@4x.png'
     _CONTENT_TYPE = 'image/png'
