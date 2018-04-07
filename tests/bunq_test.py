@@ -2,10 +2,12 @@ import os
 import time
 import unittest
 
-from bunq.sdk import context, util
+from bunq.sdk import context
+from bunq.sdk import util
 from bunq.sdk.client import ApiClient
 from bunq.sdk.exception import BunqException
-from bunq.sdk.model.generated import endpoint, object_
+from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated import object_
 from tests import config
 
 
