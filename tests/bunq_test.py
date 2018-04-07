@@ -4,7 +4,6 @@ import unittest
 
 from bunq.sdk import context, util
 from bunq.sdk.client import ApiClient
-from bunq.sdk.context import BunqContext
 from bunq.sdk.exception import BunqException
 from bunq.sdk.model.generated import endpoint, object_
 from tests import config
@@ -52,13 +51,13 @@ class BunqSdkTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        BunqContext.load_api_context(cls._get_api_context())
+        context.BunqContext.load_api_context(cls._get_api_context())
 
     def setUp(self):
         self.__set_second_monetary_account()
         self.__request_spending_money()
         time.sleep(0.5)
-        BunqContext.user_context().refresh_user_context()
+        context.BunqContext.user_context().refresh_user_context()
 
     def __set_second_monetary_account(self):
         response = endpoint.MonetaryAccountBank.create(
@@ -161,12 +160,12 @@ class BunqSdkTestCase(unittest.TestCase):
         :rtype: Pointer
         """
 
-        if BunqContext.user_context().is_only_user_company_set():
-            return BunqContext.user_context().user_company.alias[
+        if context.BunqContext.user_context().is_only_user_company_set():
+            return context.BunqContext.user_context().user_company.alias[
                 self._FIRST_INDEX]
 
-        if BunqContext.user_context().is_only_user_person_set():
-            return BunqContext.user_context().user_person.alias[
+        if context.BunqContext.user_context().is_only_user_person_set():
+            return context.BunqContext.user_context().user_person.alias[
                 self._FIRST_INDEX]
 
         raise BunqException(self.__ERROR_COULD_NOT_DETERMINE_USER)
