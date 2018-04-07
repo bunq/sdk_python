@@ -7,7 +7,6 @@ from bunq.sdk import security
 from bunq.sdk.exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
-from bunq.sdk.model.device_server_internal import DeviceServerInternal
 from bunq.sdk.model.generated import endpoint
 
 
@@ -120,6 +119,8 @@ class ApiContext(object):
 
         :rtype: None
         """
+
+        from bunq.sdk.model.device_server_internal import DeviceServerInternal
 
         DeviceServerInternal.create(
             device_description,
