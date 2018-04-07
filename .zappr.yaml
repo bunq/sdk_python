@@ -1,6 +1,3 @@
-autobranch:
-  pattern: 'bunq/sdk_python#{number}-{title}'
-  length: 100
 commit:
   message:
     patterns:
