@@ -223,7 +223,7 @@ class ApiContext(object):
         :rtype: None
         """
 
-        endpoint.Session.delete(self, self._SESSION_ID_DUMMY)
+        endpoint.Session.delete(self._SESSION_ID_DUMMY)
 
     @property
     def environment_type(self):
