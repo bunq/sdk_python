@@ -113,7 +113,10 @@ class ApiClient(object):
         uri_relative_with_params = self._append_params_to_uri(uri_relative,
                                                               params)
         if uri_relative not in self._URIS_NOT_REQUIRING_ACTIVE_SESSION:
-            self._api_context.ensure_session_active()
+            if self._api_context.ensure_session_active():
+                from bunq.sdk.context import BunqContext
+
+                BunqContext.update_api_context(self._api_context)
 
         all_headers = self._get_all_headers(
             method,
