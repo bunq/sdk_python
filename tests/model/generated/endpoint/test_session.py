@@ -3,7 +3,6 @@ import time
 from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import Session
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestSession(BunqSdkTestCase):
@@ -12,13 +11,9 @@ class TestSession(BunqSdkTestCase):
         Session
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls._SESSION_ID = 0
-        cls._API_KEY = Config.get_api_key()
-        cls._BUNQ_CONFIG_FILE = "bunq-test.conf"
-        cls._DEVICE_DESCRIPTION = 'Python test device'
-        BunqContext.load_api_context(cls._get_api_context())
+    _SESSION_ID = 0
+    _BUNQ_CONFIG_FILE = "bunq-test.conf"
+    _DEVICE_DESCRIPTION = 'Python test device'
 
     def test_session_delete(self):
         """
