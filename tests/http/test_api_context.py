@@ -1,6 +1,8 @@
+import json
 import os
 
 from bunq.sdk.context import ApiContext
+from bunq.sdk.context import BunqContext
 from bunq.sdk.json import converter
 from tests.bunq_test import BunqSdkTestCase
 
@@ -12,6 +14,10 @@ class TestApiContext(BunqSdkTestCase):
     """
 
     _TMP_FILE_PATH = '/context-save-test.conf'
+
+    __FIELD_SESSION_CONTEXT = 'session_context'
+    __FIELD_EXPIRE_TIME = 'expiry_time'
+    __TIME_STAMP_IN_PAST = '2000-04-07 19:50:43.839717'
 
     @classmethod
     def setUpClass(cls):
@@ -84,3 +90,26 @@ class TestApiContext(BunqSdkTestCase):
         api_context_restored = self._API_CONTEXT.from_json(context_json)
 
         self.assertEqual(api_context_restored, self._API_CONTEXT)
+
+    def test_auto_bunq_context_update(self):
+        api_context: ApiContext = BunqContext.api_context()
+        api_context_json: object = json.loads(api_context.to_json())
+
+        api_context_json[self.__FIELD_SESSION_CONTEXT][
+            self.__FIELD_EXPIRE_TIME] = self.__TIME_STAMP_IN_PAST
+
+        expired_api_context = ApiContext.from_json(json.dumps(api_context_json))
+
+        self.assertNotEqual(api_context.session_context.expiry_time,
+                            expired_api_context.session_context.expiry_time)
+        self.assertEqual(BunqContext.api_context().session_context.expiry_time,
+                         api_context.session_context.expiry_time)
+
+        BunqContext.update_api_context(expired_api_context)
+        BunqContext.user_context().refresh_user_context()
+
+        self.assertNotEqual(
+            BunqContext.api_context().session_context.expiry_time,
+            api_context.session_context.expiry_time
+        )
+        self.assertFalse(BunqContext.api_context().ensure_session_active())
