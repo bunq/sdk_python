@@ -92,6 +92,10 @@ class TestApiContext(BunqSdkTestCase):
         self.assertEqual(api_context_restored, self._API_CONTEXT)
 
     def test_auto_bunq_context_update(self):
+        """
+        Tests the auto update of BunqContext.
+        """
+
         api_context: ApiContext = BunqContext.api_context()
         api_context_json: object = json.loads(api_context.to_json())
 

@@ -573,4 +573,8 @@ class BunqContext(object):
 
     @classmethod
     def update_api_context(cls, api_context: ApiContext):
+        """
+        :type api_context: ApiContext
+        """
+
         cls._api_context = api_context
