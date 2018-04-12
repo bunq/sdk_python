@@ -59,7 +59,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
 
-    # Require Python version equal or more than Python 3.
+    # Require Python version equal or higher than Python 3.6.
     python_requires='>=3.6',
 
     # Keywords related to the project
