@@ -18,13 +18,9 @@ class TestDraftShareInvite(BunqSdkTestCase):
         DraftShareInviteBankQrCodeContent
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls._OUT_PUT_FILE_PATH = 'connectQr.png'
-        cls._WRITE_BYTES = 'wb'
-        cls._EXPIRATION_ADDED_TIME = 1
-        cls._USER_ID = Config.get_user_id()
-        BunqContext.load_api_context(cls._get_api_context())
+    _OUT_PUT_FILE_PATH = 'connectQr.png'
+    _WRITE_BYTES = 'wb'
+    _EXPIRATION_ADDED_TIME = 1
 
     def test_draft_share_invite_bank(self):
         """
