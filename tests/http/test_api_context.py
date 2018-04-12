@@ -15,6 +15,7 @@ class TestApiContext(BunqSdkTestCase):
 
     @classmethod
     def setUpClass(cls):
+        super().setUpClass()
         cls._FILE_MODE_READ = ApiContext._FILE_MODE_READ
         cls._API_CONTEXT = cls._get_api_context()
         cls._TMP_FILE_PATH_FULL = (cls._get_directory_test_root() +

@@ -1,4 +1,3 @@
-from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import RequestInquiry
 from bunq.sdk.model.generated.endpoint import RequestResponse
 from bunq.sdk.model.generated.object_ import Amount
@@ -13,18 +12,10 @@ class TestRequestEnquiry(BunqSdkTestCase):
         RequestResponse
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls._REQUEST_AMOUNT_EUR = '0.01'
-        cls._REQUEST_CURRENCY = 'EUR'
-        cls._DESCRIPTION = 'Python unit test request'
-        cls._STATUS = 'ACCEPTED'
-        cls._FIRST_INDEX = 0
-        cls._USER_ID = Config.get_user_id()
-        cls._COUNTER_PARTY_SAME_USER = Config.get_pointer_counter_party_self()
-        cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
-        cls._MONETARY_ACCOUNT_ID2 = Config.get_monetary_account_id_2()
-        BunqContext.load_api_context(cls._get_api_context())
+    _REQUEST_AMOUNT_EUR = '0.01'
+    _REQUEST_CURRENCY = 'EUR'
+    _DESCRIPTION = 'Python unit test request'
+    _STATUS = 'ACCEPTED'
 
     def test_sending_and_accepting_request(self):
         """
@@ -37,8 +28,10 @@ class TestRequestEnquiry(BunqSdkTestCase):
 
         self.send_request()
 
-        request_response_id = RequestResponse.list().value[
-            self._FIRST_INDEX].id_
+        request_response_id = \
+            RequestResponse.list(self._second_monetary_account.id_).value[
+                self._FIRST_INDEX
+            ].id_
 
         self.accept_request(request_response_id)
 
@@ -49,7 +42,7 @@ class TestRequestEnquiry(BunqSdkTestCase):
 
         RequestInquiry.create(
             Amount(self._REQUEST_AMOUNT_EUR, self._REQUEST_CURRENCY),
-            self._COUNTER_PARTY_SAME_USER,
+            self._get_alias_second_account(),
             self._DESCRIPTION,
             False
         )
@@ -60,4 +53,8 @@ class TestRequestEnquiry(BunqSdkTestCase):
         :rtype response_id: int
         """
 
-        RequestResponse.update(response_id, status=self._STATUS)
+        RequestResponse.update(
+            response_id,
+            monetary_account_id=self._second_monetary_account.id_,
+            status=self._STATUS
+        )
