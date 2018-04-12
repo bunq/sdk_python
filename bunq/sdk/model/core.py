@@ -166,6 +166,10 @@ class BunqModel(object):
 
         return monetary_account_id
 
+    @classmethod
+    def _remove_field_for_request(cls, json_str: str):
+        return json_str.replace('__field_for_request', '').replace('_field_for_request', '')
+
 
 class Id(BunqModel):
     """
