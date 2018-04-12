@@ -20,17 +20,11 @@ class TestCardDebit(BunqSdkTestCase):
         CardName
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls._CARD_PIN_CODE = '4045'
-        cls._FIRST_INDEX = 0
-        cls._SECOND_LINE_LENGTH_MAXIMUM = 20
-        cls._STRING_EMPTY = ''
-        cls._USER_ID = Config.get_user_id()
-        cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
-        cls._PIN_CODE_ASSIGNMENT_TYPE_PRIMARY = 'PRIMARY'
-
-        BunqContext.load_api_context(cls._get_api_context())
+    _CARD_PIN_CODE = '4045'
+    _SECOND_LINE_LENGTH_MAXIMUM = 20
+    _STRING_EMPTY = ''
+    _PIN_CODE_ASSIGNMENT_TYPE_PRIMARY = 'PRIMARY'
+    _CARD_TYPE_MAESTRO = 'MAESTRO'
 
     def test_order_debit_card(self):
         """
@@ -44,33 +38,17 @@ class TestCardDebit(BunqSdkTestCase):
         pin_code_assignment = CardPinAssignment(
             self._PIN_CODE_ASSIGNMENT_TYPE_PRIMARY,
             self._CARD_PIN_CODE,
-            self._MONETARY_ACCOUNT_ID
+            BunqContext.user_context().primary_monetary_account.id_
         )
 
         card_debit = CardDebit.create(second_line, self.card_name_allowed,
-                                      self.alias_first, 'MAESTRO',
+                                      self.alias_first, self._CARD_TYPE_MAESTRO,
                                       [pin_code_assignment]).value
         card = Card.get(card_debit.id_).value
 
         self.assertEqual(self.card_name_allowed, card.name_on_card)
         self.assertEqual(second_line, card.second_line)
         self.assertEqual(card_debit.created, card.created)
-
-    @property
-    def alias_first(self):
-        """
-        :rtype: Pointer
-        """
-
-        if BunqContext.user_context().is_only_user_company_set():
-            return BunqContext.user_context().user_company.alias[
-                self._FIRST_INDEX]
-
-        if BunqContext.user_context().is_only_user_person_set():
-            return BunqContext.user_context().user_person.alias[
-                self._FIRST_INDEX]
-
-        raise BunqException('Could not determine user alias.')
 
     @property
     def card_name_allowed(self):
