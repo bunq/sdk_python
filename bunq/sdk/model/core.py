@@ -18,6 +18,10 @@ class BunqModel(object):
     # The very first index of an array
     _INDEX_FIRST = 0
 
+    __STRING_FORMAT_EMPTY = ''
+    __STRING_FORMAT_FIELD_FOR_REQUEST_ONE_UNDERSCORE = '_field_for_request'
+    __STRING_FORMAT_FIELD_FOR_REQUEST_TWO_UNDERSCORE = '__field_for_request'
+
     def is_all_field_none(self):
         raise NotImplementedError
 
@@ -168,7 +172,13 @@ class BunqModel(object):
 
     @classmethod
     def _remove_field_for_request(cls, json_str: str):
-        return json_str.replace('__field_for_request', '').replace('_field_for_request', '')
+        return json_str.replace(
+            cls.__STRING_FORMAT_FIELD_FOR_REQUEST_TWO_UNDERSCORE,
+            cls.__STRING_FORMAT_EMPTY
+        ).replace(
+            cls.__STRING_FORMAT_FIELD_FOR_REQUEST_ONE_UNDERSCORE,
+            cls.__STRING_FORMAT_EMPTY
+        )
 
 
 class Id(BunqModel):

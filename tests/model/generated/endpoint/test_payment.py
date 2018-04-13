@@ -21,7 +21,8 @@ class TestPayment(BunqSdkTestCase):
     _PAYMENT_CURRENCY = 'EUR'
     _PAYMENT_DESCRIPTION = 'Python unit test'
     _PAYMENT_CHAT_TEXT_MESSAGE = 'send from python test'
-    _USER_ID = Config.get_user_id()
+
+    _MAXIMUM_PAYMENT_IN_BATCH = 10
 
     def test_payment_to_other_user(self):
         """
@@ -31,8 +32,8 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        Payment.create(
-            Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
+        endpoint.Payment.create(
+            object_.Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
             self._get_pointer_bravo(),
             self._PAYMENT_DESCRIPTION
         )
@@ -45,8 +46,8 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        Payment.create(
-            Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
+        endpoint.Payment.create(
+            object_.Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
             self._get_alias_second_account(),
             self._PAYMENT_DESCRIPTION
         )
@@ -59,43 +60,46 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        payment_id = Payment.create(
-            Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
+        payment_id = endpoint.Payment.create(
+            object_.Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
             self._get_pointer_bravo(),
             self._PAYMENT_DESCRIPTION
         ).value
 
-        chat_id = PaymentChat.create(payment_id).value
+        chat_id = endpoint.PaymentChat.create(payment_id).value
 
-        ChatMessageText.create(chat_id, self._PAYMENT_CHAT_TEXT_MESSAGE)
+        endpoint.ChatMessageText.create(chat_id, self._PAYMENT_CHAT_TEXT_MESSAGE)
 
     def test_payment_batch(self):
-        response_create: BunqResponseInt = PaymentBatch.create(
-            self.__create_payment_list()
-        )
+        response_create: endpoint.BunqResponseInt =\
+            endpoint.PaymentBatch.create(
+                self.__create_payment_list()
+            )
 
         self.assertIsNotNone(response_create)
 
-        response_get: BunqResponsePaymentBatch =\
-            PaymentBatch.get(response_create.value)
+        response_get: endpoint.BunqResponsePaymentBatch =\
+            endpoint.PaymentBatch.get(response_create.value)
 
         self.assertIsNotNone(response_get)
         self.assertFalse(response_get.value.is_all_field_none())
 
-    @staticmethod
-    def __create_payment_list() -> List[Payment]:
+    def __create_payment_list(self) -> List[endpoint.Payment]:
         """
         :rtype: List[Payment]
         """
 
-        all_payment: List[Payment] = []
+        all_payment: List[endpoint.Payment] = []
 
-        while len(all_payment) < 10:
+        while len(all_payment) < self._MAXIMUM_PAYMENT_IN_BATCH:
             all_payment.append(
-                Payment(
-                    Amount('0.01', 'EUR'),
-                    Pointer('EMAIL', 'bravo@bunq.com'),
-                    'Python sdk payment batch test.'
+                endpoint.Payment(
+                    object_.Amount(
+                        self._PAYMENT_AMOUNT_EUR,
+                        self._PAYMENT_CURRENCY
+                    ),
+                    object_.Pointer(self._POINTER_EMAIL, self._EMAIL_BRAVO),
+                    self._PAYMENT_DESCRIPTION
                 )
             )
 

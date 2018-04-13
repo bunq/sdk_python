@@ -14,6 +14,8 @@ from bunq.sdk.model.generated import object_
 class AnchoredObjectModelAdapter(converter.JsonAdapter):
     _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object.'
 
+    __STRING_FORMAT_UNDERSCORE = '_'
+
     _override_field_map = {
         'ScheduledPayment': 'SchedulePayment',
         'ScheduledInstance': 'ScheduleInstance',
@@ -56,7 +58,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
         :rtype: core.BunqModel
         """
 
-        class_name = class_name.lstrip('_')
+        class_name = class_name.lstrip(cls.__STRING_FORMAT_UNDERSCORE)
 
         if class_name in cls._override_field_map:
             class_name = cls._override_field_map[class_name]
