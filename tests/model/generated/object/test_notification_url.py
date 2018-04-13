@@ -61,6 +61,13 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
         endpoint,
     ]
 
+    @classmethod
+    def setUpClass(cls):
+        pass
+
+    def setUp(self):
+        pass
+
     # File mode constants.
     _FILE_MODE_READ = 'r'
 
