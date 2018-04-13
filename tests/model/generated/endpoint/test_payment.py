@@ -1,7 +1,10 @@
-from bunq.sdk.model.generated.endpoint import ChatMessageText
+from typing import List
+
+from bunq.sdk.model.generated.endpoint import ChatMessageText, PaymentBatch, \
+    BunqResponseInt, BunqResponsePaymentBatch
 from bunq.sdk.model.generated.endpoint import Payment
 from bunq.sdk.model.generated.endpoint import PaymentChat
-from bunq.sdk.model.generated.object_ import Amount
+from bunq.sdk.model.generated.object_ import Amount, Pointer
 from tests.bunq_test import BunqSdkTestCase
 from tests.config import Config
 
@@ -65,3 +68,35 @@ class TestPayment(BunqSdkTestCase):
         chat_id = PaymentChat.create(payment_id).value
 
         ChatMessageText.create(chat_id, self._PAYMENT_CHAT_TEXT_MESSAGE)
+
+    def test_payment_batch(self):
+        response_create: BunqResponseInt = PaymentBatch.create(
+            self.__create_payment_list()
+        )
+
+        self.assertIsNotNone(response_create)
+
+        response_get: BunqResponsePaymentBatch =\
+            PaymentBatch.get(response_create.value)
+
+        self.assertIsNotNone(response_get)
+        self.assertFalse(response_get.value.is_all_field_none())
+
+    @staticmethod
+    def __create_payment_list() -> List[Payment]:
+        """
+        :rtype: List[Payment]
+        """
+
+        all_payment: List[Payment] = []
+
+        while len(all_payment) < 10:
+            all_payment.append(
+                Payment(
+                    Amount('0.01', 'EUR'),
+                    Pointer('EMAIL', 'bravo@bunq.com'),
+                    'Python sdk payment batch test.'
+                )
+            )
+
+        return all_payment
