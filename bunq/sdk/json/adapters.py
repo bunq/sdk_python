@@ -4,21 +4,20 @@ import urllib.parse as urlparse
 from bunq.sdk import client
 from bunq.sdk import context
 from bunq.sdk import security
+from bunq.sdk.exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
-from bunq.sdk.exception import BunqException
 
 
 class AnchoredObjectModelAdapter(converter.JsonAdapter):
-
     _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object.'
 
     _override_field_map = {
         'ScheduledPayment': 'SchedulePayment',
         'ScheduledInstance': 'ScheduleInstance',
-        }
+    }
 
     @classmethod
     def deserialize(cls, cls_target, obj_raw):
@@ -31,16 +30,11 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
         model_ = super()._deserialize_default(cls_target, obj_raw)
 
-        if isinstance(model_, core.AnchoredObjectInterface) and model_.is_all_field_none():
+        if isinstance(model_,
+                      core.AnchoredObjectInterface) and model_.is_all_field_none():
             for field in model_.__dict__:
-                field_ = None
-                if field in cls._override_field_map:
-                    field_ = cls._override_field_map[field]
 
-                if field_ is None:
-                    object_class = cls._get_object_class(field)
-                else:
-                    object_class = cls._get_object_class(field_)
+                object_class = cls._get_object_class(field)
 
                 contents = super()._deserialize_default(object_class, obj_raw)
 
@@ -61,6 +55,11 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
         :type class_name: str
         :rtype: core.BunqModel
         """
+
+        class_name = class_name.lstrip('_')
+
+        if class_name in cls._override_field_map:
+            class_name = cls._override_field_map[class_name]
 
         try:
             return getattr(endpoint, class_name)
@@ -486,10 +485,12 @@ class ShareDetailAdapter(converter.JsonAdapter):
         """
 
         return {
-            cls._FIELD_PAYMENT: converter.serialize(share_detail.payment),
-            cls._FIELD_READ_ONLY: converter.serialize(share_detail.read_only),
+            cls._FIELD_PAYMENT: converter.serialize(
+                share_detail._payment_field_for_request),
+            cls._FIELD_READ_ONLY: converter.serialize(
+                share_detail._read_only_field_for_request),
             cls._FIELD_DRAFT_PAYMENT: converter.serialize(
-                share_detail.draft_payment
+                share_detail._draft_payment
             ),
         }
 
