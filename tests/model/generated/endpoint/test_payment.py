@@ -64,7 +64,10 @@ class TestPayment(BunqSdkTestCase):
 
         chat_id = endpoint.PaymentChat.create(payment_id).value
 
-        endpoint.ChatMessageText.create(chat_id, self._PAYMENT_CHAT_TEXT_MESSAGE)
+        endpoint.ChatMessageText.create(
+            chat_id,
+            self._PAYMENT_CHAT_TEXT_MESSAGE
+        )
 
     def test_payment_batch(self):
         response_create: endpoint.BunqResponseInt =\
@@ -74,7 +77,7 @@ class TestPayment(BunqSdkTestCase):
 
         self.assertIsNotNone(response_create)
 
-        response_get: endpoint.BunqResponsePaymentBatch =\
+        response_get: endpoint.BunqResponsePaymentBatch = \
             endpoint.PaymentBatch.get(response_create.value)
 
         self.assertIsNotNone(response_get)
