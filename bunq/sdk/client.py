@@ -1,5 +1,4 @@
 import uuid
-from json import JSONDecodeError
 from urllib.parse import urlencode
 
 import requests
@@ -254,7 +253,7 @@ class ApiClient(object):
             error_dict = converter.json_to_class(dict, response_content_string)
 
             return self._fetch_error_descriptions(error_dict)
-        except JSONDecodeError:
+        except ValueError:
             return [response_content_string]
 
     def _fetch_error_descriptions(self, error_dict):
