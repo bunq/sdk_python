@@ -32,12 +32,12 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
         model_ = super()._deserialize_default(cls_target, obj_raw)
 
-        if isinstance(model_,
-                      core.AnchoredObjectInterface) and model_.is_all_field_none():
+        if isinstance(
+                model_,
+                core.AnchoredObjectInterface
+        ) and model_.is_all_field_none():
             for field in model_.__dict__:
-
                 object_class = cls._get_object_class(field)
-
                 contents = super()._deserialize_default(object_class, obj_raw)
 
                 if contents.is_all_field_none():
