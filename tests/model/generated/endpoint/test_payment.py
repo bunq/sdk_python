@@ -70,7 +70,10 @@ class TestPayment(BunqSdkTestCase):
         )
 
     def test_payment_batch(self):
-        response_create: endpoint.BunqResponseInt =\
+        """
+        """
+
+        response_create: endpoint.BunqResponseInt = \
             endpoint.PaymentBatch.create(
                 self.__create_payment_list()
             )
