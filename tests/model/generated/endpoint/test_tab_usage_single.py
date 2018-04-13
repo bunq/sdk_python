@@ -1,9 +1,10 @@
+import unittest
+
 from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import TabItemShop
 from bunq.sdk.model.generated.endpoint import TabUsageSingle
 from bunq.sdk.model.generated.object_ import Amount
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestTabUsageSingle(BunqSdkTestCase):
@@ -13,18 +14,14 @@ class TestTabUsageSingle(BunqSdkTestCase):
         TabItemShop
     """
 
-    @classmethod
-    def setUpClass(cls):
-        cls._USER_ID = Config.get_user_id()
-        cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
-        cls._CASH_REGISTER_ID = Config.get_cash_register_id()
-        cls._AMOUNT_EUR = '0.02'
-        cls._CURRENCY = 'EUR'
-        cls._STATUS_OPEN = 'OPEN'
-        cls._TAB_ITEM_DESCRIPTION = 'Super expensive python tea'
-        cls._STATUS_WAITING = 'WAITING_FOR_PAYMENT'
-        cls._TAB_DESCRIPTION = 'Pay the tab for Python test please.'
-        BunqContext.load_api_context(cls._get_api_context())
+    _AMOUNT_EUR = '0.02'
+    _CURRENCY = 'EUR'
+    _STATUS_OPEN = 'OPEN'
+    _STATUS_WAITING = 'WAITING_FOR_PAYMENT'
+    _TAB_ITEM_DESCRIPTION = 'Super expensive python tea'
+    _TAB_DESCRIPTION = 'Pay the tab for Python test please.'
+    _ERROR_ONLY_USER_COMPANY_CAN_CREATE_TAB =\
+        'Only user company can create/use cash registers.'
 
     def test_create_and_update_tab(self):
         """
@@ -34,7 +31,12 @@ class TestTabUsageSingle(BunqSdkTestCase):
         without errors
         """
 
-        tab_uuid = TabUsageSingle.create(self._CASH_REGISTER_ID,
+        if BunqContext.user_context().is_only_user_person_set():
+            return unittest.skip(
+                self._ERROR_ONLY_USER_COMPANY_CAN_CREATE_TAB
+            )
+
+        tab_uuid = TabUsageSingle.create(self._get_cash_register_id(),
                                          self._TAB_DESCRIPTION,
                                          self._STATUS_OPEN,
                                          Amount(self._AMOUNT_EUR,
@@ -50,7 +52,7 @@ class TestTabUsageSingle(BunqSdkTestCase):
         """
 
         TabItemShop.create(
-            self._CASH_REGISTER_ID, tab_uuid,
+            self._get_cash_register_id(), tab_uuid,
             self._TAB_ITEM_DESCRIPTION
         )
 
@@ -61,6 +63,6 @@ class TestTabUsageSingle(BunqSdkTestCase):
         """
 
         TabUsageSingle.update(
-            self._CASH_REGISTER_ID,
+            self._get_cash_register_id(),
             tab_uuid
         )
