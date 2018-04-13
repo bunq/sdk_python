@@ -1,12 +1,8 @@
 from typing import List
 
-from bunq.sdk.model.generated.endpoint import ChatMessageText, PaymentBatch, \
-    BunqResponseInt, BunqResponsePaymentBatch
-from bunq.sdk.model.generated.endpoint import Payment
-from bunq.sdk.model.generated.endpoint import PaymentChat
-from bunq.sdk.model.generated.object_ import Amount, Pointer
+from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated import object_
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestPayment(BunqSdkTestCase):
