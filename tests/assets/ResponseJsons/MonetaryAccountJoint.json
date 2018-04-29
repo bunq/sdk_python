@@ -1,0 +1,99 @@
+{
+    "id": 8948,
+    "created": "2018-04-03 14:12:31.512599",
+    "updated": "2018-04-03 14:12:31.512599",
+    "alias": [
+        {
+            "type": "IBAN",
+            "value": "NL19BUNQ2025192010",
+            "name": "New User"
+        }
+    ],
+    "avatar": {
+        "uuid": "063e74a4-d40b-4961-9395-0eba2d68ee01",
+        "image": [
+            {
+                "attachment_public_uuid": "8a9ef272-db4a-4c1c-aac0-cc6ee2a4ebcc",
+                "height": 1023,
+                "width": 1024,
+                "content_type": "image\/png"
+            }
+        ],
+        "anchor_uuid": "c747c366-27b7-48bd-97e6-7311dd8bcd6e"
+    },
+    "balance": {
+        "currency": "EUR",
+        "value": "0.00"
+    },
+    "country": "NL",
+    "currency": "EUR",
+    "daily_limit": {
+        "currency": "EUR",
+        "value": "1000.00"
+    },
+    "daily_spent": {
+        "currency": "EUR",
+        "value": "0.00"
+    },
+    "description": "H",
+    "public_uuid": "c747c366-27b7-48bd-97e6-7311dd8bcd6e",
+    "status": "PENDING_ACCEPTANCE",
+    "sub_status": "NONE",
+    "timezone": "europe\/amsterdam",
+    "user_id": 7809,
+    "monetary_account_profile": null,
+    "notification_filters": [],
+    "setting": {
+        "color": "#FE2851",
+        "default_avatar_status": "AVATAR_DEFAULT",
+        "restriction_chat": "ALLOW_INCOMING"
+    },
+    "overdraft_limit": {
+        "currency": "EUR",
+        "value": "0.00"
+    },
+    "all_co_owner": [
+        {
+            "alias": {
+                "uuid": "d2d59347-b5b6-4db0-8c18-9897e23a7a49",
+                "display_name": "New",
+                "country": "000",
+                "avatar": {
+                    "uuid": "cb302add-2dff-4ec9-8a83-e3698809a340",
+                    "image": [
+                        {
+                            "attachment_public_uuid": "a07e6696-4800-4c5d-a30b-671cb1f3c198",
+                            "height": 128,
+                            "width": 128,
+                            "content_type": "image\/jpeg"
+                        }
+                    ],
+                    "anchor_uuid": "d2d59347-b5b6-4db0-8c18-9897e23a7a49"
+                },
+                "public_nick_name": "New"
+            },
+            "status": "ACCEPTED"
+        },
+        {
+            "alias": {
+                "uuid": "fba128d6-0819-424f-b5bf-b7cd556a6438",
+                "display_name": "Drake (Person b)",
+                "country": "000",
+                "avatar": {
+                    "uuid": "6e9e8e6b-b6d6-44b9-83c3-ab7150921ab1",
+                    "image": [
+                        {
+                            "attachment_public_uuid": "f3f3c3de-09f3-4523-9bfb-ab33a664610e",
+                            "height": 1024,
+                            "width": 1024,
+                            "content_type": "image\/jpeg"
+                        }
+                    ],
+                    "anchor_uuid": "fba128d6-0819-424f-b5bf-b7cd556a6438"
+                },
+                "public_nick_name": "Drake (Person b)"
+            },
+            "status": "PENDING"
+        }
+    ]
+}
