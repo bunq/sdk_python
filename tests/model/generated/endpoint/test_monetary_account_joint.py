@@ -5,6 +5,12 @@ from tests.bunq_test import BunqSdkTestCase
 
 
 class TestMonetaryAccountJoint(BunqSdkTestCase):
+    """
+    Tests:
+        - MonetaryAccountJoint
+        - CoOwner
+    """
+
     _BASE_PATH_JSON_MODEL = '../../../assets/ResponseJsons'
     _MONETARY_ACCOUNT_JOINT_JSON = '/MonetaryAccountJoint.json'
     _FILE_MODE_READ = 'r'
@@ -17,6 +23,9 @@ class TestMonetaryAccountJoint(BunqSdkTestCase):
         pass
 
     def test_monetary_account_joint_parser(self):
+        """
+        """
+
         base_path = os.path.dirname(__file__)
         file_path = os.path.abspath(
             os.path.join(base_path,
