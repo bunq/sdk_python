@@ -167,13 +167,19 @@ class ApiContext(object):
         else:
             return session_server.user_person.session_timeout
 
-    def ensure_session_active(self):
+    def ensure_session_active(self) -> bool:
         """
         Resets the session if it has expired.
+
+        :rtype: bool
         """
 
         if not self.is_session_active():
             self.reset_session()
+
+            return True
+
+        return False
 
     def is_session_active(self):
         """
@@ -564,3 +570,11 @@ class BunqContext(object):
             return cls._user_context
 
         raise BunqException(cls._ERROR_USER_CONTEXT_HAS_NOT_BEEN_LOADED)
+
+    @classmethod
+    def update_api_context(cls, api_context: ApiContext):
+        """
+        :type api_context: ApiContext
+        """
+
+        cls._api_context = api_context

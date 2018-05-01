@@ -1,5 +1,3 @@
-import os
-
 from bunq.sdk.client import ApiClient
 from bunq.sdk.model.generated import endpoint
 from tests.bunq_test import BunqSdkTestCase
@@ -25,8 +23,10 @@ class TestAttachmentPublic(BunqSdkTestCase):
                 self._ATTACHMENT_DESCRIPTION,
         }
 
-        attachment_uuid = endpoint.AttachmentPublic.create(self.attachment_contents,
-                                                  custom_headers).value
+        attachment_uuid = endpoint.AttachmentPublic.create(
+            self.attachment_contents,
+            custom_headers
+        ).value
 
         contents_from_response = endpoint.AttachmentPublicContent.list(
             attachment_uuid).value
