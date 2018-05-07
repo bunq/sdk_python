@@ -33,13 +33,15 @@ context can be created by using the following code snippet:
 ```
 apiContext = context.ApiContext(ENVIRONMENT_TYPE, API_KEY,
   DEVICE_DESCRIPTION);
-apiContext.save(API_CONTEXT_FILE_PATH);
+apiContext.save(API_CONTEXT_FILE_PATH)
+context.BunqContext.loadApiContext(apiContext)
 ```
 
-#### Example
-See [`api_context_save_example.py`](./examples/api_context_save_example.py)
+This code snippet, except for `context.BunqContext.loadApiContext(apiContext)` should be called once per API key. 
 
-The API context can then be saved with:
+#### Example
+
+See [`tinker/setup_context`](https://github.com/bunq/tinker_python/blob/2182b8be276fda921657ad22cfe0b8b48a585ccf/tinker/libs/bunq_lib.py#L44-L59)
 
 #### Safety considerations
 The file storing the context details (i.e. `bunq.conf`) is a key to your account. Anyone having
@@ -62,28 +64,15 @@ can be passed to requests.
 
 
 ```
-request_map = {
-    generated.Payment.FIELD_AMOUNT: object_.Amount(
-        _PAYMENT_AMOUNT,
-        _PAYMENT_CURRENCY
-    ),
-    generated.Payment.FIELD_COUNTERPARTY_ALIAS: object_.Pointer(
-        _COUNTERPARTY_POINTER_TYPE,
-        _COUNTERPARTY_EMAIL
-    ),
-    generated.Payment.FIELD_DESCRIPTION: _PAYMENT_DESCRIPTION,
-}
-
-payment_id = generated.Payment.create(
-    api_context,
-    request_map,
-    _USER_ITEM_ID,
-    _MONETARY_ACCOUNT_ITEM_ID
-)
+payment_id = endpoint.Payment.create(
+	amount=Amount(amount_string, self._CURRENCY_EURL),
+    counterparty_alias=Pointer(self._POINTER_TYPE_EMAIL, recipient),
+    description=description
+    )
 ```
 
 ##### Example
-See [`PaymentExample.py`](./examples/payment_example.py)
+See [`tinker/make_payment`](https://github.com/bunq/tinker_python/blob/2182b8be276fda921657ad22cfe0b8b48a585ccf/tinker/libs/bunq_lib.py#L140-L151)
 
 #### Reading objects
 Reading objects through the API requires an `ApiContext`, identifiers of all dependencies (such as
@@ -94,34 +83,26 @@ This type of calls always returns a model.
 
 ```
 monetary_account = generated.MonetaryAccountBank.get(
-    api_context,
-    _USER_ITEM_ID,
     _MONETARY_ACCOUNT_ITEM_ID
 )
 ```
 
 ##### Example
-See [`MonetaryAccountExample.py`](./examples/monetary_account_example.py)
+See [`tinker/list_all_payment`](https://github.com/bunq/tinker_python/blob/2182b8be276fda921657ad22cfe0b8b48a585ccf/tinker/libs/bunq_lib.py#L85-L103)
 
 #### Updating objects
 Updating objects through the API goes the same way as creating objects, except that also the object to update identifier 
 (ID or UUID) is needed.
 
 ```
-request_update_map = {
-    generated.RequestInquiry.FIELD_STATUS: _STATUS_REVOKED,
-}
-generated.RequestInquiry.update(
-    api_context,
-    request_update_map,
-    _USER_ITEM_ID,
-    _MONETARY_ACCOUNT_ITEM_ID,
-    request_id
-).to_json()
+endpoint.Card.update(
+	card_id=int(card_id),
+	monetary_account_current_id=int(account_id)
+	)
 ```
 
 ##### Example
-See [`RequestExample.py`](./examples/request_example.py)
+See [`tinker/update_card`](https://github.com/bunq/tinker_python/blob/2182b8be276fda921657ad22cfe0b8b48a585ccf/tinker/libs/bunq_lib.py#L167-L174)
 
 #### Deleting objects
 Deleting objects through the API requires an `ApiContext`, identifiers of all dependencies (such as User ID required for
@@ -129,11 +110,11 @@ accessing a Monetary Account), and the identifier of the object to delete (ID or
 passed to requests.
 
 ```
-generated.CustomerStatementExport.delete(apiContext, userId, monetaryAccountId, customerStatementId);
+Session.delete(self._SESSION_ID)
 ```
 
 ##### Example
-See [`CustomerStatementExportExample.py`](./examples/customer_statement_export_example.py)
+
 
 #### Listing objects
 Listing objects through the API requires an `ApiContext` and identifiers of all dependencies (such as User ID required
@@ -147,37 +128,7 @@ users = generated.User.list(api_context)
 See [`UserListExample.py`](./examples/user_list_example.py)
 
 ## Running Samples
-In order to make the experience of getting into bunq Python SDK smoother, we
-have bundled it with example use cases (located under `/examples`).
-
-To run an example, please do the following:
-1. In your IDE, open the example you are interested in and adjust the constants,
-such as `_API_KEY` or `_USER_ID`, to hold your data.
-2. In your terminal, go to the root of bunq SDK project:
-
-```shell
-$ cd /path/to/bunq/sdk/
-```
-3. In the terminal, run:
-
-```shell
-$ python3 run.py examples/<something_example.py>
-```
-   Replace `<something_example.py>` with the name of the example you would like
-   to run. If you wish to run the example with python 2, also replace
-   `python3` with `python`.
-
-In order for examples to run, you would need a valid context file (`bunq.conf`)
-to be present in the bunq SDK project root directory. The file can either copied
-from somewhere else (e.g. tests) or created by running the following command
-in your bunq SDK project root directory:
-
-```shell
-$ python3 run.py examples/api_context_save_example.py
-```
-
-Please do not forget to set the `_API_KEY` constant in
-`api_context_save_example.py` to your actual API key before running the sample!
+To get an indication on how the SDK works you can use the python tinker which is located at https://github.com/bunq/tinker_python
 
 ## Running Tests
 
