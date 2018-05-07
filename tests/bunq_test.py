@@ -37,7 +37,7 @@ class BunqSdkTestCase(unittest.TestCase):
 
     __SPENDING_MONEY_AMOUNT = '500'
     __CURRENCY_EUR = 'EUR'
-    __POINTER_EMAIL = 'EMAIL'
+    _POINTER_EMAIL = 'EMAIL'
     __SPENDING_MONEY_RECIPIENT = 'sugardaddy@bunq.com'
     __REQUEST_SPENDING_DESCRIPTION = 'sdk  python test, thanks daddy <3'
 
@@ -46,7 +46,7 @@ class BunqSdkTestCase(unittest.TestCase):
 
     __SECOND_MONETARY_ACCOUNT_DESCRIPTION = 'test account python'
 
-    __EMAIL_BRAVO = 'bravo@bunq.com'
+    _EMAIL_BRAVO = 'bravo@bunq.com'
 
     __TIME_OUT_AUTO_ACCEPT_SPENDING_MONEY = 0.5
 
@@ -77,7 +77,7 @@ class BunqSdkTestCase(unittest.TestCase):
         endpoint.RequestInquiry.create(
             object_.Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
             object_.Pointer(
-                self.__POINTER_EMAIL,
+                self._POINTER_EMAIL,
                 self.__SPENDING_MONEY_RECIPIENT
             ),
             self.__REQUEST_SPENDING_DESCRIPTION,
@@ -86,7 +86,7 @@ class BunqSdkTestCase(unittest.TestCase):
         endpoint.RequestInquiry.create(
             object_.Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
             object_.Pointer(
-                self.__POINTER_EMAIL,
+                self._POINTER_EMAIL,
                 self.__SPENDING_MONEY_RECIPIENT
             ),
             self.__REQUEST_SPENDING_DESCRIPTION,
@@ -113,7 +113,7 @@ class BunqSdkTestCase(unittest.TestCase):
         :rtype: object_.Pointer
         """
 
-        return object_.Pointer(self.__POINTER_EMAIL, self.__EMAIL_BRAVO)
+        return object_.Pointer(self._POINTER_EMAIL, self._EMAIL_BRAVO)
 
     def _get_alias_second_account(self):
         """

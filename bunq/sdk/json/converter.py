@@ -184,7 +184,7 @@ class JsonAdapter(object):
         :rtype: T
         """
 
-        instance = cls_target.__new__(cls_target, cls_target)
+        instance = cls_target.__new__(cls_target)
         dict_deserialized = cls._deserialize_dict_attributes(cls_target, dict_)
         instance.__dict__ = cls._fill_default_values(cls_target,
                                                      dict_deserialized)
