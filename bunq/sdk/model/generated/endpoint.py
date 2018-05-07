@@ -6244,7 +6244,7 @@ class WhitelistResult(core.BunqModel):
     :type _whitelist: Whitelist
     :param _object_: The details of the external object the event was created
     for.
-    :type _object_: core.BunqModel
+    :type _object_: object_.WhitelistResultViewAnchoredObject
     :param _request_reference_split_the_bill: The reference to the object used
     for split the bill. Can be RequestInquiry or RequestInquiryBatch
     :type _request_reference_split_the_bill:
@@ -6302,7 +6302,7 @@ class WhitelistResult(core.BunqModel):
     @property
     def object_(self):
         """
-        :rtype: core.BunqModel
+        :rtype: object_.WhitelistResultViewAnchoredObject
         """
 
         return self._object_

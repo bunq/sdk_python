@@ -93,3 +93,4 @@ connectQr.png
 .DS_Store
 bunq_sdk.egg-info
 .idea/codeStyles/
+venv

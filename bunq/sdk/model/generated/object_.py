@@ -2868,6 +2868,72 @@ class ScheduleInstanceAnchorObject(core.BunqModel,
         return converter.json_to_class(ScheduleInstanceAnchorObject, json_str)
 
 
+class WhitelistResultViewAnchoredObject(core.BunqModel):
+    """
+    :param _id_: The ID of the whitelist entry.
+    :type _id_: int
+    :param _requestResponse: The RequestResponse object
+    :type _requestResponse: endpoint.RequestResponse
+    :param _draftPayment: The DraftPayment object
+    :type _draftPayment: endpoint.DraftPayment
+    """
+
+    _id_ = None
+    _requestResponse = None
+    _draftPayment = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def requestResponse(self):
+        """
+        :rtype: endpoint.RequestResponse
+        """
+
+        return self._requestResponse
+
+    @property
+    def draftPayment(self):
+        """
+        :rtype: endpoint.DraftPayment
+        """
+
+        return self._draftPayment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._requestResponse is not None:
+            return False
+
+        if self._draftPayment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: WhitelistResultViewAnchoredObject
+        """
+
+        return converter.json_to_class(WhitelistResultViewAnchoredObject,
+                                       json_str)
+
+
 class SchedulePaymentEntry(core.BunqModel):
     """
     :param _amount: The Amount transferred by the Payment. Will be negative for
@@ -4590,7 +4656,7 @@ class MonetaryAccountSetting(core.BunqModel):
 class CoOwner(core.BunqModel):
     """
     :param _alias: The Alias of the co-owner.
-    :type _alias: list[LabelUser]
+    :type _alias: LabelUser
     :param _status: Can be: ACCEPTED, REJECTED, PENDING or REVOKED
     :type _status: str
     """
@@ -4610,7 +4676,7 @@ class CoOwner(core.BunqModel):
     @property
     def alias(self):
         """
-        :rtype: list[LabelUser]
+        :rtype: LabelUser
         """
 
         return self._alias
