@@ -129,7 +129,7 @@ class ApiClient(object):
             self._get_uri_full(uri_relative_with_params),
             data=request_bytes,
             headers=all_headers,
-            proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url}
+            proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url},
         )
 
         self._assert_response_success(response)
