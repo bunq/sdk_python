@@ -18,7 +18,7 @@ class ApiEnvironmentType(aenum.AutoNumberEnum):
     """
 
     PRODUCTION = 'https://api.bunq.com/v1/'
-    SANDBOX = 'https://sandbox.public.api.bunq.com/v1/'
+    SANDBOX = 'https://public-api.sandbox.bunq.com/v1/'
 
     def __init__(self, uri_base):
         """
