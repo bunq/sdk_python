@@ -1,8 +1,20 @@
 # Change Log
 
+## [0.13.1](https://github.com/bunq/sdk_python/tree/0.13.1) 
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.0...0.13.1)
+
+**Closed issues:**
+
+- Move to new sandbox env.  [\#98](https://github.com/bunq/sdk_python/issues/98)
+
+**Merged pull requests:**
+
+- Move to new sandbox bunq/sdk_python#98 [\#99](https://github.com/bunq/sdk_python/pull/99) ([OGKevin](https://github.com/OGKevin))
+
 ## [0.13.0](https://github.com/bunq/sdk_python/tree/0.13.0) (2018-03-20)
 
-[Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.4...HEAD)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.4...0.13.0)
 
 **Implemented enhancements:**
 
