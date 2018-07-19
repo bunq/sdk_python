@@ -140,6 +140,9 @@ class InstallationAdapter(converter.JsonAdapter):
 
 
 class SessionServerAdapter(converter.JsonAdapter):
+    # Error constants.
+    _ERROR_COULD_NOT_DETERMINE_USER = 'Could not determine user.'
+
     # Id constants
     _ATTRIBUTE_ID = '_id_'
     _INDEX_ID = 0
@@ -209,7 +212,7 @@ class SessionServerAdapter(converter.JsonAdapter):
                 user_dict_wrapped[cls._FIELD_USER_API_KEY]
             )
         else:
-            raise BunqException('Could not determine user.')
+            raise BunqException(cls._ERROR_COULD_NOT_DETERMINE_USER)
 
         return session_server
 
