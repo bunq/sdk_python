@@ -183,15 +183,6 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
             self._GETTER_BUNQ_ME_TAB
         )
 
-    def test_chat_message_announcement_model(self):
-        self.execute_notification_url_test(
-            self.JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL,
-            endpoint.ChatMessage.__name__,
-            self._GETTER_CHAT_MESSAGE,
-            endpoint.ChatMessageAnnouncement.__name__,
-            self._GETTER_CHAT_MESSAGE_ANNOUNCEMENT
-        )
-
     def test_draft_payment_model(self):
         self.execute_notification_url_test(
             self.JSON_PATH_DRAFT_PAYMENT_MODEL,
