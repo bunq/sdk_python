@@ -1046,147 +1046,42 @@ class RequestInquiryReference(core.BunqModel):
         return converter.json_to_class(RequestInquiryReference, json_str)
 
 
-class ChatMessageContent(core.BunqModel, core.AnchoredObjectInterface):
+class Attachment(core.BunqModel):
     """
-    :param _ChatMessageContentAnchorEvent: 
-    :type _ChatMessageContentAnchorEvent: ChatMessageContentAnchorEvent
-    :param _ChatMessageContentAttachment: 
-    :type _ChatMessageContentAttachment: ChatMessageContentAttachment
-    :param _ChatMessageContentGeolocation: 
-    :type _ChatMessageContentGeolocation: ChatMessageContentGeolocation
-    :param _ChatMessageContentStatusConversationTitle: 
-    :type _ChatMessageContentStatusConversationTitle:
-    ChatMessageContentStatusConversationTitle
-    :param _ChatMessageContentStatusConversation: 
-    :type _ChatMessageContentStatusConversation:
-    ChatMessageContentStatusConversation
-    :param _ChatMessageContentStatusMembership: 
-    :type _ChatMessageContentStatusMembership:
-    ChatMessageContentStatusMembership
-    :param _ChatMessageContentText: 
-    :type _ChatMessageContentText: ChatMessageContentText
+    :param _description: The description of the attachment.
+    :type _description: str
+    :param _content_type: The content type of the attachment's file.
+    :type _content_type: str
     """
 
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    _ChatMessageContentAnchorEvent = None
-    _ChatMessageContentAttachment = None
-    _ChatMessageContentGeolocation = None
-    _ChatMessageContentStatusConversationTitle = None
-    _ChatMessageContentStatusConversation = None
-    _ChatMessageContentStatusMembership = None
-    _ChatMessageContentText = None
+    _description = None
+    _content_type = None
 
     @property
-    def ChatMessageContentAnchorEvent(self):
+    def description(self):
         """
-        :rtype: ChatMessageContentAnchorEvent
+        :rtype: str
         """
 
-        return self._ChatMessageContentAnchorEvent
+        return self._description
 
     @property
-    def ChatMessageContentAttachment(self):
+    def content_type(self):
         """
-        :rtype: ChatMessageContentAttachment
-        """
-
-        return self._ChatMessageContentAttachment
-
-    @property
-    def ChatMessageContentGeolocation(self):
-        """
-        :rtype: ChatMessageContentGeolocation
+        :rtype: str
         """
 
-        return self._ChatMessageContentGeolocation
-
-    @property
-    def ChatMessageContentStatusConversationTitle(self):
-        """
-        :rtype: ChatMessageContentStatusConversationTitle
-        """
-
-        return self._ChatMessageContentStatusConversationTitle
-
-    @property
-    def ChatMessageContentStatusConversation(self):
-        """
-        :rtype: ChatMessageContentStatusConversation
-        """
-
-        return self._ChatMessageContentStatusConversation
-
-    @property
-    def ChatMessageContentStatusMembership(self):
-        """
-        :rtype: ChatMessageContentStatusMembership
-        """
-
-        return self._ChatMessageContentStatusMembership
-
-    @property
-    def ChatMessageContentText(self):
-        """
-        :rtype: ChatMessageContentText
-        """
-
-        return self._ChatMessageContentText
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._ChatMessageContentAnchorEvent is not None:
-            return self._ChatMessageContentAnchorEvent
-
-        if self._ChatMessageContentAttachment is not None:
-            return self._ChatMessageContentAttachment
-
-        if self._ChatMessageContentGeolocation is not None:
-            return self._ChatMessageContentGeolocation
-
-        if self._ChatMessageContentStatusConversationTitle is not None:
-            return self._ChatMessageContentStatusConversationTitle
-
-        if self._ChatMessageContentStatusConversation is not None:
-            return self._ChatMessageContentStatusConversation
-
-        if self._ChatMessageContentStatusMembership is not None:
-            return self._ChatMessageContentStatusMembership
-
-        if self._ChatMessageContentText is not None:
-            return self._ChatMessageContentText
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        return self._content_type
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
-        if self._ChatMessageContentAnchorEvent is not None:
+        if self._description is not None:
             return False
 
-        if self._ChatMessageContentAttachment is not None:
-            return False
-
-        if self._ChatMessageContentGeolocation is not None:
-            return False
-
-        if self._ChatMessageContentStatusConversationTitle is not None:
-            return False
-
-        if self._ChatMessageContentStatusConversation is not None:
-            return False
-
-        if self._ChatMessageContentStatusMembership is not None:
-            return False
-
-        if self._ChatMessageContentText is not None:
+        if self._content_type is not None:
             return False
 
         return True
@@ -1196,39 +1091,48 @@ class ChatMessageContent(core.BunqModel, core.AnchoredObjectInterface):
         """
         :type json_str: str
         
-        :rtype: ChatMessageContent
+        :rtype: Attachment
         """
 
-        return converter.json_to_class(ChatMessageContent, json_str)
+        return converter.json_to_class(Attachment, json_str)
 
 
-class ChatMessageContentAnchorEvent(core.BunqModel):
+class BunqMeMerchantAvailable(core.BunqModel):
     """
-    :param _anchored_object: An anchored object. Can be one of: CardDebit,
-    CardPinChange, CardResult, DraftPayment, IdealMerchantTransaction, Invoice,
-    Payment, PaymentBatch, PromotionDisplay, RequestInquiryBatch,
-    RequestInquiry, RequestResponse, ScheduledPaymentBatch, ScheduledPayment,
-    ScheduledRequestInquiryBatch, ScheduledRequestInquiry, ScheduledInstance,
-    ShareInviteBankInquiry, ShareInviteBankResponse, UserCredentialPasswordIp
-    :type _anchored_object: AnchoredObject
+    :param _merchant_type: A merchant type supported by bunq.me.
+    :type _merchant_type: str
+    :param _available: Whether or not the merchant is available for the user.
+    :type _available: bool
     """
 
-    _anchored_object = None
+    _merchant_type = None
+    _available = None
 
     @property
-    def anchored_object(self):
+    def merchant_type(self):
         """
-        :rtype: AnchoredObject
+        :rtype: str
         """
 
-        return self._anchored_object
+        return self._merchant_type
+
+    @property
+    def available(self):
+        """
+        :rtype: bool
+        """
+
+        return self._available
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
-        if self._anchored_object is not None:
+        if self._merchant_type is not None:
+            return False
+
+        if self._available is not None:
             return False
 
         return True
@@ -1238,337 +1142,58 @@ class ChatMessageContentAnchorEvent(core.BunqModel):
         """
         :type json_str: str
         
-        :rtype: ChatMessageContentAnchorEvent
+        :rtype: BunqMeMerchantAvailable
         """
 
-        return converter.json_to_class(ChatMessageContentAnchorEvent, json_str)
+        return converter.json_to_class(BunqMeMerchantAvailable, json_str)
 
 
-class AnchoredObject(core.BunqModel, core.AnchoredObjectInterface):
+class AttachmentMonetaryAccountPayment(core.BunqModel):
     """
-    :param _CardDebit: 
-    :type _CardDebit: endpoint.CardDebit
-    :param _CardPinChange: 
-    :type _CardPinChange: endpoint.CardPinChange
-    :param _CardResult: 
-    :type _CardResult: endpoint.CardResult
-    :param _DraftPayment: 
-    :type _DraftPayment: endpoint.DraftPayment
-    :param _IdealMerchantTransaction: 
-    :type _IdealMerchantTransaction: endpoint.IdealMerchantTransaction
-    :param _Invoice: 
-    :type _Invoice: endpoint.Invoice
-    :param _Payment: 
-    :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
-    :type _PaymentBatch: endpoint.PaymentBatch
-    :param _PromotionDisplay: 
-    :type _PromotionDisplay: endpoint.PromotionDisplay
-    :param _RequestInquiryBatch: 
-    :type _RequestInquiryBatch: endpoint.RequestInquiryBatch
-    :param _RequestInquiry: 
-    :type _RequestInquiry: endpoint.RequestInquiry
-    :param _RequestResponse: 
-    :type _RequestResponse: endpoint.RequestResponse
-    :param _ScheduledPaymentBatch: 
-    :type _ScheduledPaymentBatch: endpoint.SchedulePaymentBatch
-    :param _ScheduledPayment: 
-    :type _ScheduledPayment: endpoint.SchedulePayment
-    :param _ScheduledInstance: 
-    :type _ScheduledInstance: endpoint.ScheduleInstance
-    :param _ShareInviteBankInquiry: 
-    :type _ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
-    :param _ShareInviteBankResponse: 
-    :type _ShareInviteBankResponse: endpoint.ShareInviteBankResponse
-    :param _UserCredentialPasswordIp: 
-    :type _UserCredentialPasswordIp: endpoint.UserCredentialPasswordIp
+    :param _id_: The id of the attached Attachment.
+    :type _id_: int
+    :param _monetary_account_id: The id of the MonetaryAccount this Attachment
+    is attached from.
+    :type _monetary_account_id: int
     """
 
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+    _id_ = None
+    _monetary_account_id = None
+    _id__field_for_request = None
 
-    _CardDebit = None
-    _CardPinChange = None
-    _CardResult = None
-    _DraftPayment = None
-    _IdealMerchantTransaction = None
-    _Invoice = None
-    _Payment = None
-    _PaymentBatch = None
-    _PromotionDisplay = None
-    _RequestInquiryBatch = None
-    _RequestInquiry = None
-    _RequestResponse = None
-    _ScheduledPaymentBatch = None
-    _ScheduledPayment = None
-    _ScheduledInstance = None
-    _ShareInviteBankInquiry = None
-    _ShareInviteBankResponse = None
-    _UserCredentialPasswordIp = None
+    def __init__(self, id_):
+        """
+        :param id_: The id of the Attachment to attach to the MonetaryAccount.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
 
     @property
-    def CardDebit(self):
+    def id_(self):
         """
-        :rtype: endpoint.CardDebit
+        :rtype: int
         """
 
-        return self._CardDebit
+        return self._id_
 
     @property
-    def CardPinChange(self):
+    def monetary_account_id(self):
         """
-        :rtype: endpoint.CardPinChange
-        """
-
-        return self._CardPinChange
-
-    @property
-    def CardResult(self):
-        """
-        :rtype: endpoint.CardResult
+        :rtype: int
         """
 
-        return self._CardResult
-
-    @property
-    def DraftPayment(self):
-        """
-        :rtype: endpoint.DraftPayment
-        """
-
-        return self._DraftPayment
-
-    @property
-    def IdealMerchantTransaction(self):
-        """
-        :rtype: endpoint.IdealMerchantTransaction
-        """
-
-        return self._IdealMerchantTransaction
-
-    @property
-    def Invoice(self):
-        """
-        :rtype: endpoint.Invoice
-        """
-
-        return self._Invoice
-
-    @property
-    def Payment(self):
-        """
-        :rtype: endpoint.Payment
-        """
-
-        return self._Payment
-
-    @property
-    def PaymentBatch(self):
-        """
-        :rtype: endpoint.PaymentBatch
-        """
-
-        return self._PaymentBatch
-
-    @property
-    def PromotionDisplay(self):
-        """
-        :rtype: endpoint.PromotionDisplay
-        """
-
-        return self._PromotionDisplay
-
-    @property
-    def RequestInquiryBatch(self):
-        """
-        :rtype: endpoint.RequestInquiryBatch
-        """
-
-        return self._RequestInquiryBatch
-
-    @property
-    def RequestInquiry(self):
-        """
-        :rtype: endpoint.RequestInquiry
-        """
-
-        return self._RequestInquiry
-
-    @property
-    def RequestResponse(self):
-        """
-        :rtype: endpoint.RequestResponse
-        """
-
-        return self._RequestResponse
-
-    @property
-    def ScheduledPaymentBatch(self):
-        """
-        :rtype: endpoint.SchedulePaymentBatch
-        """
-
-        return self._ScheduledPaymentBatch
-
-    @property
-    def ScheduledPayment(self):
-        """
-        :rtype: endpoint.SchedulePayment
-        """
-
-        return self._ScheduledPayment
-
-    @property
-    def ScheduledInstance(self):
-        """
-        :rtype: endpoint.ScheduleInstance
-        """
-
-        return self._ScheduledInstance
-
-    @property
-    def ShareInviteBankInquiry(self):
-        """
-        :rtype: endpoint.ShareInviteBankInquiry
-        """
-
-        return self._ShareInviteBankInquiry
-
-    @property
-    def ShareInviteBankResponse(self):
-        """
-        :rtype: endpoint.ShareInviteBankResponse
-        """
-
-        return self._ShareInviteBankResponse
-
-    @property
-    def UserCredentialPasswordIp(self):
-        """
-        :rtype: endpoint.UserCredentialPasswordIp
-        """
-
-        return self._UserCredentialPasswordIp
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._CardDebit is not None:
-            return self._CardDebit
-
-        if self._CardPinChange is not None:
-            return self._CardPinChange
-
-        if self._CardResult is not None:
-            return self._CardResult
-
-        if self._DraftPayment is not None:
-            return self._DraftPayment
-
-        if self._IdealMerchantTransaction is not None:
-            return self._IdealMerchantTransaction
-
-        if self._Invoice is not None:
-            return self._Invoice
-
-        if self._Payment is not None:
-            return self._Payment
-
-        if self._PaymentBatch is not None:
-            return self._PaymentBatch
-
-        if self._PromotionDisplay is not None:
-            return self._PromotionDisplay
-
-        if self._RequestInquiryBatch is not None:
-            return self._RequestInquiryBatch
-
-        if self._RequestInquiry is not None:
-            return self._RequestInquiry
-
-        if self._RequestResponse is not None:
-            return self._RequestResponse
-
-        if self._ScheduledPaymentBatch is not None:
-            return self._ScheduledPaymentBatch
-
-        if self._ScheduledPayment is not None:
-            return self._ScheduledPayment
-
-        if self._ScheduledInstance is not None:
-            return self._ScheduledInstance
-
-        if self._ShareInviteBankInquiry is not None:
-            return self._ShareInviteBankInquiry
-
-        if self._ShareInviteBankResponse is not None:
-            return self._ShareInviteBankResponse
-
-        if self._UserCredentialPasswordIp is not None:
-            return self._UserCredentialPasswordIp
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        return self._monetary_account_id
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
-        if self._CardDebit is not None:
+        if self._id_ is not None:
             return False
 
-        if self._CardPinChange is not None:
-            return False
-
-        if self._CardResult is not None:
-            return False
-
-        if self._DraftPayment is not None:
-            return False
-
-        if self._IdealMerchantTransaction is not None:
-            return False
-
-        if self._Invoice is not None:
-            return False
-
-        if self._Payment is not None:
-            return False
-
-        if self._PaymentBatch is not None:
-            return False
-
-        if self._PromotionDisplay is not None:
-            return False
-
-        if self._RequestInquiryBatch is not None:
-            return False
-
-        if self._RequestInquiry is not None:
-            return False
-
-        if self._RequestResponse is not None:
-            return False
-
-        if self._ScheduledPaymentBatch is not None:
-            return False
-
-        if self._ScheduledPayment is not None:
-            return False
-
-        if self._ScheduledInstance is not None:
-            return False
-
-        if self._ShareInviteBankInquiry is not None:
-            return False
-
-        if self._ShareInviteBankResponse is not None:
-            return False
-
-        if self._UserCredentialPasswordIp is not None:
+        if self._monetary_account_id is not None:
             return False
 
         return True
@@ -1578,10 +1203,112 @@ class AnchoredObject(core.BunqModel, core.AnchoredObjectInterface):
         """
         :type json_str: str
         
-        :rtype: AnchoredObject
+        :rtype: AttachmentMonetaryAccountPayment
         """
 
-        return converter.json_to_class(AnchoredObject, json_str)
+        return converter.json_to_class(AttachmentMonetaryAccountPayment,
+                                       json_str)
+
+
+class Geolocation(core.BunqModel):
+    """
+    :param _latitude: The latitude for a geolocation restriction.
+    :type _latitude: float
+    :param _longitude: The longitude for a geolocation restriction.
+    :type _longitude: float
+    :param _altitude: The altitude for a geolocation restriction.
+    :type _altitude: float
+    :param _radius: The radius for a geolocation restriction.
+    :type _radius: float
+    """
+
+    _latitude = None
+    _longitude = None
+    _altitude = None
+    _radius = None
+    _latitude_field_for_request = None
+    _longitude_field_for_request = None
+    _altitude_field_for_request = None
+    _radius_field_for_request = None
+
+    def __init__(self, latitude=None, longitude=None, altitude=None,
+                 radius=None):
+        """
+        :param latitude: The latitude for a geolocation restriction.
+        :type latitude: str
+        :param longitude: The longitude for a geolocation restriction.
+        :type longitude: str
+        :param altitude: The altitude for a geolocation restriction.
+        :type altitude: str
+        :param radius: The radius for a geolocation restriction.
+        :type radius: str
+        """
+
+        self._latitude_field_for_request = latitude
+        self._longitude_field_for_request = longitude
+        self._altitude_field_for_request = altitude
+        self._radius_field_for_request = radius
+
+    @property
+    def latitude(self):
+        """
+        :rtype: float
+        """
+
+        return self._latitude
+
+    @property
+    def longitude(self):
+        """
+        :rtype: float
+        """
+
+        return self._longitude
+
+    @property
+    def altitude(self):
+        """
+        :rtype: float
+        """
+
+        return self._altitude
+
+    @property
+    def radius(self):
+        """
+        :rtype: float
+        """
+
+        return self._radius
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._latitude is not None:
+            return False
+
+        if self._longitude is not None:
+            return False
+
+        if self._altitude is not None:
+            return False
+
+        if self._radius is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Geolocation
+        """
+
+        return converter.json_to_class(Geolocation, json_str)
 
 
 class CardLimit(core.BunqModel):
@@ -1832,28 +1559,324 @@ class CardPinAssignment(core.BunqModel):
         return converter.json_to_class(CardPinAssignment, json_str)
 
 
-class LabelCard(core.BunqModel):
+class CardMagStripePermission(core.BunqModel):
     """
-    :param _uuid: The public UUID.
+    :param _expiry_time: Expiry time of this rule.
+    :type _expiry_time: str
+    """
+
+    _expiry_time = None
+    _expiry_time_field_for_request = None
+
+    def __init__(self, expiry_time=None):
+        """
+        :param expiry_time: Expiry time of this rule.
+        :type expiry_time: str
+        """
+
+        self._expiry_time_field_for_request = expiry_time
+
+    @property
+    def expiry_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_time
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._expiry_time is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardMagStripePermission
+        """
+
+        return converter.json_to_class(CardMagStripePermission, json_str)
+
+
+class NotificationFilter(core.BunqModel):
+    """
+    :param _notification_delivery_method: The delivery method via which
+    notifications that match this notification filter will be delivered.
+    Possible choices are PUSH for delivery via push notification and URL for
+    delivery via URL callback.
+    :type _notification_delivery_method: str
+    :param _notification_target: The target of notifications that match this
+    notification filter. For URL notification filters this is the URL to which
+    the callback will be made. For PUSH notifications filters this should always
+    be null.
+    :type _notification_target: str
+    :param _category: The notification category that will match this
+    notification filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
+    CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
+    MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
+    SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
+    :type _category: str
+    """
+
+    _notification_delivery_method = None
+    _notification_target = None
+    _category = None
+    _notification_delivery_method_field_for_request = None
+    _notification_target_field_for_request = None
+    _category_field_for_request = None
+
+    def __init__(self, notification_delivery_method=None,
+                 notification_target=None, category=None):
+        """
+        :param notification_delivery_method: The delivery method via which
+        notifications that match this notification filter will be delivered.
+        Possible choices are PUSH for delivery via push notification and URL for
+        delivery via URL callback.
+        :type notification_delivery_method: str
+        :param notification_target: The target of notifications that match this
+        notification filter. For URL notification filters this is the URL to which
+        the callback will be made. For PUSH notifications filters this should always
+        be null.
+        :type notification_target: str
+        :param category: The notification category that will match this notification
+        filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
+        CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
+        MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
+        SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
+        :type category: str
+        """
+
+        self._notification_delivery_method_field_for_request = notification_delivery_method
+        self._notification_target_field_for_request = notification_target
+        self._category_field_for_request = category
+
+    @property
+    def notification_delivery_method(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_delivery_method
+
+    @property
+    def notification_target(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_target
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._notification_delivery_method is not None:
+            return False
+
+        if self._notification_target is not None:
+            return False
+
+        if self._category is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilter
+        """
+
+        return converter.json_to_class(NotificationFilter, json_str)
+
+
+class TabTextWaitingScreen(core.BunqModel):
+    """
+    :param _language: Language of tab text
+    :type _language: str
+    :param _description: Tab text
+    :type _description: str
+    """
+
+    _language = None
+    _description = None
+    _language_field_for_request = None
+    _description_field_for_request = None
+
+    def __init__(self, language=None, description=None):
+        """
+        :param language: Language of tab text
+        :type language: str
+        :param description: Tab text
+        :type description: str
+        """
+
+        self._language_field_for_request = language
+        self._description_field_for_request = description
+
+    @property
+    def language(self):
+        """
+        :rtype: str
+        """
+
+        return self._language
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._language is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabTextWaitingScreen
+        """
+
+        return converter.json_to_class(TabTextWaitingScreen, json_str)
+
+
+class TabVisibility(core.BunqModel):
+    """
+    :param _cash_register_qr_code: When true the tab will be linked to the
+    ACTIVE cash registers QR code.
+    :type _cash_register_qr_code: bool
+    :param _tab_qr_code: When true the tab will be visible through its own QR
+    code. Use ../tab/{tab-id}/qr-code-content to get the raw content of this QR
+    code
+    :type _tab_qr_code: bool
+    :param _location: The location of the Tab in NearPay.
+    :type _location: Geolocation
+    """
+
+    _cash_register_qr_code = None
+    _tab_qr_code = None
+    _location = None
+    _cash_register_qr_code_field_for_request = None
+    _tab_qr_code_field_for_request = None
+    _location_field_for_request = None
+
+    def __init__(self, cash_register_qr_code=None, tab_qr_code=None,
+                 location=None):
+        """
+        :param cash_register_qr_code: When true the Tab will be linked to the ACTIVE
+        cash registers QR code. If no cash register QR code exists, one will be
+        created.
+        :type cash_register_qr_code: bool
+        :param tab_qr_code: When true the Tab will be visible through its own QR
+        code. Use ../tab/{tab-id}/qr-code-content to get the raw content of this QR
+        code
+        :type tab_qr_code: bool
+        :param location: The location on which this tab will be made visible in
+        NearPay. This location must overlap with the location of the CashRegister.
+        If no location is provided the location of the CashRegister will be used.
+        :type location: Geolocation
+        """
+
+        self._cash_register_qr_code_field_for_request = cash_register_qr_code
+        self._tab_qr_code_field_for_request = tab_qr_code
+        self._location_field_for_request = location
+
+    @property
+    def cash_register_qr_code(self):
+        """
+        :rtype: bool
+        """
+
+        return self._cash_register_qr_code
+
+    @property
+    def tab_qr_code(self):
+        """
+        :rtype: bool
+        """
+
+        return self._tab_qr_code
+
+    @property
+    def location(self):
+        """
+        :rtype: Geolocation
+        """
+
+        return self._location
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._cash_register_qr_code is not None:
+            return False
+
+        if self._tab_qr_code is not None:
+            return False
+
+        if self._location is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabVisibility
+        """
+
+        return converter.json_to_class(TabVisibility, json_str)
+
+
+class AttachmentPublic(core.BunqModel):
+    """
+    :param _uuid: The uuid of the attachment.
     :type _uuid: str
-    :param _type_: The type of the card.
-    :type _type_: str
-    :param _second_line: The second line on the card.
-    :type _second_line: str
-    :param _expiry_date: The date this card will expire.
-    :type _expiry_date: str
-    :param _status: The status of the card.
-    :type _status: str
-    :param _label_user: The owner of this card.
-    :type _label_user: LabelUser
+    :param _description: The description of the attachment.
+    :type _description: str
+    :param _content_type: The content type of the attachment's file.
+    :type _content_type: str
     """
 
     _uuid = None
-    _type_ = None
-    _second_line = None
-    _expiry_date = None
-    _status = None
-    _label_user = None
+    _description = None
+    _content_type = None
 
     @property
     def uuid(self):
@@ -1864,44 +1887,20 @@ class LabelCard(core.BunqModel):
         return self._uuid
 
     @property
-    def type_(self):
+    def description(self):
         """
         :rtype: str
         """
 
-        return self._type_
+        return self._description
 
     @property
-    def second_line(self):
+    def content_type(self):
         """
         :rtype: str
         """
 
-        return self._second_line
-
-    @property
-    def expiry_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_date
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def label_user(self):
-        """
-        :rtype: LabelUser
-        """
-
-        return self._label_user
+        return self._content_type
 
     def is_all_field_none(self):
         """
@@ -1911,19 +1910,10 @@ class LabelCard(core.BunqModel):
         if self._uuid is not None:
             return False
 
-        if self._type_ is not None:
+        if self._description is not None:
             return False
 
-        if self._second_line is not None:
-            return False
-
-        if self._expiry_date is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._label_user is not None:
+        if self._content_type is not None:
             return False
 
         return True
@@ -1933,10 +1923,167 @@ class LabelCard(core.BunqModel):
         """
         :type json_str: str
         
-        :rtype: LabelCard
+        :rtype: AttachmentPublic
         """
 
-        return converter.json_to_class(LabelCard, json_str)
+        return converter.json_to_class(AttachmentPublic, json_str)
+
+
+class AttachmentTab(core.BunqModel):
+    """
+    :param _id_: The id of the attachment.
+    :type _id_: int
+    :param _description: The description of the attachment.
+    :type _description: str
+    :param _content_type: The content type of the attachment's file.
+    :type _content_type: str
+    """
+
+    _id_ = None
+    _description = None
+    _content_type = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def content_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._content_type
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._content_type is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentTab
+        """
+
+        return converter.json_to_class(AttachmentTab, json_str)
+
+
+class BunqId(core.BunqModel):
+    """
+    :param _id_: An integer ID of an object. Unique per object type.
+    :type _id_: int
+    """
+
+    _id_ = None
+    _id__field_for_request = None
+
+    def __init__(self, id_=None):
+        """
+        :param id_: An integer ID of an object. Unique per object type.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqId
+        """
+
+        return converter.json_to_class(BunqId, json_str)
+
+
+class Certificate(core.BunqModel):
+    """
+    :param _certificate: A single certificate in the chain in .PEM format.
+    :type _certificate: str
+    """
+
+    _certificate = None
+    _certificate_field_for_request = None
+
+    def __init__(self, certificate):
+        """
+        :param certificate: A single certificate in the chain in .PEM format.
+        :type certificate: str
+        """
+
+        self._certificate_field_for_request = certificate
+
+    @property
+    def certificate(self):
+        """
+        :rtype: str
+        """
+
+        return self._certificate
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._certificate is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Certificate
+        """
+
+        return converter.json_to_class(Certificate, json_str)
 
 
 class DraftPaymentResponse(core.BunqModel):
@@ -2162,68 +2309,6 @@ class DraftPaymentEntry(core.BunqModel):
         return converter.json_to_class(DraftPaymentEntry, json_str)
 
 
-class AttachmentMonetaryAccountPayment(core.BunqModel):
-    """
-    :param _id_: The id of the attached Attachment.
-    :type _id_: int
-    :param _monetary_account_id: The id of the MonetaryAccount this Attachment
-    is attached from.
-    :type _monetary_account_id: int
-    """
-
-    _id_ = None
-    _monetary_account_id = None
-    _id__field_for_request = None
-
-    def __init__(self, id_):
-        """
-        :param id_: The id of the Attachment to attach to the MonetaryAccount.
-        :type id_: int
-        """
-
-        self._id__field_for_request = id_
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: AttachmentMonetaryAccountPayment
-        """
-
-        return converter.json_to_class(AttachmentMonetaryAccountPayment,
-                                       json_str)
-
-
 class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :param _Payment: 
@@ -2292,378 +2377,75 @@ class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
         return converter.json_to_class(DraftPaymentAnchorObject, json_str)
 
 
-class Geolocation(core.BunqModel):
+class DraftShareInviteEntry(core.BunqModel):
     """
-    :param _latitude: The latitude for a geolocation restriction.
-    :type _latitude: float
-    :param _longitude: The longitude for a geolocation restriction.
-    :type _longitude: float
-    :param _altitude: The altitude for a geolocation restriction.
-    :type _altitude: float
-    :param _radius: The radius for a geolocation restriction.
-    :type _radius: float
-    """
-
-    _latitude = None
-    _longitude = None
-    _altitude = None
-    _radius = None
-    _latitude_field_for_request = None
-    _longitude_field_for_request = None
-    _altitude_field_for_request = None
-    _radius_field_for_request = None
-
-    def __init__(self, latitude=None, longitude=None, altitude=None,
-                 radius=None):
-        """
-        :param latitude: The latitude for a geolocation restriction.
-        :type latitude: str
-        :param longitude: The longitude for a geolocation restriction.
-        :type longitude: str
-        :param altitude: The altitude for a geolocation restriction.
-        :type altitude: str
-        :param radius: The radius for a geolocation restriction.
-        :type radius: str
-        """
-
-        self._latitude_field_for_request = latitude
-        self._longitude_field_for_request = longitude
-        self._altitude_field_for_request = altitude
-        self._radius_field_for_request = radius
-
-    @property
-    def latitude(self):
-        """
-        :rtype: float
-        """
-
-        return self._latitude
-
-    @property
-    def longitude(self):
-        """
-        :rtype: float
-        """
-
-        return self._longitude
-
-    @property
-    def altitude(self):
-        """
-        :rtype: float
-        """
-
-        return self._altitude
-
-    @property
-    def radius(self):
-        """
-        :rtype: float
-        """
-
-        return self._radius
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._latitude is not None:
-            return False
-
-        if self._longitude is not None:
-            return False
-
-        if self._altitude is not None:
-            return False
-
-        if self._radius is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Geolocation
-        """
-
-        return converter.json_to_class(Geolocation, json_str)
-
-
-class BunqId(core.BunqModel):
-    """
-    :param _id_: An integer ID of an object. Unique per object type.
-    :type _id_: int
+    :param _share_detail: The share details. Only one of these objects is
+    returned.
+    :type _share_detail: ShareDetail
+    :param _start_date: The start date of this share.
+    :type _start_date: str
+    :param _end_date: The expiration date of this share.
+    :type _end_date: str
     """
 
-    _id_ = None
-    _id__field_for_request = None
+    _share_detail = None
+    _start_date = None
+    _end_date = None
+    _share_detail_field_for_request = None
+    _start_date_field_for_request = None
+    _end_date_field_for_request = None
 
-    def __init__(self, id_=None):
+    def __init__(self, share_detail=None, start_date=None, end_date=None):
         """
-        :param id_: An integer ID of an object. Unique per object type.
-        :type id_: int
+        :param share_detail: The share details. Only one of these objects may be
+        passed.
+        :type share_detail: ShareDetail
+        :param start_date: The start date of this share.
+        :type start_date: str
+        :param end_date: The expiration date of this share.
+        :type end_date: str
         """
 
-        self._id__field_for_request = id_
+        self._share_detail_field_for_request = share_detail
+        self._start_date_field_for_request = start_date
+        self._end_date_field_for_request = end_date
 
     @property
-    def id_(self):
+    def share_detail(self):
         """
-        :rtype: int
-        """
-
-        return self._id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
+        :rtype: ShareDetail
         """
 
-        if self._id_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BunqId
-        """
-
-        return converter.json_to_class(BunqId, json_str)
-
-
-class RequestReferenceSplitTheBillAnchorObject(core.BunqModel,
-                                               core.AnchoredObjectInterface):
-    """
-    :param _BillingInvoice: 
-    :type _BillingInvoice: endpoint.Invoice
-    :param _DraftPayment: 
-    :type _DraftPayment: endpoint.DraftPayment
-    :param _MasterCardAction: 
-    :type _MasterCardAction: endpoint.MasterCardAction
-    :param _Payment: 
-    :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
-    :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestResponse: 
-    :type _RequestResponse: endpoint.RequestResponse
-    :param _ScheduleInstance: 
-    :type _ScheduleInstance: endpoint.ScheduleInstance
-    :param _TabResultResponse: 
-    :type _TabResultResponse: endpoint.TabResultResponse
-    :param _WhitelistResult: 
-    :type _WhitelistResult: endpoint.WhitelistResult
-    """
-
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    _BillingInvoice = None
-    _DraftPayment = None
-    _MasterCardAction = None
-    _Payment = None
-    _PaymentBatch = None
-    _RequestResponse = None
-    _ScheduleInstance = None
-    _TabResultResponse = None
-    _WhitelistResult = None
+        return self._share_detail
 
     @property
-    def BillingInvoice(self):
-        """
-        :rtype: endpoint.Invoice
-        """
-
-        return self._BillingInvoice
-
-    @property
-    def DraftPayment(self):
-        """
-        :rtype: endpoint.DraftPayment
-        """
-
-        return self._DraftPayment
-
-    @property
-    def MasterCardAction(self):
-        """
-        :rtype: endpoint.MasterCardAction
-        """
-
-        return self._MasterCardAction
-
-    @property
-    def Payment(self):
-        """
-        :rtype: endpoint.Payment
-        """
-
-        return self._Payment
-
-    @property
-    def PaymentBatch(self):
-        """
-        :rtype: endpoint.PaymentBatch
-        """
-
-        return self._PaymentBatch
-
-    @property
-    def RequestResponse(self):
-        """
-        :rtype: endpoint.RequestResponse
-        """
-
-        return self._RequestResponse
-
-    @property
-    def ScheduleInstance(self):
-        """
-        :rtype: endpoint.ScheduleInstance
-        """
-
-        return self._ScheduleInstance
-
-    @property
-    def TabResultResponse(self):
-        """
-        :rtype: endpoint.TabResultResponse
-        """
-
-        return self._TabResultResponse
-
-    @property
-    def WhitelistResult(self):
-        """
-        :rtype: endpoint.WhitelistResult
-        """
-
-        return self._WhitelistResult
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._BillingInvoice is not None:
-            return self._BillingInvoice
-
-        if self._DraftPayment is not None:
-            return self._DraftPayment
-
-        if self._MasterCardAction is not None:
-            return self._MasterCardAction
-
-        if self._Payment is not None:
-            return self._Payment
-
-        if self._PaymentBatch is not None:
-            return self._PaymentBatch
-
-        if self._RequestResponse is not None:
-            return self._RequestResponse
-
-        if self._ScheduleInstance is not None:
-            return self._ScheduleInstance
-
-        if self._TabResultResponse is not None:
-            return self._TabResultResponse
-
-        if self._WhitelistResult is not None:
-            return self._WhitelistResult
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._BillingInvoice is not None:
-            return False
-
-        if self._DraftPayment is not None:
-            return False
-
-        if self._MasterCardAction is not None:
-            return False
-
-        if self._Payment is not None:
-            return False
-
-        if self._PaymentBatch is not None:
-            return False
-
-        if self._RequestResponse is not None:
-            return False
-
-        if self._ScheduleInstance is not None:
-            return False
-
-        if self._TabResultResponse is not None:
-            return False
-
-        if self._WhitelistResult is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RequestReferenceSplitTheBillAnchorObject
-        """
-
-        return converter.json_to_class(RequestReferenceSplitTheBillAnchorObject,
-                                       json_str)
-
-
-class Attachment(core.BunqModel):
-    """
-    :param _description: The description of the attachment.
-    :type _description: str
-    :param _content_type: The content type of the attachment's file.
-    :type _content_type: str
-    """
-
-    _description = None
-    _content_type = None
-
-    @property
-    def description(self):
+    def start_date(self):
         """
         :rtype: str
         """
 
-        return self._description
+        return self._start_date
 
     @property
-    def content_type(self):
+    def end_date(self):
         """
         :rtype: str
         """
 
-        return self._content_type
+        return self._end_date
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
-        if self._description is not None:
+        if self._share_detail is not None:
             return False
 
-        if self._content_type is not None:
+        if self._start_date is not None:
+            return False
+
+        if self._end_date is not None:
             return False
 
         return True
@@ -2673,419 +2455,10 @@ class Attachment(core.BunqModel):
         """
         :type json_str: str
         
-        :rtype: Attachment
+        :rtype: DraftShareInviteEntry
         """
 
-        return converter.json_to_class(Attachment, json_str)
-
-
-class Error(core.BunqModel):
-    """
-    :param _error_description: The error description (in English).
-    :type _error_description: str
-    :param _error_description_translated: The error description (in the user
-    language).
-    :type _error_description_translated: str
-    """
-
-    _error_description = None
-    _error_description_translated = None
-
-    @property
-    def error_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description
-
-    @property
-    def error_description_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description_translated
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._error_description is not None:
-            return False
-
-        if self._error_description_translated is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Error
-        """
-
-        return converter.json_to_class(Error, json_str)
-
-
-class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
-    """
-    :param _Payment: 
-    :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
-    :type _PaymentBatch: endpoint.PaymentBatch
-    """
-
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    _Payment = None
-    _PaymentBatch = None
-
-    @property
-    def Payment(self):
-        """
-        :rtype: endpoint.Payment
-        """
-
-        return self._Payment
-
-    @property
-    def PaymentBatch(self):
-        """
-        :rtype: endpoint.PaymentBatch
-        """
-
-        return self._PaymentBatch
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._Payment is not None:
-            return self._Payment
-
-        if self._PaymentBatch is not None:
-            return self._PaymentBatch
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._Payment is not None:
-            return False
-
-        if self._PaymentBatch is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ScheduleAnchorObject
-        """
-
-        return converter.json_to_class(ScheduleAnchorObject, json_str)
-
-
-class ScheduleInstanceAnchorObject(core.BunqModel,
-                                   core.AnchoredObjectInterface):
-    """
-    :param _Payment: 
-    :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
-    :type _PaymentBatch: endpoint.PaymentBatch
-    """
-
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    _Payment = None
-    _PaymentBatch = None
-
-    @property
-    def Payment(self):
-        """
-        :rtype: endpoint.Payment
-        """
-
-        return self._Payment
-
-    @property
-    def PaymentBatch(self):
-        """
-        :rtype: endpoint.PaymentBatch
-        """
-
-        return self._PaymentBatch
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._Payment is not None:
-            return self._Payment
-
-        if self._PaymentBatch is not None:
-            return self._PaymentBatch
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._Payment is not None:
-            return False
-
-        if self._PaymentBatch is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ScheduleInstanceAnchorObject
-        """
-
-        return converter.json_to_class(ScheduleInstanceAnchorObject, json_str)
-
-
-class WhitelistResultViewAnchoredObject(core.BunqModel):
-    """
-    :param _id_: The ID of the whitelist entry.
-    :type _id_: int
-    :param _requestResponse: The RequestResponse object
-    :type _requestResponse: endpoint.RequestResponse
-    :param _draftPayment: The DraftPayment object
-    :type _draftPayment: endpoint.DraftPayment
-    """
-
-    _id_ = None
-    _requestResponse = None
-    _draftPayment = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def requestResponse(self):
-        """
-        :rtype: endpoint.RequestResponse
-        """
-
-        return self._requestResponse
-
-    @property
-    def draftPayment(self):
-        """
-        :rtype: endpoint.DraftPayment
-        """
-
-        return self._draftPayment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._requestResponse is not None:
-            return False
-
-        if self._draftPayment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: WhitelistResultViewAnchoredObject
-        """
-
-        return converter.json_to_class(WhitelistResultViewAnchoredObject,
-                                       json_str)
-
-
-class SchedulePaymentEntry(core.BunqModel):
-    """
-    :param _amount: The Amount transferred by the Payment. Will be negative for
-    outgoing Payments and positive for incoming Payments (relative to the
-    MonetaryAccount indicated by monetary_account_id).
-    :type _amount: Amount
-    :param _counterparty_alias: The LabelMonetaryAccount containing the public
-    information of the other (counterparty) side of the Payment.
-    :type _counterparty_alias: MonetaryAccountReference
-    :param _description: The description for the Payment. Maximum 140 characters
-    for Payments to external IBANs, 9000 characters for Payments to only other
-    bunq MonetaryAccounts.
-    :type _description: str
-    :param _attachment: The Attachments attached to the Payment.
-    :type _attachment: list[AttachmentMonetaryAccountPayment]
-    :param _merchant_reference: Optional data included with the Payment specific
-    to the merchant.
-    :type _merchant_reference: str
-    :param _allow_bunqto: Whether or not sending a bunq.to payment is allowed.
-    Mandatory for publicApi.
-    :type _allow_bunqto: bool
-    :param _alias: The LabelMonetaryAccount containing the public information of
-    'this' (party) side of the Payment.
-    :type _alias: MonetaryAccountReference
-    """
-
-    _amount = None
-    _alias = None
-    _counterparty_alias = None
-    _description = None
-    _attachment = None
-    _merchant_reference = None
-    _amount_field_for_request = None
-    _counterparty_alias_field_for_request = None
-    _description_field_for_request = None
-    _attachment_field_for_request = None
-    _merchant_reference_field_for_request = None
-    _allow_bunqto_field_for_request = None
-
-    def __init__(self, amount=None, counterparty_alias=None, description=None,
-                 attachment=None, merchant_reference=None, allow_bunqto=None):
-        """
-        :param amount: The Amount to transfer with the Payment. Must be bigger 0 and
-        smaller than the MonetaryAccount's balance.
-        :type amount: Amount
-        :param counterparty_alias: The Alias of the party we are transferring the
-        money to. Can be an Alias of type EMAIL or PHONE (for bunq MonetaryAccounts)
-        or IBAN (for external bank account).
-        :type counterparty_alias: Pointer
-        :param description: The description for the Payment. Maximum 140 characters
-        for Payments to external IBANs, 9000 characters for Payments to only other
-        bunq MonetaryAccounts. Field is required but can be an empty string.
-        :type description: str
-        :param attachment: The Attachments to attach to the Payment.
-        :type attachment: list[BunqId]
-        :param merchant_reference: Optional data to be included with the Payment
-        specific to the merchant.
-        :type merchant_reference: str
-        :param allow_bunqto: Whether or not sending a bunq.to payment is allowed.
-        Mandatory for publicApi.
-        :type allow_bunqto: bool
-        """
-
-        self._amount_field_for_request = amount
-        self._counterparty_alias_field_for_request = counterparty_alias
-        self._description_field_for_request = description
-        self._attachment_field_for_request = attachment
-        self._merchant_reference_field_for_request = merchant_reference
-        self._allow_bunqto_field_for_request = allow_bunqto
-
-    @property
-    def amount(self):
-        """
-        :rtype: Amount
-        """
-
-        return self._amount
-
-    @property
-    def alias(self):
-        """
-        :rtype: MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def attachment(self):
-        """
-        :rtype: list[AttachmentMonetaryAccountPayment]
-        """
-
-        return self._attachment
-
-    @property
-    def merchant_reference(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_reference
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._amount is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._attachment is not None:
-            return False
-
-        if self._merchant_reference is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: SchedulePaymentEntry
-        """
-
-        return converter.json_to_class(SchedulePaymentEntry, json_str)
+        return converter.json_to_class(DraftShareInviteEntry, json_str)
 
 
 class ShareDetail(core.BunqModel):
@@ -3588,693 +2961,6 @@ class ShareDetailDraftPayment(core.BunqModel):
         """
 
         return converter.json_to_class(ShareDetailDraftPayment, json_str)
-
-
-class PermittedDevice(core.BunqModel):
-    """
-    :param _description: The description of the device that may use the
-    credential.
-    :type _description: str
-    :param _ip: The IP address of the device that may use the credential.
-    :type _ip: str
-    """
-
-    _description = None
-    _ip = None
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def ip(self):
-        """
-        :rtype: str
-        """
-
-        return self._ip
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._description is not None:
-            return False
-
-        if self._ip is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PermittedDevice
-        """
-
-        return converter.json_to_class(PermittedDevice, json_str)
-
-
-class ChatMessageContentAttachment(core.BunqModel):
-    """
-    :param _attachment: An attachment.
-    :type _attachment: Attachment
-    """
-
-    _attachment = None
-
-    @property
-    def attachment(self):
-        """
-        :rtype: Attachment
-        """
-
-        return self._attachment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._attachment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageContentAttachment
-        """
-
-        return converter.json_to_class(ChatMessageContentAttachment, json_str)
-
-
-class ChatMessageContentGeolocation(core.BunqModel):
-    """
-    :param _geolocation: A geolocation, using WGS 84 coordinates.
-    :type _geolocation: Geolocation
-    """
-
-    _geolocation = None
-
-    @property
-    def geolocation(self):
-        """
-        :rtype: Geolocation
-        """
-
-        return self._geolocation
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._geolocation is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageContentGeolocation
-        """
-
-        return converter.json_to_class(ChatMessageContentGeolocation, json_str)
-
-
-class ChatMessageContentStatusConversationTitle(core.BunqModel):
-    """
-    :param _title: The new title of a conversation.
-    :type _title: str
-    """
-
-    _title = None
-
-    @property
-    def title(self):
-        """
-        :rtype: str
-        """
-
-        return self._title
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._title is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageContentStatusConversationTitle
-        """
-
-        return converter.json_to_class(
-            ChatMessageContentStatusConversationTitle, json_str)
-
-
-class ChatMessageContentStatusConversation(core.BunqModel):
-    """
-    :param _action: Action which occurred over a conversation. Always
-    CONVERSATION_CREATED
-    :type _action: str
-    """
-
-    _action = None
-
-    @property
-    def action(self):
-        """
-        :rtype: str
-        """
-
-        return self._action
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._action is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageContentStatusConversation
-        """
-
-        return converter.json_to_class(ChatMessageContentStatusConversation,
-                                       json_str)
-
-
-class ChatMessageContentStatusMembership(core.BunqModel):
-    """
-    :param _action: Action which occurred over a member. Could be MEMBER_ADDED
-    or MEMBER_REMOVED
-    :type _action: str
-    :param _member: The member over which the action has occurred.
-    :type _member: LabelUser
-    """
-
-    _action = None
-    _member = None
-
-    @property
-    def action(self):
-        """
-        :rtype: str
-        """
-
-        return self._action
-
-    @property
-    def member(self):
-        """
-        :rtype: LabelUser
-        """
-
-        return self._member
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._action is not None:
-            return False
-
-        if self._member is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageContentStatusMembership
-        """
-
-        return converter.json_to_class(ChatMessageContentStatusMembership,
-                                       json_str)
-
-
-class ChatMessageContentText(core.BunqModel):
-    """
-    :param _text: The text of the message.
-    :type _text: str
-    """
-
-    _text = None
-
-    @property
-    def text(self):
-        """
-        :rtype: str
-        """
-
-        return self._text
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._text is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageContentText
-        """
-
-        return converter.json_to_class(ChatMessageContentText, json_str)
-
-
-class BunqMeMerchantAvailable(core.BunqModel):
-    """
-    :param _merchant_type: A merchant type supported by bunq.me.
-    :type _merchant_type: str
-    :param _available: Whether or not the merchant is available for the user.
-    :type _available: bool
-    """
-
-    _merchant_type = None
-    _available = None
-
-    @property
-    def merchant_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_type
-
-    @property
-    def available(self):
-        """
-        :rtype: bool
-        """
-
-        return self._available
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._merchant_type is not None:
-            return False
-
-        if self._available is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BunqMeMerchantAvailable
-        """
-
-        return converter.json_to_class(BunqMeMerchantAvailable, json_str)
-
-
-class CardMagStripePermission(core.BunqModel):
-    """
-    :param _expiry_time: Expiry time of this rule.
-    :type _expiry_time: str
-    """
-
-    _expiry_time = None
-    _expiry_time_field_for_request = None
-
-    def __init__(self, expiry_time=None):
-        """
-        :param expiry_time: Expiry time of this rule.
-        :type expiry_time: str
-        """
-
-        self._expiry_time_field_for_request = expiry_time
-
-    @property
-    def expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_time
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._expiry_time is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardMagStripePermission
-        """
-
-        return converter.json_to_class(CardMagStripePermission, json_str)
-
-
-class NotificationFilter(core.BunqModel):
-    """
-    :param _notification_delivery_method: The delivery method via which
-    notifications that match this notification filter will be delivered.
-    Possible choices are PUSH for delivery via push notification and URL for
-    delivery via URL callback.
-    :type _notification_delivery_method: str
-    :param _notification_target: The target of notifications that match this
-    notification filter. For URL notification filters this is the URL to which
-    the callback will be made. For PUSH notifications filters this should always
-    be null.
-    :type _notification_target: str
-    :param _category: The notification category that will match this
-    notification filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
-    CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
-    MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
-    SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
-    :type _category: str
-    """
-
-    _notification_delivery_method = None
-    _notification_target = None
-    _category = None
-    _notification_delivery_method_field_for_request = None
-    _notification_target_field_for_request = None
-    _category_field_for_request = None
-
-    def __init__(self, notification_delivery_method=None,
-                 notification_target=None, category=None):
-        """
-        :param notification_delivery_method: The delivery method via which
-        notifications that match this notification filter will be delivered.
-        Possible choices are PUSH for delivery via push notification and URL for
-        delivery via URL callback.
-        :type notification_delivery_method: str
-        :param notification_target: The target of notifications that match this
-        notification filter. For URL notification filters this is the URL to which
-        the callback will be made. For PUSH notifications filters this should always
-        be null.
-        :type notification_target: str
-        :param category: The notification category that will match this notification
-        filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
-        CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
-        MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
-        SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
-        :type category: str
-        """
-
-        self._notification_delivery_method_field_for_request = notification_delivery_method
-        self._notification_target_field_for_request = notification_target
-        self._category_field_for_request = category
-
-    @property
-    def notification_delivery_method(self):
-        """
-        :rtype: str
-        """
-
-        return self._notification_delivery_method
-
-    @property
-    def notification_target(self):
-        """
-        :rtype: str
-        """
-
-        return self._notification_target
-
-    @property
-    def category(self):
-        """
-        :rtype: str
-        """
-
-        return self._category
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._notification_delivery_method is not None:
-            return False
-
-        if self._notification_target is not None:
-            return False
-
-        if self._category is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: NotificationFilter
-        """
-
-        return converter.json_to_class(NotificationFilter, json_str)
-
-
-class TabTextWaitingScreen(core.BunqModel):
-    """
-    :param _language: Language of tab text
-    :type _language: str
-    :param _description: Tab text
-    :type _description: str
-    """
-
-    _language = None
-    _description = None
-    _language_field_for_request = None
-    _description_field_for_request = None
-
-    def __init__(self, language=None, description=None):
-        """
-        :param language: Language of tab text
-        :type language: str
-        :param description: Tab text
-        :type description: str
-        """
-
-        self._language_field_for_request = language
-        self._description_field_for_request = description
-
-    @property
-    def language(self):
-        """
-        :rtype: str
-        """
-
-        return self._language
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._language is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabTextWaitingScreen
-        """
-
-        return converter.json_to_class(TabTextWaitingScreen, json_str)
-
-
-class Certificate(core.BunqModel):
-    """
-    :param _certificate: A single certificate in the chain in .PEM format.
-    :type _certificate: str
-    """
-
-    _certificate = None
-    _certificate_field_for_request = None
-
-    def __init__(self, certificate):
-        """
-        :param certificate: A single certificate in the chain in .PEM format.
-        :type certificate: str
-        """
-
-        self._certificate_field_for_request = certificate
-
-    @property
-    def certificate(self):
-        """
-        :rtype: str
-        """
-
-        return self._certificate
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._certificate is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Certificate
-        """
-
-        return converter.json_to_class(Certificate, json_str)
-
-
-class DraftShareInviteEntry(core.BunqModel):
-    """
-    :param _share_detail: The share details. Only one of these objects is
-    returned.
-    :type _share_detail: ShareDetail
-    :param _start_date: The start date of this share.
-    :type _start_date: str
-    :param _end_date: The expiration date of this share.
-    :type _end_date: str
-    """
-
-    _share_detail = None
-    _start_date = None
-    _end_date = None
-    _share_detail_field_for_request = None
-    _start_date_field_for_request = None
-    _end_date_field_for_request = None
-
-    def __init__(self, share_detail=None, start_date=None, end_date=None):
-        """
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: ShareDetail
-        :param start_date: The start date of this share.
-        :type start_date: str
-        :param end_date: The expiration date of this share.
-        :type end_date: str
-        """
-
-        self._share_detail_field_for_request = share_detail
-        self._start_date_field_for_request = start_date
-        self._end_date_field_for_request = end_date
-
-    @property
-    def share_detail(self):
-        """
-        :rtype: ShareDetail
-        """
-
-        return self._share_detail
-
-    @property
-    def start_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._start_date
-
-    @property
-    def end_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._end_date
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._share_detail is not None:
-            return False
-
-        if self._start_date is not None:
-            return False
-
-        if self._end_date is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: DraftShareInviteEntry
-        """
-
-        return converter.json_to_class(DraftShareInviteEntry, json_str)
 
 
 class MonetaryAccountProfileFill(core.BunqModel):
@@ -5200,19 +3886,28 @@ class NotificationAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
         return converter.json_to_class(NotificationAnchorObject, json_str)
 
 
-class AttachmentPublic(core.BunqModel):
+class LabelCard(core.BunqModel):
     """
-    :param _uuid: The uuid of the attachment.
+    :param _uuid: The public UUID.
     :type _uuid: str
-    :param _description: The description of the attachment.
-    :type _description: str
-    :param _content_type: The content type of the attachment's file.
-    :type _content_type: str
+    :param _type_: The type of the card.
+    :type _type_: str
+    :param _second_line: The second line on the card.
+    :type _second_line: str
+    :param _expiry_date: The date this card will expire.
+    :type _expiry_date: str
+    :param _status: The status of the card.
+    :type _status: str
+    :param _label_user: The owner of this card.
+    :type _label_user: LabelUser
     """
 
     _uuid = None
-    _description = None
-    _content_type = None
+    _type_ = None
+    _second_line = None
+    _expiry_date = None
+    _status = None
+    _label_user = None
 
     @property
     def uuid(self):
@@ -5223,20 +3918,44 @@ class AttachmentPublic(core.BunqModel):
         return self._uuid
 
     @property
-    def description(self):
+    def type_(self):
         """
         :rtype: str
         """
 
-        return self._description
+        return self._type_
 
     @property
-    def content_type(self):
+    def second_line(self):
         """
         :rtype: str
         """
 
-        return self._content_type
+        return self._second_line
+
+    @property
+    def expiry_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_date
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def label_user(self):
+        """
+        :rtype: LabelUser
+        """
+
+        return self._label_user
 
     def is_all_field_none(self):
         """
@@ -5246,10 +3965,19 @@ class AttachmentPublic(core.BunqModel):
         if self._uuid is not None:
             return False
 
-        if self._description is not None:
+        if self._type_ is not None:
             return False
 
-        if self._content_type is not None:
+        if self._second_line is not None:
+            return False
+
+        if self._expiry_date is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._label_user is not None:
             return False
 
         return True
@@ -5259,10 +3987,608 @@ class AttachmentPublic(core.BunqModel):
         """
         :type json_str: str
         
-        :rtype: AttachmentPublic
+        :rtype: LabelCard
         """
 
-        return converter.json_to_class(AttachmentPublic, json_str)
+        return converter.json_to_class(LabelCard, json_str)
+
+
+class RequestReferenceSplitTheBillAnchorObject(core.BunqModel,
+                                               core.AnchoredObjectInterface):
+    """
+    :param _BillingInvoice: 
+    :type _BillingInvoice: endpoint.Invoice
+    :param _DraftPayment: 
+    :type _DraftPayment: endpoint.DraftPayment
+    :param _MasterCardAction: 
+    :type _MasterCardAction: endpoint.MasterCardAction
+    :param _Payment: 
+    :type _Payment: endpoint.Payment
+    :param _PaymentBatch: 
+    :type _PaymentBatch: endpoint.PaymentBatch
+    :param _RequestResponse: 
+    :type _RequestResponse: endpoint.RequestResponse
+    :param _ScheduleInstance: 
+    :type _ScheduleInstance: endpoint.ScheduleInstance
+    :param _TabResultResponse: 
+    :type _TabResultResponse: endpoint.TabResultResponse
+    :param _WhitelistResult: 
+    :type _WhitelistResult: endpoint.WhitelistResult
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    _BillingInvoice = None
+    _DraftPayment = None
+    _MasterCardAction = None
+    _Payment = None
+    _PaymentBatch = None
+    _RequestResponse = None
+    _ScheduleInstance = None
+    _TabResultResponse = None
+    _WhitelistResult = None
+
+    @property
+    def BillingInvoice(self):
+        """
+        :rtype: endpoint.Invoice
+        """
+
+        return self._BillingInvoice
+
+    @property
+    def DraftPayment(self):
+        """
+        :rtype: endpoint.DraftPayment
+        """
+
+        return self._DraftPayment
+
+    @property
+    def MasterCardAction(self):
+        """
+        :rtype: endpoint.MasterCardAction
+        """
+
+        return self._MasterCardAction
+
+    @property
+    def Payment(self):
+        """
+        :rtype: endpoint.Payment
+        """
+
+        return self._Payment
+
+    @property
+    def PaymentBatch(self):
+        """
+        :rtype: endpoint.PaymentBatch
+        """
+
+        return self._PaymentBatch
+
+    @property
+    def RequestResponse(self):
+        """
+        :rtype: endpoint.RequestResponse
+        """
+
+        return self._RequestResponse
+
+    @property
+    def ScheduleInstance(self):
+        """
+        :rtype: endpoint.ScheduleInstance
+        """
+
+        return self._ScheduleInstance
+
+    @property
+    def TabResultResponse(self):
+        """
+        :rtype: endpoint.TabResultResponse
+        """
+
+        return self._TabResultResponse
+
+    @property
+    def WhitelistResult(self):
+        """
+        :rtype: endpoint.WhitelistResult
+        """
+
+        return self._WhitelistResult
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self._BillingInvoice is not None:
+            return self._BillingInvoice
+
+        if self._DraftPayment is not None:
+            return self._DraftPayment
+
+        if self._MasterCardAction is not None:
+            return self._MasterCardAction
+
+        if self._Payment is not None:
+            return self._Payment
+
+        if self._PaymentBatch is not None:
+            return self._PaymentBatch
+
+        if self._RequestResponse is not None:
+            return self._RequestResponse
+
+        if self._ScheduleInstance is not None:
+            return self._ScheduleInstance
+
+        if self._TabResultResponse is not None:
+            return self._TabResultResponse
+
+        if self._WhitelistResult is not None:
+            return self._WhitelistResult
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._BillingInvoice is not None:
+            return False
+
+        if self._DraftPayment is not None:
+            return False
+
+        if self._MasterCardAction is not None:
+            return False
+
+        if self._Payment is not None:
+            return False
+
+        if self._PaymentBatch is not None:
+            return False
+
+        if self._RequestResponse is not None:
+            return False
+
+        if self._ScheduleInstance is not None:
+            return False
+
+        if self._TabResultResponse is not None:
+            return False
+
+        if self._WhitelistResult is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestReferenceSplitTheBillAnchorObject
+        """
+
+        return converter.json_to_class(RequestReferenceSplitTheBillAnchorObject,
+                                       json_str)
+
+
+class Error(core.BunqModel):
+    """
+    :param _error_description: The error description (in English).
+    :type _error_description: str
+    :param _error_description_translated: The error description (in the user
+    language).
+    :type _error_description_translated: str
+    """
+
+    _error_description = None
+    _error_description_translated = None
+
+    @property
+    def error_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description
+
+    @property
+    def error_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description_translated
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._error_description is not None:
+            return False
+
+        if self._error_description_translated is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Error
+        """
+
+        return converter.json_to_class(Error, json_str)
+
+
+class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
+    """
+    :param _Payment: 
+    :type _Payment: endpoint.Payment
+    :param _PaymentBatch: 
+    :type _PaymentBatch: endpoint.PaymentBatch
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    _Payment = None
+    _PaymentBatch = None
+
+    @property
+    def Payment(self):
+        """
+        :rtype: endpoint.Payment
+        """
+
+        return self._Payment
+
+    @property
+    def PaymentBatch(self):
+        """
+        :rtype: endpoint.PaymentBatch
+        """
+
+        return self._PaymentBatch
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self._Payment is not None:
+            return self._Payment
+
+        if self._PaymentBatch is not None:
+            return self._PaymentBatch
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._Payment is not None:
+            return False
+
+        if self._PaymentBatch is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ScheduleAnchorObject
+        """
+
+        return converter.json_to_class(ScheduleAnchorObject, json_str)
+
+
+class ScheduleInstanceAnchorObject(core.BunqModel,
+                                   core.AnchoredObjectInterface):
+    """
+    :param _Payment: 
+    :type _Payment: endpoint.Payment
+    :param _PaymentBatch: 
+    :type _PaymentBatch: endpoint.PaymentBatch
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    _Payment = None
+    _PaymentBatch = None
+
+    @property
+    def Payment(self):
+        """
+        :rtype: endpoint.Payment
+        """
+
+        return self._Payment
+
+    @property
+    def PaymentBatch(self):
+        """
+        :rtype: endpoint.PaymentBatch
+        """
+
+        return self._PaymentBatch
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self._Payment is not None:
+            return self._Payment
+
+        if self._PaymentBatch is not None:
+            return self._PaymentBatch
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._Payment is not None:
+            return False
+
+        if self._PaymentBatch is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ScheduleInstanceAnchorObject
+        """
+
+        return converter.json_to_class(ScheduleInstanceAnchorObject, json_str)
+
+
+class WhitelistResultViewAnchoredObject(core.BunqModel):
+    """
+    :param _id_: The ID of the whitelist entry.
+    :type _id_: int
+    :param _requestResponse: The RequestResponse object
+    :type _requestResponse: endpoint.RequestResponse
+    :param _draftPayment: The DraftPayment object
+    :type _draftPayment: endpoint.DraftPayment
+    """
+
+    _id_ = None
+    _requestResponse = None
+    _draftPayment = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def requestResponse(self):
+        """
+        :rtype: endpoint.RequestResponse
+        """
+
+        return self._requestResponse
+
+    @property
+    def draftPayment(self):
+        """
+        :rtype: endpoint.DraftPayment
+        """
+
+        return self._draftPayment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._requestResponse is not None:
+            return False
+
+        if self._draftPayment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: WhitelistResultViewAnchoredObject
+        """
+
+        return converter.json_to_class(WhitelistResultViewAnchoredObject,
+                                       json_str)
+
+
+class SchedulePaymentEntry(core.BunqModel):
+    """
+    :param _amount: The Amount transferred by the Payment. Will be negative for
+    outgoing Payments and positive for incoming Payments (relative to the
+    MonetaryAccount indicated by monetary_account_id).
+    :type _amount: Amount
+    :param _counterparty_alias: The LabelMonetaryAccount containing the public
+    information of the other (counterparty) side of the Payment.
+    :type _counterparty_alias: MonetaryAccountReference
+    :param _description: The description for the Payment. Maximum 140 characters
+    for Payments to external IBANs, 9000 characters for Payments to only other
+    bunq MonetaryAccounts.
+    :type _description: str
+    :param _attachment: The Attachments attached to the Payment.
+    :type _attachment: list[AttachmentMonetaryAccountPayment]
+    :param _merchant_reference: Optional data included with the Payment specific
+    to the merchant.
+    :type _merchant_reference: str
+    :param _allow_bunqto: Whether or not sending a bunq.to payment is allowed.
+    Mandatory for publicApi.
+    :type _allow_bunqto: bool
+    :param _alias: The LabelMonetaryAccount containing the public information of
+    'this' (party) side of the Payment.
+    :type _alias: MonetaryAccountReference
+    """
+
+    _amount = None
+    _alias = None
+    _counterparty_alias = None
+    _description = None
+    _attachment = None
+    _merchant_reference = None
+    _amount_field_for_request = None
+    _counterparty_alias_field_for_request = None
+    _description_field_for_request = None
+    _attachment_field_for_request = None
+    _merchant_reference_field_for_request = None
+    _allow_bunqto_field_for_request = None
+
+    def __init__(self, amount=None, counterparty_alias=None, description=None,
+                 attachment=None, merchant_reference=None, allow_bunqto=None):
+        """
+        :param amount: The Amount to transfer with the Payment. Must be bigger 0 and
+        smaller than the MonetaryAccount's balance.
+        :type amount: Amount
+        :param counterparty_alias: The Alias of the party we are transferring the
+        money to. Can be an Alias of type EMAIL or PHONE (for bunq MonetaryAccounts)
+        or IBAN (for external bank account).
+        :type counterparty_alias: Pointer
+        :param description: The description for the Payment. Maximum 140 characters
+        for Payments to external IBANs, 9000 characters for Payments to only other
+        bunq MonetaryAccounts. Field is required but can be an empty string.
+        :type description: str
+        :param attachment: The Attachments to attach to the Payment.
+        :type attachment: list[BunqId]
+        :param merchant_reference: Optional data to be included with the Payment
+        specific to the merchant.
+        :type merchant_reference: str
+        :param allow_bunqto: Whether or not sending a bunq.to payment is allowed.
+        Mandatory for publicApi.
+        :type allow_bunqto: bool
+        """
+
+        self._amount_field_for_request = amount
+        self._counterparty_alias_field_for_request = counterparty_alias
+        self._description_field_for_request = description
+        self._attachment_field_for_request = attachment
+        self._merchant_reference_field_for_request = merchant_reference
+        self._allow_bunqto_field_for_request = allow_bunqto
+
+    @property
+    def amount(self):
+        """
+        :rtype: Amount
+        """
+
+        return self._amount
+
+    @property
+    def alias(self):
+        """
+        :rtype: MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[AttachmentMonetaryAccountPayment]
+        """
+
+        return self._attachment
+
+    @property
+    def merchant_reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_reference
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._merchant_reference is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SchedulePaymentEntry
+        """
+
+        return converter.json_to_class(SchedulePaymentEntry, json_str)
 
 
 class TaxResident(core.BunqModel):
@@ -5413,27 +4739,85 @@ class Ubo(core.BunqModel):
         return converter.json_to_class(Ubo, json_str)
 
 
-class AttachmentTab(core.BunqModel):
+class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
     """
-    :param _id_: The id of the attachment.
-    :type _id_: int
-    :param _description: The description of the attachment.
-    :type _description: str
-    :param _content_type: The content type of the attachment's file.
-    :type _content_type: str
+    :param _UserPerson: 
+    :type _UserPerson: endpoint.UserPerson
+    :param _UserCompany: 
+    :type _UserCompany: endpoint.UserCompany
     """
 
-    _id_ = None
-    _description = None
-    _content_type = None
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    _UserPerson = None
+    _UserCompany = None
 
     @property
-    def id_(self):
+    def UserPerson(self):
         """
-        :rtype: int
+        :rtype: endpoint.UserPerson
         """
 
-        return self._id_
+        return self._UserPerson
+
+    @property
+    def UserCompany(self):
+        """
+        :rtype: endpoint.UserCompany
+        """
+
+        return self._UserCompany
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self._UserPerson is not None:
+            return self._UserPerson
+
+        if self._UserCompany is not None:
+            return self._UserCompany
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._UserPerson is not None:
+            return False
+
+        if self._UserCompany is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserApiKeyAnchoredUser
+        """
+
+        return converter.json_to_class(UserApiKeyAnchoredUser, json_str)
+
+
+class PermittedDevice(core.BunqModel):
+    """
+    :param _description: The description of the device that may use the
+    credential.
+    :type _description: str
+    :param _ip: The IP address of the device that may use the credential.
+    :type _ip: str
+    """
+
+    _description = None
+    _ip = None
 
     @property
     def description(self):
@@ -5444,25 +4828,22 @@ class AttachmentTab(core.BunqModel):
         return self._description
 
     @property
-    def content_type(self):
+    def ip(self):
         """
         :rtype: str
         """
 
-        return self._content_type
+        return self._ip
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
-
-        if self._id_ is not None:
-            return False
 
         if self._description is not None:
             return False
 
-        if self._content_type is not None:
+        if self._ip is not None:
             return False
 
         return True
@@ -5472,102 +4853,10 @@ class AttachmentTab(core.BunqModel):
         """
         :type json_str: str
         
-        :rtype: AttachmentTab
+        :rtype: PermittedDevice
         """
 
-        return converter.json_to_class(AttachmentTab, json_str)
-
-
-class TabVisibility(core.BunqModel):
-    """
-    :param _cash_register_qr_code: When true the tab will be linked to the
-    ACTIVE cash registers QR code.
-    :type _cash_register_qr_code: bool
-    :param _tab_qr_code: When true the tab will be visible through its own QR
-    code. Use ../tab/{tab-id}/qr-code-content to get the raw content of this QR
-    code
-    :type _tab_qr_code: bool
-    :param _location: The location of the Tab in NearPay.
-    :type _location: Geolocation
-    """
-
-    _cash_register_qr_code = None
-    _tab_qr_code = None
-    _location = None
-    _cash_register_qr_code_field_for_request = None
-    _tab_qr_code_field_for_request = None
-    _location_field_for_request = None
-
-    def __init__(self, cash_register_qr_code=None, tab_qr_code=None,
-                 location=None):
-        """
-        :param cash_register_qr_code: When true the Tab will be linked to the ACTIVE
-        cash registers QR code. If no cash register QR code exists, one will be
-        created.
-        :type cash_register_qr_code: bool
-        :param tab_qr_code: When true the Tab will be visible through its own QR
-        code. Use ../tab/{tab-id}/qr-code-content to get the raw content of this QR
-        code
-        :type tab_qr_code: bool
-        :param location: The location on which this tab will be made visible in
-        NearPay. This location must overlap with the location of the CashRegister.
-        If no location is provided the location of the CashRegister will be used.
-        :type location: Geolocation
-        """
-
-        self._cash_register_qr_code_field_for_request = cash_register_qr_code
-        self._tab_qr_code_field_for_request = tab_qr_code
-        self._location_field_for_request = location
-
-    @property
-    def cash_register_qr_code(self):
-        """
-        :rtype: bool
-        """
-
-        return self._cash_register_qr_code
-
-    @property
-    def tab_qr_code(self):
-        """
-        :rtype: bool
-        """
-
-        return self._tab_qr_code
-
-    @property
-    def location(self):
-        """
-        :rtype: Geolocation
-        """
-
-        return self._location
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._cash_register_qr_code is not None:
-            return False
-
-        if self._tab_qr_code is not None:
-            return False
-
-        if self._location is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabVisibility
-        """
-
-        return converter.json_to_class(TabVisibility, json_str)
+        return converter.json_to_class(PermittedDevice, json_str)
 
 
 class MonetaryAccountReference(core.BunqModel):
