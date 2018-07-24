@@ -48,27 +48,6 @@ class TestPayment(BunqSdkTestCase):
             self._PAYMENT_DESCRIPTION
         )
 
-    def test_payment_chat(self):
-        """
-        Tests sending a chat message in a newly created payment
-
-        This test has no assertion as of its testing to see if the code runs
-        without errors
-        """
-
-        payment_id = endpoint.Payment.create(
-            object_.Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
-            self._get_pointer_bravo(),
-            self._PAYMENT_DESCRIPTION
-        ).value
-
-        chat_id = endpoint.PaymentChat.create(payment_id).value
-
-        endpoint.ChatMessageText.create(
-            chat_id,
-            self._PAYMENT_CHAT_TEXT_MESSAGE
-        )
-
     def test_payment_batch(self):
         """
         """

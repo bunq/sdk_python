@@ -137,7 +137,7 @@ class ApiContext(object):
         session_server = core.SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
-        user_id = session_server.get_referenced_object().id_
+        user_id = session_server.get_referenced_user().id_
 
         self._session_context = SessionContext(token, expiry_time, user_id)
 
@@ -164,8 +164,16 @@ class ApiContext(object):
 
         if session_server.user_company is not None:
             return session_server.user_company.session_timeout
-        else:
+        elif session_server.user_person is not None:
             return session_server.user_person.session_timeout
+        elif session_server.user_api_key is not None:
+            return session_server \
+                .user_api_key \
+                .requested_by_user \
+                .get_referenced_object() \
+                .session_timeout
+        else:
+            raise BunqException()
 
     def ensure_session_active(self) -> bool:
         """
@@ -433,6 +441,7 @@ class UserContext(object):
         self._user_id = user_id
         self._user_person = None
         self._user_company = None
+        self._user_api_key = None
         self._primary_monetary_account = None
 
         self._set_user(self.__get_user_object())
@@ -451,6 +460,9 @@ class UserContext(object):
 
         elif isinstance(user, endpoint.UserCompany):
             self._user_company = user
+
+        elif isinstance(user, endpoint.UserApiKey):
+            self._user_api_key = user
 
         else:
             raise BunqException(
@@ -476,21 +488,36 @@ class UserContext(object):
         :rtype: bool
         """
 
-        return self._user_person is not None and self._user_company is None
+        return self._user_person is not None \
+            and self._user_company is None \
+            and self._user_api_key is None
 
     def is_only_user_company_set(self):
         """
         :rtype: bool
         """
 
-        return self._user_company is not None and self._user_person is None
+        return self._user_company is not None \
+            and self._user_person is None \
+            and self._user_api_key is None
 
-    def is_both_user_type_set(self):
+    def is_only_user_api_key_set(self):
         """
         :rtype: bool
         """
 
-        return self._user_company is not None and self._user_person is not None
+        return self._user_api_key is not None \
+            and self._user_company is None \
+            and self._user_person is None
+
+    def is_all_user_type_set(self):
+        """
+        :rtype: bool
+        """
+
+        return self._user_company is not None \
+            and self._user_person is not None \
+            and self._user_api_key is not None
 
     def refresh_user_context(self):
         """
@@ -514,6 +541,14 @@ class UserContext(object):
         """
 
         return self._user_person
+
+    @property
+    def user_api_key(self):
+        """
+        :rtype: endpoint.UserApiKey
+        """
+
+        return self._user_api_key
 
     @property
     def primary_monetary_account(self):

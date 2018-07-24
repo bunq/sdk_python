@@ -140,6 +140,9 @@ class InstallationAdapter(converter.JsonAdapter):
 
 
 class SessionServerAdapter(converter.JsonAdapter):
+    # Error constants.
+    _ERROR_COULD_NOT_DETERMINE_USER = 'Could not determine user.'
+
     # Id constants
     _ATTRIBUTE_ID = '_id_'
     _INDEX_ID = 0
@@ -160,6 +163,10 @@ class SessionServerAdapter(converter.JsonAdapter):
     # UserPerson constants
     _ATTRIBUTE_USER_PERSON = '_user_person'
     _FIELD_USER_PERSON = 'UserPerson'
+
+    # UserApiKey constants
+    _ATTRIBUTE_USER_API_KEY = '_user_api_key'
+    _FIELD_USER_API_KEY = 'UserApiKey'
 
     @classmethod
     def deserialize(cls, target_class, array):
@@ -198,6 +205,14 @@ class SessionServerAdapter(converter.JsonAdapter):
                     endpoint.UserPerson,
                     user_dict_wrapped[cls._FIELD_USER_PERSON]
                 )
+        elif cls._FIELD_USER_API_KEY in user_dict_wrapped:
+            session_server.__dict__[cls._ATTRIBUTE_USER_API_KEY] = \
+            converter.deserialize(
+                endpoint.UserApiKey,
+                user_dict_wrapped[cls._FIELD_USER_API_KEY]
+            )
+        else:
+            raise BunqException(cls._ERROR_COULD_NOT_DETERMINE_USER)
 
         return session_server
 
@@ -219,6 +234,10 @@ class SessionServerAdapter(converter.JsonAdapter):
             {
                 cls._FIELD_USER_PERSON:
                     converter.serialize(session_server.user_person),
+            },
+            {
+                cls._FIELD_USER_API_KEY:
+                    converter.serialize(session_server.user_api_key),
             },
         ]
 

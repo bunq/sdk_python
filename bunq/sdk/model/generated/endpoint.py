@@ -669,7730 +669,6 @@ class InvoiceByUser(core.BunqModel):
         return converter.json_to_class(InvoiceByUser, json_str)
 
 
-class ChatConversation(core.BunqModel, core.AnchoredObjectInterface):
-    """
-    Manages user's conversations.
-    
-    :param _SupportConversationExternal: 
-    :type _SupportConversationExternal: ChatConversationSupportExternal
-    :param _ChatConversationReference: 
-    :type _ChatConversationReference: ChatConversationReference
-    """
-
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/chat-conversation"
-    _ENDPOINT_URL_READ = "user/{}/chat-conversation/{}"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ChatConversation"
-
-    _SupportConversationExternal = None
-    _ChatConversationReference = None
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseChatConversationList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseChatConversationList.cast_from_bunq_response(
-            cls._from_json_list(response_raw)
-        )
-
-    @classmethod
-    def get(cls, chat_conversation_id, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type chat_conversation_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseChatConversation
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     chat_conversation_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseChatConversation.cast_from_bunq_response(
-            cls._from_json(response_raw)
-        )
-
-    @property
-    def SupportConversationExternal(self):
-        """
-        :rtype: ChatConversationSupportExternal
-        """
-
-        return self._SupportConversationExternal
-
-    @property
-    def ChatConversationReference(self):
-        """
-        :rtype: ChatConversationReference
-        """
-
-        return self._ChatConversationReference
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._SupportConversationExternal is not None:
-            return self._SupportConversationExternal
-
-        if self._ChatConversationReference is not None:
-            return self._ChatConversationReference
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._SupportConversationExternal is not None:
-            return False
-
-        if self._ChatConversationReference is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatConversation
-        """
-
-        return converter.json_to_class(ChatConversation, json_str)
-
-
-class ChatConversationSupportExternal(core.BunqModel):
-    """
-    Manages user's support conversation.
-    
-    :param _id_: The id of this conversation.
-    :type _id_: int
-    :param _created: The timestamp of the support conversation's creation.
-    :type _created: str
-    :param _updated: The timestamp of the support conversation's last update.
-    :type _updated: str
-    :param _last_message: The last message posted to this conversation if any.
-    :type _last_message: ChatMessage
-    """
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _last_message = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def last_message(self):
-        """
-        :rtype: ChatMessage
-        """
-
-        return self._last_message
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._last_message is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatConversationSupportExternal
-        """
-
-        return converter.json_to_class(ChatConversationSupportExternal,
-                                       json_str)
-
-
-class ChatMessage(core.BunqModel, core.AnchoredObjectInterface):
-    """
-    Endpoint for retrieving the messages that are part of a conversation.
-    
-    :param _ChatMessageAnnouncement: 
-    :type _ChatMessageAnnouncement: ChatMessageAnnouncement
-    :param _ChatMessageStatus: 
-    :type _ChatMessageStatus: ChatMessageStatus
-    :param _ChatMessageUser: 
-    :type _ChatMessageUser: ChatMessageUser
-    """
-
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/chat-conversation/{}/message"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ChatMessage"
-
-    _ChatMessageAnnouncement = None
-    _ChatMessageStatus = None
-    _ChatMessageUser = None
-
-    @classmethod
-    def list(cls, chat_conversation_id, params=None, custom_headers=None):
-        """
-        Get all the messages that are part of a specific conversation.
-        
-        :type user_id: int
-        :type chat_conversation_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseChatMessageList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), chat_conversation_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseChatMessageList.cast_from_bunq_response(
-            cls._from_json_list(response_raw)
-        )
-
-    @property
-    def ChatMessageAnnouncement(self):
-        """
-        :rtype: ChatMessageAnnouncement
-        """
-
-        return self._ChatMessageAnnouncement
-
-    @property
-    def ChatMessageStatus(self):
-        """
-        :rtype: ChatMessageStatus
-        """
-
-        return self._ChatMessageStatus
-
-    @property
-    def ChatMessageUser(self):
-        """
-        :rtype: ChatMessageUser
-        """
-
-        return self._ChatMessageUser
-
-    def get_referenced_object(self):
-        """
-        :rtype: core.BunqModel
-        :raise: BunqException
-        """
-
-        if self._ChatMessageAnnouncement is not None:
-            return self._ChatMessageAnnouncement
-
-        if self._ChatMessageStatus is not None:
-            return self._ChatMessageStatus
-
-        if self._ChatMessageUser is not None:
-            return self._ChatMessageUser
-
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._ChatMessageAnnouncement is not None:
-            return False
-
-        if self._ChatMessageStatus is not None:
-            return False
-
-        if self._ChatMessageUser is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessage
-        """
-
-        return converter.json_to_class(ChatMessage, json_str)
-
-
-class ChatMessageAnnouncement(core.BunqModel):
-    """
-    Endpoint for retrieving the messages that are part of a conversation.
-    
-    :param _id_: The id of the message.
-    :type _id_: int
-    :param _created: The timestamp when the message was created.
-    :type _created: str
-    :param _updated: The timestamp when the message was last updated.
-    :type _updated: str
-    :param _conversation_id: The id of the conversation this message belongs to.
-    :type _conversation_id: int
-    :param _creator: The user who initiated the action that caused this message
-    to appear.
-    :type _creator: object_.LabelUser
-    :param _content: The content of this message.
-    :type _content: object_.ChatMessageContent
-    """
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _conversation_id = None
-    _creator = None
-    _content = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def conversation_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._conversation_id
-
-    @property
-    def creator(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._creator
-
-    @property
-    def content(self):
-        """
-        :rtype: object_.ChatMessageContent
-        """
-
-        return self._content
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._conversation_id is not None:
-            return False
-
-        if self._creator is not None:
-            return False
-
-        if self._content is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageAnnouncement
-        """
-
-        return converter.json_to_class(ChatMessageAnnouncement, json_str)
-
-
-class CardDebit(core.BunqModel):
-    """
-    With bunq it is possible to order debit cards that can then be connected
-    with each one of the monetary accounts the user has access to (including
-    connected accounts).
-    
-    :param _second_line: The second line of text on the card
-    :type _second_line: str
-    :param _name_on_card: The user's name as will be on the card
-    :type _name_on_card: str
-    :param _alias: The label for the user who requested the card.
-    :type _alias: object_.LabelUser
-    :param _type_: The type of the card. Can be MAESTRO, MASTERCARD.
-    :type _type_: str
-    :param _pin_code_assignment: Array of Types, PINs, account IDs assigned to
-    the card.
-    :type _pin_code_assignment: list[object_.CardPinAssignment]
-    :param _monetary_account_id_fallback: ID of the MA to be used as fallback
-    for this card if insufficient balance. Fallback account is removed if not
-    supplied.
-    :type _monetary_account_id_fallback: int
-    :param _id_: The id of the card.
-    :type _id_: int
-    :param _created: The timestamp when the card was crated.
-    :type _created: str
-    :param _updated: The timestamp when the card was last updated.
-    :type _updated: str
-    :param _public_uuid: The public UUID of the card.
-    :type _public_uuid: str
-    :param _sub_type: The sub_type of card.
-    :type _sub_type: str
-    :param _primary_account_number_four_digit: The last 4 digits of the PAN of
-    the card.
-    :type _primary_account_number_four_digit: str
-    :param _status: The status to set for the card. After ordering the card it
-    will be DEACTIVATED.
-    :type _status: str
-    :param _order_status: The order status of the card. After ordering the card
-    it will be NEW_CARD_REQUEST_RECEIVED.
-    :type _order_status: str
-    :param _expiry_date: The expiry date of the card.
-    :type _expiry_date: str
-    :param _limit: The limits to define for the card (e.g. 25 EUR for
-    CARD_LIMIT_CONTACTLESS).
-    :type _limit: list[object_.CardLimit]
-    :param _country_permission: The countries for which to grant (temporary)
-    permissions to use the card.
-    :type _country_permission: list[object_.CardCountryPermission]
-    :param _label_monetary_account_ordered: The monetary account this card was
-    ordered on and the label user that owns the card.
-    :type _label_monetary_account_ordered: object_.MonetaryAccountReference
-    :param _label_monetary_account_current: The monetary account that this card
-    is currently linked to and the label user viewing it.
-    :type _label_monetary_account_current: object_.MonetaryAccountReference
-    :param _country: The country that is domestic to the card. Defaults to
-    country of residence of user.
-    :type _country: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/card-debit"
-
-    # Field constants.
-    FIELD_SECOND_LINE = "second_line"
-    FIELD_NAME_ON_CARD = "name_on_card"
-    FIELD_ALIAS = "alias"
-    FIELD_TYPE = "type"
-    FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
-    FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
-
-    # Object type.
-    _OBJECT_TYPE_POST = "CardDebit"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _public_uuid = None
-    _type_ = None
-    _sub_type = None
-    _second_line = None
-    _name_on_card = None
-    _primary_account_number_four_digit = None
-    _status = None
-    _order_status = None
-    _expiry_date = None
-    _limit = None
-    _country_permission = None
-    _label_monetary_account_ordered = None
-    _label_monetary_account_current = None
-    _alias = None
-    _pin_code_assignment = None
-    _monetary_account_id_fallback = None
-    _country = None
-    _second_line_field_for_request = None
-    _name_on_card_field_for_request = None
-    _alias_field_for_request = None
-    _type__field_for_request = None
-    _pin_code_assignment_field_for_request = None
-    _monetary_account_id_fallback_field_for_request = None
-
-    def __init__(self, second_line, name_on_card, alias=None, type_=None,
-                 pin_code_assignment=None, monetary_account_id_fallback=None):
-        """
-        :param second_line: The second line of text on the card, used as
-        name/description for it. It can contain at most 17 characters and it can be
-        empty.
-        :type second_line: str
-        :param name_on_card: The user's name as it will be on the card. Check
-        'card-name' for the available card names for a user.
-        :type name_on_card: str
-        :param alias: The pointer to the monetary account that will be connected at
-        first with the card. Its IBAN code is also the one that will be printed on
-        the card itself. The pointer must be of type IBAN.
-        :type alias: object_.Pointer
-        :param type_: The type of card to order. Can be MAESTRO or MASTERCARD.
-        :type type_: str
-        :param pin_code_assignment: Array of Types, PINs, account IDs assigned to
-        the card.
-        :type pin_code_assignment: list[object_.CardPinAssignment]
-        :param monetary_account_id_fallback: ID of the MA to be used as fallback for
-        this card if insufficient balance. Fallback account is removed if not
-        supplied.
-        :type monetary_account_id_fallback: int
-        """
-
-        self._second_line_field_for_request = second_line
-        self._name_on_card_field_for_request = name_on_card
-        self._alias_field_for_request = alias
-        self._type__field_for_request = type_
-        self._pin_code_assignment_field_for_request = pin_code_assignment
-        self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
-
-    @classmethod
-    def create(cls, second_line, name_on_card, alias=None, type_=None,
-               pin_code_assignment=None, monetary_account_id_fallback=None,
-               custom_headers=None):
-        """
-        Create a new debit card request.
-        
-        :type user_id: int
-        :param second_line: The second line of text on the card, used as
-        name/description for it. It can contain at most 17 characters and it can
-        be empty.
-        :type second_line: str
-        :param name_on_card: The user's name as it will be on the card. Check
-        'card-name' for the available card names for a user.
-        :type name_on_card: str
-        :param alias: The pointer to the monetary account that will be connected
-        at first with the card. Its IBAN code is also the one that will be
-        printed on the card itself. The pointer must be of type IBAN.
-        :type alias: object_.Pointer
-        :param type_: The type of card to order. Can be MAESTRO or MASTERCARD.
-        :type type_: str
-        :param pin_code_assignment: Array of Types, PINs, account IDs assigned
-        to the card.
-        :type pin_code_assignment: list[object_.CardPinAssignment]
-        :param monetary_account_id_fallback: ID of the MA to be used as fallback
-        for this card if insufficient balance. Fallback account is removed if
-        not supplied.
-        :type monetary_account_id_fallback: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseCardDebit
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_SECOND_LINE: second_line,
-            cls.FIELD_NAME_ON_CARD: name_on_card,
-            cls.FIELD_ALIAS: alias,
-            cls.FIELD_TYPE: type_,
-            cls.FIELD_PIN_CODE_ASSIGNMENT: pin_code_assignment,
-            cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK: monetary_account_id_fallback
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
-                                         custom_headers)
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseCardDebit.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def sub_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_type
-
-    @property
-    def second_line(self):
-        """
-        :rtype: str
-        """
-
-        return self._second_line
-
-    @property
-    def name_on_card(self):
-        """
-        :rtype: str
-        """
-
-        return self._name_on_card
-
-    @property
-    def primary_account_number_four_digit(self):
-        """
-        :rtype: str
-        """
-
-        return self._primary_account_number_four_digit
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def order_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._order_status
-
-    @property
-    def expiry_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_date
-
-    @property
-    def limit(self):
-        """
-        :rtype: list[object_.CardLimit]
-        """
-
-        return self._limit
-
-    @property
-    def country_permission(self):
-        """
-        :rtype: list[object_.CardCountryPermission]
-        """
-
-        return self._country_permission
-
-    @property
-    def label_monetary_account_ordered(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_ordered
-
-    @property
-    def label_monetary_account_current(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_current
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._alias
-
-    @property
-    def pin_code_assignment(self):
-        """
-        :rtype: list[object_.CardPinAssignment]
-        """
-
-        return self._pin_code_assignment
-
-    @property
-    def monetary_account_id_fallback(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id_fallback
-
-    @property
-    def country(self):
-        """
-        :rtype: str
-        """
-
-        return self._country
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._sub_type is not None:
-            return False
-
-        if self._second_line is not None:
-            return False
-
-        if self._name_on_card is not None:
-            return False
-
-        if self._primary_account_number_four_digit is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._order_status is not None:
-            return False
-
-        if self._expiry_date is not None:
-            return False
-
-        if self._limit is not None:
-            return False
-
-        if self._country_permission is not None:
-            return False
-
-        if self._label_monetary_account_ordered is not None:
-            return False
-
-        if self._label_monetary_account_current is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._pin_code_assignment is not None:
-            return False
-
-        if self._monetary_account_id_fallback is not None:
-            return False
-
-        if self._country is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardDebit
-        """
-
-        return converter.json_to_class(CardDebit, json_str)
-
-
-class CardPinChange(core.BunqModel):
-    """
-    View for the pin change.
-    
-    :param _id_: The id of the pin change.
-    :type _id_: int
-    :param _label_card: The label of the card.
-    :type _label_card: object_.LabelCard
-    :param _label_monetary_account_current: The monetary account this card was
-    ordered on and the label user that owns the card.
-    :type _label_monetary_account_current: object_.MonetaryAccountReference
-    :param _time_request: The request date of the pin change.
-    :type _time_request: str
-    :param _time_accept: The acceptance date of the pin change.
-    :type _time_accept: str
-    :param _status: The status of the pin change request, PIN_UPDATE_REQUESTED
-    or PIN_UPDATE_ACCEPTED
-    :type _status: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/card/{}/pin-change"
-    _ENDPOINT_URL_READ = "user/{}/card/{}/pin-change/{}"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "CardPinChange"
-
-    _id_ = None
-    _label_card = None
-    _label_monetary_account_current = None
-    _time_request = None
-    _time_accept = None
-    _status = None
-
-    @classmethod
-    def list(cls, card_id, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type card_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseCardPinChangeList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), card_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseCardPinChangeList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def get(cls, card_id, card_pin_change_id, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type card_id: int
-        :type card_pin_change_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseCardPinChange
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     card_id,
-                                                     card_pin_change_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseCardPinChange.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def label_card(self):
-        """
-        :rtype: object_.LabelCard
-        """
-
-        return self._label_card
-
-    @property
-    def label_monetary_account_current(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_current
-
-    @property
-    def time_request(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_request
-
-    @property
-    def time_accept(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_accept
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._label_card is not None:
-            return False
-
-        if self._label_monetary_account_current is not None:
-            return False
-
-        if self._time_request is not None:
-            return False
-
-        if self._time_accept is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardPinChange
-        """
-
-        return converter.json_to_class(CardPinChange, json_str)
-
-
-class CardResult(core.BunqModel):
-    """
-    Endpoint for Card result requests (failed and successful transactions).
-    
-    :param _monetary_account_id: The id of the monetary account this card result
-    links to.
-    :type _monetary_account_id: int
-    :param _card_id: The id of the card this card result links to.
-    :type _card_id: int
-    :param _amount_original: The original amount of the message.
-    :type _amount_original: object_.Amount
-    :param _amount_final: The final amount of the message to be booked to the
-    account.
-    :type _amount_final: object_.Amount
-    :param _decision: Why the transaction was denied, if it was denied, or just
-    ALLOWED.
-    :type _decision: str
-    :param _decision_description: Empty if allowed, otherwise a textual
-    explanation of why it was denied.
-    :type _decision_description: str
-    :param _decision_description_translated: Empty if allowed, otherwise a
-    textual explanation of why it was denied in user's language.
-    :type _decision_description_translated: str
-    :param _description: The description for this transaction to display.
-    :type _description: str
-    :param _message_type: The type of message that this card result is created
-    for.
-    :type _message_type: str
-    :param _authorisation_type: The way the cardholder was authorised to the POS
-    or ATM.
-    :type _authorisation_type: str
-    :param _city: The city where the message originates from.
-    :type _city: str
-    :param _alias: The monetary account label of the account that this result is
-    created for.
-    :type _alias: object_.MonetaryAccountReference
-    :param _counterparty_alias: The monetary account label of the counterparty.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _label_card: The label of the card.
-    :type _label_card: object_.LabelCard
-    :param _reservation_status: The status of the reservation if the transaction
-    is a reservation.
-    :type _reservation_status: str
-    :param _reservation_expiry_time: The moment the reservation will expire.
-    :type _reservation_expiry_time: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/card-result/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/card-result"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "CardResult"
-
-    _monetary_account_id = None
-    _card_id = None
-    _amount_original = None
-    _amount_final = None
-    _decision = None
-    _decision_description = None
-    _decision_description_translated = None
-    _description = None
-    _message_type = None
-    _authorisation_type = None
-    _city = None
-    _alias = None
-    _counterparty_alias = None
-    _label_card = None
-    _reservation_status = None
-    _reservation_expiry_time = None
-
-    @classmethod
-    def get(cls, card_result_id, monetary_account_id=None, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type card_result_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseCardResult
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     card_result_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseCardResult.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseCardResultList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseCardResultList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def card_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._card_id
-
-    @property
-    def amount_original(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_original
-
-    @property
-    def amount_final(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_final
-
-    @property
-    def decision(self):
-        """
-        :rtype: str
-        """
-
-        return self._decision
-
-    @property
-    def decision_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._decision_description
-
-    @property
-    def decision_description_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._decision_description_translated
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def message_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._message_type
-
-    @property
-    def authorisation_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._authorisation_type
-
-    @property
-    def city(self):
-        """
-        :rtype: str
-        """
-
-        return self._city
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def label_card(self):
-        """
-        :rtype: object_.LabelCard
-        """
-
-        return self._label_card
-
-    @property
-    def reservation_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._reservation_status
-
-    @property
-    def reservation_expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._reservation_expiry_time
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._card_id is not None:
-            return False
-
-        if self._amount_original is not None:
-            return False
-
-        if self._amount_final is not None:
-            return False
-
-        if self._decision is not None:
-            return False
-
-        if self._decision_description is not None:
-            return False
-
-        if self._decision_description_translated is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._message_type is not None:
-            return False
-
-        if self._authorisation_type is not None:
-            return False
-
-        if self._city is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._label_card is not None:
-            return False
-
-        if self._reservation_status is not None:
-            return False
-
-        if self._reservation_expiry_time is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardResult
-        """
-
-        return converter.json_to_class(CardResult, json_str)
-
-
-class DraftPayment(core.BunqModel):
-    """
-    A DraftPayment is like a regular Payment, but it needs to be accepted by the
-    sending party before the actual Payment is done.
-    
-    :param _status: The status of the DraftPayment.
-    :type _status: str
-    :param _entries: The entries in the DraftPayment.
-    :type _entries: list[object_.DraftPaymentEntry]
-    :param _previous_updated_timestamp: The last updated_timestamp that you
-    received for this DraftPayment. This needs to be provided to prevent race
-    conditions.
-    :type _previous_updated_timestamp: str
-    :param _number_of_required_accepts: The number of accepts that are required
-    for the draft payment to receive status ACCEPTED. Currently only 1 is valid.
-    :type _number_of_required_accepts: int
-    :param _id_: The id of the created DrafPayment.
-    :type _id_: int
-    :param _monetary_account_id: The id of the MonetaryAccount the DraftPayment
-    applies to.
-    :type _monetary_account_id: int
-    :param _user_alias_created: The label of the User who created the
-    DraftPayment.
-    :type _user_alias_created: object_.LabelUser
-    :param _responses: All responses to this draft payment.
-    :type _responses: list[object_.DraftPaymentResponse]
-    :param _type_: The type of the DraftPayment.
-    :type _type_: str
-    :param _object_: The Payment or PaymentBatch. This will only be present
-    after the DraftPayment has been accepted.
-    :type _object_: object_.DraftPaymentAnchorObject
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/draft-payment"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/draft-payment/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/draft-payment"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/draft-payment/{}"
-
-    # Field constants.
-    FIELD_STATUS = "status"
-    FIELD_ENTRIES = "entries"
-    FIELD_PREVIOUS_UPDATED_TIMESTAMP = "previous_updated_timestamp"
-    FIELD_NUMBER_OF_REQUIRED_ACCEPTS = "number_of_required_accepts"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "DraftPayment"
-
-    _id_ = None
-    _monetary_account_id = None
-    _user_alias_created = None
-    _responses = None
-    _status = None
-    _type_ = None
-    _entries = None
-    _object_ = None
-    _request_reference_split_the_bill = None
-    _status_field_for_request = None
-    _entries_field_for_request = None
-    _previous_updated_timestamp_field_for_request = None
-    _number_of_required_accepts_field_for_request = None
-
-    def __init__(self, number_of_required_accepts, entries=None, status=None,
-                 previous_updated_timestamp=None):
-        """
-        :param entries: The list of entries in the DraftPayment. Each entry will
-        result in a payment when the DraftPayment is accepted.
-        :type entries: list[object_.DraftPaymentEntry]
-        :param number_of_required_accepts: The number of accepts that are required
-        for the draft payment to receive status ACCEPTED. Currently only 1 is valid.
-        :type number_of_required_accepts: int
-        :param status: The status of the DraftPayment.
-        :type status: str
-        :param previous_updated_timestamp: The last updated_timestamp that you
-        received for this DraftPayment. This needs to be provided to prevent race
-        conditions.
-        :type previous_updated_timestamp: str
-        """
-
-        self._entries_field_for_request = entries
-        self._number_of_required_accepts_field_for_request = number_of_required_accepts
-        self._status_field_for_request = status
-        self._previous_updated_timestamp_field_for_request = previous_updated_timestamp
-
-    @classmethod
-    def create(cls, entries, number_of_required_accepts,
-               monetary_account_id=None, status=None,
-               previous_updated_timestamp=None, custom_headers=None):
-        """
-        Create a new DraftPayment.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param entries: The list of entries in the DraftPayment. Each entry will
-        result in a payment when the DraftPayment is accepted.
-        :type entries: list[object_.DraftPaymentEntry]
-        :param number_of_required_accepts: The number of accepts that are
-        required for the draft payment to receive status ACCEPTED. Currently
-        only 1 is valid.
-        :type number_of_required_accepts: int
-        :param status: The status of the DraftPayment.
-        :type status: str
-        :param previous_updated_timestamp: The last updated_timestamp that you
-        received for this DraftPayment. This needs to be provided to prevent
-        race conditions.
-        :type previous_updated_timestamp: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_STATUS: status,
-            cls.FIELD_ENTRIES: entries,
-            cls.FIELD_PREVIOUS_UPDATED_TIMESTAMP: previous_updated_timestamp,
-            cls.FIELD_NUMBER_OF_REQUIRED_ACCEPTS: number_of_required_accepts
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, draft_payment_id, monetary_account_id=None, status=None,
-               entries=None, previous_updated_timestamp=None,
-               custom_headers=None):
-        """
-        Update a DraftPayment.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type draft_payment_id: int
-        :param status: The status of the DraftPayment.
-        :type status: str
-        :param entries: The list of entries in the DraftPayment. Each entry will
-        result in a payment when the DraftPayment is accepted.
-        :type entries: list[object_.DraftPaymentEntry]
-        :param previous_updated_timestamp: The last updated_timestamp that you
-        received for this DraftPayment. This needs to be provided to prevent
-        race conditions.
-        :type previous_updated_timestamp: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status,
-            cls.FIELD_ENTRIES: entries,
-            cls.FIELD_PREVIOUS_UPDATED_TIMESTAMP: previous_updated_timestamp
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       draft_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Get a listing of all DraftPayments from a given MonetaryAccount.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseDraftPaymentList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseDraftPaymentList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def get(cls, draft_payment_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Get a specific DraftPayment.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type draft_payment_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseDraftPayment
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     draft_payment_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseDraftPayment.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def user_alias_created(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_created
-
-    @property
-    def responses(self):
-        """
-        :rtype: list[object_.DraftPaymentResponse]
-        """
-
-        return self._responses
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def entries(self):
-        """
-        :rtype: list[object_.DraftPaymentEntry]
-        """
-
-        return self._entries
-
-    @property
-    def object_(self):
-        """
-        :rtype: object_.DraftPaymentAnchorObject
-        """
-
-        return self._object_
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._user_alias_created is not None:
-            return False
-
-        if self._responses is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._entries is not None:
-            return False
-
-        if self._object_ is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: DraftPayment
-        """
-
-        return converter.json_to_class(DraftPayment, json_str)
-
-
-class Payment(core.BunqModel):
-    """
-    Using Payment, you can send payments to bunq and non-bunq users from your
-    bunq MonetaryAccounts. This can be done using bunq Aliases or IBAN Aliases.
-    When transferring money to other bunq MonetaryAccounts you can also refer to
-    Attachments. These will be received by the counter-party as part of the
-    Payment. You can also retrieve a single Payment or all executed Payments of
-    a specific monetary account.
-    
-    :param _amount: The Amount transferred by the Payment. Will be negative for
-    outgoing Payments and positive for incoming Payments (relative to the
-    MonetaryAccount indicated by monetary_account_id).
-    :type _amount: object_.Amount
-    :param _counterparty_alias: The LabelMonetaryAccount containing the public
-    information of the other (counterparty) side of the Payment.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _description: The description for the Payment. Maximum 140 characters
-    for Payments to external IBANs, 9000 characters for Payments to only other
-    bunq MonetaryAccounts.
-    :type _description: str
-    :param _attachment: The Attachments attached to the Payment.
-    :type _attachment: list[object_.AttachmentMonetaryAccountPayment]
-    :param _merchant_reference: Optional data included with the Payment specific
-    to the merchant.
-    :type _merchant_reference: str
-    :param _id_: The id of the created Payment.
-    :type _id_: int
-    :param _created: The timestamp when the Payment was done.
-    :type _created: str
-    :param _updated: The timestamp when the Payment was last updated (will be
-    updated when chat messages are received).
-    :type _updated: str
-    :param _monetary_account_id: The id of the MonetaryAccount the Payment was
-    made to or from (depending on whether this is an incoming or outgoing
-    Payment).
-    :type _monetary_account_id: int
-    :param _alias: The LabelMonetaryAccount containing the public information of
-    'this' (party) side of the Payment.
-    :type _alias: object_.MonetaryAccountReference
-    :param _type_: The type of Payment, can be BUNQ, EBA_SCT, EBA_SDD, IDEAL,
-    SWIFT or FIS (card).
-    :type _type_: str
-    :param _sub_type: The sub-type of the Payment, can be PAYMENT, WITHDRAWAL,
-    REVERSAL, REQUEST, BILLING, SCT, SDD or NLO.
-    :type _sub_type: str
-    :param _bunqto_status: The status of the bunq.to payment.
-    :type _bunqto_status: str
-    :param _bunqto_sub_status: The sub status of the bunq.to payment.
-    :type _bunqto_sub_status: str
-    :param _bunqto_share_url: The status of the bunq.to payment.
-    :type _bunqto_share_url: str
-    :param _bunqto_expiry: When bunq.to payment is about to expire.
-    :type _bunqto_expiry: str
-    :param _bunqto_time_responded: The timestamp of when the bunq.to payment was
-    responded to.
-    :type _bunqto_time_responded: str
-    :param _batch_id: The id of the PaymentBatch if this Payment was part of
-    one.
-    :type _batch_id: int
-    :param _scheduled_id: The id of the JobScheduled if the Payment was
-    scheduled.
-    :type _scheduled_id: int
-    :param _address_shipping: A shipping Address provided with the Payment,
-    currently unused.
-    :type _address_shipping: object_.Address
-    :param _address_billing: A billing Address provided with the Payment,
-    currently unused.
-    :type _address_billing: object_.Address
-    :param _geolocation: The Geolocation where the Payment was done from.
-    :type _geolocation: object_.Geolocation
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment"
-
-    # Field constants.
-    FIELD_AMOUNT = "amount"
-    FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
-    FIELD_DESCRIPTION = "description"
-    FIELD_ATTACHMENT = "attachment"
-    FIELD_MERCHANT_REFERENCE = "merchant_reference"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "Payment"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _monetary_account_id = None
-    _amount = None
-    _alias = None
-    _counterparty_alias = None
-    _description = None
-    _type_ = None
-    _sub_type = None
-    _bunqto_status = None
-    _bunqto_sub_status = None
-    _bunqto_share_url = None
-    _bunqto_expiry = None
-    _bunqto_time_responded = None
-    _attachment = None
-    _merchant_reference = None
-    _batch_id = None
-    _scheduled_id = None
-    _address_shipping = None
-    _address_billing = None
-    _geolocation = None
-    _allow_chat = None
-    _request_reference_split_the_bill = None
-    _amount_field_for_request = None
-    _counterparty_alias_field_for_request = None
-    _description_field_for_request = None
-    _attachment_field_for_request = None
-    _merchant_reference_field_for_request = None
-
-    def __init__(self, amount, counterparty_alias, description, attachment=None,
-                 merchant_reference=None):
-        """
-        :param amount: The Amount to transfer with the Payment. Must be bigger than
-        0 and smaller than the MonetaryAccount's balance.
-        :type amount: object_.Amount
-        :param counterparty_alias: The Alias of the party we are transferring the
-        money to. Can be an Alias of type EMAIL or PHONE_NUMBER (for bunq
-        MonetaryAccounts or bunq.to payments) or IBAN (for external bank account).
-        :type counterparty_alias: object_.Pointer
-        :param description: The description for the Payment. Maximum 140 characters
-        for Payments to external IBANs, 9000 characters for Payments to only other
-        bunq MonetaryAccounts. Field is required but can be an empty string.
-        :type description: str
-        :param attachment: The Attachments to attach to the Payment.
-        :type attachment: list[object_.AttachmentMonetaryAccountPayment]
-        :param merchant_reference: Optional data to be included with the Payment
-        specific to the merchant.
-        :type merchant_reference: str
-        """
-
-        self._amount_field_for_request = amount
-        self._counterparty_alias_field_for_request = counterparty_alias
-        self._description_field_for_request = description
-        self._attachment_field_for_request = attachment
-        self._merchant_reference_field_for_request = merchant_reference
-
-    @classmethod
-    def create(cls, amount, counterparty_alias, description,
-               monetary_account_id=None, attachment=None,
-               merchant_reference=None, custom_headers=None):
-        """
-        Create a new Payment.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param amount: The Amount to transfer with the Payment. Must be bigger
-        than 0 and smaller than the MonetaryAccount's balance.
-        :type amount: object_.Amount
-        :param counterparty_alias: The Alias of the party we are transferring
-        the money to. Can be an Alias of type EMAIL or PHONE_NUMBER (for bunq
-        MonetaryAccounts or bunq.to payments) or IBAN (for external bank
-        account).
-        :type counterparty_alias: object_.Pointer
-        :param description: The description for the Payment. Maximum 140
-        characters for Payments to external IBANs, 9000 characters for Payments
-        to only other bunq MonetaryAccounts. Field is required but can be an
-        empty string.
-        :type description: str
-        :param attachment: The Attachments to attach to the Payment.
-        :type attachment: list[object_.AttachmentMonetaryAccountPayment]
-        :param merchant_reference: Optional data to be included with the Payment
-        specific to the merchant.
-        :type merchant_reference: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_AMOUNT: amount,
-            cls.FIELD_COUNTERPARTY_ALIAS: counterparty_alias,
-            cls.FIELD_DESCRIPTION: description,
-            cls.FIELD_ATTACHMENT: attachment,
-            cls.FIELD_MERCHANT_REFERENCE: merchant_reference
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, payment_id, monetary_account_id=None, custom_headers=None):
-        """
-        Get a specific previous Payment.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePayment
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     payment_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePayment.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Get a listing of all Payments performed on a given MonetaryAccount
-        (incoming and outgoing).
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def amount(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def sub_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_type
-
-    @property
-    def bunqto_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._bunqto_status
-
-    @property
-    def bunqto_sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._bunqto_sub_status
-
-    @property
-    def bunqto_share_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._bunqto_share_url
-
-    @property
-    def bunqto_expiry(self):
-        """
-        :rtype: str
-        """
-
-        return self._bunqto_expiry
-
-    @property
-    def bunqto_time_responded(self):
-        """
-        :rtype: str
-        """
-
-        return self._bunqto_time_responded
-
-    @property
-    def attachment(self):
-        """
-        :rtype: list[object_.AttachmentMonetaryAccountPayment]
-        """
-
-        return self._attachment
-
-    @property
-    def merchant_reference(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_reference
-
-    @property
-    def batch_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._batch_id
-
-    @property
-    def scheduled_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._scheduled_id
-
-    @property
-    def address_shipping(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_shipping
-
-    @property
-    def address_billing(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_billing
-
-    @property
-    def geolocation(self):
-        """
-        :rtype: object_.Geolocation
-        """
-
-        return self._geolocation
-
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._amount is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._sub_type is not None:
-            return False
-
-        if self._bunqto_status is not None:
-            return False
-
-        if self._bunqto_sub_status is not None:
-            return False
-
-        if self._bunqto_share_url is not None:
-            return False
-
-        if self._bunqto_expiry is not None:
-            return False
-
-        if self._bunqto_time_responded is not None:
-            return False
-
-        if self._attachment is not None:
-            return False
-
-        if self._merchant_reference is not None:
-            return False
-
-        if self._batch_id is not None:
-            return False
-
-        if self._scheduled_id is not None:
-            return False
-
-        if self._address_shipping is not None:
-            return False
-
-        if self._address_billing is not None:
-            return False
-
-        if self._geolocation is not None:
-            return False
-
-        if self._allow_chat is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Payment
-        """
-
-        return converter.json_to_class(Payment, json_str)
-
-
-class PaymentBatch(core.BunqModel):
-    """
-    Create a payment batch, or show the payment batches of a monetary account.
-    
-    :param _payments: The list of mutations that were made.
-    :type _payments: list[Payment]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-batch"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-batch/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-batch/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-batch"
-
-    # Field constants.
-    FIELD_PAYMENTS = "payments"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PaymentBatch"
-
-    _payments = None
-    _payments_field_for_request = None
-
-    def __init__(self, payments):
-        """
-        :param payments: The list of payments we want to send in a single batch.
-        :type payments: list[Payment]
-        """
-
-        self._payments_field_for_request = payments
-
-    @classmethod
-    def create(cls, payments, monetary_account_id=None, custom_headers=None):
-        """
-        Create a payment batch by sending an array of single payment objects,
-        that will become part of the batch.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param payments: The list of payments we want to send in a single batch.
-        :type payments: list[Payment]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_PAYMENTS: payments
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, payment_batch_id, monetary_account_id=None,
-               custom_headers=None):
-        """
-        Revoke a bunq.to payment batch. The status of all the payments will be
-        set to REVOKED.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, payment_batch_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Return the details of a specific payment batch.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentBatch
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     payment_batch_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePaymentBatch.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Return all the payment batches for a monetary account.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentBatchList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentBatchList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def payments(self):
-        """
-        :rtype: list[Payment]
-        """
-
-        return self._payments
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._payments is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentBatch
-        """
-
-        return converter.json_to_class(PaymentBatch, json_str)
-
-
-class IdealMerchantTransaction(core.BunqModel):
-    """
-    View for requesting iDEAL transactions and polling their status.
-    
-    :param _amount_requested: The requested amount of money to add.
-    :type _amount_requested: object_.Amount
-    :param _issuer: The BIC of the issuer.
-    :type _issuer: str
-    :param _monetary_account_id: The id of the monetary account this ideal
-    merchant transaction links to.
-    :type _monetary_account_id: int
-    :param _alias: The alias of the monetary account to add money to.
-    :type _alias: object_.MonetaryAccountReference
-    :param _counterparty_alias: The alias of the monetary account the money
-    comes from.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _amount_guaranteed: In case of a successful transaction, the amount
-    of money that will be transferred.
-    :type _amount_guaranteed: object_.Amount
-    :param _expiration: When the transaction will expire.
-    :type _expiration: str
-    :param _issuer_name: The Name of the issuer.
-    :type _issuer_name: str
-    :param _issuer_authentication_url: The URL to visit to 
-    :type _issuer_authentication_url: str
-    :param _purchase_identifier: The 'purchase ID' of the iDEAL transaction.
-    :type _purchase_identifier: str
-    :param _status: The status of the transaction.
-    :type _status: str
-    :param _status_timestamp: When the status was last updated.
-    :type _status_timestamp: str
-    :param _transaction_identifier: The 'transaction ID' of the iDEAL
-    transaction.
-    :type _transaction_identifier: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/ideal-merchant-transaction"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/ideal-merchant-transaction/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/ideal-merchant-transaction"
-
-    # Field constants.
-    FIELD_AMOUNT_REQUESTED = "amount_requested"
-    FIELD_ISSUER = "issuer"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "IdealMerchantTransaction"
-
-    _monetary_account_id = None
-    _alias = None
-    _counterparty_alias = None
-    _amount_guaranteed = None
-    _amount_requested = None
-    _expiration = None
-    _issuer = None
-    _issuer_name = None
-    _issuer_authentication_url = None
-    _purchase_identifier = None
-    _status = None
-    _status_timestamp = None
-    _transaction_identifier = None
-    _allow_chat = None
-    _amount_requested_field_for_request = None
-    _issuer_field_for_request = None
-
-    def __init__(self, amount_requested, issuer):
-        """
-        :param amount_requested: The requested amount of money to add.
-        :type amount_requested: object_.Amount
-        :param issuer: The BIC of the issuing bank to ask for money.
-        :type issuer: str
-        """
-
-        self._amount_requested_field_for_request = amount_requested
-        self._issuer_field_for_request = issuer
-
-    @classmethod
-    def create(cls, amount_requested, issuer, monetary_account_id=None,
-               custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :param amount_requested: The requested amount of money to add.
-        :type amount_requested: object_.Amount
-        :param issuer: The BIC of the issuing bank to ask for money.
-        :type issuer: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_AMOUNT_REQUESTED: amount_requested,
-            cls.FIELD_ISSUER: issuer
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, ideal_merchant_transaction_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type ideal_merchant_transaction_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseIdealMerchantTransaction
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     ideal_merchant_transaction_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseIdealMerchantTransaction.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseIdealMerchantTransactionList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseIdealMerchantTransactionList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def amount_guaranteed(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_guaranteed
-
-    @property
-    def amount_requested(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_requested
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def issuer(self):
-        """
-        :rtype: str
-        """
-
-        return self._issuer
-
-    @property
-    def issuer_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._issuer_name
-
-    @property
-    def issuer_authentication_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._issuer_authentication_url
-
-    @property
-    def purchase_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._purchase_identifier
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def status_timestamp(self):
-        """
-        :rtype: str
-        """
-
-        return self._status_timestamp
-
-    @property
-    def transaction_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._transaction_identifier
-
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._amount_guaranteed is not None:
-            return False
-
-        if self._amount_requested is not None:
-            return False
-
-        if self._expiration is not None:
-            return False
-
-        if self._issuer is not None:
-            return False
-
-        if self._issuer_name is not None:
-            return False
-
-        if self._issuer_authentication_url is not None:
-            return False
-
-        if self._purchase_identifier is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._status_timestamp is not None:
-            return False
-
-        if self._transaction_identifier is not None:
-            return False
-
-        if self._allow_chat is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: IdealMerchantTransaction
-        """
-
-        return converter.json_to_class(IdealMerchantTransaction, json_str)
-
-
-class PromotionDisplay(core.BunqModel):
-    """
-    The public endpoint for retrieving and updating a promotion display model.
-    
-    :param _status: The status of the promotion. (CREATED, CLAIMED, EXPIRED,
-    DISCARDED)
-    :type _status: str
-    :param _id_: The id of the promotion.
-    :type _id_: int
-    :param _counterparty_alias: The alias of the user you received the promotion
-    from.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _event_description: The event description of the promotion appearing
-    on time line.
-    :type _event_description: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/promotion-display/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/promotion-display/{}"
-
-    # Field constants.
-    FIELD_STATUS = "status"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PromotionDisplay"
-
-    _id_ = None
-    _counterparty_alias = None
-    _event_description = None
-    _status = None
-    _status_field_for_request = None
-
-    def __init__(self, status=None):
-        """
-        :param status: The status of the promotion. User can set it to discarded.
-        :type status: str
-        """
-
-        self._status_field_for_request = status
-
-    @classmethod
-    def get(cls, promotion_display_id, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type promotion_display_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePromotionDisplay
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     promotion_display_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePromotionDisplay.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls, promotion_display_id, status=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type promotion_display_id: int
-        :param status: The status of the promotion. User can set it to
-        discarded.
-        :type status: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       promotion_display_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def event_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._event_description
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._event_description is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PromotionDisplay
-        """
-
-        return converter.json_to_class(PromotionDisplay, json_str)
-
-
-class RequestInquiryBatch(core.BunqModel):
-    """
-    Create a batch of requests for payment, or show the request batches of a
-    monetary account.
-    
-    :param _request_inquiries: The list of requests that were made.
-    :type _request_inquiries: list[RequestInquiry]
-    :param _status: The status of the request.
-    :type _status: str
-    :param _total_amount_inquired: The total amount originally inquired for this
-    batch.
-    :type _total_amount_inquired: object_.Amount
-    :param _event_id: The ID of the associated event if the request batch was
-    made using 'split the bill'.
-    :type _event_id: int
-    :param _reference_split_the_bill: The reference to the object used for split
-    the bill. Can be Payment, PaymentBatch, ScheduleInstance, RequestResponse
-    and MasterCardAction
-    :type _reference_split_the_bill:
-    object_.RequestReferenceSplitTheBillAnchorObject
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/request-inquiry-batch"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-inquiry-batch/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/request-inquiry-batch/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-inquiry-batch"
-
-    # Field constants.
-    FIELD_REQUEST_INQUIRIES = "request_inquiries"
-    FIELD_STATUS = "status"
-    FIELD_TOTAL_AMOUNT_INQUIRED = "total_amount_inquired"
-    FIELD_EVENT_ID = "event_id"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "RequestInquiryBatch"
-
-    _request_inquiries = None
-    _total_amount_inquired = None
-    _reference_split_the_bill = None
-    _request_inquiries_field_for_request = None
-    _status_field_for_request = None
-    _total_amount_inquired_field_for_request = None
-    _event_id_field_for_request = None
-
-    def __init__(self, request_inquiries, total_amount_inquired, status=None,
-                 event_id=None):
-        """
-        :param request_inquiries: The list of request inquiries we want to send in 1
-        batch.
-        :type request_inquiries: list[RequestInquiry]
-        :param total_amount_inquired: The total amount originally inquired for this
-        batch.
-        :type total_amount_inquired: object_.Amount
-        :param status: The status of the request.
-        :type status: str
-        :param event_id: The ID of the associated event if the request batch was
-        made using 'split the bill'.
-        :type event_id: int
-        """
-
-        self._request_inquiries_field_for_request = request_inquiries
-        self._total_amount_inquired_field_for_request = total_amount_inquired
-        self._status_field_for_request = status
-        self._event_id_field_for_request = event_id
-
-    @classmethod
-    def create(cls, request_inquiries, total_amount_inquired,
-               monetary_account_id=None, status=None, event_id=None,
-               custom_headers=None):
-        """
-        Create a request batch by sending an array of single request objects,
-        that will become part of the batch.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param request_inquiries: The list of request inquiries we want to send
-        in 1 batch.
-        :type request_inquiries: list[RequestInquiry]
-        :param total_amount_inquired: The total amount originally inquired for
-        this batch.
-        :type total_amount_inquired: object_.Amount
-        :param status: The status of the request.
-        :type status: str
-        :param event_id: The ID of the associated event if the request batch was
-        made using 'split the bill'.
-        :type event_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_REQUEST_INQUIRIES: request_inquiries,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_TOTAL_AMOUNT_INQUIRED: total_amount_inquired,
-            cls.FIELD_EVENT_ID: event_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, request_inquiry_batch_id, monetary_account_id=None,
-               status=None, custom_headers=None):
-        """
-        Revoke a request batch. The status of all the requests will be set to
-        REVOKED.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_batch_id: int
-        :param status: The status of the request.
-        :type status: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, request_inquiry_batch_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Return the details of a specific request batch.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestInquiryBatch
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_inquiry_batch_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseRequestInquiryBatch.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Return all the request batches for a monetary account.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestInquiryBatchList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseRequestInquiryBatchList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def request_inquiries(self):
-        """
-        :rtype: list[RequestInquiry]
-        """
-
-        return self._request_inquiries
-
-    @property
-    def total_amount_inquired(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._total_amount_inquired
-
-    @property
-    def reference_split_the_bill(self):
-        """
-        :rtype: object_.RequestReferenceSplitTheBillAnchorObject
-        """
-
-        return self._reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._request_inquiries is not None:
-            return False
-
-        if self._total_amount_inquired is not None:
-            return False
-
-        if self._reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RequestInquiryBatch
-        """
-
-        return converter.json_to_class(RequestInquiryBatch, json_str)
-
-
-class RequestInquiry(core.BunqModel):
-    """
-    RequestInquiry, aka 'RFP' (Request for Payment), is one of the innovative
-    features that bunq offers. To request payment from another bunq account a
-    new Request Inquiry is created. As with payments you can add attachments to
-    a RFP. Requests for Payment are the foundation for a number of consumer
-    features like 'Split the bill' and 'Request forwarding'. We invite you to
-    invent your own based on the bunq api!
-    
-    :param _amount_inquired: The requested amount.
-    :type _amount_inquired: object_.Amount
-    :param _counterparty_alias: The LabelMonetaryAccount with the public
-    information of the MonetaryAccount the money was requested from.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _description: The description of the inquiry.
-    :type _description: str
-    :param _attachment: The attachments attached to the payment.
-    :type _attachment: list[object_.BunqId]
-    :param _merchant_reference: The client's custom reference that was attached
-    to the request and the mutation.
-    :type _merchant_reference: str
-    :param _status: The status of the request.
-    :type _status: str
-    :param _minimum_age: The minimum age the user accepting the RequestInquiry
-    must have.
-    :type _minimum_age: int
-    :param _require_address: Whether or not an address must be provided on
-    accept.
-    :type _require_address: str
-    :param _want_tip: [DEPRECATED] Whether or not the accepting user can give an
-    extra tip on top of the requested Amount. Defaults to false.
-    :type _want_tip: bool
-    :param _allow_amount_lower: [DEPRECATED] Whether or not the accepting user
-    can choose to accept with a lower amount than requested. Defaults to false.
-    :type _allow_amount_lower: bool
-    :param _allow_amount_higher: [DEPRECATED] Whether or not the accepting user
-    can choose to accept with a higher amount than requested. Defaults to false.
-    :type _allow_amount_higher: bool
-    :param _allow_bunqme: Whether or not sending a bunq.me request is allowed.
-    :type _allow_bunqme: bool
-    :param _redirect_url: The URL which the user is sent to after accepting or
-    rejecting the Request.
-    :type _redirect_url: str
-    :param _event_id: The ID of the associated event if the request was made
-    using 'split the bill'.
-    :type _event_id: int
-    :param _id_: The id of the created RequestInquiry.
-    :type _id_: int
-    :param _created: The timestamp of the payment request's creation.
-    :type _created: str
-    :param _updated: The timestamp of the payment request's last update.
-    :type _updated: str
-    :param _time_responded: The timestamp of when the payment request was
-    responded to.
-    :type _time_responded: str
-    :param _time_expiry: The timestamp of when the payment request expired.
-    :type _time_expiry: str
-    :param _monetary_account_id: The id of the monetary account the request
-    response applies to.
-    :type _monetary_account_id: int
-    :param _amount_responded: The responded amount.
-    :type _amount_responded: object_.Amount
-    :param _user_alias_created: The label that's displayed to the counterparty
-    with the mutation. Includes user.
-    :type _user_alias_created: object_.LabelUser
-    :param _user_alias_revoked: The label that's displayed to the counterparty
-    with the mutation. Includes user.
-    :type _user_alias_revoked: object_.LabelUser
-    :param _batch_id: The id of the batch if the request was part of a batch.
-    :type _batch_id: int
-    :param _scheduled_id: The id of the scheduled job if the request was
-    scheduled.
-    :type _scheduled_id: int
-    :param _bunqme_share_url: The url that points to the bunq.me request.
-    :type _bunqme_share_url: str
-    :param _address_shipping: The shipping address provided by the accepting
-    user if an address was requested.
-    :type _address_shipping: object_.Address
-    :param _address_billing: The billing address provided by the accepting user
-    if an address was requested.
-    :type _address_billing: object_.Address
-    :param _geolocation: The geolocation where the payment was done.
-    :type _geolocation: object_.Geolocation
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
-    :param _reference_split_the_bill: The reference to the object used for split
-    the bill. Can be Payment, PaymentBatch, ScheduleInstance, RequestResponse
-    and MasterCardAction
-    :type _reference_split_the_bill:
-    object_.RequestReferenceSplitTheBillAnchorObject
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/request-inquiry"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-inquiry/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-inquiry"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/request-inquiry/{}"
-
-    # Field constants.
-    FIELD_AMOUNT_INQUIRED = "amount_inquired"
-    FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
-    FIELD_DESCRIPTION = "description"
-    FIELD_ATTACHMENT = "attachment"
-    FIELD_MERCHANT_REFERENCE = "merchant_reference"
-    FIELD_STATUS = "status"
-    FIELD_MINIMUM_AGE = "minimum_age"
-    FIELD_REQUIRE_ADDRESS = "require_address"
-    FIELD_WANT_TIP = "want_tip"
-    FIELD_ALLOW_AMOUNT_LOWER = "allow_amount_lower"
-    FIELD_ALLOW_AMOUNT_HIGHER = "allow_amount_higher"
-    FIELD_ALLOW_BUNQME = "allow_bunqme"
-    FIELD_REDIRECT_URL = "redirect_url"
-    FIELD_EVENT_ID = "event_id"
-
-    # Object type.
-    _OBJECT_TYPE_PUT = "RequestInquiry"
-    _OBJECT_TYPE_GET = "RequestInquiry"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _time_responded = None
-    _time_expiry = None
-    _monetary_account_id = None
-    _amount_inquired = None
-    _amount_responded = None
-    _user_alias_created = None
-    _user_alias_revoked = None
-    _counterparty_alias = None
-    _description = None
-    _merchant_reference = None
-    _attachment = None
-    _status = None
-    _batch_id = None
-    _scheduled_id = None
-    _minimum_age = None
-    _require_address = None
-    _bunqme_share_url = None
-    _redirect_url = None
-    _address_shipping = None
-    _address_billing = None
-    _geolocation = None
-    _allow_chat = None
-    _reference_split_the_bill = None
-    _amount_inquired_field_for_request = None
-    _counterparty_alias_field_for_request = None
-    _description_field_for_request = None
-    _attachment_field_for_request = None
-    _merchant_reference_field_for_request = None
-    _status_field_for_request = None
-    _minimum_age_field_for_request = None
-    _require_address_field_for_request = None
-    _want_tip_field_for_request = None
-    _allow_amount_lower_field_for_request = None
-    _allow_amount_higher_field_for_request = None
-    _allow_bunqme_field_for_request = None
-    _redirect_url_field_for_request = None
-    _event_id_field_for_request = None
-
-    def __init__(self, amount_inquired, counterparty_alias, description,
-                 allow_bunqme, attachment=None, merchant_reference=None,
-                 status=None, minimum_age=None, require_address=None,
-                 want_tip=None, allow_amount_lower=None,
-                 allow_amount_higher=None, redirect_url=None, event_id=None):
-        """
-        :param amount_inquired: The Amount requested to be paid by the person the
-        RequestInquiry is sent to. Must be bigger than 0.
-        :type amount_inquired: object_.Amount
-        :param counterparty_alias: The Alias of the party we are requesting the
-        money from. Can be an Alias of type EMAIL, PHONE_NUMBER or IBAN. In case the
-        EMAIL or PHONE_NUMBER Alias does not refer to a bunq monetary account,
-        'allow_bunqme' needs to be 'true' in order to trigger the creation of a
-        bunq.me request. Otherwise no request inquiry will be sent.
-        :type counterparty_alias: object_.Pointer
-        :param description: The description for the RequestInquiry. Maximum 9000
-        characters. Field is required but can be an empty string.
-        :type description: str
-        :param allow_bunqme: Whether or not sending a bunq.me request is allowed.
-        :type allow_bunqme: bool
-        :param attachment: The Attachments to attach to the RequestInquiry.
-        :type attachment: list[object_.BunqId]
-        :param merchant_reference: Optional data to be included with the
-        RequestInquiry specific to the merchant. Has to be unique for the same
-        source MonetaryAccount.
-        :type merchant_reference: str
-        :param status: The status of the RequestInquiry. Ignored in POST requests
-        but can be used for revoking (cancelling) the RequestInquiry by setting
-        REVOKED with a PUT request.
-        :type status: str
-        :param minimum_age: The minimum age the user accepting the RequestInquiry
-        must have. Defaults to not checking. If set, must be between 12 and 100
-        inclusive.
-        :type minimum_age: int
-        :param require_address: Whether a billing and shipping address must be
-        provided when paying the request. Possible values are: BILLING, SHIPPING,
-        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
-        :type require_address: str
-        :param want_tip: [DEPRECATED] Whether or not the accepting user can give an
-        extra tip on top of the requested Amount. Defaults to false.
-        :type want_tip: bool
-        :param allow_amount_lower: [DEPRECATED] Whether or not the accepting user
-        can choose to accept with a lower amount than requested. Defaults to false.
-        :type allow_amount_lower: bool
-        :param allow_amount_higher: [DEPRECATED] Whether or not the accepting user
-        can choose to accept with a higher amount than requested. Defaults to false.
-        :type allow_amount_higher: bool
-        :param redirect_url: The URL which the user is sent to after accepting or
-        rejecting the Request.
-        :type redirect_url: str
-        :param event_id: The ID of the associated event if the request was made
-        using 'split the bill'.
-        :type event_id: int
-        """
-
-        self._amount_inquired_field_for_request = amount_inquired
-        self._counterparty_alias_field_for_request = counterparty_alias
-        self._description_field_for_request = description
-        self._allow_bunqme_field_for_request = allow_bunqme
-        self._attachment_field_for_request = attachment
-        self._merchant_reference_field_for_request = merchant_reference
-        self._status_field_for_request = status
-        self._minimum_age_field_for_request = minimum_age
-        self._require_address_field_for_request = require_address
-        self._want_tip_field_for_request = want_tip
-        self._allow_amount_lower_field_for_request = allow_amount_lower
-        self._allow_amount_higher_field_for_request = allow_amount_higher
-        self._redirect_url_field_for_request = redirect_url
-        self._event_id_field_for_request = event_id
-
-    @classmethod
-    def create(cls, amount_inquired, counterparty_alias, description,
-               allow_bunqme, monetary_account_id=None, attachment=None,
-               merchant_reference=None, status=None, minimum_age=None,
-               require_address=None, want_tip=None, allow_amount_lower=None,
-               allow_amount_higher=None, redirect_url=None, event_id=None,
-               custom_headers=None):
-        """
-        Create a new payment request.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param amount_inquired: The Amount requested to be paid by the person
-        the RequestInquiry is sent to. Must be bigger than 0.
-        :type amount_inquired: object_.Amount
-        :param counterparty_alias: The Alias of the party we are requesting the
-        money from. Can be an Alias of type EMAIL, PHONE_NUMBER or IBAN. In case
-        the EMAIL or PHONE_NUMBER Alias does not refer to a bunq monetary
-        account, 'allow_bunqme' needs to be 'true' in order to trigger the
-        creation of a bunq.me request. Otherwise no request inquiry will be
-        sent.
-        :type counterparty_alias: object_.Pointer
-        :param description: The description for the RequestInquiry. Maximum 9000
-        characters. Field is required but can be an empty string.
-        :type description: str
-        :param allow_bunqme: Whether or not sending a bunq.me request is
-        allowed.
-        :type allow_bunqme: bool
-        :param attachment: The Attachments to attach to the RequestInquiry.
-        :type attachment: list[object_.BunqId]
-        :param merchant_reference: Optional data to be included with the
-        RequestInquiry specific to the merchant. Has to be unique for the same
-        source MonetaryAccount.
-        :type merchant_reference: str
-        :param status: The status of the RequestInquiry. Ignored in POST
-        requests but can be used for revoking (cancelling) the RequestInquiry by
-        setting REVOKED with a PUT request.
-        :type status: str
-        :param minimum_age: The minimum age the user accepting the
-        RequestInquiry must have. Defaults to not checking. If set, must be
-        between 12 and 100 inclusive.
-        :type minimum_age: int
-        :param require_address: Whether a billing and shipping address must be
-        provided when paying the request. Possible values are: BILLING,
-        SHIPPING, BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
-        :type require_address: str
-        :param want_tip: [DEPRECATED] Whether or not the accepting user can give
-        an extra tip on top of the requested Amount. Defaults to false.
-        :type want_tip: bool
-        :param allow_amount_lower: [DEPRECATED] Whether or not the accepting
-        user can choose to accept with a lower amount than requested. Defaults
-        to false.
-        :type allow_amount_lower: bool
-        :param allow_amount_higher: [DEPRECATED] Whether or not the accepting
-        user can choose to accept with a higher amount than requested. Defaults
-        to false.
-        :type allow_amount_higher: bool
-        :param redirect_url: The URL which the user is sent to after accepting
-        or rejecting the Request.
-        :type redirect_url: str
-        :param event_id: The ID of the associated event if the request was made
-        using 'split the bill'.
-        :type event_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_AMOUNT_INQUIRED: amount_inquired,
-            cls.FIELD_COUNTERPARTY_ALIAS: counterparty_alias,
-            cls.FIELD_DESCRIPTION: description,
-            cls.FIELD_ATTACHMENT: attachment,
-            cls.FIELD_MERCHANT_REFERENCE: merchant_reference,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_MINIMUM_AGE: minimum_age,
-            cls.FIELD_REQUIRE_ADDRESS: require_address,
-            cls.FIELD_WANT_TIP: want_tip,
-            cls.FIELD_ALLOW_AMOUNT_LOWER: allow_amount_lower,
-            cls.FIELD_ALLOW_AMOUNT_HIGHER: allow_amount_higher,
-            cls.FIELD_ALLOW_BUNQME: allow_bunqme,
-            cls.FIELD_REDIRECT_URL: redirect_url,
-            cls.FIELD_EVENT_ID: event_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, request_inquiry_id, monetary_account_id=None, status=None,
-               custom_headers=None):
-        """
-        Revoke a request for payment, by updating the status to REVOKED.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_id: int
-        :param status: The status of the RequestInquiry. Ignored in POST
-        requests but can be used for revoking (cancelling) the RequestInquiry by
-        setting REVOKED with a PUT request.
-        :type status: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestInquiry
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseRequestInquiry.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Get all payment requests for a user's monetary account.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestInquiryList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseRequestInquiryList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def get(cls, request_inquiry_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Get the details of a specific payment request, including its status.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestInquiry
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_inquiry_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseRequestInquiry.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def time_responded(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_responded
-
-    @property
-    def time_expiry(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_expiry
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def amount_inquired(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_inquired
-
-    @property
-    def amount_responded(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_responded
-
-    @property
-    def user_alias_created(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_created
-
-    @property
-    def user_alias_revoked(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_revoked
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def merchant_reference(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_reference
-
-    @property
-    def attachment(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._attachment
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def batch_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._batch_id
-
-    @property
-    def scheduled_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._scheduled_id
-
-    @property
-    def minimum_age(self):
-        """
-        :rtype: int
-        """
-
-        return self._minimum_age
-
-    @property
-    def require_address(self):
-        """
-        :rtype: str
-        """
-
-        return self._require_address
-
-    @property
-    def bunqme_share_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._bunqme_share_url
-
-    @property
-    def redirect_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._redirect_url
-
-    @property
-    def address_shipping(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_shipping
-
-    @property
-    def address_billing(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_billing
-
-    @property
-    def geolocation(self):
-        """
-        :rtype: object_.Geolocation
-        """
-
-        return self._geolocation
-
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
-    def reference_split_the_bill(self):
-        """
-        :rtype: object_.RequestReferenceSplitTheBillAnchorObject
-        """
-
-        return self._reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._time_responded is not None:
-            return False
-
-        if self._time_expiry is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._amount_inquired is not None:
-            return False
-
-        if self._amount_responded is not None:
-            return False
-
-        if self._user_alias_created is not None:
-            return False
-
-        if self._user_alias_revoked is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._merchant_reference is not None:
-            return False
-
-        if self._attachment is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._batch_id is not None:
-            return False
-
-        if self._scheduled_id is not None:
-            return False
-
-        if self._minimum_age is not None:
-            return False
-
-        if self._require_address is not None:
-            return False
-
-        if self._bunqme_share_url is not None:
-            return False
-
-        if self._redirect_url is not None:
-            return False
-
-        if self._address_shipping is not None:
-            return False
-
-        if self._address_billing is not None:
-            return False
-
-        if self._geolocation is not None:
-            return False
-
-        if self._allow_chat is not None:
-            return False
-
-        if self._reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RequestInquiry
-        """
-
-        return converter.json_to_class(RequestInquiry, json_str)
-
-
-class MasterCardAction(core.BunqModel):
-    """
-    MasterCard transaction view.
-    
-    :param _id_: The id of the MastercardAction.
-    :type _id_: int
-    :param _monetary_account_id: The id of the monetary account this action
-    links to.
-    :type _monetary_account_id: int
-    :param _card_id: The id of the card this action links to.
-    :type _card_id: int
-    :param _amount_local: The amount of the transaction in local currency.
-    :type _amount_local: object_.Amount
-    :param _amount_billing: The amount of the transaction in the monetary
-    account's currency.
-    :type _amount_billing: object_.Amount
-    :param _amount_original_local: The original amount in local currency.
-    :type _amount_original_local: object_.Amount
-    :param _amount_original_billing: The original amount in the monetary
-    account's currency.
-    :type _amount_original_billing: object_.Amount
-    :param _amount_fee: The fee amount as charged by the merchant, if
-    applicable.
-    :type _amount_fee: object_.Amount
-    :param _decision: Why the transaction was denied, if it was denied, or just
-    ALLOWED.
-    :type _decision: str
-    :param _decision_description: Empty if allowed, otherwise a textual
-    explanation of why it was denied.
-    :type _decision_description: str
-    :param _decision_description_translated: Empty if allowed, otherwise a
-    textual explanation of why it was denied in user's language.
-    :type _decision_description_translated: str
-    :param _description: The description for this transaction to display.
-    :type _description: str
-    :param _authorisation_status: The status in the authorisation process.
-    :type _authorisation_status: str
-    :param _authorisation_type: The type of transaction that was delivered using
-    the card.
-    :type _authorisation_type: str
-    :param _pan_entry_mode_user: The type of entry mode the user used. Can be
-    'ATM', 'ICC', 'MAGNETIC_STRIPE' or 'E_COMMERCE'.
-    :type _pan_entry_mode_user: str
-    :param _city: The city where the message originates from as announced by the
-    terminal.
-    :type _city: str
-    :param _alias: The monetary account label of the account that this action is
-    created for.
-    :type _alias: object_.MonetaryAccountReference
-    :param _counterparty_alias: The monetary account label of the counterparty.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _label_card: The label of the card.
-    :type _label_card: object_.LabelCard
-    :param _token_status: If this is a tokenisation action, this shows the
-    status of the token.
-    :type _token_status: str
-    :param _reservation_expiry_time: If this is a reservation, the moment the
-    reservation will expire.
-    :type _reservation_expiry_time: str
-    :param _applied_limit: The type of the limit applied to validate if this
-    MasterCardAction was within the spending limits. The returned string matches
-    the limit types as defined in the card endpoint.
-    :type _applied_limit: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
-    :param _eligible_whitelist_id: The whitelist id for this mastercard action
-    or null.
-    :type _eligible_whitelist_id: int
-    :param _secure_code_id: The secure code id for this mastercard action or
-    null.
-    :type _secure_code_id: int
-    :param _wallet_provider_id: The ID of the wallet provider as defined by
-    MasterCard. 420 = bunq Android app with Tap&Pay; 103 = Apple Pay.
-    :type _wallet_provider_id: str
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/mastercard-action/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/mastercard-action"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MasterCardAction"
-
-    _id_ = None
-    _monetary_account_id = None
-    _card_id = None
-    _amount_local = None
-    _amount_billing = None
-    _amount_original_local = None
-    _amount_original_billing = None
-    _amount_fee = None
-    _decision = None
-    _decision_description = None
-    _decision_description_translated = None
-    _description = None
-    _authorisation_status = None
-    _authorisation_type = None
-    _pan_entry_mode_user = None
-    _city = None
-    _alias = None
-    _counterparty_alias = None
-    _label_card = None
-    _token_status = None
-    _reservation_expiry_time = None
-    _applied_limit = None
-    _allow_chat = None
-    _eligible_whitelist_id = None
-    _secure_code_id = None
-    _wallet_provider_id = None
-    _request_reference_split_the_bill = None
-
-    @classmethod
-    def get(cls, master_card_action_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type master_card_action_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMasterCardAction
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     master_card_action_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMasterCardAction.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMasterCardActionList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMasterCardActionList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def card_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._card_id
-
-    @property
-    def amount_local(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_local
-
-    @property
-    def amount_billing(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_billing
-
-    @property
-    def amount_original_local(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_original_local
-
-    @property
-    def amount_original_billing(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_original_billing
-
-    @property
-    def amount_fee(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_fee
-
-    @property
-    def decision(self):
-        """
-        :rtype: str
-        """
-
-        return self._decision
-
-    @property
-    def decision_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._decision_description
-
-    @property
-    def decision_description_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._decision_description_translated
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def authorisation_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._authorisation_status
-
-    @property
-    def authorisation_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._authorisation_type
-
-    @property
-    def pan_entry_mode_user(self):
-        """
-        :rtype: str
-        """
-
-        return self._pan_entry_mode_user
-
-    @property
-    def city(self):
-        """
-        :rtype: str
-        """
-
-        return self._city
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def label_card(self):
-        """
-        :rtype: object_.LabelCard
-        """
-
-        return self._label_card
-
-    @property
-    def token_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._token_status
-
-    @property
-    def reservation_expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._reservation_expiry_time
-
-    @property
-    def applied_limit(self):
-        """
-        :rtype: str
-        """
-
-        return self._applied_limit
-
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
-    def eligible_whitelist_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._eligible_whitelist_id
-
-    @property
-    def secure_code_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._secure_code_id
-
-    @property
-    def wallet_provider_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._wallet_provider_id
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._card_id is not None:
-            return False
-
-        if self._amount_local is not None:
-            return False
-
-        if self._amount_billing is not None:
-            return False
-
-        if self._amount_original_local is not None:
-            return False
-
-        if self._amount_original_billing is not None:
-            return False
-
-        if self._amount_fee is not None:
-            return False
-
-        if self._decision is not None:
-            return False
-
-        if self._decision_description is not None:
-            return False
-
-        if self._decision_description_translated is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._authorisation_status is not None:
-            return False
-
-        if self._authorisation_type is not None:
-            return False
-
-        if self._pan_entry_mode_user is not None:
-            return False
-
-        if self._city is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._label_card is not None:
-            return False
-
-        if self._token_status is not None:
-            return False
-
-        if self._reservation_expiry_time is not None:
-            return False
-
-        if self._applied_limit is not None:
-            return False
-
-        if self._allow_chat is not None:
-            return False
-
-        if self._eligible_whitelist_id is not None:
-            return False
-
-        if self._secure_code_id is not None:
-            return False
-
-        if self._wallet_provider_id is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MasterCardAction
-        """
-
-        return converter.json_to_class(MasterCardAction, json_str)
-
-
-class RequestResponse(core.BunqModel):
-    """
-    A RequestResponse is what a user on the other side of a RequestInquiry gets
-    when he is sent one. So a RequestInquiry is the initiator and visible for
-    the user that sent it and that wants to receive the money. A RequestResponse
-    is what the other side sees, i.e. the user that pays the money to accept the
-    request. The content is almost identical.
-    
-    :param _amount_responded: The Amount the RequestResponse was accepted with.
-    :type _amount_responded: object_.Amount
-    :param _status: The status of the RequestResponse. Can be ACCEPTED, PENDING,
-    REJECTED or REVOKED.
-    :type _status: str
-    :param _address_shipping: The shipping address provided by the accepting
-    user if an address was requested.
-    :type _address_shipping: object_.Address
-    :param _address_billing: The billing address provided by the accepting user
-    if an address was requested.
-    :type _address_billing: object_.Address
-    :param _id_: The id of the Request Response.
-    :type _id_: int
-    :param _created: The timestamp when the Request Response was created.
-    :type _created: str
-    :param _updated: The timestamp when the Request Response was last updated
-    (will be updated when chat messages are received).
-    :type _updated: str
-    :param _time_responded: The timestamp of when the RequestResponse was
-    responded to.
-    :type _time_responded: str
-    :param _time_expiry: The timestamp of when the RequestResponse expired or
-    will expire.
-    :type _time_expiry: str
-    :param _monetary_account_id: The id of the MonetaryAccount the
-    RequestResponse was received on.
-    :type _monetary_account_id: int
-    :param _amount_inquired: The requested Amount.
-    :type _amount_inquired: object_.Amount
-    :param _description: The description for the RequestResponse provided by the
-    requesting party. Maximum 9000 characters.
-    :type _description: str
-    :param _alias: The LabelMonetaryAccount with the public information of the
-    MonetaryAccount this RequestResponse was received on.
-    :type _alias: object_.MonetaryAccountReference
-    :param _counterparty_alias: The LabelMonetaryAccount with the public
-    information of the MonetaryAccount that is requesting money with this
-    RequestResponse.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    :param _attachment: The Attachments attached to the RequestResponse.
-    :type _attachment: list[object_.Attachment]
-    :param _minimum_age: The minimum age the user accepting the RequestResponse
-    must have.
-    :type _minimum_age: int
-    :param _require_address: Whether or not an address must be provided on
-    accept.
-    :type _require_address: str
-    :param _geolocation: The Geolocation where the RequestResponse was created.
-    :type _geolocation: object_.Geolocation
-    :param _type_: The type of the RequestInquiry. Can be DIRECT_DEBIT,
-    DIRECT_DEBIT_B2B, IDEAL, SOFORT or INTERNAL.
-    :type _type_: str
-    :param _sub_type: The subtype of the RequestInquiry. Can be ONCE or
-    RECURRING for DIRECT_DEBIT RequestInquiries and NONE for all other.
-    :type _sub_type: str
-    :param _redirect_url: The URL which the user is sent to after accepting or
-    rejecting the Request.
-    :type _redirect_url: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
-    :param _credit_scheme_identifier: The credit scheme id provided by the
-    counterparty for DIRECT_DEBIT inquiries.
-    :type _credit_scheme_identifier: str
-    :param _mandate_identifier: The mandate id provided by the counterparty for
-    DIRECT_DEBIT inquiries.
-    :type _mandate_identifier: str
-    :param _eligible_whitelist_id: The whitelist id for this action or null.
-    :type _eligible_whitelist_id: int
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-response/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-response"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/request-response/{}"
-
-    # Field constants.
-    FIELD_AMOUNT_RESPONDED = "amount_responded"
-    FIELD_STATUS = "status"
-    FIELD_ADDRESS_SHIPPING = "address_shipping"
-    FIELD_ADDRESS_BILLING = "address_billing"
-
-    # Object type.
-    _OBJECT_TYPE_PUT = "RequestResponse"
-    _OBJECT_TYPE_GET = "RequestResponse"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _time_responded = None
-    _time_expiry = None
-    _monetary_account_id = None
-    _amount_inquired = None
-    _amount_responded = None
-    _status = None
-    _description = None
-    _alias = None
-    _counterparty_alias = None
-    _attachment = None
-    _minimum_age = None
-    _require_address = None
-    _geolocation = None
-    _type_ = None
-    _sub_type = None
-    _redirect_url = None
-    _address_billing = None
-    _address_shipping = None
-    _allow_chat = None
-    _credit_scheme_identifier = None
-    _mandate_identifier = None
-    _eligible_whitelist_id = None
-    _request_reference_split_the_bill = None
-    _amount_responded_field_for_request = None
-    _status_field_for_request = None
-    _address_shipping_field_for_request = None
-    _address_billing_field_for_request = None
-
-    def __init__(self, status=None, amount_responded=None,
-                 address_shipping=None, address_billing=None):
-        """
-        :param status: The responding status of the RequestResponse. Can be ACCEPTED
-        or REJECTED.
-        :type status: str
-        :param amount_responded: The Amount the user decides to pay.
-        :type amount_responded: object_.Amount
-        :param address_shipping: The shipping Address to return to the user who
-        created the RequestInquiry. Should only be provided if 'require_address' is
-        set to SHIPPING, BILLING_SHIPPING or OPTIONAL.
-        :type address_shipping: object_.Address
-        :param address_billing: The billing Address to return to the user who
-        created the RequestInquiry. Should only be provided if 'require_address' is
-        set to BILLING, BILLING_SHIPPING or OPTIONAL.
-        :type address_billing: object_.Address
-        """
-
-        self._status_field_for_request = status
-        self._amount_responded_field_for_request = amount_responded
-        self._address_shipping_field_for_request = address_shipping
-        self._address_billing_field_for_request = address_billing
-
-    @classmethod
-    def update(cls, request_response_id, monetary_account_id=None,
-               amount_responded=None, status=None, address_shipping=None,
-               address_billing=None, custom_headers=None):
-        """
-        Update the status to accept or reject the RequestResponse.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_response_id: int
-        :param amount_responded: The Amount the user decides to pay.
-        :type amount_responded: object_.Amount
-        :param status: The responding status of the RequestResponse. Can be
-        ACCEPTED or REJECTED.
-        :type status: str
-        :param address_shipping: The shipping Address to return to the user who
-        created the RequestInquiry. Should only be provided if 'require_address'
-        is set to SHIPPING, BILLING_SHIPPING or OPTIONAL.
-        :type address_shipping: object_.Address
-        :param address_billing: The billing Address to return to the user who
-        created the RequestInquiry. Should only be provided if 'require_address'
-        is set to BILLING, BILLING_SHIPPING or OPTIONAL.
-        :type address_billing: object_.Address
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestResponse
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_AMOUNT_RESPONDED: amount_responded,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_ADDRESS_SHIPPING: address_shipping,
-            cls.FIELD_ADDRESS_BILLING: address_billing
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseRequestResponse.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Get all RequestResponses for a MonetaryAccount.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestResponseList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseRequestResponseList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def get(cls, request_response_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Get the details for a specific existing RequestResponse.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_response_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestResponse
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_response_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseRequestResponse.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def time_responded(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_responded
-
-    @property
-    def time_expiry(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_expiry
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def amount_inquired(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_inquired
-
-    @property
-    def amount_responded(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_responded
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    @property
-    def attachment(self):
-        """
-        :rtype: list[object_.Attachment]
-        """
-
-        return self._attachment
-
-    @property
-    def minimum_age(self):
-        """
-        :rtype: int
-        """
-
-        return self._minimum_age
-
-    @property
-    def require_address(self):
-        """
-        :rtype: str
-        """
-
-        return self._require_address
-
-    @property
-    def geolocation(self):
-        """
-        :rtype: object_.Geolocation
-        """
-
-        return self._geolocation
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def sub_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_type
-
-    @property
-    def redirect_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._redirect_url
-
-    @property
-    def address_billing(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_billing
-
-    @property
-    def address_shipping(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_shipping
-
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
-    def credit_scheme_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._credit_scheme_identifier
-
-    @property
-    def mandate_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._mandate_identifier
-
-    @property
-    def eligible_whitelist_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._eligible_whitelist_id
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._time_responded is not None:
-            return False
-
-        if self._time_expiry is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._amount_inquired is not None:
-            return False
-
-        if self._amount_responded is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        if self._attachment is not None:
-            return False
-
-        if self._minimum_age is not None:
-            return False
-
-        if self._require_address is not None:
-            return False
-
-        if self._geolocation is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._sub_type is not None:
-            return False
-
-        if self._redirect_url is not None:
-            return False
-
-        if self._address_billing is not None:
-            return False
-
-        if self._address_shipping is not None:
-            return False
-
-        if self._allow_chat is not None:
-            return False
-
-        if self._credit_scheme_identifier is not None:
-            return False
-
-        if self._mandate_identifier is not None:
-            return False
-
-        if self._eligible_whitelist_id is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RequestResponse
-        """
-
-        return converter.json_to_class(RequestResponse, json_str)
-
-
-class ScheduleInstance(core.BunqModel):
-    """
-    view for reading, updating and listing the scheduled instance.
-    
-    :param _state: The state of the scheduleInstance. (FINISHED_SUCCESSFULLY,
-    RETRY, FAILED_USER_ERROR)
-    :type _state: str
-    :param _time_start: The schedule start time (UTC).
-    :type _time_start: str
-    :param _time_end: The schedule end time (UTC).
-    :type _time_end: str
-    :param _error_message: The message when the scheduled instance has run and
-    failed due to user error.
-    :type _error_message: list[object_.Error]
-    :param _scheduled_object: The scheduled object. (Payment, PaymentBatch)
-    :type _scheduled_object: object_.ScheduleAnchorObject
-    :param _result_object: The result object of this schedule instance.
-    (Payment, PaymentBatch)
-    :type _result_object: object_.ScheduleInstanceAnchorObject
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule/{}/schedule-instance/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule/{}/schedule-instance/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule/{}/schedule-instance"
-
-    # Field constants.
-    FIELD_STATE = "state"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ScheduledInstance"
-
-    _state = None
-    _time_start = None
-    _time_end = None
-    _error_message = None
-    _scheduled_object = None
-    _result_object = None
-    _request_reference_split_the_bill = None
-    _state_field_for_request = None
-
-    def __init__(self, state=None):
-        """
-        :param state: Change the state of the scheduleInstance from
-        FAILED_USER_ERROR to RETRY.
-        :type state: str
-        """
-
-        self._state_field_for_request = state
-
-    @classmethod
-    def get(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_id: int
-        :type schedule_instance_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseScheduleInstance
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_id,
-                                                     schedule_instance_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseScheduleInstance.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-               state=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_id: int
-        :type schedule_instance_id: int
-        :param state: Change the state of the scheduleInstance from
-        FAILED_USER_ERROR to RETRY.
-        :type state: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATE: state
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, schedule_id, monetary_account_id=None, params=None,
-             custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseScheduleInstanceList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseScheduleInstanceList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def state(self):
-        """
-        :rtype: str
-        """
-
-        return self._state
-
-    @property
-    def time_start(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_start
-
-    @property
-    def time_end(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_end
-
-    @property
-    def error_message(self):
-        """
-        :rtype: list[object_.Error]
-        """
-
-        return self._error_message
-
-    @property
-    def scheduled_object(self):
-        """
-        :rtype: object_.ScheduleAnchorObject
-        """
-
-        return self._scheduled_object
-
-    @property
-    def result_object(self):
-        """
-        :rtype: object_.ScheduleInstanceAnchorObject
-        """
-
-        return self._result_object
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._state is not None:
-            return False
-
-        if self._time_start is not None:
-            return False
-
-        if self._time_end is not None:
-            return False
-
-        if self._error_message is not None:
-            return False
-
-        if self._scheduled_object is not None:
-            return False
-
-        if self._result_object is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ScheduleInstance
-        """
-
-        return converter.json_to_class(ScheduleInstance, json_str)
-
-
-class TabResultResponse(core.BunqModel):
-    """
-    Used to view TabResultResponse objects belonging to a tab. A
-    TabResultResponse is an object that holds details on a tab which has been
-    paid from the provided monetary account.
-    
-    :param _tab: The Tab details.
-    :type _tab: Tab
-    :param _payment: The payment made for the Tab.
-    :type _payment: Payment
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/tab-result-response/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/tab-result-response"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "TabResultResponse"
-
-    _tab = None
-    _payment = None
-    _request_reference_split_the_bill = None
-
-    @classmethod
-    def get(cls, tab_result_response_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Used to view a single TabResultResponse belonging to a tab.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type tab_result_response_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTabResultResponse
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     tab_result_response_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseTabResultResponse.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Used to view a list of TabResultResponse objects belonging to a tab.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTabResultResponseList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseTabResultResponseList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def tab(self):
-        """
-        :rtype: Tab
-        """
-
-        return self._tab
-
-    @property
-    def payment(self):
-        """
-        :rtype: Payment
-        """
-
-        return self._payment
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._tab is not None:
-            return False
-
-        if self._payment is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabResultResponse
-        """
-
-        return converter.json_to_class(TabResultResponse, json_str)
-
-
-class Tab(core.BunqModel):
-    """
-    Used to read a single publicly visible tab.
-    
-    :param _uuid: The uuid of the tab.
-    :type _uuid: str
-    :param _alias: The label of the party that owns this tab.
-    :type _alias: object_.MonetaryAccountReference
-    :param _avatar: The avatar of this tab.
-    :type _avatar: str
-    :param _reference: The reference of the tab, as defined by the owner.
-    :type _reference: str
-    :param _description: The short description of the tab.
-    :type _description: str
-    :param _status: The status of the tab.
-    :type _status: str
-    :param _expiration: The moment when this tab expires.
-    :type _expiration: str
-    :param _amount_total: The total amount of the tab.
-    :type _amount_total: object_.Amount
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "tab/{}"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "Tab"
-
-    _uuid = None
-    _alias = None
-    _avatar = None
-    _reference = None
-    _description = None
-    _status = None
-    _expiration = None
-    _amount_total = None
-
-    @classmethod
-    def get(cls, tab_uuid, custom_headers=None):
-        """
-        Get a publicly visible tab.
-        
-        :type api_context: context.ApiContext
-        :type tab_uuid: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTab
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseTab.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._uuid
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def avatar(self):
-        """
-        :rtype: str
-        """
-
-        return self._avatar
-
-    @property
-    def reference(self):
-        """
-        :rtype: str
-        """
-
-        return self._reference
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def amount_total(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_total
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._uuid is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._reference is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._expiration is not None:
-            return False
-
-        if self._amount_total is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Tab
-        """
-
-        return converter.json_to_class(Tab, json_str)
-
-
-class WhitelistResult(core.BunqModel):
-    """
-    Whitelist an SDD so that when one comes in, it is automatically accepted.
-    
-    :param _id_: The ID of the whitelist entry.
-    :type _id_: int
-    :param _monetary_account_paying_id: The account from which payments will be
-    deducted when a transaction is matched with this whitelist.
-    :type _monetary_account_paying_id: int
-    :param _status: The status of the WhitelistResult.
-    :type _status: str
-    :param _error_message: The message when the whitelist result has failed due
-    to user error.
-    :type _error_message: list[object_.Error]
-    :param _whitelist: The corresponding whitelist.
-    :type _whitelist: Whitelist
-    :param _object_: The details of the external object the event was created
-    for.
-    :type _object_: object_.WhitelistResultViewAnchoredObject
-    :param _request_reference_split_the_bill: The reference to the object used
-    for split the bill. Can be RequestInquiry or RequestInquiryBatch
-    :type _request_reference_split_the_bill:
-    list[object_.RequestInquiryReference]
-    """
-
-    _id_ = None
-    _monetary_account_paying_id = None
-    _status = None
-    _error_message = None
-    _whitelist = None
-    _object_ = None
-    _request_reference_split_the_bill = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def monetary_account_paying_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_paying_id
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def error_message(self):
-        """
-        :rtype: list[object_.Error]
-        """
-
-        return self._error_message
-
-    @property
-    def whitelist(self):
-        """
-        :rtype: Whitelist
-        """
-
-        return self._whitelist
-
-    @property
-    def object_(self):
-        """
-        :rtype: object_.WhitelistResultViewAnchoredObject
-        """
-
-        return self._object_
-
-    @property
-    def request_reference_split_the_bill(self):
-        """
-        :rtype: list[object_.RequestInquiryReference]
-        """
-
-        return self._request_reference_split_the_bill
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._monetary_account_paying_id is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._error_message is not None:
-            return False
-
-        if self._whitelist is not None:
-            return False
-
-        if self._object_ is not None:
-            return False
-
-        if self._request_reference_split_the_bill is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: WhitelistResult
-        """
-
-        return converter.json_to_class(WhitelistResult, json_str)
-
-
-class Whitelist(core.BunqModel):
-    """
-    Whitelist a Request so that when one comes in, it is automatically accepted.
-    """
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Whitelist
-        """
-
-        return converter.json_to_class(Whitelist, json_str)
-
-
-class SchedulePaymentBatch(core.BunqModel):
-    """
-    Endpoint for schedule payment batches.
-    
-    :param _payments: The payment details.
-    :type _payments: list[object_.SchedulePaymentEntry]
-    :param _schedule: The schedule details.
-    :type _schedule: Schedule
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-payment-batch"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
-    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
-
-    # Field constants.
-    FIELD_PAYMENTS = "payments"
-    FIELD_SCHEDULE = "schedule"
-
-    _payments = None
-    _schedule = None
-    _payments_field_for_request = None
-    _schedule_field_for_request = None
-
-    def __init__(self, payments=None, schedule=None):
-        """
-        :param payments: The payment details.
-        :type payments: list[object_.SchedulePaymentEntry]
-        :param schedule: The schedule details when creating a scheduled payment.
-        :type schedule: Schedule
-        """
-
-        self._payments_field_for_request = payments
-        self._schedule_field_for_request = schedule
-
-    @classmethod
-    def create(cls, payments, schedule, monetary_account_id=None,
-               custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :param payments: The payment details.
-        :type payments: list[object_.SchedulePaymentEntry]
-        :param schedule: The schedule details when creating a scheduled payment.
-        :type schedule: Schedule
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_PAYMENTS: payments,
-            cls.FIELD_SCHEDULE: schedule
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, schedule_payment_batch_id, monetary_account_id=None,
-               payments=None, schedule=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_payment_batch_id: int
-        :param payments: The payment details.
-        :type payments: list[object_.SchedulePaymentEntry]
-        :param schedule: The schedule details when creating a scheduled payment.
-        :type schedule: Schedule
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_PAYMENTS: payments,
-            cls.FIELD_SCHEDULE: schedule
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def delete(cls, schedule_payment_batch_id, monetary_account_id=None,
-               custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNone
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_batch_id)
-        response_raw = api_client.delete(endpoint_url, custom_headers)
-
-        return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
-        )
-
-    @property
-    def payments(self):
-        """
-        :rtype: list[object_.SchedulePaymentEntry]
-        """
-
-        return self._payments
-
-    @property
-    def schedule(self):
-        """
-        :rtype: Schedule
-        """
-
-        return self._schedule
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._payments is not None:
-            return False
-
-        if self._schedule is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: SchedulePaymentBatch
-        """
-
-        return converter.json_to_class(SchedulePaymentBatch, json_str)
-
-
-class Schedule(core.BunqModel):
-    """
-    view for reading the scheduled definitions.
-    
-    :param _time_start: The schedule start time (UTC).
-    :type _time_start: str
-    :param _time_end: The schedule end time (UTC).
-    :type _time_end: str
-    :param _recurrence_unit: The schedule recurrence unit, options: ONCE,
-    HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY
-    :type _recurrence_unit: str
-    :param _recurrence_size: The schedule recurrence size. For example size 4
-    and unit WEEKLY means the recurrence is every 4 weeks.
-    :type _recurrence_size: int
-    :param _status: The schedule status, options: ACTIVE, FINISHED, CANCELLED.
-    :type _status: str
-    :param _object_: The scheduled object. (Payment, PaymentBatch)
-    :type _object_: object_.ScheduleAnchorObject
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule"
-
-    # Field constants.
-    FIELD_TIME_START = "time_start"
-    FIELD_TIME_END = "time_end"
-    FIELD_RECURRENCE_UNIT = "recurrence_unit"
-    FIELD_RECURRENCE_SIZE = "recurrence_size"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "Schedule"
-
-    _time_start = None
-    _time_end = None
-    _recurrence_unit = None
-    _recurrence_size = None
-    _status = None
-    _object_ = None
-    _time_start_field_for_request = None
-    _time_end_field_for_request = None
-    _recurrence_unit_field_for_request = None
-    _recurrence_size_field_for_request = None
-
-    def __init__(self, time_start=None, recurrence_unit=None,
-                 recurrence_size=None, time_end=None):
-        """
-        :param time_start: The schedule start time (UTC).
-        :type time_start: str
-        :param recurrence_unit: The schedule recurrence unit, options: ONCE, HOURLY,
-        DAILY, WEEKLY, MONTHLY, YEARLY
-        :type recurrence_unit: str
-        :param recurrence_size: The schedule recurrence size. For example size 4 and
-        unit WEEKLY means the recurrence is every 4 weeks.
-        :type recurrence_size: int
-        :param time_end: The schedule end time (UTC).
-        :type time_end: str
-        """
-
-        self._time_start_field_for_request = time_start
-        self._recurrence_unit_field_for_request = recurrence_unit
-        self._recurrence_size_field_for_request = recurrence_size
-        self._time_end_field_for_request = time_end
-
-    @classmethod
-    def get(cls, schedule_id, monetary_account_id=None, custom_headers=None):
-        """
-        Get a specific schedule definition for a given monetary account.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseSchedule
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseSchedule.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Get a collection of scheduled definition for a given monetary account.
-        You can add the parameter type to filter the response. When
-        type={SCHEDULE_DEFINITION_PAYMENT,SCHEDULE_DEFINITION_PAYMENT_BATCH} is
-        provided only schedule definition object that relate to these
-        definitions are returned.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseScheduleList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseScheduleList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def time_start(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_start
-
-    @property
-    def time_end(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_end
-
-    @property
-    def recurrence_unit(self):
-        """
-        :rtype: str
-        """
-
-        return self._recurrence_unit
-
-    @property
-    def recurrence_size(self):
-        """
-        :rtype: int
-        """
-
-        return self._recurrence_size
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def object_(self):
-        """
-        :rtype: object_.ScheduleAnchorObject
-        """
-
-        return self._object_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._time_start is not None:
-            return False
-
-        if self._time_end is not None:
-            return False
-
-        if self._recurrence_unit is not None:
-            return False
-
-        if self._recurrence_size is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._object_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Schedule
-        """
-
-        return converter.json_to_class(Schedule, json_str)
-
-
-class SchedulePayment(core.BunqModel):
-    """
-    Endpoint for schedule payments.
-    
-    :param _payment: The payment details.
-    :type _payment: object_.SchedulePaymentEntry
-    :param _schedule: The schedule details.
-    :type _schedule: Schedule
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-payment"
-    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-payment/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-payment/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule-payment"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-payment/{}"
-
-    # Field constants.
-    FIELD_PAYMENT = "payment"
-    FIELD_SCHEDULE = "schedule"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ScheduledPayment"
-
-    _payment = None
-    _schedule = None
-    _payment_field_for_request = None
-    _schedule_field_for_request = None
-
-    def __init__(self, payment=None, schedule=None):
-        """
-        :param payment: The payment details.
-        :type payment: object_.SchedulePaymentEntry
-        :param schedule: The schedule details when creating or updating a scheduled
-        payment.
-        :type schedule: Schedule
-        """
-
-        self._payment_field_for_request = payment
-        self._schedule_field_for_request = schedule
-
-    @classmethod
-    def create(cls, payment, schedule, monetary_account_id=None,
-               custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :param payment: The payment details.
-        :type payment: object_.SchedulePaymentEntry
-        :param schedule: The schedule details when creating or updating a
-        scheduled payment.
-        :type schedule: Schedule
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_PAYMENT: payment,
-            cls.FIELD_SCHEDULE: schedule
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def delete(cls, schedule_payment_id, monetary_account_id=None,
-               custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_payment_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNone
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_id)
-        response_raw = api_client.delete(endpoint_url, custom_headers)
-
-        return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
-        )
-
-    @classmethod
-    def get(cls, schedule_payment_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_payment_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseSchedulePayment
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_payment_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseSchedulePayment.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseSchedulePaymentList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseSchedulePaymentList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls, schedule_payment_id, monetary_account_id=None, payment=None,
-               schedule=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type schedule_payment_id: int
-        :param payment: The payment details.
-        :type payment: object_.SchedulePaymentEntry
-        :param schedule: The schedule details when creating or updating a
-        scheduled payment.
-        :type schedule: Schedule
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_PAYMENT: payment,
-            cls.FIELD_SCHEDULE: schedule
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @property
-    def payment(self):
-        """
-        :rtype: object_.SchedulePaymentEntry
-        """
-
-        return self._payment
-
-    @property
-    def schedule(self):
-        """
-        :rtype: Schedule
-        """
-
-        return self._schedule
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._payment is not None:
-            return False
-
-        if self._schedule is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: SchedulePayment
-        """
-
-        return converter.json_to_class(SchedulePayment, json_str)
-
-
-class ShareInviteBankInquiry(core.BunqModel):
-    """
-    Used to share a monetary account with another bunq user, as in the 'Connect'
-    feature in the bunq app. Allow the creation of share inquiries that, in the
-    same way as request inquiries, can be revoked by the user creating them or
-    accepted/rejected by the other party.
-    
-    :param _counter_user_alias: The label of the user to share with.
-    :type _counter_user_alias: object_.LabelUser
-    :param _draft_share_invite_bank_id: The id of the draft share invite bank.
-    :type _draft_share_invite_bank_id: int
-    :param _share_detail: The share details. Only one of these objects is
-    returned.
-    :type _share_detail: object_.ShareDetail
-    :param _status: The status of the share. Can be PENDING, REVOKED (the user
-    deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-    user deletes an active share) or CANCELLATION_PENDING,
-    CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
-    :type _status: str
-    :param _share_type: The share type, either STANDARD or MUTUAL.
-    :type _share_type: str
-    :param _start_date: The start date of this share.
-    :type _start_date: str
-    :param _end_date: The expiration date of this share.
-    :type _end_date: str
-    :param _alias: The label of the monetary account that's being shared.
-    :type _alias: object_.MonetaryAccountReference
-    :param _user_alias_created: The user who created the share.
-    :type _user_alias_created: object_.LabelUser
-    :param _user_alias_revoked: The user who revoked the share.
-    :type _user_alias_revoked: object_.LabelUser
-    :param _monetary_account_id: The id of the monetary account the share
-    applies to.
-    :type _monetary_account_id: int
-    :param _id_: The id of the newly created share invite.
-    :type _id_: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/share-invite-bank-inquiry"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/share-invite-bank-inquiry/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/share-invite-bank-inquiry/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/share-invite-bank-inquiry"
-
-    # Field constants.
-    FIELD_COUNTER_USER_ALIAS = "counter_user_alias"
-    FIELD_DRAFT_SHARE_INVITE_BANK_ID = "draft_share_invite_bank_id"
-    FIELD_SHARE_DETAIL = "share_detail"
-    FIELD_STATUS = "status"
-    FIELD_SHARE_TYPE = "share_type"
-    FIELD_START_DATE = "start_date"
-    FIELD_END_DATE = "end_date"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ShareInviteBankInquiry"
-
-    _alias = None
-    _user_alias_created = None
-    _user_alias_revoked = None
-    _counter_user_alias = None
-    _monetary_account_id = None
-    _draft_share_invite_bank_id = None
-    _share_detail = None
-    _status = None
-    _share_type = None
-    _start_date = None
-    _end_date = None
-    _id_ = None
-    _counter_user_alias_field_for_request = None
-    _draft_share_invite_bank_id_field_for_request = None
-    _share_detail_field_for_request = None
-    _status_field_for_request = None
-    _share_type_field_for_request = None
-    _start_date_field_for_request = None
-    _end_date_field_for_request = None
-
-    def __init__(self, counter_user_alias, share_detail=None, status=None,
-                 draft_share_invite_bank_id=None, share_type=None,
-                 start_date=None, end_date=None):
-        """
-        :param counter_user_alias: The pointer of the user to share with.
-        :type counter_user_alias: object_.Pointer
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: object_.ShareDetail
-        :param status: The status of the share. Can be PENDING, REVOKED (the user
-        deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-        user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects).
-        :type status: str
-        :param draft_share_invite_bank_id: The id of the draft share invite bank.
-        :type draft_share_invite_bank_id: int
-        :param share_type: The share type, either STANDARD or MUTUAL.
-        :type share_type: str
-        :param start_date: The start date of this share.
-        :type start_date: str
-        :param end_date: The expiration date of this share.
-        :type end_date: str
-        """
-
-        self._counter_user_alias_field_for_request = counter_user_alias
-        self._share_detail_field_for_request = share_detail
-        self._status_field_for_request = status
-        self._draft_share_invite_bank_id_field_for_request = draft_share_invite_bank_id
-        self._share_type_field_for_request = share_type
-        self._start_date_field_for_request = start_date
-        self._end_date_field_for_request = end_date
-
-    @classmethod
-    def create(cls, counter_user_alias, share_detail, status,
-               monetary_account_id=None, draft_share_invite_bank_id=None,
-               share_type=None, start_date=None, end_date=None,
-               custom_headers=None):
-        """
-        Create a new share inquiry for a monetary account, specifying the
-        permission the other bunq user will have on it.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param counter_user_alias: The pointer of the user to share with.
-        :type counter_user_alias: object_.Pointer
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: object_.ShareDetail
-        :param status: The status of the share. Can be PENDING, REVOKED (the
-        user deletes the share inquiry before it's accepted), ACCEPTED,
-        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects).
-        :type status: str
-        :param draft_share_invite_bank_id: The id of the draft share invite
-        bank.
-        :type draft_share_invite_bank_id: int
-        :param share_type: The share type, either STANDARD or MUTUAL.
-        :type share_type: str
-        :param start_date: The start date of this share.
-        :type start_date: str
-        :param end_date: The expiration date of this share.
-        :type end_date: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_COUNTER_USER_ALIAS: counter_user_alias,
-            cls.FIELD_DRAFT_SHARE_INVITE_BANK_ID: draft_share_invite_bank_id,
-            cls.FIELD_SHARE_DETAIL: share_detail,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_SHARE_TYPE: share_type,
-            cls.FIELD_START_DATE: start_date,
-            cls.FIELD_END_DATE: end_date
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, share_invite_bank_inquiry_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        Get the details of a specific share inquiry.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type share_invite_bank_inquiry_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseShareInviteBankInquiry
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     share_invite_bank_inquiry_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseShareInviteBankInquiry.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls, share_invite_bank_inquiry_id, monetary_account_id=None,
-               share_detail=None, status=None, start_date=None, end_date=None,
-               custom_headers=None):
-        """
-        Update the details of a share. This includes updating status (revoking
-        or cancelling it), granted permission and validity period of this share.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type share_invite_bank_inquiry_id: int
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: object_.ShareDetail
-        :param status: The status of the share. Can be PENDING, REVOKED (the
-        user deletes the share inquiry before it's accepted), ACCEPTED,
-        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects).
-        :type status: str
-        :param start_date: The start date of this share.
-        :type start_date: str
-        :param end_date: The expiration date of this share.
-        :type end_date: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_SHARE_DETAIL: share_detail,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_START_DATE: start_date,
-            cls.FIELD_END_DATE: end_date
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       share_invite_bank_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Get a list with all the share inquiries for a monetary account, only if
-        the requesting user has permission to change the details of the various
-        ones.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseShareInviteBankInquiryList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseShareInviteBankInquiryList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def user_alias_created(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_created
-
-    @property
-    def user_alias_revoked(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_revoked
-
-    @property
-    def counter_user_alias(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._counter_user_alias
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def draft_share_invite_bank_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._draft_share_invite_bank_id
-
-    @property
-    def share_detail(self):
-        """
-        :rtype: object_.ShareDetail
-        """
-
-        return self._share_detail
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def share_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._share_type
-
-    @property
-    def start_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._start_date
-
-    @property
-    def end_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._end_date
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._alias is not None:
-            return False
-
-        if self._user_alias_created is not None:
-            return False
-
-        if self._user_alias_revoked is not None:
-            return False
-
-        if self._counter_user_alias is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._draft_share_invite_bank_id is not None:
-            return False
-
-        if self._share_detail is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._share_type is not None:
-            return False
-
-        if self._start_date is not None:
-            return False
-
-        if self._end_date is not None:
-            return False
-
-        if self._id_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareInviteBankInquiry
-        """
-
-        return converter.json_to_class(ShareInviteBankInquiry, json_str)
-
-
-class ShareInviteBankResponse(core.BunqModel):
-    """
-    Used to view or respond to shares a user was invited to. See
-    'share-invite-bank-inquiry' for more information about the inquiring
-    endpoint.
-    
-    :param _status: The status of the share. Can be PENDING, REVOKED (the user
-    deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-    user deletes an active share) or CANCELLATION_PENDING,
-    CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
-    :type _status: str
-    :param _counter_alias: The monetary account and user who created the share.
-    :type _counter_alias: object_.MonetaryAccountReference
-    :param _user_alias_cancelled: The user who cancelled the share if it has
-    been revoked or rejected.
-    :type _user_alias_cancelled: object_.LabelUser
-    :param _monetary_account_id: The id of the monetary account the ACCEPTED
-    share applies to. null otherwise.
-    :type _monetary_account_id: int
-    :param _draft_share_invite_bank_id: The id of the draft share invite bank.
-    :type _draft_share_invite_bank_id: int
-    :param _share_detail: The share details.
-    :type _share_detail: object_.ShareDetail
-    :param _share_type: The share type, either STANDARD or MUTUAL.
-    :type _share_type: str
-    :param _start_date: The start date of this share.
-    :type _start_date: str
-    :param _end_date: The expiration date of this share.
-    :type _end_date: str
-    :param _description: The description of this share. It is basically the
-    monetary account description.
-    :type _description: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/share-invite-bank-response/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/share-invite-bank-response/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/share-invite-bank-response"
-
-    # Field constants.
-    FIELD_STATUS = "status"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ShareInviteBankResponse"
-
-    _counter_alias = None
-    _user_alias_cancelled = None
-    _monetary_account_id = None
-    _draft_share_invite_bank_id = None
-    _share_detail = None
-    _status = None
-    _share_type = None
-    _start_date = None
-    _end_date = None
-    _description = None
-    _status_field_for_request = None
-
-    def __init__(self, status=None):
-        """
-        :param status: The status of the share. Can be PENDING, REVOKED (the user
-        deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-        user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
-        :type status: str
-        """
-
-        self._status_field_for_request = status
-
-    @classmethod
-    def get(cls, share_invite_bank_response_id, custom_headers=None):
-        """
-        Return the details of a specific share a user was invited to.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type share_invite_bank_response_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseShareInviteBankResponse
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     share_invite_bank_response_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseShareInviteBankResponse.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls, share_invite_bank_response_id, status=None,
-               custom_headers=None):
-        """
-        Accept or reject a share a user was invited to.
-        
-        :type user_id: int
-        :type share_invite_bank_response_id: int
-        :param status: The status of the share. Can be PENDING, REVOKED (the
-        user deletes the share inquiry before it's accepted), ACCEPTED,
-        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects)
-        :type status: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       share_invite_bank_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        Return all the shares a user was invited to.
-        
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseShareInviteBankResponseList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseShareInviteBankResponseList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def counter_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counter_alias
-
-    @property
-    def user_alias_cancelled(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_cancelled
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def draft_share_invite_bank_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._draft_share_invite_bank_id
-
-    @property
-    def share_detail(self):
-        """
-        :rtype: object_.ShareDetail
-        """
-
-        return self._share_detail
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def share_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._share_type
-
-    @property
-    def start_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._start_date
-
-    @property
-    def end_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._end_date
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._counter_alias is not None:
-            return False
-
-        if self._user_alias_cancelled is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._draft_share_invite_bank_id is not None:
-            return False
-
-        if self._share_detail is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._share_type is not None:
-            return False
-
-        if self._start_date is not None:
-            return False
-
-        if self._end_date is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareInviteBankResponse
-        """
-
-        return converter.json_to_class(ShareInviteBankResponse, json_str)
-
-
-class UserCredentialPasswordIp(core.BunqModel):
-    """
-    Create a credential of a user for server authentication, or delete the
-    credential of a user for server authentication.
-    
-    :param _id_: The id of the credential.
-    :type _id_: int
-    :param _created: The timestamp of the credential object's creation.
-    :type _created: str
-    :param _updated: The timestamp of the credential object's last update.
-    :type _updated: str
-    :param _status: The status of the credential.
-    :type _status: str
-    :param _expiry_time: When the status is PENDING_FIRST_USE: when the
-    credential expires.
-    :type _expiry_time: str
-    :param _token_value: When the status is PENDING_FIRST_USE: the value of the
-    token.
-    :type _token_value: str
-    :param _permitted_device: When the status is ACTIVE: the details of the
-    device that may use the credential.
-    :type _permitted_device: object_.PermittedDevice
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/credential-password-ip/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/credential-password-ip"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "CredentialPasswordIp"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _status = None
-    _expiry_time = None
-    _token_value = None
-    _permitted_device = None
-
-    @classmethod
-    def get(cls, user_credential_password_ip_id, custom_headers=None):
-        """
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type user_credential_password_ip_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseUserCredentialPasswordIp
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     user_credential_password_ip_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseUserCredentialPasswordIp.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseUserCredentialPasswordIpList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseUserCredentialPasswordIpList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_time
-
-    @property
-    def token_value(self):
-        """
-        :rtype: str
-        """
-
-        return self._token_value
-
-    @property
-    def permitted_device(self):
-        """
-        :rtype: object_.PermittedDevice
-        """
-
-        return self._permitted_device
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._expiry_time is not None:
-            return False
-
-        if self._token_value is not None:
-            return False
-
-        if self._permitted_device is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: UserCredentialPasswordIp
-        """
-
-        return converter.json_to_class(UserCredentialPasswordIp, json_str)
-
-
-class ChatMessageStatus(core.BunqModel):
-    """
-    Endpoint for retrieving the messages that are part of a conversation.
-    
-    :param _id_: The id of the message.
-    :type _id_: int
-    :param _created: The timestamp when the message was created.
-    :type _created: str
-    :param _updated: The timestamp when the message was last updated.
-    :type _updated: str
-    :param _conversation_id: The id of the conversation this message belongs to.
-    :type _conversation_id: int
-    :param _creator: The user who initiated the action that caused this message
-    to appear.
-    :type _creator: object_.LabelUser
-    :param _content: The content of this message.
-    :type _content: object_.ChatMessageContent
-    """
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _conversation_id = None
-    _creator = None
-    _content = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def conversation_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._conversation_id
-
-    @property
-    def creator(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._creator
-
-    @property
-    def content(self):
-        """
-        :rtype: object_.ChatMessageContent
-        """
-
-        return self._content
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._conversation_id is not None:
-            return False
-
-        if self._creator is not None:
-            return False
-
-        if self._content is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageStatus
-        """
-
-        return converter.json_to_class(ChatMessageStatus, json_str)
-
-
-class ChatMessageUser(core.BunqModel):
-    """
-    Endpoint for retrieving the messages that are part of a conversation.
-    
-    :param _id_: The id of the message.
-    :type _id_: int
-    :param _created: The timestamp when the message was created.
-    :type _created: str
-    :param _updated: The timestamp when the message was last updated.
-    :type _updated: str
-    :param _conversation_id: The id of the conversation this message belongs to.
-    :type _conversation_id: int
-    :param _creator: The user who initiated the action that caused this message
-    to appear.
-    :type _creator: object_.LabelUser
-    :param _displayed_sender: The user displayed as the sender of this message.
-    :type _displayed_sender: object_.LabelUser
-    :param _content: The content of this message.
-    :type _content: object_.ChatMessageContent
-    """
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _conversation_id = None
-    _creator = None
-    _displayed_sender = None
-    _content = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def conversation_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._conversation_id
-
-    @property
-    def creator(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._creator
-
-    @property
-    def displayed_sender(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._displayed_sender
-
-    @property
-    def content(self):
-        """
-        :rtype: object_.ChatMessageContent
-        """
-
-        return self._content
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._conversation_id is not None:
-            return False
-
-        if self._creator is not None:
-            return False
-
-        if self._displayed_sender is not None:
-            return False
-
-        if self._content is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageUser
-        """
-
-        return converter.json_to_class(ChatMessageUser, json_str)
-
-
-class ChatConversationReference(core.BunqModel):
-    """
-    Represents conversation references.
-    
-    :param _id_: The id of this conversation.
-    :type _id_: int
-    :param _created: The timestamp the conversation reference was created.
-    :type _created: str
-    :param _updated: The timestamp the conversation reference was last updated.
-    :type _updated: str
-    """
-
-    _id_ = None
-    _created = None
-    _updated = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatConversationReference
-        """
-
-        return converter.json_to_class(ChatConversationReference, json_str)
-
-
-class ChatMessageAttachment(core.BunqModel):
-    """
-    Create new messages holding file attachments.
-    
-    :param _attachment: The attachment contained in this message.
-    :type _attachment: object_.BunqId
-    :param _id_: The id of the newly created chat message.
-    :type _id_: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/chat-conversation/{}/message-attachment"
-
-    # Field constants.
-    FIELD_ATTACHMENT = "attachment"
-
-    _id_ = None
-    _attachment_field_for_request = None
-
-    def __init__(self, attachment):
-        """
-        :param attachment: The attachment contained in this message.
-        :type attachment: object_.BunqId
-        """
-
-        self._attachment_field_for_request = attachment
-
-    @classmethod
-    def create(cls, chat_conversation_id, attachment, custom_headers=None):
-        """
-        Create a new message holding a file attachment to a specific
-        conversation.
-        
-        :type user_id: int
-        :type chat_conversation_id: int
-        :param attachment: The attachment contained in this message.
-        :type attachment: object_.BunqId
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_ATTACHMENT: attachment
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       chat_conversation_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageAttachment
-        """
-
-        return converter.json_to_class(ChatMessageAttachment, json_str)
-
-
-class ChatMessageText(core.BunqModel):
-    """
-    Endpoint for the type of chat message that carries text.
-    
-    :param _text: The textual content of this message. Cannot be empty.
-    :type _text: str
-    :param _id_: The id of the newly created chat message.
-    :type _id_: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/chat-conversation/{}/message-text"
-
-    # Field constants.
-    FIELD_TEXT = "text"
-
-    _id_ = None
-    _text_field_for_request = None
-
-    def __init__(self, text):
-        """
-        :param text: The textual content of this message. Cannot be empty.
-        :type text: str
-        """
-
-        self._text_field_for_request = text
-
-    @classmethod
-    def create(cls, chat_conversation_id, text, custom_headers=None):
-        """
-        Add a new text message to a specific conversation.
-        
-        :type user_id: int
-        :type chat_conversation_id: int
-        :param text: The textual content of this message. Cannot be empty.
-        :type text: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_TEXT: text
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       chat_conversation_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ChatMessageText
-        """
-
-        return converter.json_to_class(ChatMessageText, json_str)
-
-
 class AttachmentConversationContent(core.BunqModel):
     """
     Fetch the raw content of an attachment with given ID. The raw content is the
@@ -9769,10 +2045,988 @@ class BunqMeTabResultInquiry(core.BunqModel):
         return converter.json_to_class(BunqMeTabResultInquiry, json_str)
 
 
+class Payment(core.BunqModel):
+    """
+    Using Payment, you can send payments to bunq and non-bunq users from your
+    bunq MonetaryAccounts. This can be done using bunq Aliases or IBAN Aliases.
+    When transferring money to other bunq MonetaryAccounts you can also refer to
+    Attachments. These will be received by the counter-party as part of the
+    Payment. You can also retrieve a single Payment or all executed Payments of
+    a specific monetary account.
+    
+    :param _amount: The Amount transferred by the Payment. Will be negative for
+    outgoing Payments and positive for incoming Payments (relative to the
+    MonetaryAccount indicated by monetary_account_id).
+    :type _amount: object_.Amount
+    :param _counterparty_alias: The LabelMonetaryAccount containing the public
+    information of the other (counterparty) side of the Payment.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _description: The description for the Payment. Maximum 140 characters
+    for Payments to external IBANs, 9000 characters for Payments to only other
+    bunq MonetaryAccounts.
+    :type _description: str
+    :param _attachment: The Attachments attached to the Payment.
+    :type _attachment: list[object_.AttachmentMonetaryAccountPayment]
+    :param _merchant_reference: Optional data included with the Payment specific
+    to the merchant.
+    :type _merchant_reference: str
+    :param _id_: The id of the created Payment.
+    :type _id_: int
+    :param _created: The timestamp when the Payment was done.
+    :type _created: str
+    :param _updated: The timestamp when the Payment was last updated (will be
+    updated when chat messages are received).
+    :type _updated: str
+    :param _monetary_account_id: The id of the MonetaryAccount the Payment was
+    made to or from (depending on whether this is an incoming or outgoing
+    Payment).
+    :type _monetary_account_id: int
+    :param _alias: The LabelMonetaryAccount containing the public information of
+    'this' (party) side of the Payment.
+    :type _alias: object_.MonetaryAccountReference
+    :param _type_: The type of Payment, can be BUNQ, EBA_SCT, EBA_SDD, IDEAL,
+    SWIFT or FIS (card).
+    :type _type_: str
+    :param _sub_type: The sub-type of the Payment, can be PAYMENT, WITHDRAWAL,
+    REVERSAL, REQUEST, BILLING, SCT, SDD or NLO.
+    :type _sub_type: str
+    :param _bunqto_status: The status of the bunq.to payment.
+    :type _bunqto_status: str
+    :param _bunqto_sub_status: The sub status of the bunq.to payment.
+    :type _bunqto_sub_status: str
+    :param _bunqto_share_url: The status of the bunq.to payment.
+    :type _bunqto_share_url: str
+    :param _bunqto_expiry: When bunq.to payment is about to expire.
+    :type _bunqto_expiry: str
+    :param _bunqto_time_responded: The timestamp of when the bunq.to payment was
+    responded to.
+    :type _bunqto_time_responded: str
+    :param _batch_id: The id of the PaymentBatch if this Payment was part of
+    one.
+    :type _batch_id: int
+    :param _scheduled_id: The id of the JobScheduled if the Payment was
+    scheduled.
+    :type _scheduled_id: int
+    :param _address_shipping: A shipping Address provided with the Payment,
+    currently unused.
+    :type _address_shipping: object_.Address
+    :param _address_billing: A billing Address provided with the Payment,
+    currently unused.
+    :type _address_billing: object_.Address
+    :param _geolocation: The Geolocation where the Payment was done from.
+    :type _geolocation: object_.Geolocation
+    :param _allow_chat: Whether or not chat messages are allowed.
+    :type _allow_chat: bool
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment"
+
+    # Field constants.
+    FIELD_AMOUNT = "amount"
+    FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
+    FIELD_DESCRIPTION = "description"
+    FIELD_ATTACHMENT = "attachment"
+    FIELD_MERCHANT_REFERENCE = "merchant_reference"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "Payment"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _monetary_account_id = None
+    _amount = None
+    _alias = None
+    _counterparty_alias = None
+    _description = None
+    _type_ = None
+    _sub_type = None
+    _bunqto_status = None
+    _bunqto_sub_status = None
+    _bunqto_share_url = None
+    _bunqto_expiry = None
+    _bunqto_time_responded = None
+    _attachment = None
+    _merchant_reference = None
+    _batch_id = None
+    _scheduled_id = None
+    _address_shipping = None
+    _address_billing = None
+    _geolocation = None
+    _allow_chat = None
+    _request_reference_split_the_bill = None
+    _amount_field_for_request = None
+    _counterparty_alias_field_for_request = None
+    _description_field_for_request = None
+    _attachment_field_for_request = None
+    _merchant_reference_field_for_request = None
+
+    def __init__(self, amount, counterparty_alias, description, attachment=None,
+                 merchant_reference=None):
+        """
+        :param amount: The Amount to transfer with the Payment. Must be bigger than
+        0 and smaller than the MonetaryAccount's balance.
+        :type amount: object_.Amount
+        :param counterparty_alias: The Alias of the party we are transferring the
+        money to. Can be an Alias of type EMAIL or PHONE_NUMBER (for bunq
+        MonetaryAccounts or bunq.to payments) or IBAN (for external bank account).
+        :type counterparty_alias: object_.Pointer
+        :param description: The description for the Payment. Maximum 140 characters
+        for Payments to external IBANs, 9000 characters for Payments to only other
+        bunq MonetaryAccounts. Field is required but can be an empty string.
+        :type description: str
+        :param attachment: The Attachments to attach to the Payment.
+        :type attachment: list[object_.AttachmentMonetaryAccountPayment]
+        :param merchant_reference: Optional data to be included with the Payment
+        specific to the merchant.
+        :type merchant_reference: str
+        """
+
+        self._amount_field_for_request = amount
+        self._counterparty_alias_field_for_request = counterparty_alias
+        self._description_field_for_request = description
+        self._attachment_field_for_request = attachment
+        self._merchant_reference_field_for_request = merchant_reference
+
+    @classmethod
+    def create(cls, amount, counterparty_alias, description,
+               monetary_account_id=None, attachment=None,
+               merchant_reference=None, custom_headers=None):
+        """
+        Create a new Payment.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param amount: The Amount to transfer with the Payment. Must be bigger
+        than 0 and smaller than the MonetaryAccount's balance.
+        :type amount: object_.Amount
+        :param counterparty_alias: The Alias of the party we are transferring
+        the money to. Can be an Alias of type EMAIL or PHONE_NUMBER (for bunq
+        MonetaryAccounts or bunq.to payments) or IBAN (for external bank
+        account).
+        :type counterparty_alias: object_.Pointer
+        :param description: The description for the Payment. Maximum 140
+        characters for Payments to external IBANs, 9000 characters for Payments
+        to only other bunq MonetaryAccounts. Field is required but can be an
+        empty string.
+        :type description: str
+        :param attachment: The Attachments to attach to the Payment.
+        :type attachment: list[object_.AttachmentMonetaryAccountPayment]
+        :param merchant_reference: Optional data to be included with the Payment
+        specific to the merchant.
+        :type merchant_reference: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_AMOUNT: amount,
+            cls.FIELD_COUNTERPARTY_ALIAS: counterparty_alias,
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_ATTACHMENT: attachment,
+            cls.FIELD_MERCHANT_REFERENCE: merchant_reference
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, payment_id, monetary_account_id=None, custom_headers=None):
+        """
+        Get a specific previous Payment.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePayment
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     payment_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Get a listing of all Payments performed on a given MonetaryAccount
+        (incoming and outgoing).
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def sub_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_type
+
+    @property
+    def bunqto_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._bunqto_status
+
+    @property
+    def bunqto_sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._bunqto_sub_status
+
+    @property
+    def bunqto_share_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._bunqto_share_url
+
+    @property
+    def bunqto_expiry(self):
+        """
+        :rtype: str
+        """
+
+        return self._bunqto_expiry
+
+    @property
+    def bunqto_time_responded(self):
+        """
+        :rtype: str
+        """
+
+        return self._bunqto_time_responded
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.AttachmentMonetaryAccountPayment]
+        """
+
+        return self._attachment
+
+    @property
+    def merchant_reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_reference
+
+    @property
+    def batch_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._batch_id
+
+    @property
+    def scheduled_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._scheduled_id
+
+    @property
+    def address_shipping(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_shipping
+
+    @property
+    def address_billing(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_billing
+
+    @property
+    def geolocation(self):
+        """
+        :rtype: object_.Geolocation
+        """
+
+        return self._geolocation
+
+    @property
+    def allow_chat(self):
+        """
+        :rtype: bool
+        """
+
+        return self._allow_chat
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._sub_type is not None:
+            return False
+
+        if self._bunqto_status is not None:
+            return False
+
+        if self._bunqto_sub_status is not None:
+            return False
+
+        if self._bunqto_share_url is not None:
+            return False
+
+        if self._bunqto_expiry is not None:
+            return False
+
+        if self._bunqto_time_responded is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._merchant_reference is not None:
+            return False
+
+        if self._batch_id is not None:
+            return False
+
+        if self._scheduled_id is not None:
+            return False
+
+        if self._address_shipping is not None:
+            return False
+
+        if self._address_billing is not None:
+            return False
+
+        if self._geolocation is not None:
+            return False
+
+        if self._allow_chat is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Payment
+        """
+
+        return converter.json_to_class(Payment, json_str)
+
+
+class CardDebit(core.BunqModel):
+    """
+    With bunq it is possible to order debit cards that can then be connected
+    with each one of the monetary accounts the user has access to (including
+    connected accounts).
+    
+    :param _second_line: The second line of text on the card
+    :type _second_line: str
+    :param _name_on_card: The user's name as will be on the card
+    :type _name_on_card: str
+    :param _alias: The label for the user who requested the card.
+    :type _alias: object_.LabelUser
+    :param _type_: The type of the card. Can be MAESTRO, MASTERCARD.
+    :type _type_: str
+    :param _pin_code_assignment: Array of Types, PINs, account IDs assigned to
+    the card.
+    :type _pin_code_assignment: list[object_.CardPinAssignment]
+    :param _monetary_account_id_fallback: ID of the MA to be used as fallback
+    for this card if insufficient balance. Fallback account is removed if not
+    supplied.
+    :type _monetary_account_id_fallback: int
+    :param _id_: The id of the card.
+    :type _id_: int
+    :param _created: The timestamp when the card was crated.
+    :type _created: str
+    :param _updated: The timestamp when the card was last updated.
+    :type _updated: str
+    :param _public_uuid: The public UUID of the card.
+    :type _public_uuid: str
+    :param _sub_type: The sub_type of card.
+    :type _sub_type: str
+    :param _primary_account_number_four_digit: The last 4 digits of the PAN of
+    the card.
+    :type _primary_account_number_four_digit: str
+    :param _status: The status to set for the card. After ordering the card it
+    will be DEACTIVATED.
+    :type _status: str
+    :param _order_status: The order status of the card. After ordering the card
+    it will be NEW_CARD_REQUEST_RECEIVED.
+    :type _order_status: str
+    :param _expiry_date: The expiry date of the card.
+    :type _expiry_date: str
+    :param _limit: The limits to define for the card (e.g. 25 EUR for
+    CARD_LIMIT_CONTACTLESS).
+    :type _limit: list[object_.CardLimit]
+    :param _country_permission: The countries for which to grant (temporary)
+    permissions to use the card.
+    :type _country_permission: list[object_.CardCountryPermission]
+    :param _label_monetary_account_ordered: The monetary account this card was
+    ordered on and the label user that owns the card.
+    :type _label_monetary_account_ordered: object_.MonetaryAccountReference
+    :param _label_monetary_account_current: The monetary account that this card
+    is currently linked to and the label user viewing it.
+    :type _label_monetary_account_current: object_.MonetaryAccountReference
+    :param _country: The country that is domestic to the card. Defaults to
+    country of residence of user.
+    :type _country: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/card-debit"
+
+    # Field constants.
+    FIELD_SECOND_LINE = "second_line"
+    FIELD_NAME_ON_CARD = "name_on_card"
+    FIELD_ALIAS = "alias"
+    FIELD_TYPE = "type"
+    FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
+    FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "CardDebit"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _public_uuid = None
+    _type_ = None
+    _sub_type = None
+    _second_line = None
+    _name_on_card = None
+    _primary_account_number_four_digit = None
+    _status = None
+    _order_status = None
+    _expiry_date = None
+    _limit = None
+    _country_permission = None
+    _label_monetary_account_ordered = None
+    _label_monetary_account_current = None
+    _alias = None
+    _pin_code_assignment = None
+    _monetary_account_id_fallback = None
+    _country = None
+    _second_line_field_for_request = None
+    _name_on_card_field_for_request = None
+    _alias_field_for_request = None
+    _type__field_for_request = None
+    _pin_code_assignment_field_for_request = None
+    _monetary_account_id_fallback_field_for_request = None
+
+    def __init__(self, second_line, name_on_card, alias=None, type_=None,
+                 pin_code_assignment=None, monetary_account_id_fallback=None):
+        """
+        :param second_line: The second line of text on the card, used as
+        name/description for it. It can contain at most 17 characters and it can be
+        empty.
+        :type second_line: str
+        :param name_on_card: The user's name as it will be on the card. Check
+        'card-name' for the available card names for a user.
+        :type name_on_card: str
+        :param alias: The pointer to the monetary account that will be connected at
+        first with the card. Its IBAN code is also the one that will be printed on
+        the card itself. The pointer must be of type IBAN.
+        :type alias: object_.Pointer
+        :param type_: The type of card to order. Can be MAESTRO or MASTERCARD.
+        :type type_: str
+        :param pin_code_assignment: Array of Types, PINs, account IDs assigned to
+        the card.
+        :type pin_code_assignment: list[object_.CardPinAssignment]
+        :param monetary_account_id_fallback: ID of the MA to be used as fallback for
+        this card if insufficient balance. Fallback account is removed if not
+        supplied.
+        :type monetary_account_id_fallback: int
+        """
+
+        self._second_line_field_for_request = second_line
+        self._name_on_card_field_for_request = name_on_card
+        self._alias_field_for_request = alias
+        self._type__field_for_request = type_
+        self._pin_code_assignment_field_for_request = pin_code_assignment
+        self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
+
+    @classmethod
+    def create(cls, second_line, name_on_card, alias=None, type_=None,
+               pin_code_assignment=None, monetary_account_id_fallback=None,
+               custom_headers=None):
+        """
+        Create a new debit card request.
+        
+        :type user_id: int
+        :param second_line: The second line of text on the card, used as
+        name/description for it. It can contain at most 17 characters and it can
+        be empty.
+        :type second_line: str
+        :param name_on_card: The user's name as it will be on the card. Check
+        'card-name' for the available card names for a user.
+        :type name_on_card: str
+        :param alias: The pointer to the monetary account that will be connected
+        at first with the card. Its IBAN code is also the one that will be
+        printed on the card itself. The pointer must be of type IBAN.
+        :type alias: object_.Pointer
+        :param type_: The type of card to order. Can be MAESTRO or MASTERCARD.
+        :type type_: str
+        :param pin_code_assignment: Array of Types, PINs, account IDs assigned
+        to the card.
+        :type pin_code_assignment: list[object_.CardPinAssignment]
+        :param monetary_account_id_fallback: ID of the MA to be used as fallback
+        for this card if insufficient balance. Fallback account is removed if
+        not supplied.
+        :type monetary_account_id_fallback: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCardDebit
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_SECOND_LINE: second_line,
+            cls.FIELD_NAME_ON_CARD: name_on_card,
+            cls.FIELD_ALIAS: alias,
+            cls.FIELD_TYPE: type_,
+            cls.FIELD_PIN_CODE_ASSIGNMENT: pin_code_assignment,
+            cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK: monetary_account_id_fallback
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
+                                         custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseCardDebit.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def sub_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_type
+
+    @property
+    def second_line(self):
+        """
+        :rtype: str
+        """
+
+        return self._second_line
+
+    @property
+    def name_on_card(self):
+        """
+        :rtype: str
+        """
+
+        return self._name_on_card
+
+    @property
+    def primary_account_number_four_digit(self):
+        """
+        :rtype: str
+        """
+
+        return self._primary_account_number_four_digit
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def order_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._order_status
+
+    @property
+    def expiry_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_date
+
+    @property
+    def limit(self):
+        """
+        :rtype: list[object_.CardLimit]
+        """
+
+        return self._limit
+
+    @property
+    def country_permission(self):
+        """
+        :rtype: list[object_.CardCountryPermission]
+        """
+
+        return self._country_permission
+
+    @property
+    def label_monetary_account_ordered(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._label_monetary_account_ordered
+
+    @property
+    def label_monetary_account_current(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._label_monetary_account_current
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._alias
+
+    @property
+    def pin_code_assignment(self):
+        """
+        :rtype: list[object_.CardPinAssignment]
+        """
+
+        return self._pin_code_assignment
+
+    @property
+    def monetary_account_id_fallback(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id_fallback
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._sub_type is not None:
+            return False
+
+        if self._second_line is not None:
+            return False
+
+        if self._name_on_card is not None:
+            return False
+
+        if self._primary_account_number_four_digit is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._order_status is not None:
+            return False
+
+        if self._expiry_date is not None:
+            return False
+
+        if self._limit is not None:
+            return False
+
+        if self._country_permission is not None:
+            return False
+
+        if self._label_monetary_account_ordered is not None:
+            return False
+
+        if self._label_monetary_account_current is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._pin_code_assignment is not None:
+            return False
+
+        if self._monetary_account_id_fallback is not None:
+            return False
+
+        if self._country is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardDebit
+        """
+
+        return converter.json_to_class(CardDebit, json_str)
+
+
 class CardGeneratedCvc2(core.BunqModel):
     """
     Endpoint for generating and retrieving a new CVC2 code.
     
+    :param _type_: The type of generated cvc2. Can be STATIC or GENERATED.
+    :type _type_: str
     :param _id_: The id of the cvc code.
     :type _id_: int
     :param _created: The timestamp of the cvc code's creation.
@@ -9791,7 +3045,11 @@ class CardGeneratedCvc2(core.BunqModel):
     # Endpoint constants.
     _ENDPOINT_URL_CREATE = "user/{}/card/{}/generated-cvc2"
     _ENDPOINT_URL_READ = "user/{}/card/{}/generated-cvc2/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/card/{}/generated-cvc2/{}"
     _ENDPOINT_URL_LISTING = "user/{}/card/{}/generated-cvc2"
+
+    # Field constants.
+    FIELD_TYPE = "type"
 
     # Object type.
     _OBJECT_TYPE_GET = "CardGeneratedCvc2"
@@ -9799,17 +3057,29 @@ class CardGeneratedCvc2(core.BunqModel):
     _id_ = None
     _created = None
     _updated = None
+    _type_ = None
     _cvc2 = None
     _status = None
     _expiry_time = None
+    _type__field_for_request = None
+
+    def __init__(self, type_=None):
+        """
+        :param type_: The type of generated cvc2. Can be STATIC or GENERATED.
+        :type type_: str
+        """
+
+        self._type__field_for_request = type_
 
     @classmethod
-    def create(cls, card_id, custom_headers=None):
+    def create(cls, card_id, type_=None, custom_headers=None):
         """
         Generate a new CVC2 code for a card.
         
         :type user_id: int
         :type card_id: int
+        :param type_: The type of generated cvc2. Can be STATIC or GENERATED.
+        :type type_: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -9819,7 +3089,7 @@ class CardGeneratedCvc2(core.BunqModel):
             custom_headers = {}
 
         request_map = {
-
+            cls.FIELD_TYPE: type_
         }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -9862,6 +3132,44 @@ class CardGeneratedCvc2(core.BunqModel):
 
         return BunqResponseCardGeneratedCvc2.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, card_id, card_generated_cvc2_id, type_=None,
+               custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :type card_generated_cvc2_id: int
+        :param type_: The type of generated cvc2. Can be STATIC or GENERATED.
+        :type type_: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_TYPE: type_
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
+                                         custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       card_id,
+                                                       card_generated_cvc2_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
         )
 
     @classmethod
@@ -9917,6 +3225,14 @@ class CardGeneratedCvc2(core.BunqModel):
         return self._updated
 
     @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
     def cvc2(self):
         """
         :rtype: str
@@ -9952,6 +3268,9 @@ class CardGeneratedCvc2(core.BunqModel):
             return False
 
         if self._updated is not None:
+            return False
+
+        if self._type_ is not None:
             return False
 
         if self._cvc2 is not None:
@@ -10061,6 +3380,9 @@ class CardReplace(core.BunqModel):
     card number. You can change the description and optional the PIN through the
     card replacement endpoint.
     
+    :param _name_on_card: The user's name as it will be on the card. Check
+    'card-name' for the available card names for a user.
+    :type _name_on_card: str
     :param _pin_code: The plaintext pin code. Requests require encryption to be
     enabled.
     :type _pin_code: str
@@ -10074,15 +3396,20 @@ class CardReplace(core.BunqModel):
     _ENDPOINT_URL_CREATE = "user/{}/card/{}/replace"
 
     # Field constants.
+    FIELD_NAME_ON_CARD = "name_on_card"
     FIELD_PIN_CODE = "pin_code"
     FIELD_SECOND_LINE = "second_line"
 
     _id_ = None
+    _name_on_card_field_for_request = None
     _pin_code_field_for_request = None
     _second_line_field_for_request = None
 
-    def __init__(self, pin_code=None, second_line=None):
+    def __init__(self, name_on_card=None, pin_code=None, second_line=None):
         """
+        :param name_on_card: The user's name as it will be on the card. Check
+        'card-name' for the available card names for a user.
+        :type name_on_card: str
         :param pin_code: The plaintext pin code. Requests require encryption to be
         enabled.
         :type pin_code: str
@@ -10090,17 +3417,21 @@ class CardReplace(core.BunqModel):
         :type second_line: str
         """
 
+        self._name_on_card_field_for_request = name_on_card
         self._pin_code_field_for_request = pin_code
         self._second_line_field_for_request = second_line
 
     @classmethod
-    def create(cls, card_id, pin_code=None, second_line=None,
+    def create(cls, card_id, name_on_card=None, pin_code=None, second_line=None,
                custom_headers=None):
         """
         Request a card replacement.
         
         :type user_id: int
         :type card_id: int
+        :param name_on_card: The user's name as it will be on the card. Check
+        'card-name' for the available card names for a user.
+        :type name_on_card: str
         :param pin_code: The plaintext pin code. Requests require encryption to
         be enabled.
         :type pin_code: str
@@ -10115,6 +3446,7 @@ class CardReplace(core.BunqModel):
             custom_headers = {}
 
         request_map = {
+            cls.FIELD_NAME_ON_CARD: name_on_card,
             cls.FIELD_PIN_CODE: pin_code,
             cls.FIELD_SECOND_LINE: second_line
         }
@@ -10187,9 +3519,6 @@ class Card(core.BunqModel):
     :param _country_permission: The countries for which to grant (temporary)
     permissions to use the card.
     :type _country_permission: list[object_.CardCountryPermission]
-    :param _monetary_account_current_id: The ID of the monetary account that
-    card transactions will use.
-    :type _monetary_account_current_id: int
     :param _pin_code_assignment: Array of Types, PINs, account IDs assigned to
     the card.
     :type _pin_code_assignment: list[object_.CardPinAssignment]
@@ -10247,7 +3576,6 @@ class Card(core.BunqModel):
     FIELD_LIMIT = "limit"
     FIELD_MAG_STRIPE_PERMISSION = "mag_stripe_permission"
     FIELD_COUNTRY_PERMISSION = "country_permission"
-    FIELD_MONETARY_ACCOUNT_CURRENT_ID = "monetary_account_current_id"
     FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
     FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
 
@@ -10282,14 +3610,13 @@ class Card(core.BunqModel):
     _limit_field_for_request = None
     _mag_stripe_permission_field_for_request = None
     _country_permission_field_for_request = None
-    _monetary_account_current_id_field_for_request = None
     _pin_code_assignment_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
     def __init__(self, pin_code=None, activation_code=None, status=None,
                  limit=None, mag_stripe_permission=None,
-                 country_permission=None, monetary_account_current_id=None,
-                 pin_code_assignment=None, monetary_account_id_fallback=None):
+                 country_permission=None, pin_code_assignment=None,
+                 monetary_account_id_fallback=None):
         """
         :param pin_code: The plaintext pin code. Requests require encryption to be
         enabled.
@@ -10319,9 +3646,6 @@ class Card(core.BunqModel):
         :param country_permission: The countries for which to grant (temporary)
         permissions to use the card.
         :type country_permission: list[object_.CardCountryPermission]
-        :param monetary_account_current_id: The ID of the monetary account that card
-        transactions will use.
-        :type monetary_account_current_id: int
         :param pin_code_assignment: Array of Types, PINs, account IDs assigned to
         the card.
         :type pin_code_assignment: list[object_.CardPinAssignment]
@@ -10337,15 +3661,14 @@ class Card(core.BunqModel):
         self._limit_field_for_request = limit
         self._mag_stripe_permission_field_for_request = mag_stripe_permission
         self._country_permission_field_for_request = country_permission
-        self._monetary_account_current_id_field_for_request = monetary_account_current_id
         self._pin_code_assignment_field_for_request = pin_code_assignment
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
 
     @classmethod
     def update(cls, card_id, pin_code=None, activation_code=None, status=None,
                limit=None, mag_stripe_permission=None, country_permission=None,
-               monetary_account_current_id=None, pin_code_assignment=None,
-               monetary_account_id_fallback=None, custom_headers=None):
+               pin_code_assignment=None, monetary_account_id_fallback=None,
+               custom_headers=None):
         """
         Update the card details. Allow to change pin code, status, limits,
         country permissions and the monetary account connected to the card. When
@@ -10382,9 +3705,6 @@ class Card(core.BunqModel):
         :param country_permission: The countries for which to grant (temporary)
         permissions to use the card.
         :type country_permission: list[object_.CardCountryPermission]
-        :param monetary_account_current_id: The ID of the monetary account that
-        card transactions will use.
-        :type monetary_account_current_id: int
         :param pin_code_assignment: Array of Types, PINs, account IDs assigned
         to the card.
         :type pin_code_assignment: list[object_.CardPinAssignment]
@@ -10409,7 +3729,6 @@ class Card(core.BunqModel):
             cls.FIELD_LIMIT: limit,
             cls.FIELD_MAG_STRIPE_PERMISSION: mag_stripe_permission,
             cls.FIELD_COUNTRY_PERMISSION: country_permission,
-            cls.FIELD_MONETARY_ACCOUNT_CURRENT_ID: monetary_account_current_id,
             cls.FIELD_PIN_CODE_ASSIGNMENT: pin_code_assignment,
             cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK: monetary_account_id_fallback
         }
@@ -11478,6 +4797,1612 @@ class CashRegister(core.BunqModel):
         return converter.json_to_class(CashRegister, json_str)
 
 
+class Tab(core.BunqModel, core.AnchoredObjectInterface):
+    """
+    Once your CashRegister has been activated you can use it to create Tabs. A
+    Tab is a template for a payment. In contrast to requests a Tab is not
+    pointed towards a specific user. Any user can pay the Tab as long as it is
+    made visible by you. The creation of a Tab happens with /tab-usage-single or
+    /tab-usage-multiple. A TabUsageSingle is a Tab that can be paid once. A
+    TabUsageMultiple is a Tab that can be paid multiple times by different
+    users.
+    
+    :param _TabUsageSingle: 
+    :type _TabUsageSingle: TabUsageSingle
+    :param _TabUsageMultiple: 
+    :type _TabUsageMultiple: TabUsageMultiple
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/cash-register/{}/tab/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/cash-register/{}/tab"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "Tab"
+
+    _TabUsageSingle = None
+    _TabUsageMultiple = None
+
+    @classmethod
+    def get(cls, cash_register_id, tab_uuid, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Get a specific tab. This returns a TabUsageSingle or TabUsageMultiple.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTab
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     cash_register_id, tab_uuid)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTab.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
+
+    @classmethod
+    def list(cls, cash_register_id, monetary_account_id=None, params=None,
+             custom_headers=None):
+        """
+        Get a collection of tabs.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id),
+            cash_register_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTabList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
+
+    @property
+    def TabUsageSingle(self):
+        """
+        :rtype: TabUsageSingle
+        """
+
+        return self._TabUsageSingle
+
+    @property
+    def TabUsageMultiple(self):
+        """
+        :rtype: TabUsageMultiple
+        """
+
+        return self._TabUsageMultiple
+
+    def get_referenced_object(self):
+        """
+        :rtype: core.BunqModel
+        :raise: BunqException
+        """
+
+        if self._TabUsageSingle is not None:
+            return self._TabUsageSingle
+
+        if self._TabUsageMultiple is not None:
+            return self._TabUsageMultiple
+
+        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._TabUsageSingle is not None:
+            return False
+
+        if self._TabUsageMultiple is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Tab
+        """
+
+        return converter.json_to_class(Tab, json_str)
+
+
+class TabUsageSingle(core.BunqModel):
+    """
+    TabUsageSingle is a Tab that can be paid once. The TabUsageSingle is created
+    with the status OPEN. Optionally you can add TabItems to the tab using
+    /tab/_/tab-item, TabItems don't affect the total amount of the Tab. However,
+    if you've created any TabItems for a Tab the sum of the amounts of these
+    items must be equal to the total_amount of the Tab when you change its
+    status to WAITING_FOR_PAYMENT. By setting the visibility object a
+    TabUsageSingle with the status OPEN or WAITING_FOR_PAYMENT can be made
+    visible to customers. As soon as a customer pays the TabUsageSingle its
+    status changes to PAID, and it can't be paid again.
+    
+    :param _merchant_reference: The merchant reference of the Tab, as defined by
+    the owner.
+    :type _merchant_reference: str
+    :param _description: The description of the TabUsageMultiple. Maximum 9000
+    characters.
+    :type _description: str
+    :param _status: The status of the Tab. Can be OPEN, WAITING_FOR_PAYMENT,
+    PAID or CANCELED.
+    :type _status: str
+    :param _amount_total: The total amount of the Tab.
+    :type _amount_total: object_.Amount
+    :param _allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
+    be paid.
+    :type _allow_amount_higher: bool
+    :param _allow_amount_lower: [DEPRECATED] Whether or not a lower amount can
+    be paid.
+    :type _allow_amount_lower: bool
+    :param _want_tip: [DEPRECATED] Whether or not the user paying the Tab should
+    be asked if he wants to give a tip. When want_tip is set to true,
+    allow_amount_higher must also be set to true and allow_amount_lower must be
+    false.
+    :type _want_tip: bool
+    :param _minimum_age: The minimum age of the user paying the Tab.
+    :type _minimum_age: bool
+    :param _require_address: Whether or not an billing and shipping address must
+    be provided when paying the Tab.
+    :type _require_address: str
+    :param _redirect_url: The URL which the user is sent to after paying the
+    Tab.
+    :type _redirect_url: str
+    :param _visibility: The visibility of a Tab. A Tab can be visible trough
+    NearPay, the QR code of the CashRegister and its own QR code.
+    :type _visibility: object_.TabVisibility
+    :param _expiration: The moment when this Tab expires.
+    :type _expiration: str
+    :param _tab_attachment: An array of attachments that describe the tab.
+    Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+    :type _tab_attachment: list[object_.BunqId]
+    :param _uuid: The uuid of the created TabUsageSingle.
+    :type _uuid: str
+    :param _created: The timestamp of the Tab's creation.
+    :type _created: str
+    :param _updated: The timestamp of the Tab's last update.
+    :type _updated: str
+    :param _amount_paid: The amount that has been paid for this Tab.
+    :type _amount_paid: object_.Amount
+    :param _qr_code_token: The token used to redirect mobile devices directly to
+    the bunq app. Because they can't scan a QR code.
+    :type _qr_code_token: str
+    :param _tab_url: The URL redirecting user to the tab payment in the bunq
+    app. Only works on mobile devices.
+    :type _tab_url: str
+    :param _alias: The alias of the party that owns this tab.
+    :type _alias: object_.MonetaryAccountReference
+    :param _cash_register_location: The location of the cash register that
+    created this tab.
+    :type _cash_register_location: object_.Geolocation
+    :param _tab_item: The tab items of this tab.
+    :type _tab_item: list[TabItem]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single"
+
+    # Field constants.
+    FIELD_MERCHANT_REFERENCE = "merchant_reference"
+    FIELD_DESCRIPTION = "description"
+    FIELD_STATUS = "status"
+    FIELD_AMOUNT_TOTAL = "amount_total"
+    FIELD_ALLOW_AMOUNT_HIGHER = "allow_amount_higher"
+    FIELD_ALLOW_AMOUNT_LOWER = "allow_amount_lower"
+    FIELD_WANT_TIP = "want_tip"
+    FIELD_MINIMUM_AGE = "minimum_age"
+    FIELD_REQUIRE_ADDRESS = "require_address"
+    FIELD_REDIRECT_URL = "redirect_url"
+    FIELD_VISIBILITY = "visibility"
+    FIELD_EXPIRATION = "expiration"
+    FIELD_TAB_ATTACHMENT = "tab_attachment"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "Uuid"
+    _OBJECT_TYPE_PUT = "Uuid"
+    _OBJECT_TYPE_GET = "TabUsageSingle"
+
+    _uuid = None
+    _created = None
+    _updated = None
+    _merchant_reference = None
+    _description = None
+    _status = None
+    _amount_total = None
+    _amount_paid = None
+    _qr_code_token = None
+    _tab_url = None
+    _visibility = None
+    _minimum_age = None
+    _require_address = None
+    _redirect_url = None
+    _expiration = None
+    _alias = None
+    _cash_register_location = None
+    _tab_item = None
+    _tab_attachment = None
+    _merchant_reference_field_for_request = None
+    _description_field_for_request = None
+    _status_field_for_request = None
+    _amount_total_field_for_request = None
+    _allow_amount_higher_field_for_request = None
+    _allow_amount_lower_field_for_request = None
+    _want_tip_field_for_request = None
+    _minimum_age_field_for_request = None
+    _require_address_field_for_request = None
+    _redirect_url_field_for_request = None
+    _visibility_field_for_request = None
+    _expiration_field_for_request = None
+    _tab_attachment_field_for_request = None
+
+    def __init__(self, description, status=None, amount_total=None,
+                 merchant_reference=None, allow_amount_higher=None,
+                 allow_amount_lower=None, want_tip=None, minimum_age=None,
+                 require_address=None, redirect_url=None, visibility=None,
+                 expiration=None, tab_attachment=None):
+        """
+        :param description: The description of the Tab. Maximum 9000 characters.
+        Field is required but can be an empty string.
+        :type description: str
+        :param status: The status of the Tab. On creation the status must be set to
+        OPEN. You can change the status from OPEN to WAITING_FOR_PAYMENT.
+        :type status: str
+        :param amount_total: The total amount of the Tab. Must be a positive amount.
+        As long as the tab has the status OPEN you can change the total amount. This
+        amount is not affected by the amounts of the TabItems. However, if you've
+        created any TabItems for a Tab the sum of the amounts of these items must be
+        equal to the total_amount of the Tab when you change its status to
+        WAITING_FOR_PAYMENT.
+        :type amount_total: object_.Amount
+        :param merchant_reference: The reference of the Tab, as defined by the
+        owner. This reference will be set for any payment that is generated by this
+        tab. Must be unique among all the owner's tabs for the used monetary
+        account.
+        :type merchant_reference: str
+        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
+        be paid.
+        :type allow_amount_higher: bool
+        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount can be
+        paid.
+        :type allow_amount_lower: bool
+        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab should
+        be asked if he wants to give a tip. When want_tip is set to true,
+        allow_amount_higher must also be set to true and allow_amount_lower must be
+        false.
+        :type want_tip: bool
+        :param minimum_age: The minimum age of the user paying the Tab.
+        :type minimum_age: int
+        :param require_address: Whether a billing and shipping address must be
+        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
+        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
+        :type require_address: str
+        :param redirect_url: The URL which the user is sent to after paying the Tab.
+        :type redirect_url: str
+        :param visibility: The visibility of a Tab. A Tab can be visible trough
+        NearPay, the QR code of the CashRegister and its own QR code.
+        :type visibility: object_.TabVisibility
+        :param expiration: The moment when this Tab expires. Can be at most 1 hour
+        into the future.
+        :type expiration: str
+        :param tab_attachment: An array of attachments that describe the tab.
+        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+        :type tab_attachment: list[object_.BunqId]
+        """
+
+        self._description_field_for_request = description
+        self._status_field_for_request = status
+        self._amount_total_field_for_request = amount_total
+        self._merchant_reference_field_for_request = merchant_reference
+        self._allow_amount_higher_field_for_request = allow_amount_higher
+        self._allow_amount_lower_field_for_request = allow_amount_lower
+        self._want_tip_field_for_request = want_tip
+        self._minimum_age_field_for_request = minimum_age
+        self._require_address_field_for_request = require_address
+        self._redirect_url_field_for_request = redirect_url
+        self._visibility_field_for_request = visibility
+        self._expiration_field_for_request = expiration
+        self._tab_attachment_field_for_request = tab_attachment
+
+    @classmethod
+    def create(cls, cash_register_id, description, status, amount_total,
+               monetary_account_id=None, merchant_reference=None,
+               allow_amount_higher=None, allow_amount_lower=None, want_tip=None,
+               minimum_age=None, require_address=None, redirect_url=None,
+               visibility=None, expiration=None, tab_attachment=None,
+               custom_headers=None):
+        """
+        Create a TabUsageSingle. The initial status must be OPEN
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :param description: The description of the Tab. Maximum 9000 characters.
+        Field is required but can be an empty string.
+        :type description: str
+        :param status: The status of the Tab. On creation the status must be set
+        to OPEN. You can change the status from OPEN to WAITING_FOR_PAYMENT.
+        :type status: str
+        :param amount_total: The total amount of the Tab. Must be a positive
+        amount. As long as the tab has the status OPEN you can change the total
+        amount. This amount is not affected by the amounts of the TabItems.
+        However, if you've created any TabItems for a Tab the sum of the amounts
+        of these items must be equal to the total_amount of the Tab when you
+        change its status to WAITING_FOR_PAYMENT.
+        :type amount_total: object_.Amount
+        :param merchant_reference: The reference of the Tab, as defined by the
+        owner. This reference will be set for any payment that is generated by
+        this tab. Must be unique among all the owner's tabs for the used
+        monetary account.
+        :type merchant_reference: str
+        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount
+        can be paid.
+        :type allow_amount_higher: bool
+        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount
+        can be paid.
+        :type allow_amount_lower: bool
+        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab
+        should be asked if he wants to give a tip. When want_tip is set to true,
+        allow_amount_higher must also be set to true and allow_amount_lower must
+        be false.
+        :type want_tip: bool
+        :param minimum_age: The minimum age of the user paying the Tab.
+        :type minimum_age: int
+        :param require_address: Whether a billing and shipping address must be
+        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
+        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
+        :type require_address: str
+        :param redirect_url: The URL which the user is sent to after paying the
+        Tab.
+        :type redirect_url: str
+        :param visibility: The visibility of a Tab. A Tab can be visible trough
+        NearPay, the QR code of the CashRegister and its own QR code.
+        :type visibility: object_.TabVisibility
+        :param expiration: The moment when this Tab expires. Can be at most 1
+        hour into the future.
+        :type expiration: str
+        :param tab_attachment: An array of attachments that describe the tab.
+        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+        :type tab_attachment: list[object_.BunqId]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseStr
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_MERCHANT_REFERENCE: merchant_reference,
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_AMOUNT_TOTAL: amount_total,
+            cls.FIELD_ALLOW_AMOUNT_HIGHER: allow_amount_higher,
+            cls.FIELD_ALLOW_AMOUNT_LOWER: allow_amount_lower,
+            cls.FIELD_WANT_TIP: want_tip,
+            cls.FIELD_MINIMUM_AGE: minimum_age,
+            cls.FIELD_REQUIRE_ADDRESS: require_address,
+            cls.FIELD_REDIRECT_URL: redirect_url,
+            cls.FIELD_VISIBILITY: visibility,
+            cls.FIELD_EXPIRATION: expiration,
+            cls.FIELD_TAB_ATTACHMENT: tab_attachment
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       cash_register_id)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
+
+    @classmethod
+    def update(cls, cash_register_id, tab_usage_single_uuid,
+               monetary_account_id=None, status=None, amount_total=None,
+               visibility=None, expiration=None, tab_attachment=None,
+               custom_headers=None):
+        """
+        Modify a specific TabUsageSingle. You can change the amount_total,
+        status and visibility. Once you change the status to WAITING_FOR_PAYMENT
+        the TabUsageSingle will expire after 5 minutes (default) or up to 1 hour
+        if a different expiration is provided.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_usage_single_uuid: str
+        :param status: The status of the Tab. On creation the status must be set
+        to OPEN. You can change the status from OPEN to WAITING_FOR_PAYMENT.
+        :type status: str
+        :param amount_total: The total amount of the Tab. Must be a positive
+        amount. As long as the tab has the status OPEN you can change the total
+        amount. This amount is not affected by the amounts of the TabItems.
+        However, if you've created any TabItems for a Tab the sum of the amounts
+        of these items must be equal to the total_amount of the Tab when you
+        change its status to WAITING_FOR_PAYMENT.
+        :type amount_total: object_.Amount
+        :param visibility: The visibility of a Tab. A Tab can be visible trough
+        NearPay, the QR code of the CashRegister and its own QR code.
+        :type visibility: object_.TabVisibility
+        :param expiration: The moment when this Tab expires. Can be at most 1
+        hour into the future.
+        :type expiration: str
+        :param tab_attachment: An array of attachments that describe the tab.
+        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+        :type tab_attachment: list[object_.BunqId]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseStr
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATUS: status,
+            cls.FIELD_AMOUNT_TOTAL: amount_total,
+            cls.FIELD_VISIBILITY: visibility,
+            cls.FIELD_EXPIRATION: expiration,
+            cls.FIELD_TAB_ATTACHMENT: tab_attachment
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       cash_register_id,
+                                                       tab_usage_single_uuid)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, cash_register_id, tab_usage_single_uuid,
+               monetary_account_id=None, custom_headers=None):
+        """
+        Cancel a specific TabUsageSingle.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_usage_single_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       cash_register_id,
+                                                       tab_usage_single_uuid)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def get(cls, cash_register_id, tab_usage_single_uuid,
+            monetary_account_id=None, custom_headers=None):
+        """
+        Get a specific TabUsageSingle.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_usage_single_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabUsageSingle
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     cash_register_id,
+                                                     tab_usage_single_uuid)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTabUsageSingle.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, cash_register_id, monetary_account_id=None, params=None,
+             custom_headers=None):
+        """
+        Get a collection of TabUsageSingle.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabUsageSingleList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id),
+            cash_register_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTabUsageSingleList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def merchant_reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_reference
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_total
+
+    @property
+    def amount_paid(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_paid
+
+    @property
+    def qr_code_token(self):
+        """
+        :rtype: str
+        """
+
+        return self._qr_code_token
+
+    @property
+    def tab_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._tab_url
+
+    @property
+    def visibility(self):
+        """
+        :rtype: object_.TabVisibility
+        """
+
+        return self._visibility
+
+    @property
+    def minimum_age(self):
+        """
+        :rtype: bool
+        """
+
+        return self._minimum_age
+
+    @property
+    def require_address(self):
+        """
+        :rtype: str
+        """
+
+        return self._require_address
+
+    @property
+    def redirect_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._redirect_url
+
+    @property
+    def expiration(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiration
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def cash_register_location(self):
+        """
+        :rtype: object_.Geolocation
+        """
+
+        return self._cash_register_location
+
+    @property
+    def tab_item(self):
+        """
+        :rtype: list[TabItem]
+        """
+
+        return self._tab_item
+
+    @property
+    def tab_attachment(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._tab_attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._uuid is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._merchant_reference is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._amount_total is not None:
+            return False
+
+        if self._amount_paid is not None:
+            return False
+
+        if self._qr_code_token is not None:
+            return False
+
+        if self._tab_url is not None:
+            return False
+
+        if self._visibility is not None:
+            return False
+
+        if self._minimum_age is not None:
+            return False
+
+        if self._require_address is not None:
+            return False
+
+        if self._redirect_url is not None:
+            return False
+
+        if self._expiration is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._cash_register_location is not None:
+            return False
+
+        if self._tab_item is not None:
+            return False
+
+        if self._tab_attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabUsageSingle
+        """
+
+        return converter.json_to_class(TabUsageSingle, json_str)
+
+
+class TabItem(core.BunqModel):
+    """
+    Used to get items on a tab.
+    
+    :param _id_: The id of the tab item.
+    :type _id_: int
+    :param _description: The item's brief description.
+    :type _description: str
+    :param _ean_code: The item's EAN code.
+    :type _ean_code: str
+    :param _avatar_attachment: A struct with an AttachmentPublic UUID that used
+    as an avatar for the TabItem.
+    :type _avatar_attachment: object_.AttachmentPublic
+    :param _tab_attachment: A list of AttachmentTab attached to the TabItem.
+    :type _tab_attachment: list[object_.AttachmentTab]
+    :param _quantity: The quantity of the item. Formatted as a number containing
+    up to 15 digits, up to 15 decimals and using a dot.
+    :type _quantity: str
+    :param _amount: The money amount of the item.
+    :type _amount: object_.Amount
+    """
+
+    _id_ = None
+    _description = None
+    _ean_code = None
+    _avatar_attachment = None
+    _tab_attachment = None
+    _quantity = None
+    _amount = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def ean_code(self):
+        """
+        :rtype: str
+        """
+
+        return self._ean_code
+
+    @property
+    def avatar_attachment(self):
+        """
+        :rtype: object_.AttachmentPublic
+        """
+
+        return self._avatar_attachment
+
+    @property
+    def tab_attachment(self):
+        """
+        :rtype: list[object_.AttachmentTab]
+        """
+
+        return self._tab_attachment
+
+    @property
+    def quantity(self):
+        """
+        :rtype: str
+        """
+
+        return self._quantity
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._ean_code is not None:
+            return False
+
+        if self._avatar_attachment is not None:
+            return False
+
+        if self._tab_attachment is not None:
+            return False
+
+        if self._quantity is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabItem
+        """
+
+        return converter.json_to_class(TabItem, json_str)
+
+
+class TabUsageMultiple(core.BunqModel):
+    """
+    TabUsageMultiple is a Tab that can be paid by multiple users. Just like the
+    TabUsageSingle it is created with the status OPEN, the visibility can be
+    defined in the visibility object and TabItems can be added as long as the
+    status is OPEN. When you change the status to PAYABLE any bunq user can use
+    the tab to make a payment to your account. After an user has paid your
+    TabUsageMultiple the status will not change, it will stay PAYABLE. For
+    example: you can create a TabUsageMultiple with require_address set to true.
+    Now show the QR code of this Tab on your webshop, and any bunq user can
+    instantly pay and order something from your webshop.
+    
+    :param _description: The description of the TabUsageMultiple. Maximum 9000
+    characters.
+    :type _description: str
+    :param _status: The status of the Tab. Can be OPEN, PAYABLE or CLOSED.
+    :type _status: str
+    :param _amount_total: The total amount of the Tab.
+    :type _amount_total: object_.Amount
+    :param _allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
+    be paid.
+    :type _allow_amount_higher: bool
+    :param _allow_amount_lower: [DEPRECATED] Whether or not a lower amount can
+    be paid.
+    :type _allow_amount_lower: bool
+    :param _want_tip: [DEPRECATED] Whether or not the user paying the Tab should
+    be asked if he wants to give a tip. When want_tip is set to true,
+    allow_amount_higher must also be set to true and allow_amount_lower must be
+    false.
+    :type _want_tip: bool
+    :param _minimum_age: The minimum age of the user paying the Tab.
+    :type _minimum_age: bool
+    :param _require_address: Whether or not an billing and shipping address must
+    be provided when paying the Tab.
+    :type _require_address: str
+    :param _redirect_url: The URL which the user is sent to after paying the
+    Tab.
+    :type _redirect_url: str
+    :param _visibility: The visibility of a Tab. A Tab can be visible trough
+    NearPay, the QR code of the CashRegister and its own QR code.
+    :type _visibility: object_.TabVisibility
+    :param _expiration: The moment when this Tab expires.
+    :type _expiration: str
+    :param _tab_attachment: An array of attachments that describe the tab.
+    Viewable through the GET /tab/{tabid}/attachment/{attachmentid}/content
+    endpoint.
+    :type _tab_attachment: list[object_.BunqId]
+    :param _uuid: The uuid of the created TabUsageMultiple.
+    :type _uuid: str
+    :param _created: The timestamp of the Tab's creation.
+    :type _created: str
+    :param _updated: The timestamp of the Tab's last update.
+    :type _updated: str
+    :param _qr_code_token: The token used to redirect mobile devices directly to
+    the bunq app. Because they can't scan a QR code.
+    :type _qr_code_token: str
+    :param _tab_url: The URL redirecting user to the tab payment in the bunq
+    app. Only works on mobile devices.
+    :type _tab_url: str
+    :param _alias: The alias of the party that owns this tab.
+    :type _alias: object_.MonetaryAccountReference
+    :param _cash_register_location: The location of the cash register that
+    created this tab.
+    :type _cash_register_location: object_.Geolocation
+    :param _tab_item: The tab items of this tab.
+    :type _tab_item: list[TabItem]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple"
+
+    # Field constants.
+    FIELD_DESCRIPTION = "description"
+    FIELD_STATUS = "status"
+    FIELD_AMOUNT_TOTAL = "amount_total"
+    FIELD_ALLOW_AMOUNT_HIGHER = "allow_amount_higher"
+    FIELD_ALLOW_AMOUNT_LOWER = "allow_amount_lower"
+    FIELD_WANT_TIP = "want_tip"
+    FIELD_MINIMUM_AGE = "minimum_age"
+    FIELD_REQUIRE_ADDRESS = "require_address"
+    FIELD_REDIRECT_URL = "redirect_url"
+    FIELD_VISIBILITY = "visibility"
+    FIELD_EXPIRATION = "expiration"
+    FIELD_TAB_ATTACHMENT = "tab_attachment"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "Uuid"
+    _OBJECT_TYPE_PUT = "Uuid"
+    _OBJECT_TYPE_GET = "TabUsageMultiple"
+
+    _uuid = None
+    _created = None
+    _updated = None
+    _description = None
+    _status = None
+    _amount_total = None
+    _qr_code_token = None
+    _tab_url = None
+    _visibility = None
+    _minimum_age = None
+    _require_address = None
+    _redirect_url = None
+    _expiration = None
+    _alias = None
+    _cash_register_location = None
+    _tab_item = None
+    _tab_attachment = None
+    _description_field_for_request = None
+    _status_field_for_request = None
+    _amount_total_field_for_request = None
+    _allow_amount_higher_field_for_request = None
+    _allow_amount_lower_field_for_request = None
+    _want_tip_field_for_request = None
+    _minimum_age_field_for_request = None
+    _require_address_field_for_request = None
+    _redirect_url_field_for_request = None
+    _visibility_field_for_request = None
+    _expiration_field_for_request = None
+    _tab_attachment_field_for_request = None
+
+    def __init__(self, description, status=None, amount_total=None,
+                 allow_amount_higher=None, allow_amount_lower=None,
+                 want_tip=None, minimum_age=None, require_address=None,
+                 redirect_url=None, visibility=None, expiration=None,
+                 tab_attachment=None):
+        """
+        :param description: The description of the TabUsageMultiple. Maximum 9000
+        characters. Field is required but can be an empty string.
+        :type description: str
+        :param status: The status of the TabUsageMultiple. On creation the status
+        must be set to OPEN. You can change the status from OPEN to PAYABLE. If the
+        TabUsageMultiple gets paid the status will remain PAYABLE.
+        :type status: str
+        :param amount_total: The total amount of the Tab. Must be a positive amount.
+        As long as the tab has the status OPEN you can change the total amount. This
+        amount is not affected by the amounts of the TabItems. However, if you've
+        created any TabItems for a Tab the sum of the amounts of these items must be
+        equal to the total_amount of the Tab when you change its status to PAYABLE
+        :type amount_total: object_.Amount
+        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
+        be paid.
+        :type allow_amount_higher: bool
+        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount can be
+        paid.
+        :type allow_amount_lower: bool
+        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab should
+        be asked if he wants to give a tip. When want_tip is set to true,
+        allow_amount_higher must also be set to true and allow_amount_lower must be
+        false.
+        :type want_tip: bool
+        :param minimum_age: The minimum age of the user paying the Tab.
+        :type minimum_age: int
+        :param require_address: Whether a billing and shipping address must be
+        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
+        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
+        :type require_address: str
+        :param redirect_url: The URL which the user is sent to after paying the Tab.
+        :type redirect_url: str
+        :param visibility: The visibility of a Tab. A Tab can be visible trough
+        NearPay, the QR code of the CashRegister and its own QR code.
+        :type visibility: object_.TabVisibility
+        :param expiration: The moment when this Tab expires. Can be at most 365 days
+        into the future.
+        :type expiration: str
+        :param tab_attachment: An array of attachments that describe the tab.
+        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+        :type tab_attachment: list[object_.BunqId]
+        """
+
+        self._description_field_for_request = description
+        self._status_field_for_request = status
+        self._amount_total_field_for_request = amount_total
+        self._allow_amount_higher_field_for_request = allow_amount_higher
+        self._allow_amount_lower_field_for_request = allow_amount_lower
+        self._want_tip_field_for_request = want_tip
+        self._minimum_age_field_for_request = minimum_age
+        self._require_address_field_for_request = require_address
+        self._redirect_url_field_for_request = redirect_url
+        self._visibility_field_for_request = visibility
+        self._expiration_field_for_request = expiration
+        self._tab_attachment_field_for_request = tab_attachment
+
+    @classmethod
+    def create(cls, cash_register_id, description, status, amount_total,
+               monetary_account_id=None, allow_amount_higher=None,
+               allow_amount_lower=None, want_tip=None, minimum_age=None,
+               require_address=None, redirect_url=None, visibility=None,
+               expiration=None, tab_attachment=None, custom_headers=None):
+        """
+        Create a TabUsageMultiple. On creation the status must be set to OPEN
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :param description: The description of the TabUsageMultiple. Maximum
+        9000 characters. Field is required but can be an empty string.
+        :type description: str
+        :param status: The status of the TabUsageMultiple. On creation the
+        status must be set to OPEN. You can change the status from OPEN to
+        PAYABLE. If the TabUsageMultiple gets paid the status will remain
+        PAYABLE.
+        :type status: str
+        :param amount_total: The total amount of the Tab. Must be a positive
+        amount. As long as the tab has the status OPEN you can change the total
+        amount. This amount is not affected by the amounts of the TabItems.
+        However, if you've created any TabItems for a Tab the sum of the amounts
+        of these items must be equal to the total_amount of the Tab when you
+        change its status to PAYABLE
+        :type amount_total: object_.Amount
+        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount
+        can be paid.
+        :type allow_amount_higher: bool
+        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount
+        can be paid.
+        :type allow_amount_lower: bool
+        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab
+        should be asked if he wants to give a tip. When want_tip is set to true,
+        allow_amount_higher must also be set to true and allow_amount_lower must
+        be false.
+        :type want_tip: bool
+        :param minimum_age: The minimum age of the user paying the Tab.
+        :type minimum_age: int
+        :param require_address: Whether a billing and shipping address must be
+        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
+        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
+        :type require_address: str
+        :param redirect_url: The URL which the user is sent to after paying the
+        Tab.
+        :type redirect_url: str
+        :param visibility: The visibility of a Tab. A Tab can be visible trough
+        NearPay, the QR code of the CashRegister and its own QR code.
+        :type visibility: object_.TabVisibility
+        :param expiration: The moment when this Tab expires. Can be at most 365
+        days into the future.
+        :type expiration: str
+        :param tab_attachment: An array of attachments that describe the tab.
+        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+        :type tab_attachment: list[object_.BunqId]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseStr
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_AMOUNT_TOTAL: amount_total,
+            cls.FIELD_ALLOW_AMOUNT_HIGHER: allow_amount_higher,
+            cls.FIELD_ALLOW_AMOUNT_LOWER: allow_amount_lower,
+            cls.FIELD_WANT_TIP: want_tip,
+            cls.FIELD_MINIMUM_AGE: minimum_age,
+            cls.FIELD_REQUIRE_ADDRESS: require_address,
+            cls.FIELD_REDIRECT_URL: redirect_url,
+            cls.FIELD_VISIBILITY: visibility,
+            cls.FIELD_EXPIRATION: expiration,
+            cls.FIELD_TAB_ATTACHMENT: tab_attachment
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       cash_register_id)
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
+
+    @classmethod
+    def update(cls, cash_register_id, tab_usage_multiple_uuid,
+               monetary_account_id=None, status=None, amount_total=None,
+               visibility=None, expiration=None, tab_attachment=None,
+               custom_headers=None):
+        """
+        Modify a specific TabUsageMultiple. You can change the amount_total,
+        status and visibility. Once you change the status to PAYABLE the
+        TabUsageMultiple will expire after a year (default). If you've created
+        any TabItems for a Tab the sum of the amounts of these items must be
+        equal to the total_amount of the Tab when you change its status to
+        PAYABLE.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_usage_multiple_uuid: str
+        :param status: The status of the TabUsageMultiple. On creation the
+        status must be set to OPEN. You can change the status from OPEN to
+        PAYABLE. If the TabUsageMultiple gets paid the status will remain
+        PAYABLE.
+        :type status: str
+        :param amount_total: The total amount of the Tab. Must be a positive
+        amount. As long as the tab has the status OPEN you can change the total
+        amount. This amount is not affected by the amounts of the TabItems.
+        However, if you've created any TabItems for a Tab the sum of the amounts
+        of these items must be equal to the total_amount of the Tab when you
+        change its status to PAYABLE
+        :type amount_total: object_.Amount
+        :param visibility: The visibility of a Tab. A Tab can be visible trough
+        NearPay, the QR code of the CashRegister and its own QR code.
+        :type visibility: object_.TabVisibility
+        :param expiration: The moment when this Tab expires. Can be at most 365
+        days into the future.
+        :type expiration: str
+        :param tab_attachment: An array of attachments that describe the tab.
+        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
+        :type tab_attachment: list[object_.BunqId]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseStr
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATUS: status,
+            cls.FIELD_AMOUNT_TOTAL: amount_total,
+            cls.FIELD_VISIBILITY: visibility,
+            cls.FIELD_EXPIRATION: expiration,
+            cls.FIELD_TAB_ATTACHMENT: tab_attachment
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       cash_register_id,
+                                                       tab_usage_multiple_uuid)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseStr.cast_from_bunq_response(
+            cls._process_for_uuid(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, cash_register_id, tab_usage_multiple_uuid,
+               monetary_account_id=None, custom_headers=None):
+        """
+        Close a specific TabUsageMultiple.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_usage_multiple_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       cash_register_id,
+                                                       tab_usage_multiple_uuid)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def get(cls, cash_register_id, tab_usage_multiple_uuid,
+            monetary_account_id=None, custom_headers=None):
+        """
+        Get a specific TabUsageMultiple.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type tab_usage_multiple_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabUsageMultiple
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     cash_register_id,
+                                                     tab_usage_multiple_uuid)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTabUsageMultiple.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, cash_register_id, monetary_account_id=None, params=None,
+             custom_headers=None):
+        """
+        Get a collection of TabUsageMultiple.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type cash_register_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabUsageMultipleList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id),
+            cash_register_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTabUsageMultipleList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_total
+
+    @property
+    def qr_code_token(self):
+        """
+        :rtype: str
+        """
+
+        return self._qr_code_token
+
+    @property
+    def tab_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._tab_url
+
+    @property
+    def visibility(self):
+        """
+        :rtype: object_.TabVisibility
+        """
+
+        return self._visibility
+
+    @property
+    def minimum_age(self):
+        """
+        :rtype: bool
+        """
+
+        return self._minimum_age
+
+    @property
+    def require_address(self):
+        """
+        :rtype: str
+        """
+
+        return self._require_address
+
+    @property
+    def redirect_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._redirect_url
+
+    @property
+    def expiration(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiration
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def cash_register_location(self):
+        """
+        :rtype: object_.Geolocation
+        """
+
+        return self._cash_register_location
+
+    @property
+    def tab_item(self):
+        """
+        :rtype: list[TabItem]
+        """
+
+        return self._tab_item
+
+    @property
+    def tab_attachment(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._tab_attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._uuid is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._amount_total is not None:
+            return False
+
+        if self._qr_code_token is not None:
+            return False
+
+        if self._tab_url is not None:
+            return False
+
+        if self._visibility is not None:
+            return False
+
+        if self._minimum_age is not None:
+            return False
+
+        if self._require_address is not None:
+            return False
+
+        if self._redirect_url is not None:
+            return False
+
+        if self._expiration is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._cash_register_location is not None:
+            return False
+
+        if self._tab_item is not None:
+            return False
+
+        if self._tab_attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabUsageMultiple
+        """
+
+        return converter.json_to_class(TabUsageMultiple, json_str)
+
+
 class CertificatePinned(core.BunqModel):
     """
     This endpoint allow you to pin the certificate chains to your account. These
@@ -12015,6 +6940,561 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         """
 
         return converter.json_to_class(Device, json_str)
+
+
+class DraftPayment(core.BunqModel):
+    """
+    A DraftPayment is like a regular Payment, but it needs to be accepted by the
+    sending party before the actual Payment is done.
+    
+    :param _status: The status of the DraftPayment.
+    :type _status: str
+    :param _entries: The entries in the DraftPayment.
+    :type _entries: list[object_.DraftPaymentEntry]
+    :param _previous_updated_timestamp: The last updated_timestamp that you
+    received for this DraftPayment. This needs to be provided to prevent race
+    conditions.
+    :type _previous_updated_timestamp: str
+    :param _number_of_required_accepts: The number of accepts that are required
+    for the draft payment to receive status ACCEPTED. Currently only 1 is valid.
+    :type _number_of_required_accepts: int
+    :param _id_: The id of the created DrafPayment.
+    :type _id_: int
+    :param _monetary_account_id: The id of the MonetaryAccount the DraftPayment
+    applies to.
+    :type _monetary_account_id: int
+    :param _user_alias_created: The label of the User who created the
+    DraftPayment.
+    :type _user_alias_created: object_.LabelUser
+    :param _responses: All responses to this draft payment.
+    :type _responses: list[object_.DraftPaymentResponse]
+    :param _type_: The type of the DraftPayment.
+    :type _type_: str
+    :param _object_: The Payment or PaymentBatch. This will only be present
+    after the DraftPayment has been accepted.
+    :type _object_: object_.DraftPaymentAnchorObject
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/draft-payment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/draft-payment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/draft-payment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/draft-payment/{}"
+
+    # Field constants.
+    FIELD_STATUS = "status"
+    FIELD_ENTRIES = "entries"
+    FIELD_PREVIOUS_UPDATED_TIMESTAMP = "previous_updated_timestamp"
+    FIELD_NUMBER_OF_REQUIRED_ACCEPTS = "number_of_required_accepts"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "DraftPayment"
+
+    _id_ = None
+    _monetary_account_id = None
+    _user_alias_created = None
+    _responses = None
+    _status = None
+    _type_ = None
+    _entries = None
+    _object_ = None
+    _request_reference_split_the_bill = None
+    _status_field_for_request = None
+    _entries_field_for_request = None
+    _previous_updated_timestamp_field_for_request = None
+    _number_of_required_accepts_field_for_request = None
+
+    def __init__(self, number_of_required_accepts, entries=None, status=None,
+                 previous_updated_timestamp=None):
+        """
+        :param entries: The list of entries in the DraftPayment. Each entry will
+        result in a payment when the DraftPayment is accepted.
+        :type entries: list[object_.DraftPaymentEntry]
+        :param number_of_required_accepts: The number of accepts that are required
+        for the draft payment to receive status ACCEPTED. Currently only 1 is valid.
+        :type number_of_required_accepts: int
+        :param status: The status of the DraftPayment.
+        :type status: str
+        :param previous_updated_timestamp: The last updated_timestamp that you
+        received for this DraftPayment. This needs to be provided to prevent race
+        conditions.
+        :type previous_updated_timestamp: str
+        """
+
+        self._entries_field_for_request = entries
+        self._number_of_required_accepts_field_for_request = number_of_required_accepts
+        self._status_field_for_request = status
+        self._previous_updated_timestamp_field_for_request = previous_updated_timestamp
+
+    @classmethod
+    def create(cls, entries, number_of_required_accepts,
+               monetary_account_id=None, status=None,
+               previous_updated_timestamp=None, custom_headers=None):
+        """
+        Create a new DraftPayment.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param entries: The list of entries in the DraftPayment. Each entry will
+        result in a payment when the DraftPayment is accepted.
+        :type entries: list[object_.DraftPaymentEntry]
+        :param number_of_required_accepts: The number of accepts that are
+        required for the draft payment to receive status ACCEPTED. Currently
+        only 1 is valid.
+        :type number_of_required_accepts: int
+        :param status: The status of the DraftPayment.
+        :type status: str
+        :param previous_updated_timestamp: The last updated_timestamp that you
+        received for this DraftPayment. This needs to be provided to prevent
+        race conditions.
+        :type previous_updated_timestamp: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_STATUS: status,
+            cls.FIELD_ENTRIES: entries,
+            cls.FIELD_PREVIOUS_UPDATED_TIMESTAMP: previous_updated_timestamp,
+            cls.FIELD_NUMBER_OF_REQUIRED_ACCEPTS: number_of_required_accepts
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, draft_payment_id, monetary_account_id=None, status=None,
+               entries=None, previous_updated_timestamp=None,
+               custom_headers=None):
+        """
+        Update a DraftPayment.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type draft_payment_id: int
+        :param status: The status of the DraftPayment.
+        :type status: str
+        :param entries: The list of entries in the DraftPayment. Each entry will
+        result in a payment when the DraftPayment is accepted.
+        :type entries: list[object_.DraftPaymentEntry]
+        :param previous_updated_timestamp: The last updated_timestamp that you
+        received for this DraftPayment. This needs to be provided to prevent
+        race conditions.
+        :type previous_updated_timestamp: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATUS: status,
+            cls.FIELD_ENTRIES: entries,
+            cls.FIELD_PREVIOUS_UPDATED_TIMESTAMP: previous_updated_timestamp
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       draft_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Get a listing of all DraftPayments from a given MonetaryAccount.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseDraftPaymentList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseDraftPaymentList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, draft_payment_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Get a specific DraftPayment.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type draft_payment_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseDraftPayment
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     draft_payment_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseDraftPayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def user_alias_created(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_created
+
+    @property
+    def responses(self):
+        """
+        :rtype: list[object_.DraftPaymentResponse]
+        """
+
+        return self._responses
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def entries(self):
+        """
+        :rtype: list[object_.DraftPaymentEntry]
+        """
+
+        return self._entries
+
+    @property
+    def object_(self):
+        """
+        :rtype: object_.DraftPaymentAnchorObject
+        """
+
+        return self._object_
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._user_alias_created is not None:
+            return False
+
+        if self._responses is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._entries is not None:
+            return False
+
+        if self._object_ is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: DraftPayment
+        """
+
+        return converter.json_to_class(DraftPayment, json_str)
+
+
+class PaymentBatch(core.BunqModel):
+    """
+    Create a payment batch, or show the payment batches of a monetary account.
+    
+    :param _payments: The list of mutations that were made.
+    :type _payments: list[Payment]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-batch"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-batch/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-batch/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-batch"
+
+    # Field constants.
+    FIELD_PAYMENTS = "payments"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentBatch"
+
+    _payments = None
+    _payments_field_for_request = None
+
+    def __init__(self, payments):
+        """
+        :param payments: The list of payments we want to send in a single batch.
+        :type payments: list[Payment]
+        """
+
+        self._payments_field_for_request = payments
+
+    @classmethod
+    def create(cls, payments, monetary_account_id=None, custom_headers=None):
+        """
+        Create a payment batch by sending an array of single payment objects,
+        that will become part of the batch.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param payments: The list of payments we want to send in a single batch.
+        :type payments: list[Payment]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_PAYMENTS: payments
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, payment_batch_id, monetary_account_id=None,
+               custom_headers=None):
+        """
+        Revoke a bunq.to payment batch. The status of all the payments will be
+        set to REVOKED.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, payment_batch_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Return the details of a specific payment batch.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     payment_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Return all the payment batches for a monetary account.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentBatchList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def payments(self):
+        """
+        :rtype: list[Payment]
+        """
+
+        return self._payments
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payments is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatch
+        """
+
+        return converter.json_to_class(PaymentBatch, json_str)
 
 
 class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
@@ -12798,6 +8278,7 @@ class ExportAnnualOverview(core.BunqModel):
     # Endpoint constants.
     _ENDPOINT_URL_CREATE = "user/{}/export-annual-overview"
     _ENDPOINT_URL_READ = "user/{}/export-annual-overview/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/export-annual-overview/{}"
     _ENDPOINT_URL_LISTING = "user/{}/export-annual-overview"
 
     # Field constants.
@@ -12877,6 +8358,28 @@ class ExportAnnualOverview(core.BunqModel):
 
         return BunqResponseExportAnnualOverview.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def delete(cls, export_annual_overview_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type export_annual_overview_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
+                                                       export_annual_overview_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -13079,7 +8582,7 @@ class CustomerStatementExport(core.BunqModel):
     FIELD_REGIONAL_FORMAT = "regional_format"
 
     # Object type.
-    _OBJECT_TYPE_GET = "CustomerStatementExport"
+    _OBJECT_TYPE_GET = "CustomerStatement"
 
     _id_ = None
     _created = None
@@ -13502,6 +9005,731 @@ class ShareInviteBankAmountUsed(core.BunqModel):
         """
 
         return converter.json_to_class(ShareInviteBankAmountUsed, json_str)
+
+
+class ShareInviteBankInquiry(core.BunqModel):
+    """
+    Used to share a monetary account with another bunq user, as in the 'Connect'
+    feature in the bunq app. Allow the creation of share inquiries that, in the
+    same way as request inquiries, can be revoked by the user creating them or
+    accepted/rejected by the other party.
+    
+    :param _counter_user_alias: The label of the user to share with.
+    :type _counter_user_alias: object_.LabelUser
+    :param _draft_share_invite_bank_id: The id of the draft share invite bank.
+    :type _draft_share_invite_bank_id: int
+    :param _share_detail: The share details. Only one of these objects is
+    returned.
+    :type _share_detail: object_.ShareDetail
+    :param _status: The status of the share. Can be PENDING, REVOKED (the user
+    deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
+    user deletes an active share) or CANCELLATION_PENDING,
+    CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
+    :type _status: str
+    :param _share_type: The share type, either STANDARD or MUTUAL.
+    :type _share_type: str
+    :param _start_date: The start date of this share.
+    :type _start_date: str
+    :param _end_date: The expiration date of this share.
+    :type _end_date: str
+    :param _alias: The label of the monetary account that's being shared.
+    :type _alias: object_.MonetaryAccountReference
+    :param _user_alias_created: The user who created the share.
+    :type _user_alias_created: object_.LabelUser
+    :param _user_alias_revoked: The user who revoked the share.
+    :type _user_alias_revoked: object_.LabelUser
+    :param _monetary_account_id: The id of the monetary account the share
+    applies to.
+    :type _monetary_account_id: int
+    :param _id_: The id of the newly created share invite.
+    :type _id_: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/share-invite-bank-inquiry"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/share-invite-bank-inquiry/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/share-invite-bank-inquiry/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/share-invite-bank-inquiry"
+
+    # Field constants.
+    FIELD_COUNTER_USER_ALIAS = "counter_user_alias"
+    FIELD_DRAFT_SHARE_INVITE_BANK_ID = "draft_share_invite_bank_id"
+    FIELD_SHARE_DETAIL = "share_detail"
+    FIELD_STATUS = "status"
+    FIELD_SHARE_TYPE = "share_type"
+    FIELD_START_DATE = "start_date"
+    FIELD_END_DATE = "end_date"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ShareInviteBankInquiry"
+
+    _alias = None
+    _user_alias_created = None
+    _user_alias_revoked = None
+    _counter_user_alias = None
+    _monetary_account_id = None
+    _draft_share_invite_bank_id = None
+    _share_detail = None
+    _status = None
+    _share_type = None
+    _start_date = None
+    _end_date = None
+    _id_ = None
+    _counter_user_alias_field_for_request = None
+    _draft_share_invite_bank_id_field_for_request = None
+    _share_detail_field_for_request = None
+    _status_field_for_request = None
+    _share_type_field_for_request = None
+    _start_date_field_for_request = None
+    _end_date_field_for_request = None
+
+    def __init__(self, counter_user_alias, share_detail=None, status=None,
+                 draft_share_invite_bank_id=None, share_type=None,
+                 start_date=None, end_date=None):
+        """
+        :param counter_user_alias: The pointer of the user to share with.
+        :type counter_user_alias: object_.Pointer
+        :param share_detail: The share details. Only one of these objects may be
+        passed.
+        :type share_detail: object_.ShareDetail
+        :param status: The status of the share. Can be PENDING, REVOKED (the user
+        deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
+        user deletes an active share) or CANCELLATION_PENDING,
+        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
+        connects).
+        :type status: str
+        :param draft_share_invite_bank_id: The id of the draft share invite bank.
+        :type draft_share_invite_bank_id: int
+        :param share_type: The share type, either STANDARD or MUTUAL.
+        :type share_type: str
+        :param start_date: The start date of this share.
+        :type start_date: str
+        :param end_date: The expiration date of this share.
+        :type end_date: str
+        """
+
+        self._counter_user_alias_field_for_request = counter_user_alias
+        self._share_detail_field_for_request = share_detail
+        self._status_field_for_request = status
+        self._draft_share_invite_bank_id_field_for_request = draft_share_invite_bank_id
+        self._share_type_field_for_request = share_type
+        self._start_date_field_for_request = start_date
+        self._end_date_field_for_request = end_date
+
+    @classmethod
+    def create(cls, counter_user_alias, share_detail, status,
+               monetary_account_id=None, draft_share_invite_bank_id=None,
+               share_type=None, start_date=None, end_date=None,
+               custom_headers=None):
+        """
+        Create a new share inquiry for a monetary account, specifying the
+        permission the other bunq user will have on it.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param counter_user_alias: The pointer of the user to share with.
+        :type counter_user_alias: object_.Pointer
+        :param share_detail: The share details. Only one of these objects may be
+        passed.
+        :type share_detail: object_.ShareDetail
+        :param status: The status of the share. Can be PENDING, REVOKED (the
+        user deletes the share inquiry before it's accepted), ACCEPTED,
+        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
+        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
+        connects).
+        :type status: str
+        :param draft_share_invite_bank_id: The id of the draft share invite
+        bank.
+        :type draft_share_invite_bank_id: int
+        :param share_type: The share type, either STANDARD or MUTUAL.
+        :type share_type: str
+        :param start_date: The start date of this share.
+        :type start_date: str
+        :param end_date: The expiration date of this share.
+        :type end_date: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_COUNTER_USER_ALIAS: counter_user_alias,
+            cls.FIELD_DRAFT_SHARE_INVITE_BANK_ID: draft_share_invite_bank_id,
+            cls.FIELD_SHARE_DETAIL: share_detail,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_SHARE_TYPE: share_type,
+            cls.FIELD_START_DATE: start_date,
+            cls.FIELD_END_DATE: end_date
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, share_invite_bank_inquiry_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Get the details of a specific share inquiry.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type share_invite_bank_inquiry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseShareInviteBankInquiry
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     share_invite_bank_inquiry_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseShareInviteBankInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, share_invite_bank_inquiry_id, monetary_account_id=None,
+               share_detail=None, status=None, start_date=None, end_date=None,
+               custom_headers=None):
+        """
+        Update the details of a share. This includes updating status (revoking
+        or cancelling it), granted permission and validity period of this share.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type share_invite_bank_inquiry_id: int
+        :param share_detail: The share details. Only one of these objects may be
+        passed.
+        :type share_detail: object_.ShareDetail
+        :param status: The status of the share. Can be PENDING, REVOKED (the
+        user deletes the share inquiry before it's accepted), ACCEPTED,
+        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
+        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
+        connects).
+        :type status: str
+        :param start_date: The start date of this share.
+        :type start_date: str
+        :param end_date: The expiration date of this share.
+        :type end_date: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_SHARE_DETAIL: share_detail,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_START_DATE: start_date,
+            cls.FIELD_END_DATE: end_date
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       share_invite_bank_inquiry_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Get a list with all the share inquiries for a monetary account, only if
+        the requesting user has permission to change the details of the various
+        ones.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseShareInviteBankInquiryList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseShareInviteBankInquiryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def user_alias_created(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_created
+
+    @property
+    def user_alias_revoked(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_revoked
+
+    @property
+    def counter_user_alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._counter_user_alias
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def draft_share_invite_bank_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._draft_share_invite_bank_id
+
+    @property
+    def share_detail(self):
+        """
+        :rtype: object_.ShareDetail
+        """
+
+        return self._share_detail
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def share_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._share_type
+
+    @property
+    def start_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._start_date
+
+    @property
+    def end_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._end_date
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._alias is not None:
+            return False
+
+        if self._user_alias_created is not None:
+            return False
+
+        if self._user_alias_revoked is not None:
+            return False
+
+        if self._counter_user_alias is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._draft_share_invite_bank_id is not None:
+            return False
+
+        if self._share_detail is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._share_type is not None:
+            return False
+
+        if self._start_date is not None:
+            return False
+
+        if self._end_date is not None:
+            return False
+
+        if self._id_ is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareInviteBankInquiry
+        """
+
+        return converter.json_to_class(ShareInviteBankInquiry, json_str)
+
+
+class ShareInviteBankResponse(core.BunqModel):
+    """
+    Used to view or respond to shares a user was invited to. See
+    'share-invite-bank-inquiry' for more information about the inquiring
+    endpoint.
+    
+    :param _status: The status of the share. Can be PENDING, REVOKED (the user
+    deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
+    user deletes an active share) or CANCELLATION_PENDING,
+    CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
+    :type _status: str
+    :param _counter_alias: The monetary account and user who created the share.
+    :type _counter_alias: object_.MonetaryAccountReference
+    :param _user_alias_cancelled: The user who cancelled the share if it has
+    been revoked or rejected.
+    :type _user_alias_cancelled: object_.LabelUser
+    :param _monetary_account_id: The id of the monetary account the ACCEPTED
+    share applies to. null otherwise.
+    :type _monetary_account_id: int
+    :param _draft_share_invite_bank_id: The id of the draft share invite bank.
+    :type _draft_share_invite_bank_id: int
+    :param _share_detail: The share details.
+    :type _share_detail: object_.ShareDetail
+    :param _share_type: The share type, either STANDARD or MUTUAL.
+    :type _share_type: str
+    :param _start_date: The start date of this share.
+    :type _start_date: str
+    :param _end_date: The expiration date of this share.
+    :type _end_date: str
+    :param _description: The description of this share. It is basically the
+    monetary account description.
+    :type _description: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/share-invite-bank-response/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/share-invite-bank-response/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/share-invite-bank-response"
+
+    # Field constants.
+    FIELD_STATUS = "status"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ShareInviteBankResponse"
+
+    _counter_alias = None
+    _user_alias_cancelled = None
+    _monetary_account_id = None
+    _draft_share_invite_bank_id = None
+    _share_detail = None
+    _status = None
+    _share_type = None
+    _start_date = None
+    _end_date = None
+    _description = None
+    _status_field_for_request = None
+
+    def __init__(self, status=None):
+        """
+        :param status: The status of the share. Can be PENDING, REVOKED (the user
+        deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
+        user deletes an active share) or CANCELLATION_PENDING,
+        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
+        :type status: str
+        """
+
+        self._status_field_for_request = status
+
+    @classmethod
+    def get(cls, share_invite_bank_response_id, custom_headers=None):
+        """
+        Return the details of a specific share a user was invited to.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type share_invite_bank_response_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseShareInviteBankResponse
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     share_invite_bank_response_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseShareInviteBankResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, share_invite_bank_response_id, status=None,
+               custom_headers=None):
+        """
+        Accept or reject a share a user was invited to.
+        
+        :type user_id: int
+        :type share_invite_bank_response_id: int
+        :param status: The status of the share. Can be PENDING, REVOKED (the
+        user deletes the share inquiry before it's accepted), ACCEPTED,
+        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
+        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
+        connects)
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATUS: status
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       share_invite_bank_response_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        Return all the shares a user was invited to.
+        
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseShareInviteBankResponseList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseShareInviteBankResponseList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def counter_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counter_alias
+
+    @property
+    def user_alias_cancelled(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_cancelled
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def draft_share_invite_bank_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._draft_share_invite_bank_id
+
+    @property
+    def share_detail(self):
+        """
+        :rtype: object_.ShareDetail
+        """
+
+        return self._share_detail
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def share_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._share_type
+
+    @property
+    def start_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._start_date
+
+    @property
+    def end_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._end_date
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._counter_alias is not None:
+            return False
+
+        if self._user_alias_cancelled is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._draft_share_invite_bank_id is not None:
+            return False
+
+        if self._share_detail is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._share_type is not None:
+            return False
+
+        if self._start_date is not None:
+            return False
+
+        if self._end_date is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareInviteBankResponse
+        """
+
+        return converter.json_to_class(ShareInviteBankResponse, json_str)
 
 
 class MonetaryAccountBank(core.BunqModel):
@@ -15976,6 +12204,3404 @@ class BunqMeTabResultResponse(core.BunqModel):
         return converter.json_to_class(BunqMeTabResultResponse, json_str)
 
 
+class ChatMessage(core.BunqModel):
+    """
+    Endpoint for retrieving the messages that are part of a conversation.
+    """
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ChatMessage
+        """
+
+        return converter.json_to_class(ChatMessage, json_str)
+
+
+class IdealMerchantTransaction(core.BunqModel):
+    """
+    View for requesting iDEAL transactions and polling their status.
+    
+    :param _amount_requested: The requested amount of money to add.
+    :type _amount_requested: object_.Amount
+    :param _issuer: The BIC of the issuer.
+    :type _issuer: str
+    :param _monetary_account_id: The id of the monetary account this ideal
+    merchant transaction links to.
+    :type _monetary_account_id: int
+    :param _alias: The alias of the monetary account to add money to.
+    :type _alias: object_.MonetaryAccountReference
+    :param _counterparty_alias: The alias of the monetary account the money
+    comes from.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _amount_guaranteed: In case of a successful transaction, the amount
+    of money that will be transferred.
+    :type _amount_guaranteed: object_.Amount
+    :param _expiration: When the transaction will expire.
+    :type _expiration: str
+    :param _issuer_name: The Name of the issuer.
+    :type _issuer_name: str
+    :param _issuer_authentication_url: The URL to visit to 
+    :type _issuer_authentication_url: str
+    :param _purchase_identifier: The 'purchase ID' of the iDEAL transaction.
+    :type _purchase_identifier: str
+    :param _status: The status of the transaction.
+    :type _status: str
+    :param _status_timestamp: When the status was last updated.
+    :type _status_timestamp: str
+    :param _transaction_identifier: The 'transaction ID' of the iDEAL
+    transaction.
+    :type _transaction_identifier: str
+    :param _allow_chat: Whether or not chat messages are allowed.
+    :type _allow_chat: bool
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/ideal-merchant-transaction"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/ideal-merchant-transaction/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/ideal-merchant-transaction"
+
+    # Field constants.
+    FIELD_AMOUNT_REQUESTED = "amount_requested"
+    FIELD_ISSUER = "issuer"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "IdealMerchantTransaction"
+
+    _monetary_account_id = None
+    _alias = None
+    _counterparty_alias = None
+    _amount_guaranteed = None
+    _amount_requested = None
+    _expiration = None
+    _issuer = None
+    _issuer_name = None
+    _issuer_authentication_url = None
+    _purchase_identifier = None
+    _status = None
+    _status_timestamp = None
+    _transaction_identifier = None
+    _allow_chat = None
+    _amount_requested_field_for_request = None
+    _issuer_field_for_request = None
+
+    def __init__(self, amount_requested, issuer):
+        """
+        :param amount_requested: The requested amount of money to add.
+        :type amount_requested: object_.Amount
+        :param issuer: The BIC of the issuing bank to ask for money.
+        :type issuer: str
+        """
+
+        self._amount_requested_field_for_request = amount_requested
+        self._issuer_field_for_request = issuer
+
+    @classmethod
+    def create(cls, amount_requested, issuer, monetary_account_id=None,
+               custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :param amount_requested: The requested amount of money to add.
+        :type amount_requested: object_.Amount
+        :param issuer: The BIC of the issuing bank to ask for money.
+        :type issuer: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_AMOUNT_REQUESTED: amount_requested,
+            cls.FIELD_ISSUER: issuer
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, ideal_merchant_transaction_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type ideal_merchant_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseIdealMerchantTransaction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     ideal_merchant_transaction_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseIdealMerchantTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseIdealMerchantTransactionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseIdealMerchantTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def amount_guaranteed(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_guaranteed
+
+    @property
+    def amount_requested(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_requested
+
+    @property
+    def expiration(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiration
+
+    @property
+    def issuer(self):
+        """
+        :rtype: str
+        """
+
+        return self._issuer
+
+    @property
+    def issuer_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._issuer_name
+
+    @property
+    def issuer_authentication_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._issuer_authentication_url
+
+    @property
+    def purchase_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._purchase_identifier
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def status_timestamp(self):
+        """
+        :rtype: str
+        """
+
+        return self._status_timestamp
+
+    @property
+    def transaction_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._transaction_identifier
+
+    @property
+    def allow_chat(self):
+        """
+        :rtype: bool
+        """
+
+        return self._allow_chat
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._amount_guaranteed is not None:
+            return False
+
+        if self._amount_requested is not None:
+            return False
+
+        if self._expiration is not None:
+            return False
+
+        if self._issuer is not None:
+            return False
+
+        if self._issuer_name is not None:
+            return False
+
+        if self._issuer_authentication_url is not None:
+            return False
+
+        if self._purchase_identifier is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._status_timestamp is not None:
+            return False
+
+        if self._transaction_identifier is not None:
+            return False
+
+        if self._allow_chat is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: IdealMerchantTransaction
+        """
+
+        return converter.json_to_class(IdealMerchantTransaction, json_str)
+
+
+class MasterCardAction(core.BunqModel):
+    """
+    MasterCard transaction view.
+    
+    :param _id_: The id of the MastercardAction.
+    :type _id_: int
+    :param _monetary_account_id: The id of the monetary account this action
+    links to.
+    :type _monetary_account_id: int
+    :param _card_id: The id of the card this action links to.
+    :type _card_id: int
+    :param _amount_local: The amount of the transaction in local currency.
+    :type _amount_local: object_.Amount
+    :param _amount_billing: The amount of the transaction in the monetary
+    account's currency.
+    :type _amount_billing: object_.Amount
+    :param _amount_original_local: The original amount in local currency.
+    :type _amount_original_local: object_.Amount
+    :param _amount_original_billing: The original amount in the monetary
+    account's currency.
+    :type _amount_original_billing: object_.Amount
+    :param _amount_fee: The fee amount as charged by the merchant, if
+    applicable.
+    :type _amount_fee: object_.Amount
+    :param _decision: Why the transaction was denied, if it was denied, or just
+    ALLOWED.
+    :type _decision: str
+    :param _decision_description: Empty if allowed, otherwise a textual
+    explanation of why it was denied.
+    :type _decision_description: str
+    :param _decision_description_translated: Empty if allowed, otherwise a
+    textual explanation of why it was denied in user's language.
+    :type _decision_description_translated: str
+    :param _description: The description for this transaction to display.
+    :type _description: str
+    :param _authorisation_status: The status in the authorisation process.
+    :type _authorisation_status: str
+    :param _authorisation_type: The type of transaction that was delivered using
+    the card.
+    :type _authorisation_type: str
+    :param _pan_entry_mode_user: The type of entry mode the user used. Can be
+    'ATM', 'ICC', 'MAGNETIC_STRIPE' or 'E_COMMERCE'.
+    :type _pan_entry_mode_user: str
+    :param _city: The city where the message originates from as announced by the
+    terminal.
+    :type _city: str
+    :param _alias: The monetary account label of the account that this action is
+    created for.
+    :type _alias: object_.MonetaryAccountReference
+    :param _counterparty_alias: The monetary account label of the counterparty.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _label_card: The label of the card.
+    :type _label_card: object_.LabelCard
+    :param _token_status: If this is a tokenisation action, this shows the
+    status of the token.
+    :type _token_status: str
+    :param _reservation_expiry_time: If this is a reservation, the moment the
+    reservation will expire.
+    :type _reservation_expiry_time: str
+    :param _applied_limit: The type of the limit applied to validate if this
+    MasterCardAction was within the spending limits. The returned string matches
+    the limit types as defined in the card endpoint.
+    :type _applied_limit: str
+    :param _allow_chat: Whether or not chat messages are allowed.
+    :type _allow_chat: bool
+    :param _eligible_whitelist_id: The whitelist id for this mastercard action
+    or null.
+    :type _eligible_whitelist_id: int
+    :param _secure_code_id: The secure code id for this mastercard action or
+    null.
+    :type _secure_code_id: int
+    :param _wallet_provider_id: The ID of the wallet provider as defined by
+    MasterCard. 420 = bunq Android app with Tap&Pay; 103 = Apple Pay.
+    :type _wallet_provider_id: str
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/mastercard-action/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/mastercard-action"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MasterCardAction"
+
+    _id_ = None
+    _monetary_account_id = None
+    _card_id = None
+    _amount_local = None
+    _amount_billing = None
+    _amount_original_local = None
+    _amount_original_billing = None
+    _amount_fee = None
+    _decision = None
+    _decision_description = None
+    _decision_description_translated = None
+    _description = None
+    _authorisation_status = None
+    _authorisation_type = None
+    _pan_entry_mode_user = None
+    _city = None
+    _alias = None
+    _counterparty_alias = None
+    _label_card = None
+    _token_status = None
+    _reservation_expiry_time = None
+    _applied_limit = None
+    _allow_chat = None
+    _eligible_whitelist_id = None
+    _secure_code_id = None
+    _wallet_provider_id = None
+    _request_reference_split_the_bill = None
+
+    @classmethod
+    def get(cls, master_card_action_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type master_card_action_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMasterCardAction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     master_card_action_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMasterCardAction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMasterCardActionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMasterCardActionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def card_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._card_id
+
+    @property
+    def amount_local(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_local
+
+    @property
+    def amount_billing(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_billing
+
+    @property
+    def amount_original_local(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_original_local
+
+    @property
+    def amount_original_billing(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_original_billing
+
+    @property
+    def amount_fee(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_fee
+
+    @property
+    def decision(self):
+        """
+        :rtype: str
+        """
+
+        return self._decision
+
+    @property
+    def decision_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._decision_description
+
+    @property
+    def decision_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._decision_description_translated
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def authorisation_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._authorisation_status
+
+    @property
+    def authorisation_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._authorisation_type
+
+    @property
+    def pan_entry_mode_user(self):
+        """
+        :rtype: str
+        """
+
+        return self._pan_entry_mode_user
+
+    @property
+    def city(self):
+        """
+        :rtype: str
+        """
+
+        return self._city
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def label_card(self):
+        """
+        :rtype: object_.LabelCard
+        """
+
+        return self._label_card
+
+    @property
+    def token_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._token_status
+
+    @property
+    def reservation_expiry_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._reservation_expiry_time
+
+    @property
+    def applied_limit(self):
+        """
+        :rtype: str
+        """
+
+        return self._applied_limit
+
+    @property
+    def allow_chat(self):
+        """
+        :rtype: bool
+        """
+
+        return self._allow_chat
+
+    @property
+    def eligible_whitelist_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._eligible_whitelist_id
+
+    @property
+    def secure_code_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._secure_code_id
+
+    @property
+    def wallet_provider_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._wallet_provider_id
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._card_id is not None:
+            return False
+
+        if self._amount_local is not None:
+            return False
+
+        if self._amount_billing is not None:
+            return False
+
+        if self._amount_original_local is not None:
+            return False
+
+        if self._amount_original_billing is not None:
+            return False
+
+        if self._amount_fee is not None:
+            return False
+
+        if self._decision is not None:
+            return False
+
+        if self._decision_description is not None:
+            return False
+
+        if self._decision_description_translated is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._authorisation_status is not None:
+            return False
+
+        if self._authorisation_type is not None:
+            return False
+
+        if self._pan_entry_mode_user is not None:
+            return False
+
+        if self._city is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._label_card is not None:
+            return False
+
+        if self._token_status is not None:
+            return False
+
+        if self._reservation_expiry_time is not None:
+            return False
+
+        if self._applied_limit is not None:
+            return False
+
+        if self._allow_chat is not None:
+            return False
+
+        if self._eligible_whitelist_id is not None:
+            return False
+
+        if self._secure_code_id is not None:
+            return False
+
+        if self._wallet_provider_id is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MasterCardAction
+        """
+
+        return converter.json_to_class(MasterCardAction, json_str)
+
+
+class RequestInquiry(core.BunqModel):
+    """
+    RequestInquiry, aka 'RFP' (Request for Payment), is one of the innovative
+    features that bunq offers. To request payment from another bunq account a
+    new Request Inquiry is created. As with payments you can add attachments to
+    a RFP. Requests for Payment are the foundation for a number of consumer
+    features like 'Split the bill' and 'Request forwarding'. We invite you to
+    invent your own based on the bunq api!
+    
+    :param _amount_inquired: The requested amount.
+    :type _amount_inquired: object_.Amount
+    :param _counterparty_alias: The LabelMonetaryAccount with the public
+    information of the MonetaryAccount the money was requested from.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _description: The description of the inquiry.
+    :type _description: str
+    :param _attachment: The attachments attached to the payment.
+    :type _attachment: list[object_.BunqId]
+    :param _merchant_reference: The client's custom reference that was attached
+    to the request and the mutation.
+    :type _merchant_reference: str
+    :param _status: The status of the request.
+    :type _status: str
+    :param _minimum_age: The minimum age the user accepting the RequestInquiry
+    must have.
+    :type _minimum_age: int
+    :param _require_address: Whether or not an address must be provided on
+    accept.
+    :type _require_address: str
+    :param _want_tip: [DEPRECATED] Whether or not the accepting user can give an
+    extra tip on top of the requested Amount. Defaults to false.
+    :type _want_tip: bool
+    :param _allow_amount_lower: [DEPRECATED] Whether or not the accepting user
+    can choose to accept with a lower amount than requested. Defaults to false.
+    :type _allow_amount_lower: bool
+    :param _allow_amount_higher: [DEPRECATED] Whether or not the accepting user
+    can choose to accept with a higher amount than requested. Defaults to false.
+    :type _allow_amount_higher: bool
+    :param _allow_bunqme: Whether or not sending a bunq.me request is allowed.
+    :type _allow_bunqme: bool
+    :param _redirect_url: The URL which the user is sent to after accepting or
+    rejecting the Request.
+    :type _redirect_url: str
+    :param _event_id: The ID of the associated event if the request was made
+    using 'split the bill'.
+    :type _event_id: int
+    :param _id_: The id of the created RequestInquiry.
+    :type _id_: int
+    :param _created: The timestamp of the payment request's creation.
+    :type _created: str
+    :param _updated: The timestamp of the payment request's last update.
+    :type _updated: str
+    :param _time_responded: The timestamp of when the payment request was
+    responded to.
+    :type _time_responded: str
+    :param _time_expiry: The timestamp of when the payment request expired.
+    :type _time_expiry: str
+    :param _monetary_account_id: The id of the monetary account the request
+    response applies to.
+    :type _monetary_account_id: int
+    :param _amount_responded: The responded amount.
+    :type _amount_responded: object_.Amount
+    :param _user_alias_created: The label that's displayed to the counterparty
+    with the mutation. Includes user.
+    :type _user_alias_created: object_.LabelUser
+    :param _user_alias_revoked: The label that's displayed to the counterparty
+    with the mutation. Includes user.
+    :type _user_alias_revoked: object_.LabelUser
+    :param _batch_id: The id of the batch if the request was part of a batch.
+    :type _batch_id: int
+    :param _scheduled_id: The id of the scheduled job if the request was
+    scheduled.
+    :type _scheduled_id: int
+    :param _bunqme_share_url: The url that points to the bunq.me request.
+    :type _bunqme_share_url: str
+    :param _address_shipping: The shipping address provided by the accepting
+    user if an address was requested.
+    :type _address_shipping: object_.Address
+    :param _address_billing: The billing address provided by the accepting user
+    if an address was requested.
+    :type _address_billing: object_.Address
+    :param _geolocation: The geolocation where the payment was done.
+    :type _geolocation: object_.Geolocation
+    :param _allow_chat: Whether or not chat messages are allowed.
+    :type _allow_chat: bool
+    :param _reference_split_the_bill: The reference to the object used for split
+    the bill. Can be Payment, PaymentBatch, ScheduleInstance, RequestResponse
+    and MasterCardAction
+    :type _reference_split_the_bill:
+    object_.RequestReferenceSplitTheBillAnchorObject
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/request-inquiry"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-inquiry/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-inquiry"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/request-inquiry/{}"
+
+    # Field constants.
+    FIELD_AMOUNT_INQUIRED = "amount_inquired"
+    FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
+    FIELD_DESCRIPTION = "description"
+    FIELD_ATTACHMENT = "attachment"
+    FIELD_MERCHANT_REFERENCE = "merchant_reference"
+    FIELD_STATUS = "status"
+    FIELD_MINIMUM_AGE = "minimum_age"
+    FIELD_REQUIRE_ADDRESS = "require_address"
+    FIELD_WANT_TIP = "want_tip"
+    FIELD_ALLOW_AMOUNT_LOWER = "allow_amount_lower"
+    FIELD_ALLOW_AMOUNT_HIGHER = "allow_amount_higher"
+    FIELD_ALLOW_BUNQME = "allow_bunqme"
+    FIELD_REDIRECT_URL = "redirect_url"
+    FIELD_EVENT_ID = "event_id"
+
+    # Object type.
+    _OBJECT_TYPE_PUT = "RequestInquiry"
+    _OBJECT_TYPE_GET = "RequestInquiry"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _time_responded = None
+    _time_expiry = None
+    _monetary_account_id = None
+    _amount_inquired = None
+    _amount_responded = None
+    _user_alias_created = None
+    _user_alias_revoked = None
+    _counterparty_alias = None
+    _description = None
+    _merchant_reference = None
+    _attachment = None
+    _status = None
+    _batch_id = None
+    _scheduled_id = None
+    _minimum_age = None
+    _require_address = None
+    _bunqme_share_url = None
+    _redirect_url = None
+    _address_shipping = None
+    _address_billing = None
+    _geolocation = None
+    _allow_chat = None
+    _reference_split_the_bill = None
+    _amount_inquired_field_for_request = None
+    _counterparty_alias_field_for_request = None
+    _description_field_for_request = None
+    _attachment_field_for_request = None
+    _merchant_reference_field_for_request = None
+    _status_field_for_request = None
+    _minimum_age_field_for_request = None
+    _require_address_field_for_request = None
+    _want_tip_field_for_request = None
+    _allow_amount_lower_field_for_request = None
+    _allow_amount_higher_field_for_request = None
+    _allow_bunqme_field_for_request = None
+    _redirect_url_field_for_request = None
+    _event_id_field_for_request = None
+
+    def __init__(self, amount_inquired, counterparty_alias, description,
+                 allow_bunqme, attachment=None, merchant_reference=None,
+                 status=None, minimum_age=None, require_address=None,
+                 want_tip=None, allow_amount_lower=None,
+                 allow_amount_higher=None, redirect_url=None, event_id=None):
+        """
+        :param amount_inquired: The Amount requested to be paid by the person the
+        RequestInquiry is sent to. Must be bigger than 0.
+        :type amount_inquired: object_.Amount
+        :param counterparty_alias: The Alias of the party we are requesting the
+        money from. Can be an Alias of type EMAIL, PHONE_NUMBER or IBAN. In case the
+        EMAIL or PHONE_NUMBER Alias does not refer to a bunq monetary account,
+        'allow_bunqme' needs to be 'true' in order to trigger the creation of a
+        bunq.me request. Otherwise no request inquiry will be sent.
+        :type counterparty_alias: object_.Pointer
+        :param description: The description for the RequestInquiry. Maximum 9000
+        characters. Field is required but can be an empty string.
+        :type description: str
+        :param allow_bunqme: Whether or not sending a bunq.me request is allowed.
+        :type allow_bunqme: bool
+        :param attachment: The Attachments to attach to the RequestInquiry.
+        :type attachment: list[object_.BunqId]
+        :param merchant_reference: Optional data to be included with the
+        RequestInquiry specific to the merchant. Has to be unique for the same
+        source MonetaryAccount.
+        :type merchant_reference: str
+        :param status: The status of the RequestInquiry. Ignored in POST requests
+        but can be used for revoking (cancelling) the RequestInquiry by setting
+        REVOKED with a PUT request.
+        :type status: str
+        :param minimum_age: The minimum age the user accepting the RequestInquiry
+        must have. Defaults to not checking. If set, must be between 12 and 100
+        inclusive.
+        :type minimum_age: int
+        :param require_address: Whether a billing and shipping address must be
+        provided when paying the request. Possible values are: BILLING, SHIPPING,
+        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
+        :type require_address: str
+        :param want_tip: [DEPRECATED] Whether or not the accepting user can give an
+        extra tip on top of the requested Amount. Defaults to false.
+        :type want_tip: bool
+        :param allow_amount_lower: [DEPRECATED] Whether or not the accepting user
+        can choose to accept with a lower amount than requested. Defaults to false.
+        :type allow_amount_lower: bool
+        :param allow_amount_higher: [DEPRECATED] Whether or not the accepting user
+        can choose to accept with a higher amount than requested. Defaults to false.
+        :type allow_amount_higher: bool
+        :param redirect_url: The URL which the user is sent to after accepting or
+        rejecting the Request.
+        :type redirect_url: str
+        :param event_id: The ID of the associated event if the request was made
+        using 'split the bill'.
+        :type event_id: int
+        """
+
+        self._amount_inquired_field_for_request = amount_inquired
+        self._counterparty_alias_field_for_request = counterparty_alias
+        self._description_field_for_request = description
+        self._allow_bunqme_field_for_request = allow_bunqme
+        self._attachment_field_for_request = attachment
+        self._merchant_reference_field_for_request = merchant_reference
+        self._status_field_for_request = status
+        self._minimum_age_field_for_request = minimum_age
+        self._require_address_field_for_request = require_address
+        self._want_tip_field_for_request = want_tip
+        self._allow_amount_lower_field_for_request = allow_amount_lower
+        self._allow_amount_higher_field_for_request = allow_amount_higher
+        self._redirect_url_field_for_request = redirect_url
+        self._event_id_field_for_request = event_id
+
+    @classmethod
+    def create(cls, amount_inquired, counterparty_alias, description,
+               allow_bunqme, monetary_account_id=None, attachment=None,
+               merchant_reference=None, status=None, minimum_age=None,
+               require_address=None, want_tip=None, allow_amount_lower=None,
+               allow_amount_higher=None, redirect_url=None, event_id=None,
+               custom_headers=None):
+        """
+        Create a new payment request.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param amount_inquired: The Amount requested to be paid by the person
+        the RequestInquiry is sent to. Must be bigger than 0.
+        :type amount_inquired: object_.Amount
+        :param counterparty_alias: The Alias of the party we are requesting the
+        money from. Can be an Alias of type EMAIL, PHONE_NUMBER or IBAN. In case
+        the EMAIL or PHONE_NUMBER Alias does not refer to a bunq monetary
+        account, 'allow_bunqme' needs to be 'true' in order to trigger the
+        creation of a bunq.me request. Otherwise no request inquiry will be
+        sent.
+        :type counterparty_alias: object_.Pointer
+        :param description: The description for the RequestInquiry. Maximum 9000
+        characters. Field is required but can be an empty string.
+        :type description: str
+        :param allow_bunqme: Whether or not sending a bunq.me request is
+        allowed.
+        :type allow_bunqme: bool
+        :param attachment: The Attachments to attach to the RequestInquiry.
+        :type attachment: list[object_.BunqId]
+        :param merchant_reference: Optional data to be included with the
+        RequestInquiry specific to the merchant. Has to be unique for the same
+        source MonetaryAccount.
+        :type merchant_reference: str
+        :param status: The status of the RequestInquiry. Ignored in POST
+        requests but can be used for revoking (cancelling) the RequestInquiry by
+        setting REVOKED with a PUT request.
+        :type status: str
+        :param minimum_age: The minimum age the user accepting the
+        RequestInquiry must have. Defaults to not checking. If set, must be
+        between 12 and 100 inclusive.
+        :type minimum_age: int
+        :param require_address: Whether a billing and shipping address must be
+        provided when paying the request. Possible values are: BILLING,
+        SHIPPING, BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
+        :type require_address: str
+        :param want_tip: [DEPRECATED] Whether or not the accepting user can give
+        an extra tip on top of the requested Amount. Defaults to false.
+        :type want_tip: bool
+        :param allow_amount_lower: [DEPRECATED] Whether or not the accepting
+        user can choose to accept with a lower amount than requested. Defaults
+        to false.
+        :type allow_amount_lower: bool
+        :param allow_amount_higher: [DEPRECATED] Whether or not the accepting
+        user can choose to accept with a higher amount than requested. Defaults
+        to false.
+        :type allow_amount_higher: bool
+        :param redirect_url: The URL which the user is sent to after accepting
+        or rejecting the Request.
+        :type redirect_url: str
+        :param event_id: The ID of the associated event if the request was made
+        using 'split the bill'.
+        :type event_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_AMOUNT_INQUIRED: amount_inquired,
+            cls.FIELD_COUNTERPARTY_ALIAS: counterparty_alias,
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_ATTACHMENT: attachment,
+            cls.FIELD_MERCHANT_REFERENCE: merchant_reference,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_MINIMUM_AGE: minimum_age,
+            cls.FIELD_REQUIRE_ADDRESS: require_address,
+            cls.FIELD_WANT_TIP: want_tip,
+            cls.FIELD_ALLOW_AMOUNT_LOWER: allow_amount_lower,
+            cls.FIELD_ALLOW_AMOUNT_HIGHER: allow_amount_higher,
+            cls.FIELD_ALLOW_BUNQME: allow_bunqme,
+            cls.FIELD_REDIRECT_URL: redirect_url,
+            cls.FIELD_EVENT_ID: event_id
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, request_inquiry_id, monetary_account_id=None, status=None,
+               custom_headers=None):
+        """
+        Revoke a request for payment, by updating the status to REVOKED.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type request_inquiry_id: int
+        :param status: The status of the RequestInquiry. Ignored in POST
+        requests but can be used for revoking (cancelling) the RequestInquiry by
+        setting REVOKED with a PUT request.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestInquiry
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATUS: status
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       request_inquiry_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseRequestInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Get all payment requests for a user's monetary account.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestInquiryList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRequestInquiryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, request_inquiry_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Get the details of a specific payment request, including its status.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type request_inquiry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestInquiry
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     request_inquiry_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRequestInquiry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def time_responded(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_responded
+
+    @property
+    def time_expiry(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_expiry
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def amount_inquired(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_inquired
+
+    @property
+    def amount_responded(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_responded
+
+    @property
+    def user_alias_created(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_created
+
+    @property
+    def user_alias_revoked(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_revoked
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def merchant_reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_reference
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._attachment
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def batch_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._batch_id
+
+    @property
+    def scheduled_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._scheduled_id
+
+    @property
+    def minimum_age(self):
+        """
+        :rtype: int
+        """
+
+        return self._minimum_age
+
+    @property
+    def require_address(self):
+        """
+        :rtype: str
+        """
+
+        return self._require_address
+
+    @property
+    def bunqme_share_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._bunqme_share_url
+
+    @property
+    def redirect_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._redirect_url
+
+    @property
+    def address_shipping(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_shipping
+
+    @property
+    def address_billing(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_billing
+
+    @property
+    def geolocation(self):
+        """
+        :rtype: object_.Geolocation
+        """
+
+        return self._geolocation
+
+    @property
+    def allow_chat(self):
+        """
+        :rtype: bool
+        """
+
+        return self._allow_chat
+
+    @property
+    def reference_split_the_bill(self):
+        """
+        :rtype: object_.RequestReferenceSplitTheBillAnchorObject
+        """
+
+        return self._reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._time_responded is not None:
+            return False
+
+        if self._time_expiry is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._amount_inquired is not None:
+            return False
+
+        if self._amount_responded is not None:
+            return False
+
+        if self._user_alias_created is not None:
+            return False
+
+        if self._user_alias_revoked is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._merchant_reference is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._batch_id is not None:
+            return False
+
+        if self._scheduled_id is not None:
+            return False
+
+        if self._minimum_age is not None:
+            return False
+
+        if self._require_address is not None:
+            return False
+
+        if self._bunqme_share_url is not None:
+            return False
+
+        if self._redirect_url is not None:
+            return False
+
+        if self._address_shipping is not None:
+            return False
+
+        if self._address_billing is not None:
+            return False
+
+        if self._geolocation is not None:
+            return False
+
+        if self._allow_chat is not None:
+            return False
+
+        if self._reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestInquiry
+        """
+
+        return converter.json_to_class(RequestInquiry, json_str)
+
+
+class RequestResponse(core.BunqModel):
+    """
+    A RequestResponse is what a user on the other side of a RequestInquiry gets
+    when he is sent one. So a RequestInquiry is the initiator and visible for
+    the user that sent it and that wants to receive the money. A RequestResponse
+    is what the other side sees, i.e. the user that pays the money to accept the
+    request. The content is almost identical.
+    
+    :param _amount_responded: The Amount the RequestResponse was accepted with.
+    :type _amount_responded: object_.Amount
+    :param _status: The status of the RequestResponse. Can be ACCEPTED, PENDING,
+    REJECTED or REVOKED.
+    :type _status: str
+    :param _address_shipping: The shipping address provided by the accepting
+    user if an address was requested.
+    :type _address_shipping: object_.Address
+    :param _address_billing: The billing address provided by the accepting user
+    if an address was requested.
+    :type _address_billing: object_.Address
+    :param _id_: The id of the Request Response.
+    :type _id_: int
+    :param _created: The timestamp when the Request Response was created.
+    :type _created: str
+    :param _updated: The timestamp when the Request Response was last updated
+    (will be updated when chat messages are received).
+    :type _updated: str
+    :param _time_responded: The timestamp of when the RequestResponse was
+    responded to.
+    :type _time_responded: str
+    :param _time_expiry: The timestamp of when the RequestResponse expired or
+    will expire.
+    :type _time_expiry: str
+    :param _monetary_account_id: The id of the MonetaryAccount the
+    RequestResponse was received on.
+    :type _monetary_account_id: int
+    :param _amount_inquired: The requested Amount.
+    :type _amount_inquired: object_.Amount
+    :param _description: The description for the RequestResponse provided by the
+    requesting party. Maximum 9000 characters.
+    :type _description: str
+    :param _alias: The LabelMonetaryAccount with the public information of the
+    MonetaryAccount this RequestResponse was received on.
+    :type _alias: object_.MonetaryAccountReference
+    :param _counterparty_alias: The LabelMonetaryAccount with the public
+    information of the MonetaryAccount that is requesting money with this
+    RequestResponse.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _attachment: The Attachments attached to the RequestResponse.
+    :type _attachment: list[object_.Attachment]
+    :param _minimum_age: The minimum age the user accepting the RequestResponse
+    must have.
+    :type _minimum_age: int
+    :param _require_address: Whether or not an address must be provided on
+    accept.
+    :type _require_address: str
+    :param _geolocation: The Geolocation where the RequestResponse was created.
+    :type _geolocation: object_.Geolocation
+    :param _type_: The type of the RequestInquiry. Can be DIRECT_DEBIT,
+    DIRECT_DEBIT_B2B, IDEAL, SOFORT or INTERNAL.
+    :type _type_: str
+    :param _sub_type: The subtype of the RequestInquiry. Can be ONCE or
+    RECURRING for DIRECT_DEBIT RequestInquiries and NONE for all other.
+    :type _sub_type: str
+    :param _redirect_url: The URL which the user is sent to after accepting or
+    rejecting the Request.
+    :type _redirect_url: str
+    :param _allow_chat: Whether or not chat messages are allowed.
+    :type _allow_chat: bool
+    :param _credit_scheme_identifier: The credit scheme id provided by the
+    counterparty for DIRECT_DEBIT inquiries.
+    :type _credit_scheme_identifier: str
+    :param _mandate_identifier: The mandate id provided by the counterparty for
+    DIRECT_DEBIT inquiries.
+    :type _mandate_identifier: str
+    :param _eligible_whitelist_id: The whitelist id for this action or null.
+    :type _eligible_whitelist_id: int
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-response/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-response"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/request-response/{}"
+
+    # Field constants.
+    FIELD_AMOUNT_RESPONDED = "amount_responded"
+    FIELD_STATUS = "status"
+    FIELD_ADDRESS_SHIPPING = "address_shipping"
+    FIELD_ADDRESS_BILLING = "address_billing"
+
+    # Object type.
+    _OBJECT_TYPE_PUT = "RequestResponse"
+    _OBJECT_TYPE_GET = "RequestResponse"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _time_responded = None
+    _time_expiry = None
+    _monetary_account_id = None
+    _amount_inquired = None
+    _amount_responded = None
+    _status = None
+    _description = None
+    _alias = None
+    _counterparty_alias = None
+    _attachment = None
+    _minimum_age = None
+    _require_address = None
+    _geolocation = None
+    _type_ = None
+    _sub_type = None
+    _redirect_url = None
+    _address_billing = None
+    _address_shipping = None
+    _allow_chat = None
+    _credit_scheme_identifier = None
+    _mandate_identifier = None
+    _eligible_whitelist_id = None
+    _request_reference_split_the_bill = None
+    _amount_responded_field_for_request = None
+    _status_field_for_request = None
+    _address_shipping_field_for_request = None
+    _address_billing_field_for_request = None
+
+    def __init__(self, status=None, amount_responded=None,
+                 address_shipping=None, address_billing=None):
+        """
+        :param status: The responding status of the RequestResponse. Can be ACCEPTED
+        or REJECTED.
+        :type status: str
+        :param amount_responded: The Amount the user decides to pay.
+        :type amount_responded: object_.Amount
+        :param address_shipping: The shipping Address to return to the user who
+        created the RequestInquiry. Should only be provided if 'require_address' is
+        set to SHIPPING, BILLING_SHIPPING or OPTIONAL.
+        :type address_shipping: object_.Address
+        :param address_billing: The billing Address to return to the user who
+        created the RequestInquiry. Should only be provided if 'require_address' is
+        set to BILLING, BILLING_SHIPPING or OPTIONAL.
+        :type address_billing: object_.Address
+        """
+
+        self._status_field_for_request = status
+        self._amount_responded_field_for_request = amount_responded
+        self._address_shipping_field_for_request = address_shipping
+        self._address_billing_field_for_request = address_billing
+
+    @classmethod
+    def update(cls, request_response_id, monetary_account_id=None,
+               amount_responded=None, status=None, address_shipping=None,
+               address_billing=None, custom_headers=None):
+        """
+        Update the status to accept or reject the RequestResponse.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type request_response_id: int
+        :param amount_responded: The Amount the user decides to pay.
+        :type amount_responded: object_.Amount
+        :param status: The responding status of the RequestResponse. Can be
+        ACCEPTED or REJECTED.
+        :type status: str
+        :param address_shipping: The shipping Address to return to the user who
+        created the RequestInquiry. Should only be provided if 'require_address'
+        is set to SHIPPING, BILLING_SHIPPING or OPTIONAL.
+        :type address_shipping: object_.Address
+        :param address_billing: The billing Address to return to the user who
+        created the RequestInquiry. Should only be provided if 'require_address'
+        is set to BILLING, BILLING_SHIPPING or OPTIONAL.
+        :type address_billing: object_.Address
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestResponse
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_AMOUNT_RESPONDED: amount_responded,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_ADDRESS_SHIPPING: address_shipping,
+            cls.FIELD_ADDRESS_BILLING: address_billing
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       request_response_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseRequestResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Get all RequestResponses for a MonetaryAccount.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestResponseList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRequestResponseList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, request_response_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Get the details for a specific existing RequestResponse.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type request_response_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestResponse
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     request_response_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRequestResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def time_responded(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_responded
+
+    @property
+    def time_expiry(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_expiry
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def amount_inquired(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_inquired
+
+    @property
+    def amount_responded(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_responded
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.Attachment]
+        """
+
+        return self._attachment
+
+    @property
+    def minimum_age(self):
+        """
+        :rtype: int
+        """
+
+        return self._minimum_age
+
+    @property
+    def require_address(self):
+        """
+        :rtype: str
+        """
+
+        return self._require_address
+
+    @property
+    def geolocation(self):
+        """
+        :rtype: object_.Geolocation
+        """
+
+        return self._geolocation
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def sub_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_type
+
+    @property
+    def redirect_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._redirect_url
+
+    @property
+    def address_billing(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_billing
+
+    @property
+    def address_shipping(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_shipping
+
+    @property
+    def allow_chat(self):
+        """
+        :rtype: bool
+        """
+
+        return self._allow_chat
+
+    @property
+    def credit_scheme_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._credit_scheme_identifier
+
+    @property
+    def mandate_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._mandate_identifier
+
+    @property
+    def eligible_whitelist_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._eligible_whitelist_id
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._time_responded is not None:
+            return False
+
+        if self._time_expiry is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._amount_inquired is not None:
+            return False
+
+        if self._amount_responded is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._minimum_age is not None:
+            return False
+
+        if self._require_address is not None:
+            return False
+
+        if self._geolocation is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._sub_type is not None:
+            return False
+
+        if self._redirect_url is not None:
+            return False
+
+        if self._address_billing is not None:
+            return False
+
+        if self._address_shipping is not None:
+            return False
+
+        if self._allow_chat is not None:
+            return False
+
+        if self._credit_scheme_identifier is not None:
+            return False
+
+        if self._mandate_identifier is not None:
+            return False
+
+        if self._eligible_whitelist_id is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestResponse
+        """
+
+        return converter.json_to_class(RequestResponse, json_str)
+
+
+class ScheduleInstance(core.BunqModel):
+    """
+    view for reading, updating and listing the scheduled instance.
+    
+    :param _state: The state of the scheduleInstance. (FINISHED_SUCCESSFULLY,
+    RETRY, FAILED_USER_ERROR)
+    :type _state: str
+    :param _time_start: The schedule start time (UTC).
+    :type _time_start: str
+    :param _time_end: The schedule end time (UTC).
+    :type _time_end: str
+    :param _error_message: The message when the scheduled instance has run and
+    failed due to user error.
+    :type _error_message: list[object_.Error]
+    :param _scheduled_object: The scheduled object. (Payment, PaymentBatch)
+    :type _scheduled_object: object_.ScheduleAnchorObject
+    :param _result_object: The result object of this schedule instance.
+    (Payment, PaymentBatch)
+    :type _result_object: object_.ScheduleInstanceAnchorObject
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule/{}/schedule-instance/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule/{}/schedule-instance/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule/{}/schedule-instance"
+
+    # Field constants.
+    FIELD_STATE = "state"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ScheduledInstance"
+
+    _state = None
+    _time_start = None
+    _time_end = None
+    _error_message = None
+    _scheduled_object = None
+    _result_object = None
+    _request_reference_split_the_bill = None
+    _state_field_for_request = None
+
+    def __init__(self, state=None):
+        """
+        :param state: Change the state of the scheduleInstance from
+        FAILED_USER_ERROR to RETRY.
+        :type state: str
+        """
+
+        self._state_field_for_request = state
+
+    @classmethod
+    def get(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_id: int
+        :type schedule_instance_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseScheduleInstance
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     schedule_id,
+                                                     schedule_instance_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseScheduleInstance.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
+               state=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_id: int
+        :type schedule_instance_id: int
+        :param state: Change the state of the scheduleInstance from
+        FAILED_USER_ERROR to RETRY.
+        :type state: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATE: state
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       schedule_id,
+                                                       schedule_instance_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, schedule_id, monetary_account_id=None, params=None,
+             custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseScheduleInstanceList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id),
+            schedule_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseScheduleInstanceList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def state(self):
+        """
+        :rtype: str
+        """
+
+        return self._state
+
+    @property
+    def time_start(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_start
+
+    @property
+    def time_end(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_end
+
+    @property
+    def error_message(self):
+        """
+        :rtype: list[object_.Error]
+        """
+
+        return self._error_message
+
+    @property
+    def scheduled_object(self):
+        """
+        :rtype: object_.ScheduleAnchorObject
+        """
+
+        return self._scheduled_object
+
+    @property
+    def result_object(self):
+        """
+        :rtype: object_.ScheduleInstanceAnchorObject
+        """
+
+        return self._result_object
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._state is not None:
+            return False
+
+        if self._time_start is not None:
+            return False
+
+        if self._time_end is not None:
+            return False
+
+        if self._error_message is not None:
+            return False
+
+        if self._scheduled_object is not None:
+            return False
+
+        if self._result_object is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ScheduleInstance
+        """
+
+        return converter.json_to_class(ScheduleInstance, json_str)
+
+
+class TabResultResponse(core.BunqModel):
+    """
+    Used to view TabResultResponse objects belonging to a tab. A
+    TabResultResponse is an object that holds details on a tab which has been
+    paid from the provided monetary account.
+    
+    :param _tab: The Tab details.
+    :type _tab: Tab
+    :param _payment: The payment made for the Tab.
+    :type _payment: Payment
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/tab-result-response/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/tab-result-response"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TabResultResponse"
+
+    _tab = None
+    _payment = None
+    _request_reference_split_the_bill = None
+
+    @classmethod
+    def get(cls, tab_result_response_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Used to view a single TabResultResponse belonging to a tab.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type tab_result_response_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabResultResponse
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     tab_result_response_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTabResultResponse.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Used to view a list of TabResultResponse objects belonging to a tab.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTabResultResponseList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTabResultResponseList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def tab(self):
+        """
+        :rtype: Tab
+        """
+
+        return self._tab
+
+    @property
+    def payment(self):
+        """
+        :rtype: Payment
+        """
+
+        return self._payment
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._tab is not None:
+            return False
+
+        if self._payment is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabResultResponse
+        """
+
+        return converter.json_to_class(TabResultResponse, json_str)
+
+
+class WhitelistResult(core.BunqModel):
+    """
+    Whitelist an SDD so that when one comes in, it is automatically accepted.
+    
+    :param _id_: The ID of the whitelist entry.
+    :type _id_: int
+    :param _monetary_account_paying_id: The account from which payments will be
+    deducted when a transaction is matched with this whitelist.
+    :type _monetary_account_paying_id: int
+    :param _status: The status of the WhitelistResult.
+    :type _status: str
+    :param _error_message: The message when the whitelist result has failed due
+    to user error.
+    :type _error_message: list[object_.Error]
+    :param _whitelist: The corresponding whitelist.
+    :type _whitelist: Whitelist
+    :param _object_: The details of the external object the event was created
+    for.
+    :type _object_: object_.WhitelistResultViewAnchoredObject
+    :param _request_reference_split_the_bill: The reference to the object used
+    for split the bill. Can be RequestInquiry or RequestInquiryBatch
+    :type _request_reference_split_the_bill:
+    list[object_.RequestInquiryReference]
+    """
+
+    _id_ = None
+    _monetary_account_paying_id = None
+    _status = None
+    _error_message = None
+    _whitelist = None
+    _object_ = None
+    _request_reference_split_the_bill = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def monetary_account_paying_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_paying_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def error_message(self):
+        """
+        :rtype: list[object_.Error]
+        """
+
+        return self._error_message
+
+    @property
+    def whitelist(self):
+        """
+        :rtype: Whitelist
+        """
+
+        return self._whitelist
+
+    @property
+    def object_(self):
+        """
+        :rtype: object_.WhitelistResultViewAnchoredObject
+        """
+
+        return self._object_
+
+    @property
+    def request_reference_split_the_bill(self):
+        """
+        :rtype: list[object_.RequestInquiryReference]
+        """
+
+        return self._request_reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._monetary_account_paying_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._error_message is not None:
+            return False
+
+        if self._whitelist is not None:
+            return False
+
+        if self._object_ is not None:
+            return False
+
+        if self._request_reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: WhitelistResult
+        """
+
+        return converter.json_to_class(WhitelistResult, json_str)
+
+
+class Whitelist(core.BunqModel):
+    """
+    Whitelist a Request so that when one comes in, it is automatically accepted.
+    """
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Whitelist
+        """
+
+        return converter.json_to_class(Whitelist, json_str)
+
+
+class RequestInquiryBatch(core.BunqModel):
+    """
+    Create a batch of requests for payment, or show the request batches of a
+    monetary account.
+    
+    :param _request_inquiries: The list of requests that were made.
+    :type _request_inquiries: list[RequestInquiry]
+    :param _status: The status of the request.
+    :type _status: str
+    :param _total_amount_inquired: The total amount originally inquired for this
+    batch.
+    :type _total_amount_inquired: object_.Amount
+    :param _event_id: The ID of the associated event if the request batch was
+    made using 'split the bill'.
+    :type _event_id: int
+    :param _reference_split_the_bill: The reference to the object used for split
+    the bill. Can be Payment, PaymentBatch, ScheduleInstance, RequestResponse
+    and MasterCardAction
+    :type _reference_split_the_bill:
+    object_.RequestReferenceSplitTheBillAnchorObject
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/request-inquiry-batch"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-inquiry-batch/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/request-inquiry-batch/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-inquiry-batch"
+
+    # Field constants.
+    FIELD_REQUEST_INQUIRIES = "request_inquiries"
+    FIELD_STATUS = "status"
+    FIELD_TOTAL_AMOUNT_INQUIRED = "total_amount_inquired"
+    FIELD_EVENT_ID = "event_id"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "RequestInquiryBatch"
+
+    _request_inquiries = None
+    _total_amount_inquired = None
+    _reference_split_the_bill = None
+    _request_inquiries_field_for_request = None
+    _status_field_for_request = None
+    _total_amount_inquired_field_for_request = None
+    _event_id_field_for_request = None
+
+    def __init__(self, request_inquiries, total_amount_inquired, status=None,
+                 event_id=None):
+        """
+        :param request_inquiries: The list of request inquiries we want to send in 1
+        batch.
+        :type request_inquiries: list[RequestInquiry]
+        :param total_amount_inquired: The total amount originally inquired for this
+        batch.
+        :type total_amount_inquired: object_.Amount
+        :param status: The status of the request.
+        :type status: str
+        :param event_id: The ID of the associated event if the request batch was
+        made using 'split the bill'.
+        :type event_id: int
+        """
+
+        self._request_inquiries_field_for_request = request_inquiries
+        self._total_amount_inquired_field_for_request = total_amount_inquired
+        self._status_field_for_request = status
+        self._event_id_field_for_request = event_id
+
+    @classmethod
+    def create(cls, request_inquiries, total_amount_inquired,
+               monetary_account_id=None, status=None, event_id=None,
+               custom_headers=None):
+        """
+        Create a request batch by sending an array of single request objects,
+        that will become part of the batch.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param request_inquiries: The list of request inquiries we want to send
+        in 1 batch.
+        :type request_inquiries: list[RequestInquiry]
+        :param total_amount_inquired: The total amount originally inquired for
+        this batch.
+        :type total_amount_inquired: object_.Amount
+        :param status: The status of the request.
+        :type status: str
+        :param event_id: The ID of the associated event if the request batch was
+        made using 'split the bill'.
+        :type event_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_REQUEST_INQUIRIES: request_inquiries,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_TOTAL_AMOUNT_INQUIRED: total_amount_inquired,
+            cls.FIELD_EVENT_ID: event_id
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, request_inquiry_batch_id, monetary_account_id=None,
+               status=None, custom_headers=None):
+        """
+        Revoke a request batch. The status of all the requests will be set to
+        REVOKED.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type request_inquiry_batch_id: int
+        :param status: The status of the request.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_STATUS: status
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       request_inquiry_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, request_inquiry_batch_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        Return the details of a specific request batch.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type request_inquiry_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestInquiryBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     request_inquiry_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRequestInquiryBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Return all the request batches for a monetary account.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRequestInquiryBatchList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRequestInquiryBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def request_inquiries(self):
+        """
+        :rtype: list[RequestInquiry]
+        """
+
+        return self._request_inquiries
+
+    @property
+    def total_amount_inquired(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._total_amount_inquired
+
+    @property
+    def reference_split_the_bill(self):
+        """
+        :rtype: object_.RequestReferenceSplitTheBillAnchorObject
+        """
+
+        return self._reference_split_the_bill
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._request_inquiries is not None:
+            return False
+
+        if self._total_amount_inquired is not None:
+            return False
+
+        if self._reference_split_the_bill is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RequestInquiryBatch
+        """
+
+        return converter.json_to_class(RequestInquiryBatch, json_str)
+
+
+class SchedulePayment(core.BunqModel):
+    """
+    Endpoint for schedule payments.
+    
+    :param _payment: The payment details.
+    :type _payment: object_.SchedulePaymentEntry
+    :param _schedule: The schedule details.
+    :type _schedule: Schedule
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-payment"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-payment/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-payment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule-payment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-payment/{}"
+
+    # Field constants.
+    FIELD_PAYMENT = "payment"
+    FIELD_SCHEDULE = "schedule"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ScheduledPayment"
+
+    _payment = None
+    _schedule = None
+    _payment_field_for_request = None
+    _schedule_field_for_request = None
+
+    def __init__(self, payment=None, schedule=None):
+        """
+        :param payment: The payment details.
+        :type payment: object_.SchedulePaymentEntry
+        :param schedule: The schedule details when creating or updating a scheduled
+        payment.
+        :type schedule: Schedule
+        """
+
+        self._payment_field_for_request = payment
+        self._schedule_field_for_request = schedule
+
+    @classmethod
+    def create(cls, payment, schedule, monetary_account_id=None,
+               custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :param payment: The payment details.
+        :type payment: object_.SchedulePaymentEntry
+        :param schedule: The schedule details when creating or updating a
+        scheduled payment.
+        :type schedule: Schedule
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_PAYMENT: payment,
+            cls.FIELD_SCHEDULE: schedule
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, schedule_payment_id, monetary_account_id=None,
+               custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_payment_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       schedule_payment_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def get(cls, schedule_payment_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_payment_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseSchedulePayment
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     schedule_payment_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseSchedulePayment.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseSchedulePaymentList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseSchedulePaymentList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, schedule_payment_id, monetary_account_id=None, payment=None,
+               schedule=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_payment_id: int
+        :param payment: The payment details.
+        :type payment: object_.SchedulePaymentEntry
+        :param schedule: The schedule details when creating or updating a
+        scheduled payment.
+        :type schedule: Schedule
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_PAYMENT: payment,
+            cls.FIELD_SCHEDULE: schedule
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       schedule_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @property
+    def payment(self):
+        """
+        :rtype: object_.SchedulePaymentEntry
+        """
+
+        return self._payment
+
+    @property
+    def schedule(self):
+        """
+        :rtype: Schedule
+        """
+
+        return self._schedule
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payment is not None:
+            return False
+
+        if self._schedule is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SchedulePayment
+        """
+
+        return converter.json_to_class(SchedulePayment, json_str)
+
+
+class Schedule(core.BunqModel):
+    """
+    view for reading the scheduled definitions.
+    
+    :param _time_start: The schedule start time (UTC).
+    :type _time_start: str
+    :param _time_end: The schedule end time (UTC).
+    :type _time_end: str
+    :param _recurrence_unit: The schedule recurrence unit, options: ONCE,
+    HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY
+    :type _recurrence_unit: str
+    :param _recurrence_size: The schedule recurrence size. For example size 4
+    and unit WEEKLY means the recurrence is every 4 weeks.
+    :type _recurrence_size: int
+    :param _status: The schedule status, options: ACTIVE, FINISHED, CANCELLED.
+    :type _status: str
+    :param _object_: The scheduled object. (Payment, PaymentBatch)
+    :type _object_: object_.ScheduleAnchorObject
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule"
+
+    # Field constants.
+    FIELD_TIME_START = "time_start"
+    FIELD_TIME_END = "time_end"
+    FIELD_RECURRENCE_UNIT = "recurrence_unit"
+    FIELD_RECURRENCE_SIZE = "recurrence_size"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "Schedule"
+
+    _time_start = None
+    _time_end = None
+    _recurrence_unit = None
+    _recurrence_size = None
+    _status = None
+    _object_ = None
+    _time_start_field_for_request = None
+    _time_end_field_for_request = None
+    _recurrence_unit_field_for_request = None
+    _recurrence_size_field_for_request = None
+
+    def __init__(self, time_start=None, recurrence_unit=None,
+                 recurrence_size=None, time_end=None):
+        """
+        :param time_start: The schedule start time (UTC).
+        :type time_start: str
+        :param recurrence_unit: The schedule recurrence unit, options: ONCE, HOURLY,
+        DAILY, WEEKLY, MONTHLY, YEARLY
+        :type recurrence_unit: str
+        :param recurrence_size: The schedule recurrence size. For example size 4 and
+        unit WEEKLY means the recurrence is every 4 weeks.
+        :type recurrence_size: int
+        :param time_end: The schedule end time (UTC).
+        :type time_end: str
+        """
+
+        self._time_start_field_for_request = time_start
+        self._recurrence_unit_field_for_request = recurrence_unit
+        self._recurrence_size_field_for_request = recurrence_size
+        self._time_end_field_for_request = time_end
+
+    @classmethod
+    def get(cls, schedule_id, monetary_account_id=None, custom_headers=None):
+        """
+        Get a specific schedule definition for a given monetary account.
+        
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseSchedule
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(
+                                                         monetary_account_id),
+                                                     schedule_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseSchedule.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Get a collection of scheduled definition for a given monetary account.
+        You can add the parameter type to filter the response. When
+        type={SCHEDULE_DEFINITION_PAYMENT,SCHEDULE_DEFINITION_PAYMENT_BATCH} is
+        provided only schedule definition object that relate to these
+        definitions are returned.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseScheduleList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id(),
+            cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseScheduleList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def time_start(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_start
+
+    @property
+    def time_end(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_end
+
+    @property
+    def recurrence_unit(self):
+        """
+        :rtype: str
+        """
+
+        return self._recurrence_unit
+
+    @property
+    def recurrence_size(self):
+        """
+        :rtype: int
+        """
+
+        return self._recurrence_size
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def object_(self):
+        """
+        :rtype: object_.ScheduleAnchorObject
+        """
+
+        return self._object_
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._time_start is not None:
+            return False
+
+        if self._time_end is not None:
+            return False
+
+        if self._recurrence_unit is not None:
+            return False
+
+        if self._recurrence_size is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._object_ is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Schedule
+        """
+
+        return converter.json_to_class(Schedule, json_str)
+
+
 class TabResultInquiry(core.BunqModel):
     """
     Used to view TabResultInquiry objects belonging to a tab. A TabResultInquiry
@@ -16114,6 +15740,8 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     :type _UserPerson: UserPerson
     :param _UserCompany: 
     :type _UserCompany: UserCompany
+    :param _UserApiKey: 
+    :type _UserApiKey: UserApiKey
     """
 
     # Error constants.
@@ -16129,9 +15757,10 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     _UserLight = None
     _UserPerson = None
     _UserCompany = None
+    _UserApiKey = None
 
     @classmethod
-    def get(cls, custom_headers=None):
+    def get(cls, user_id, custom_headers=None):
         """
         Get a specific user.
         
@@ -16202,6 +15831,14 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
 
         return self._UserCompany
 
+    @property
+    def UserApiKey(self):
+        """
+        :rtype: UserApiKey
+        """
+
+        return self._UserApiKey
+
     def get_referenced_object(self):
         """
         :rtype: core.BunqModel
@@ -16217,6 +15854,9 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
         if self._UserCompany is not None:
             return self._UserCompany
 
+        if self._UserApiKey is not None:
+            return self._UserApiKey
+
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
@@ -16231,6 +15871,9 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         if self._UserCompany is not None:
+            return False
+
+        if self._UserApiKey is not None:
             return False
 
         return True
@@ -17270,7 +16913,7 @@ class UserPerson(core.BunqModel):
         self._notification_filters_field_for_request = notification_filters
 
     @classmethod
-    def get(cls, custom_headers=None):
+    def get(cls, user_person_id, custom_headers=None):
         """
         Get a specific person.
         
@@ -17293,10 +16936,11 @@ class UserPerson(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, first_name=None, middle_name=None, last_name=None,
-               public_nick_name=None, address_main=None, address_postal=None,
-               avatar_uuid=None, tax_resident=None, document_type=None,
-               document_number=None, document_country_of_issuance=None,
+    def update(cls, user_person_id, first_name=None, middle_name=None,
+               last_name=None, public_nick_name=None, address_main=None,
+               address_postal=None, avatar_uuid=None, tax_resident=None,
+               document_type=None, document_number=None,
+               document_country_of_issuance=None,
                document_front_attachment_id=None,
                document_back_attachment_id=None, date_of_birth=None,
                place_of_birth=None, country_of_birth=None, nationality=None,
@@ -18019,7 +17663,7 @@ class UserCompany(core.BunqModel):
         self._notification_filters_field_for_request = notification_filters
 
     @classmethod
-    def get(cls, custom_headers=None):
+    def get(cls, user_company_id, custom_headers=None):
         """
         Get a specific company.
         
@@ -18042,9 +17686,9 @@ class UserCompany(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, name=None, public_nick_name=None, avatar_uuid=None,
-               address_main=None, address_postal=None, language=None,
-               region=None, country=None, ubo=None,
+    def update(cls, user_company_id, name=None, public_nick_name=None,
+               avatar_uuid=None, address_main=None, address_postal=None,
+               language=None, region=None, country=None, ubo=None,
                chamber_of_commerce_number=None, status=None, sub_status=None,
                session_timeout=None,
                daily_limit_without_confirmation_login=None,
@@ -18498,6 +18142,9 @@ class Customer(core.BunqModel):
     
     :param _billing_account_id: The primary billing account account's id.
     :type _billing_account_id: str
+    :param _invoice_notification_preference: The preferred notification type for
+    invoices
+    :type _invoice_notification_preference: str
     :param _id_: The id of the customer.
     :type _id_: int
     :param _created: The timestamp of the customer object's creation.
@@ -18513,6 +18160,7 @@ class Customer(core.BunqModel):
 
     # Field constants.
     FIELD_BILLING_ACCOUNT_ID = "billing_account_id"
+    FIELD_INVOICE_NOTIFICATION_PREFERENCE = "invoice_notification_preference"
 
     # Object type.
     _OBJECT_TYPE_GET = "Customer"
@@ -18522,14 +18170,20 @@ class Customer(core.BunqModel):
     _updated = None
     _billing_account_id = None
     _billing_account_id_field_for_request = None
+    _invoice_notification_preference_field_for_request = None
 
-    def __init__(self, billing_account_id=None):
+    def __init__(self, billing_account_id=None,
+                 invoice_notification_preference=None):
         """
         :param billing_account_id: The primary billing account account's id.
         :type billing_account_id: str
+        :param invoice_notification_preference: The preferred notification type for
+        invoices
+        :type invoice_notification_preference: str
         """
 
         self._billing_account_id_field_for_request = billing_account_id
+        self._invoice_notification_preference_field_for_request = invoice_notification_preference
 
     @classmethod
     def list(cls, params=None, custom_headers=None):
@@ -18580,12 +18234,16 @@ class Customer(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, customer_id, billing_account_id=None, custom_headers=None):
+    def update(cls, customer_id, billing_account_id=None,
+               invoice_notification_preference=None, custom_headers=None):
         """
         :type user_id: int
         :type customer_id: int
         :param billing_account_id: The primary billing account account's id.
         :type billing_account_id: str
+        :param invoice_notification_preference: The preferred notification type
+        for invoices
+        :type invoice_notification_preference: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -18597,7 +18255,8 @@ class Customer(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
 
         request_map = {
-            cls.FIELD_BILLING_ACCOUNT_ID: billing_account_id
+            cls.FIELD_BILLING_ACCOUNT_ID: billing_account_id,
+            cls.FIELD_INVOICE_NOTIFICATION_PREFERENCE: invoice_notification_preference
         }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -18825,6 +18484,10 @@ class BillingContractSubscription(core.BunqModel):
     :type _contract_date_end: str
     :param _contract_version: The version of the billing contract.
     :type _contract_version: int
+    :param _status: The subscription status.
+    :type _status: str
+    :param _sub_status: The subscription substatus.
+    :type _sub_status: str
     """
 
     # Endpoint constants.
@@ -18844,6 +18507,8 @@ class BillingContractSubscription(core.BunqModel):
     _contract_date_end = None
     _contract_version = None
     _subscription_type = None
+    _status = None
+    _sub_status = None
     _subscription_type_field_for_request = None
 
     def __init__(self, subscription_type):
@@ -18971,6 +18636,22 @@ class BillingContractSubscription(core.BunqModel):
 
         return self._subscription_type
 
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -18997,6 +18678,12 @@ class BillingContractSubscription(core.BunqModel):
         if self._subscription_type is not None:
             return False
 
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -19010,157 +18697,27 @@ class BillingContractSubscription(core.BunqModel):
         return converter.json_to_class(BillingContractSubscription, json_str)
 
 
-class PaymentChat(core.BunqModel):
+class UserApiKey(core.BunqModel):
     """
-    Manage the chat connected to a payment.
+    Used to view OAuth request detais in events.
     
-    :param _last_read_message_id: The id of the last read message.
-    :type _last_read_message_id: int
-    :param _id_: The id of the chat conversation.
+    :param _id_: The id of the user.
     :type _id_: int
-    :param _created: The timestamp when the chat was created.
+    :param _created: The timestamp of the user object's creation.
     :type _created: str
-    :param _updated: The timestamp when the chat was last updated.
+    :param _updated: The timestamp of the user object's last update.
     :type _updated: str
-    :param _unread_message_count: The total number of unread messages in this
-    conversation.
-    :type _unread_message_count: int
+    :param _requested_by_user: The user who requested access.
+    :type _requested_by_user: object_.UserApiKeyAnchoredUser
+    :param _granted_by_user: The user who granted access.
+    :type _granted_by_user: object_.UserApiKeyAnchoredUser
     """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment/{}/chat"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment/{}/chat/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment/{}/chat"
-
-    # Field constants.
-    FIELD_LAST_READ_MESSAGE_ID = "last_read_message_id"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "ChatConversationPayment"
 
     _id_ = None
     _created = None
     _updated = None
-    _unread_message_count = None
-    _last_read_message_id_field_for_request = None
-
-    def __init__(self, last_read_message_id=None):
-        """
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        """
-
-        self._last_read_message_id_field_for_request = last_read_message_id
-
-    @classmethod
-    def create(cls, payment_id, monetary_account_id=None,
-               last_read_message_id=None, custom_headers=None):
-        """
-        Create a chat for a specific payment.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_id: int
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_LAST_READ_MESSAGE_ID: last_read_message_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, payment_id, payment_chat_id, monetary_account_id=None,
-               last_read_message_id=None, custom_headers=None):
-        """
-        Update the last read message in the chat of a specific payment.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_id: int
-        :type payment_chat_id: int
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_LAST_READ_MESSAGE_ID: last_read_message_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_id,
-                                                       payment_chat_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
-        """
-        Get the chat for a specific payment.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentChatList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id), payment_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentChatList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
+    _requested_by_user = None
+    _granted_by_user = None
 
     @property
     def id_(self):
@@ -19187,12 +18744,20 @@ class PaymentChat(core.BunqModel):
         return self._updated
 
     @property
-    def unread_message_count(self):
+    def requested_by_user(self):
         """
-        :rtype: int
+        :rtype: object_.UserApiKeyAnchoredUser
         """
 
-        return self._unread_message_count
+        return self._requested_by_user
+
+    @property
+    def granted_by_user(self):
+        """
+        :rtype: object_.UserApiKeyAnchoredUser
+        """
+
+        return self._granted_by_user
 
     def is_all_field_none(self):
         """
@@ -19208,7 +18773,10 @@ class PaymentChat(core.BunqModel):
         if self._updated is not None:
             return False
 
-        if self._unread_message_count is not None:
+        if self._requested_by_user is not None:
+            return False
+
+        if self._granted_by_user is not None:
             return False
 
         return True
@@ -19218,10 +18786,10 @@ class PaymentChat(core.BunqModel):
         """
         :type json_str: str
         
-        :rtype: PaymentChat
+        :rtype: UserApiKey
         """
 
-        return converter.json_to_class(PaymentChat, json_str)
+        return converter.json_to_class(UserApiKey, json_str)
 
 
 class PermittedIp(core.BunqModel):
@@ -19436,446 +19004,6 @@ class PermittedIp(core.BunqModel):
         return converter.json_to_class(PermittedIp, json_str)
 
 
-class RequestInquiryChat(core.BunqModel):
-    """
-    Manage the chat connected to a request inquiry. In the same way a request
-    inquiry and a request response are created together, so that each side of
-    the interaction can work on a different object, also a request inquiry chat
-    and a request response chat are created at the same time. See
-    'request-response-chat' for the chat endpoint for the responding user.
-    
-    :param _last_read_message_id: The id of the last read message.
-    :type _last_read_message_id: int
-    :param _id_: The id of the newly created chat conversation.
-    :type _id_: int
-    :param _created: The timestamp when the chat was created.
-    :type _created: str
-    :param _updated: The timestamp when the chat was last updated.
-    :type _updated: str
-    :param _unread_message_count: The total number of messages in this
-    conversation.
-    :type _unread_message_count: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/request-inquiry/{}/chat"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-inquiry/{}/chat/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-inquiry/{}/chat"
-
-    # Field constants.
-    FIELD_LAST_READ_MESSAGE_ID = "last_read_message_id"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "RequestInquiryChat"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _unread_message_count = None
-    _last_read_message_id_field_for_request = None
-
-    def __init__(self, last_read_message_id=None):
-        """
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        """
-
-        self._last_read_message_id_field_for_request = last_read_message_id
-
-    @classmethod
-    def create(cls, request_inquiry_id, monetary_account_id=None,
-               last_read_message_id=None, custom_headers=None):
-        """
-        Create a chat for a specific request inquiry.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_id: int
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_LAST_READ_MESSAGE_ID: last_read_message_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, request_inquiry_id, request_inquiry_chat_id,
-               monetary_account_id=None, last_read_message_id=None,
-               custom_headers=None):
-        """
-        Update the last read message in the chat of a specific request inquiry.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_id: int
-        :type request_inquiry_chat_id: int
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_LAST_READ_MESSAGE_ID: last_read_message_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id,
-                                                       request_inquiry_chat_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, request_inquiry_id, monetary_account_id=None, params=None,
-             custom_headers=None):
-        """
-        Get the chat for a specific request inquiry.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_inquiry_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestInquiryChatList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_inquiry_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseRequestInquiryChatList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def unread_message_count(self):
-        """
-        :rtype: int
-        """
-
-        return self._unread_message_count
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._unread_message_count is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RequestInquiryChat
-        """
-
-        return converter.json_to_class(RequestInquiryChat, json_str)
-
-
-class RequestResponseChat(core.BunqModel):
-    """
-    Manage the chat connected to a request response. In the same way a request
-    inquiry and a request response are created together, so that each side of
-    the interaction can work on a different object, also a request inquiry chat
-    and a request response chat are created at the same time. See
-    'request-inquiry-chat' for the chat endpoint for the inquiring user.
-    
-    :param _last_read_message_id: The id of the last read message.
-    :type _last_read_message_id: int
-    :param _id_: The id of the newly created chat conversation.
-    :type _id_: int
-    :param _created: The timestamp when the chat was created.
-    :type _created: str
-    :param _updated: The timestamp when the chat was last updated.
-    :type _updated: str
-    :param _unread_message_count: The total number of messages in this
-    conversation.
-    :type _unread_message_count: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/request-response/{}/chat"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/request-response/{}/chat/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/request-response/{}/chat"
-
-    # Field constants.
-    FIELD_LAST_READ_MESSAGE_ID = "last_read_message_id"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "RequestResponseChat"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _unread_message_count = None
-    _last_read_message_id_field_for_request = None
-
-    def __init__(self, last_read_message_id=None):
-        """
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        """
-
-        self._last_read_message_id_field_for_request = last_read_message_id
-
-    @classmethod
-    def create(cls, request_response_id, monetary_account_id=None,
-               last_read_message_id=None, custom_headers=None):
-        """
-        Create a chat for a specific request response.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_response_id: int
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_LAST_READ_MESSAGE_ID: last_read_message_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, request_response_id, request_response_chat_id,
-               monetary_account_id=None, last_read_message_id=None,
-               custom_headers=None):
-        """
-        Update the last read message in the chat of a specific request response.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_response_id: int
-        :type request_response_chat_id: int
-        :param last_read_message_id: The id of the last read message.
-        :type last_read_message_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_LAST_READ_MESSAGE_ID: last_read_message_id
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id,
-                                                       request_response_chat_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, request_response_id, monetary_account_id=None, params=None,
-             custom_headers=None):
-        """
-        Get the chat for a specific request response.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type request_response_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseRequestResponseChatList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_response_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseRequestResponseChatList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def unread_message_count(self):
-        """
-        :rtype: int
-        """
-
-        return self._unread_message_count
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._unread_message_count is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RequestResponseChat
-        """
-
-        return converter.json_to_class(RequestResponseChat, json_str)
-
-
 class SandboxUser(core.BunqModel):
     """
     Used to create a sandbox user.
@@ -19946,6 +19074,184 @@ class SandboxUser(core.BunqModel):
         """
 
         return converter.json_to_class(SandboxUser, json_str)
+
+
+class SchedulePaymentBatch(core.BunqModel):
+    """
+    Endpoint for schedule payment batches.
+    
+    :param _payments: The payment details.
+    :type _payments: list[object_.SchedulePaymentEntry]
+    :param _schedule: The schedule details.
+    :type _schedule: Schedule
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-payment-batch"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
+
+    # Field constants.
+    FIELD_PAYMENTS = "payments"
+    FIELD_SCHEDULE = "schedule"
+
+    _payments = None
+    _schedule = None
+    _payments_field_for_request = None
+    _schedule_field_for_request = None
+
+    def __init__(self, payments=None, schedule=None):
+        """
+        :param payments: The payment details.
+        :type payments: list[object_.SchedulePaymentEntry]
+        :param schedule: The schedule details when creating a scheduled payment.
+        :type schedule: Schedule
+        """
+
+        self._payments_field_for_request = payments
+        self._schedule_field_for_request = schedule
+
+    @classmethod
+    def create(cls, payments, schedule, monetary_account_id=None,
+               custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :param payments: The payment details.
+        :type payments: list[object_.SchedulePaymentEntry]
+        :param schedule: The schedule details when creating a scheduled payment.
+        :type schedule: Schedule
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_PAYMENTS: payments,
+            cls.FIELD_SCHEDULE: schedule
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = client.ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes,
+                                       custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, schedule_payment_batch_id, monetary_account_id=None,
+               payments=None, schedule=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_payment_batch_id: int
+        :param payments: The payment details.
+        :type payments: list[object_.SchedulePaymentEntry]
+        :param schedule: The schedule details when creating a scheduled payment.
+        :type schedule: Schedule
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_PAYMENTS: payments,
+            cls.FIELD_SCHEDULE: schedule
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       schedule_payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes,
+                                      custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, schedule_payment_batch_id, monetary_account_id=None,
+               custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(
+                                                           monetary_account_id),
+                                                       schedule_payment_batch_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            client.BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def payments(self):
+        """
+        :rtype: list[object_.SchedulePaymentEntry]
+        """
+
+        return self._payments
+
+    @property
+    def schedule(self):
+        """
+        :rtype: Schedule
+        """
+
+        return self._schedule
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payments is not None:
+            return False
+
+        if self._schedule is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SchedulePaymentBatch
+        """
+
+        return converter.json_to_class(SchedulePaymentBatch, json_str)
 
 
 class ScheduleUser(core.BunqModel):
@@ -20623,1475 +19929,14 @@ class TabQrCodeContent(core.BunqModel):
         return converter.json_to_class(TabQrCodeContent, json_str)
 
 
-class TabUsageMultiple(core.BunqModel):
-    """
-    TabUsageMultiple is a Tab that can be paid by multiple users. Just like the
-    TabUsageSingle it is created with the status OPEN, the visibility can be
-    defined in the visibility object and TabItems can be added as long as the
-    status is OPEN. When you change the status to PAYABLE any bunq user can use
-    the tab to make a payment to your account. After an user has paid your
-    TabUsageMultiple the status will not change, it will stay PAYABLE. For
-    example: you can create a TabUsageMultiple with require_address set to true.
-    Now show the QR code of this Tab on your webshop, and any bunq user can
-    instantly pay and order something from your webshop.
-    
-    :param _description: The description of the TabUsageMultiple. Maximum 9000
-    characters.
-    :type _description: str
-    :param _status: The status of the Tab. Can be OPEN, PAYABLE or CLOSED.
-    :type _status: str
-    :param _amount_total: The total amount of the Tab.
-    :type _amount_total: object_.Amount
-    :param _allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
-    be paid.
-    :type _allow_amount_higher: bool
-    :param _allow_amount_lower: [DEPRECATED] Whether or not a lower amount can
-    be paid.
-    :type _allow_amount_lower: bool
-    :param _want_tip: [DEPRECATED] Whether or not the user paying the Tab should
-    be asked if he wants to give a tip. When want_tip is set to true,
-    allow_amount_higher must also be set to true and allow_amount_lower must be
-    false.
-    :type _want_tip: bool
-    :param _minimum_age: The minimum age of the user paying the Tab.
-    :type _minimum_age: bool
-    :param _require_address: Whether or not an billing and shipping address must
-    be provided when paying the Tab.
-    :type _require_address: str
-    :param _redirect_url: The URL which the user is sent to after paying the
-    Tab.
-    :type _redirect_url: str
-    :param _visibility: The visibility of a Tab. A Tab can be visible trough
-    NearPay, the QR code of the CashRegister and its own QR code.
-    :type _visibility: object_.TabVisibility
-    :param _expiration: The moment when this Tab expires.
-    :type _expiration: str
-    :param _tab_attachment: An array of attachments that describe the tab.
-    Viewable through the GET /tab/{tabid}/attachment/{attachmentid}/content
-    endpoint.
-    :type _tab_attachment: list[object_.BunqId]
-    :param _uuid: The uuid of the created TabUsageMultiple.
-    :type _uuid: str
-    :param _created: The timestamp of the Tab's creation.
-    :type _created: str
-    :param _updated: The timestamp of the Tab's last update.
-    :type _updated: str
-    :param _qr_code_token: The token used to redirect mobile devices directly to
-    the bunq app. Because they can't scan a QR code.
-    :type _qr_code_token: str
-    :param _tab_url: The URL redirecting user to the tab payment in the bunq
-    app. Only works on mobile devices.
-    :type _tab_url: str
-    :param _alias: The alias of the party that owns this tab.
-    :type _alias: object_.MonetaryAccountReference
-    :param _cash_register_location: The location of the cash register that
-    created this tab.
-    :type _cash_register_location: object_.Geolocation
-    :param _tab_item: The tab items of this tab.
-    :type _tab_item: list[TabItem]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple/{}"
-    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-multiple"
-
-    # Field constants.
-    FIELD_DESCRIPTION = "description"
-    FIELD_STATUS = "status"
-    FIELD_AMOUNT_TOTAL = "amount_total"
-    FIELD_ALLOW_AMOUNT_HIGHER = "allow_amount_higher"
-    FIELD_ALLOW_AMOUNT_LOWER = "allow_amount_lower"
-    FIELD_WANT_TIP = "want_tip"
-    FIELD_MINIMUM_AGE = "minimum_age"
-    FIELD_REQUIRE_ADDRESS = "require_address"
-    FIELD_REDIRECT_URL = "redirect_url"
-    FIELD_VISIBILITY = "visibility"
-    FIELD_EXPIRATION = "expiration"
-    FIELD_TAB_ATTACHMENT = "tab_attachment"
-
-    # Object type.
-    _OBJECT_TYPE_POST = "Uuid"
-    _OBJECT_TYPE_PUT = "Uuid"
-    _OBJECT_TYPE_GET = "TabUsageMultiple"
-
-    _uuid = None
-    _created = None
-    _updated = None
-    _description = None
-    _status = None
-    _amount_total = None
-    _qr_code_token = None
-    _tab_url = None
-    _visibility = None
-    _minimum_age = None
-    _require_address = None
-    _redirect_url = None
-    _expiration = None
-    _alias = None
-    _cash_register_location = None
-    _tab_item = None
-    _tab_attachment = None
-    _description_field_for_request = None
-    _status_field_for_request = None
-    _amount_total_field_for_request = None
-    _allow_amount_higher_field_for_request = None
-    _allow_amount_lower_field_for_request = None
-    _want_tip_field_for_request = None
-    _minimum_age_field_for_request = None
-    _require_address_field_for_request = None
-    _redirect_url_field_for_request = None
-    _visibility_field_for_request = None
-    _expiration_field_for_request = None
-    _tab_attachment_field_for_request = None
-
-    def __init__(self, description, status=None, amount_total=None,
-                 allow_amount_higher=None, allow_amount_lower=None,
-                 want_tip=None, minimum_age=None, require_address=None,
-                 redirect_url=None, visibility=None, expiration=None,
-                 tab_attachment=None):
-        """
-        :param description: The description of the TabUsageMultiple. Maximum 9000
-        characters. Field is required but can be an empty string.
-        :type description: str
-        :param status: The status of the TabUsageMultiple. On creation the status
-        must be set to OPEN. You can change the status from OPEN to PAYABLE. If the
-        TabUsageMultiple gets paid the status will remain PAYABLE.
-        :type status: str
-        :param amount_total: The total amount of the Tab. Must be a positive amount.
-        As long as the tab has the status OPEN you can change the total amount. This
-        amount is not affected by the amounts of the TabItems. However, if you've
-        created any TabItems for a Tab the sum of the amounts of these items must be
-        equal to the total_amount of the Tab when you change its status to PAYABLE
-        :type amount_total: object_.Amount
-        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
-        be paid.
-        :type allow_amount_higher: bool
-        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount can be
-        paid.
-        :type allow_amount_lower: bool
-        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab should
-        be asked if he wants to give a tip. When want_tip is set to true,
-        allow_amount_higher must also be set to true and allow_amount_lower must be
-        false.
-        :type want_tip: bool
-        :param minimum_age: The minimum age of the user paying the Tab.
-        :type minimum_age: int
-        :param require_address: Whether a billing and shipping address must be
-        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
-        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
-        :type require_address: str
-        :param redirect_url: The URL which the user is sent to after paying the Tab.
-        :type redirect_url: str
-        :param visibility: The visibility of a Tab. A Tab can be visible trough
-        NearPay, the QR code of the CashRegister and its own QR code.
-        :type visibility: object_.TabVisibility
-        :param expiration: The moment when this Tab expires. Can be at most 365 days
-        into the future.
-        :type expiration: str
-        :param tab_attachment: An array of attachments that describe the tab.
-        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-        :type tab_attachment: list[object_.BunqId]
-        """
-
-        self._description_field_for_request = description
-        self._status_field_for_request = status
-        self._amount_total_field_for_request = amount_total
-        self._allow_amount_higher_field_for_request = allow_amount_higher
-        self._allow_amount_lower_field_for_request = allow_amount_lower
-        self._want_tip_field_for_request = want_tip
-        self._minimum_age_field_for_request = minimum_age
-        self._require_address_field_for_request = require_address
-        self._redirect_url_field_for_request = redirect_url
-        self._visibility_field_for_request = visibility
-        self._expiration_field_for_request = expiration
-        self._tab_attachment_field_for_request = tab_attachment
-
-    @classmethod
-    def create(cls, cash_register_id, description, status, amount_total,
-               monetary_account_id=None, allow_amount_higher=None,
-               allow_amount_lower=None, want_tip=None, minimum_age=None,
-               require_address=None, redirect_url=None, visibility=None,
-               expiration=None, tab_attachment=None, custom_headers=None):
-        """
-        Create a TabUsageMultiple. On creation the status must be set to OPEN
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :param description: The description of the TabUsageMultiple. Maximum
-        9000 characters. Field is required but can be an empty string.
-        :type description: str
-        :param status: The status of the TabUsageMultiple. On creation the
-        status must be set to OPEN. You can change the status from OPEN to
-        PAYABLE. If the TabUsageMultiple gets paid the status will remain
-        PAYABLE.
-        :type status: str
-        :param amount_total: The total amount of the Tab. Must be a positive
-        amount. As long as the tab has the status OPEN you can change the total
-        amount. This amount is not affected by the amounts of the TabItems.
-        However, if you've created any TabItems for a Tab the sum of the amounts
-        of these items must be equal to the total_amount of the Tab when you
-        change its status to PAYABLE
-        :type amount_total: object_.Amount
-        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount
-        can be paid.
-        :type allow_amount_higher: bool
-        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount
-        can be paid.
-        :type allow_amount_lower: bool
-        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab
-        should be asked if he wants to give a tip. When want_tip is set to true,
-        allow_amount_higher must also be set to true and allow_amount_lower must
-        be false.
-        :type want_tip: bool
-        :param minimum_age: The minimum age of the user paying the Tab.
-        :type minimum_age: int
-        :param require_address: Whether a billing and shipping address must be
-        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
-        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
-        :type require_address: str
-        :param redirect_url: The URL which the user is sent to after paying the
-        Tab.
-        :type redirect_url: str
-        :param visibility: The visibility of a Tab. A Tab can be visible trough
-        NearPay, the QR code of the CashRegister and its own QR code.
-        :type visibility: object_.TabVisibility
-        :param expiration: The moment when this Tab expires. Can be at most 365
-        days into the future.
-        :type expiration: str
-        :param tab_attachment: An array of attachments that describe the tab.
-        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-        :type tab_attachment: list[object_.BunqId]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseStr
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_DESCRIPTION: description,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_AMOUNT_TOTAL: amount_total,
-            cls.FIELD_ALLOW_AMOUNT_HIGHER: allow_amount_higher,
-            cls.FIELD_ALLOW_AMOUNT_LOWER: allow_amount_lower,
-            cls.FIELD_WANT_TIP: want_tip,
-            cls.FIELD_MINIMUM_AGE: minimum_age,
-            cls.FIELD_REQUIRE_ADDRESS: require_address,
-            cls.FIELD_REDIRECT_URL: redirect_url,
-            cls.FIELD_VISIBILITY: visibility,
-            cls.FIELD_EXPIRATION: expiration,
-            cls.FIELD_TAB_ATTACHMENT: tab_attachment
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseStr.cast_from_bunq_response(
-            cls._process_for_uuid(response_raw)
-        )
-
-    @classmethod
-    def update(cls, cash_register_id, tab_usage_multiple_uuid,
-               monetary_account_id=None, status=None, amount_total=None,
-               visibility=None, expiration=None, tab_attachment=None,
-               custom_headers=None):
-        """
-        Modify a specific TabUsageMultiple. You can change the amount_total,
-        status and visibility. Once you change the status to PAYABLE the
-        TabUsageMultiple will expire after a year (default). If you've created
-        any TabItems for a Tab the sum of the amounts of these items must be
-        equal to the total_amount of the Tab when you change its status to
-        PAYABLE.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type tab_usage_multiple_uuid: str
-        :param status: The status of the TabUsageMultiple. On creation the
-        status must be set to OPEN. You can change the status from OPEN to
-        PAYABLE. If the TabUsageMultiple gets paid the status will remain
-        PAYABLE.
-        :type status: str
-        :param amount_total: The total amount of the Tab. Must be a positive
-        amount. As long as the tab has the status OPEN you can change the total
-        amount. This amount is not affected by the amounts of the TabItems.
-        However, if you've created any TabItems for a Tab the sum of the amounts
-        of these items must be equal to the total_amount of the Tab when you
-        change its status to PAYABLE
-        :type amount_total: object_.Amount
-        :param visibility: The visibility of a Tab. A Tab can be visible trough
-        NearPay, the QR code of the CashRegister and its own QR code.
-        :type visibility: object_.TabVisibility
-        :param expiration: The moment when this Tab expires. Can be at most 365
-        days into the future.
-        :type expiration: str
-        :param tab_attachment: An array of attachments that describe the tab.
-        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-        :type tab_attachment: list[object_.BunqId]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseStr
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status,
-            cls.FIELD_AMOUNT_TOTAL: amount_total,
-            cls.FIELD_VISIBILITY: visibility,
-            cls.FIELD_EXPIRATION: expiration,
-            cls.FIELD_TAB_ATTACHMENT: tab_attachment
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_multiple_uuid)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseStr.cast_from_bunq_response(
-            cls._process_for_uuid(response_raw)
-        )
-
-    @classmethod
-    def delete(cls, cash_register_id, tab_usage_multiple_uuid,
-               monetary_account_id=None, custom_headers=None):
-        """
-        Close a specific TabUsageMultiple.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type tab_usage_multiple_uuid: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNone
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_multiple_uuid)
-        response_raw = api_client.delete(endpoint_url, custom_headers)
-
-        return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
-        )
-
-    @classmethod
-    def get(cls, cash_register_id, tab_usage_multiple_uuid,
-            monetary_account_id=None, custom_headers=None):
-        """
-        Get a specific TabUsageMultiple.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type tab_usage_multiple_uuid: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTabUsageMultiple
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id,
-                                                     tab_usage_multiple_uuid)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseTabUsageMultiple.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, cash_register_id, monetary_account_id=None, params=None,
-             custom_headers=None):
-        """
-        Get a collection of TabUsageMultiple.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTabUsageMultipleList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseTabUsageMultipleList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._uuid
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def amount_total(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_total
-
-    @property
-    def qr_code_token(self):
-        """
-        :rtype: str
-        """
-
-        return self._qr_code_token
-
-    @property
-    def tab_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._tab_url
-
-    @property
-    def visibility(self):
-        """
-        :rtype: object_.TabVisibility
-        """
-
-        return self._visibility
-
-    @property
-    def minimum_age(self):
-        """
-        :rtype: bool
-        """
-
-        return self._minimum_age
-
-    @property
-    def require_address(self):
-        """
-        :rtype: str
-        """
-
-        return self._require_address
-
-    @property
-    def redirect_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._redirect_url
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def cash_register_location(self):
-        """
-        :rtype: object_.Geolocation
-        """
-
-        return self._cash_register_location
-
-    @property
-    def tab_item(self):
-        """
-        :rtype: list[TabItem]
-        """
-
-        return self._tab_item
-
-    @property
-    def tab_attachment(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._tab_attachment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._uuid is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._amount_total is not None:
-            return False
-
-        if self._qr_code_token is not None:
-            return False
-
-        if self._tab_url is not None:
-            return False
-
-        if self._visibility is not None:
-            return False
-
-        if self._minimum_age is not None:
-            return False
-
-        if self._require_address is not None:
-            return False
-
-        if self._redirect_url is not None:
-            return False
-
-        if self._expiration is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._cash_register_location is not None:
-            return False
-
-        if self._tab_item is not None:
-            return False
-
-        if self._tab_attachment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabUsageMultiple
-        """
-
-        return converter.json_to_class(TabUsageMultiple, json_str)
-
-
-class TabItem(core.BunqModel):
-    """
-    Used to get items on a tab.
-    
-    :param _id_: The id of the tab item.
-    :type _id_: int
-    :param _description: The item's brief description.
-    :type _description: str
-    :param _ean_code: The item's EAN code.
-    :type _ean_code: str
-    :param _avatar_attachment: A struct with an AttachmentPublic UUID that used
-    as an avatar for the TabItem.
-    :type _avatar_attachment: object_.AttachmentPublic
-    :param _tab_attachment: A list of AttachmentTab attached to the TabItem.
-    :type _tab_attachment: list[object_.AttachmentTab]
-    :param _quantity: The quantity of the item. Formatted as a number containing
-    up to 15 digits, up to 15 decimals and using a dot.
-    :type _quantity: str
-    :param _amount: The money amount of the item.
-    :type _amount: object_.Amount
-    """
-
-    _id_ = None
-    _description = None
-    _ean_code = None
-    _avatar_attachment = None
-    _tab_attachment = None
-    _quantity = None
-    _amount = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def ean_code(self):
-        """
-        :rtype: str
-        """
-
-        return self._ean_code
-
-    @property
-    def avatar_attachment(self):
-        """
-        :rtype: object_.AttachmentPublic
-        """
-
-        return self._avatar_attachment
-
-    @property
-    def tab_attachment(self):
-        """
-        :rtype: list[object_.AttachmentTab]
-        """
-
-        return self._tab_attachment
-
-    @property
-    def quantity(self):
-        """
-        :rtype: str
-        """
-
-        return self._quantity
-
-    @property
-    def amount(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._ean_code is not None:
-            return False
-
-        if self._avatar_attachment is not None:
-            return False
-
-        if self._tab_attachment is not None:
-            return False
-
-        if self._quantity is not None:
-            return False
-
-        if self._amount is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabItem
-        """
-
-        return converter.json_to_class(TabItem, json_str)
-
-
-class TabUsageSingle(core.BunqModel):
-    """
-    TabUsageSingle is a Tab that can be paid once. The TabUsageSingle is created
-    with the status OPEN. Optionally you can add TabItems to the tab using
-    /tab/_/tab-item, TabItems don't affect the total amount of the Tab. However,
-    if you've created any TabItems for a Tab the sum of the amounts of these
-    items must be equal to the total_amount of the Tab when you change its
-    status to WAITING_FOR_PAYMENT. By setting the visibility object a
-    TabUsageSingle with the status OPEN or WAITING_FOR_PAYMENT can be made
-    visible to customers. As soon as a customer pays the TabUsageSingle its
-    status changes to PAID, and it can't be paid again.
-    
-    :param _merchant_reference: The merchant reference of the Tab, as defined by
-    the owner.
-    :type _merchant_reference: str
-    :param _description: The description of the TabUsageMultiple. Maximum 9000
-    characters.
-    :type _description: str
-    :param _status: The status of the Tab. Can be OPEN, WAITING_FOR_PAYMENT,
-    PAID or CANCELED.
-    :type _status: str
-    :param _amount_total: The total amount of the Tab.
-    :type _amount_total: object_.Amount
-    :param _allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
-    be paid.
-    :type _allow_amount_higher: bool
-    :param _allow_amount_lower: [DEPRECATED] Whether or not a lower amount can
-    be paid.
-    :type _allow_amount_lower: bool
-    :param _want_tip: [DEPRECATED] Whether or not the user paying the Tab should
-    be asked if he wants to give a tip. When want_tip is set to true,
-    allow_amount_higher must also be set to true and allow_amount_lower must be
-    false.
-    :type _want_tip: bool
-    :param _minimum_age: The minimum age of the user paying the Tab.
-    :type _minimum_age: bool
-    :param _require_address: Whether or not an billing and shipping address must
-    be provided when paying the Tab.
-    :type _require_address: str
-    :param _redirect_url: The URL which the user is sent to after paying the
-    Tab.
-    :type _redirect_url: str
-    :param _visibility: The visibility of a Tab. A Tab can be visible trough
-    NearPay, the QR code of the CashRegister and its own QR code.
-    :type _visibility: object_.TabVisibility
-    :param _expiration: The moment when this Tab expires.
-    :type _expiration: str
-    :param _tab_attachment: An array of attachments that describe the tab.
-    Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-    :type _tab_attachment: list[object_.BunqId]
-    :param _uuid: The uuid of the created TabUsageSingle.
-    :type _uuid: str
-    :param _created: The timestamp of the Tab's creation.
-    :type _created: str
-    :param _updated: The timestamp of the Tab's last update.
-    :type _updated: str
-    :param _amount_paid: The amount that has been paid for this Tab.
-    :type _amount_paid: object_.Amount
-    :param _qr_code_token: The token used to redirect mobile devices directly to
-    the bunq app. Because they can't scan a QR code.
-    :type _qr_code_token: str
-    :param _tab_url: The URL redirecting user to the tab payment in the bunq
-    app. Only works on mobile devices.
-    :type _tab_url: str
-    :param _alias: The alias of the party that owns this tab.
-    :type _alias: object_.MonetaryAccountReference
-    :param _cash_register_location: The location of the cash register that
-    created this tab.
-    :type _cash_register_location: object_.Geolocation
-    :param _tab_item: The tab items of this tab.
-    :type _tab_item: list[TabItem]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single/{}"
-    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/cash-register/{}/tab-usage-single"
-
-    # Field constants.
-    FIELD_MERCHANT_REFERENCE = "merchant_reference"
-    FIELD_DESCRIPTION = "description"
-    FIELD_STATUS = "status"
-    FIELD_AMOUNT_TOTAL = "amount_total"
-    FIELD_ALLOW_AMOUNT_HIGHER = "allow_amount_higher"
-    FIELD_ALLOW_AMOUNT_LOWER = "allow_amount_lower"
-    FIELD_WANT_TIP = "want_tip"
-    FIELD_MINIMUM_AGE = "minimum_age"
-    FIELD_REQUIRE_ADDRESS = "require_address"
-    FIELD_REDIRECT_URL = "redirect_url"
-    FIELD_VISIBILITY = "visibility"
-    FIELD_EXPIRATION = "expiration"
-    FIELD_TAB_ATTACHMENT = "tab_attachment"
-
-    # Object type.
-    _OBJECT_TYPE_POST = "Uuid"
-    _OBJECT_TYPE_PUT = "Uuid"
-    _OBJECT_TYPE_GET = "TabUsageSingle"
-
-    _uuid = None
-    _created = None
-    _updated = None
-    _merchant_reference = None
-    _description = None
-    _status = None
-    _amount_total = None
-    _amount_paid = None
-    _qr_code_token = None
-    _tab_url = None
-    _visibility = None
-    _minimum_age = None
-    _require_address = None
-    _redirect_url = None
-    _expiration = None
-    _alias = None
-    _cash_register_location = None
-    _tab_item = None
-    _tab_attachment = None
-    _merchant_reference_field_for_request = None
-    _description_field_for_request = None
-    _status_field_for_request = None
-    _amount_total_field_for_request = None
-    _allow_amount_higher_field_for_request = None
-    _allow_amount_lower_field_for_request = None
-    _want_tip_field_for_request = None
-    _minimum_age_field_for_request = None
-    _require_address_field_for_request = None
-    _redirect_url_field_for_request = None
-    _visibility_field_for_request = None
-    _expiration_field_for_request = None
-    _tab_attachment_field_for_request = None
-
-    def __init__(self, description, status=None, amount_total=None,
-                 merchant_reference=None, allow_amount_higher=None,
-                 allow_amount_lower=None, want_tip=None, minimum_age=None,
-                 require_address=None, redirect_url=None, visibility=None,
-                 expiration=None, tab_attachment=None):
-        """
-        :param description: The description of the Tab. Maximum 9000 characters.
-        Field is required but can be an empty string.
-        :type description: str
-        :param status: The status of the Tab. On creation the status must be set to
-        OPEN. You can change the status from OPEN to WAITING_FOR_PAYMENT.
-        :type status: str
-        :param amount_total: The total amount of the Tab. Must be a positive amount.
-        As long as the tab has the status OPEN you can change the total amount. This
-        amount is not affected by the amounts of the TabItems. However, if you've
-        created any TabItems for a Tab the sum of the amounts of these items must be
-        equal to the total_amount of the Tab when you change its status to
-        WAITING_FOR_PAYMENT.
-        :type amount_total: object_.Amount
-        :param merchant_reference: The reference of the Tab, as defined by the
-        owner. This reference will be set for any payment that is generated by this
-        tab. Must be unique among all the owner's tabs for the used monetary
-        account.
-        :type merchant_reference: str
-        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount can
-        be paid.
-        :type allow_amount_higher: bool
-        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount can be
-        paid.
-        :type allow_amount_lower: bool
-        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab should
-        be asked if he wants to give a tip. When want_tip is set to true,
-        allow_amount_higher must also be set to true and allow_amount_lower must be
-        false.
-        :type want_tip: bool
-        :param minimum_age: The minimum age of the user paying the Tab.
-        :type minimum_age: int
-        :param require_address: Whether a billing and shipping address must be
-        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
-        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
-        :type require_address: str
-        :param redirect_url: The URL which the user is sent to after paying the Tab.
-        :type redirect_url: str
-        :param visibility: The visibility of a Tab. A Tab can be visible trough
-        NearPay, the QR code of the CashRegister and its own QR code.
-        :type visibility: object_.TabVisibility
-        :param expiration: The moment when this Tab expires. Can be at most 1 hour
-        into the future.
-        :type expiration: str
-        :param tab_attachment: An array of attachments that describe the tab.
-        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-        :type tab_attachment: list[object_.BunqId]
-        """
-
-        self._description_field_for_request = description
-        self._status_field_for_request = status
-        self._amount_total_field_for_request = amount_total
-        self._merchant_reference_field_for_request = merchant_reference
-        self._allow_amount_higher_field_for_request = allow_amount_higher
-        self._allow_amount_lower_field_for_request = allow_amount_lower
-        self._want_tip_field_for_request = want_tip
-        self._minimum_age_field_for_request = minimum_age
-        self._require_address_field_for_request = require_address
-        self._redirect_url_field_for_request = redirect_url
-        self._visibility_field_for_request = visibility
-        self._expiration_field_for_request = expiration
-        self._tab_attachment_field_for_request = tab_attachment
-
-    @classmethod
-    def create(cls, cash_register_id, description, status, amount_total,
-               monetary_account_id=None, merchant_reference=None,
-               allow_amount_higher=None, allow_amount_lower=None, want_tip=None,
-               minimum_age=None, require_address=None, redirect_url=None,
-               visibility=None, expiration=None, tab_attachment=None,
-               custom_headers=None):
-        """
-        Create a TabUsageSingle. The initial status must be OPEN
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :param description: The description of the Tab. Maximum 9000 characters.
-        Field is required but can be an empty string.
-        :type description: str
-        :param status: The status of the Tab. On creation the status must be set
-        to OPEN. You can change the status from OPEN to WAITING_FOR_PAYMENT.
-        :type status: str
-        :param amount_total: The total amount of the Tab. Must be a positive
-        amount. As long as the tab has the status OPEN you can change the total
-        amount. This amount is not affected by the amounts of the TabItems.
-        However, if you've created any TabItems for a Tab the sum of the amounts
-        of these items must be equal to the total_amount of the Tab when you
-        change its status to WAITING_FOR_PAYMENT.
-        :type amount_total: object_.Amount
-        :param merchant_reference: The reference of the Tab, as defined by the
-        owner. This reference will be set for any payment that is generated by
-        this tab. Must be unique among all the owner's tabs for the used
-        monetary account.
-        :type merchant_reference: str
-        :param allow_amount_higher: [DEPRECATED] Whether or not a higher amount
-        can be paid.
-        :type allow_amount_higher: bool
-        :param allow_amount_lower: [DEPRECATED] Whether or not a lower amount
-        can be paid.
-        :type allow_amount_lower: bool
-        :param want_tip: [DEPRECATED] Whether or not the user paying the Tab
-        should be asked if he wants to give a tip. When want_tip is set to true,
-        allow_amount_higher must also be set to true and allow_amount_lower must
-        be false.
-        :type want_tip: bool
-        :param minimum_age: The minimum age of the user paying the Tab.
-        :type minimum_age: int
-        :param require_address: Whether a billing and shipping address must be
-        provided when paying the Tab. Possible values are: BILLING, SHIPPING,
-        BILLING_SHIPPING, NONE, OPTIONAL. Default is NONE.
-        :type require_address: str
-        :param redirect_url: The URL which the user is sent to after paying the
-        Tab.
-        :type redirect_url: str
-        :param visibility: The visibility of a Tab. A Tab can be visible trough
-        NearPay, the QR code of the CashRegister and its own QR code.
-        :type visibility: object_.TabVisibility
-        :param expiration: The moment when this Tab expires. Can be at most 1
-        hour into the future.
-        :type expiration: str
-        :param tab_attachment: An array of attachments that describe the tab.
-        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-        :type tab_attachment: list[object_.BunqId]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseStr
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_MERCHANT_REFERENCE: merchant_reference,
-            cls.FIELD_DESCRIPTION: description,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_AMOUNT_TOTAL: amount_total,
-            cls.FIELD_ALLOW_AMOUNT_HIGHER: allow_amount_higher,
-            cls.FIELD_ALLOW_AMOUNT_LOWER: allow_amount_lower,
-            cls.FIELD_WANT_TIP: want_tip,
-            cls.FIELD_MINIMUM_AGE: minimum_age,
-            cls.FIELD_REQUIRE_ADDRESS: require_address,
-            cls.FIELD_REDIRECT_URL: redirect_url,
-            cls.FIELD_VISIBILITY: visibility,
-            cls.FIELD_EXPIRATION: expiration,
-            cls.FIELD_TAB_ATTACHMENT: tab_attachment
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = client.ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
-
-        return BunqResponseStr.cast_from_bunq_response(
-            cls._process_for_uuid(response_raw)
-        )
-
-    @classmethod
-    def update(cls, cash_register_id, tab_usage_single_uuid,
-               monetary_account_id=None, status=None, amount_total=None,
-               visibility=None, expiration=None, tab_attachment=None,
-               custom_headers=None):
-        """
-        Modify a specific TabUsageSingle. You can change the amount_total,
-        status and visibility. Once you change the status to WAITING_FOR_PAYMENT
-        the TabUsageSingle will expire after 5 minutes (default) or up to 1 hour
-        if a different expiration is provided.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type tab_usage_single_uuid: str
-        :param status: The status of the Tab. On creation the status must be set
-        to OPEN. You can change the status from OPEN to WAITING_FOR_PAYMENT.
-        :type status: str
-        :param amount_total: The total amount of the Tab. Must be a positive
-        amount. As long as the tab has the status OPEN you can change the total
-        amount. This amount is not affected by the amounts of the TabItems.
-        However, if you've created any TabItems for a Tab the sum of the amounts
-        of these items must be equal to the total_amount of the Tab when you
-        change its status to WAITING_FOR_PAYMENT.
-        :type amount_total: object_.Amount
-        :param visibility: The visibility of a Tab. A Tab can be visible trough
-        NearPay, the QR code of the CashRegister and its own QR code.
-        :type visibility: object_.TabVisibility
-        :param expiration: The moment when this Tab expires. Can be at most 1
-        hour into the future.
-        :type expiration: str
-        :param tab_attachment: An array of attachments that describe the tab.
-        Uploaded through the POST /user/{userid}/attachment-tab endpoint.
-        :type tab_attachment: list[object_.BunqId]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseStr
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_STATUS: status,
-            cls.FIELD_AMOUNT_TOTAL: amount_total,
-            cls.FIELD_VISIBILITY: visibility,
-            cls.FIELD_EXPIRATION: expiration,
-            cls.FIELD_TAB_ATTACHMENT: tab_attachment
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_single_uuid)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
-
-        return BunqResponseStr.cast_from_bunq_response(
-            cls._process_for_uuid(response_raw)
-        )
-
-    @classmethod
-    def delete(cls, cash_register_id, tab_usage_single_uuid,
-               monetary_account_id=None, custom_headers=None):
-        """
-        Cancel a specific TabUsageSingle.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type tab_usage_single_uuid: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNone
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_single_uuid)
-        response_raw = api_client.delete(endpoint_url, custom_headers)
-
-        return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
-        )
-
-    @classmethod
-    def get(cls, cash_register_id, tab_usage_single_uuid,
-            monetary_account_id=None, custom_headers=None):
-        """
-        Get a specific TabUsageSingle.
-        
-        :type api_context: context.ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type tab_usage_single_uuid: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTabUsageSingle
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id,
-                                                     tab_usage_single_uuid)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseTabUsageSingle.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, cash_register_id, monetary_account_id=None, params=None,
-             custom_headers=None):
-        """
-        Get a collection of TabUsageSingle.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type cash_register_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseTabUsageSingleList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseTabUsageSingleList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._uuid
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def merchant_reference(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_reference
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def amount_total(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_total
-
-    @property
-    def amount_paid(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_paid
-
-    @property
-    def qr_code_token(self):
-        """
-        :rtype: str
-        """
-
-        return self._qr_code_token
-
-    @property
-    def tab_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._tab_url
-
-    @property
-    def visibility(self):
-        """
-        :rtype: object_.TabVisibility
-        """
-
-        return self._visibility
-
-    @property
-    def minimum_age(self):
-        """
-        :rtype: bool
-        """
-
-        return self._minimum_age
-
-    @property
-    def require_address(self):
-        """
-        :rtype: str
-        """
-
-        return self._require_address
-
-    @property
-    def redirect_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._redirect_url
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def cash_register_location(self):
-        """
-        :rtype: object_.Geolocation
-        """
-
-        return self._cash_register_location
-
-    @property
-    def tab_item(self):
-        """
-        :rtype: list[TabItem]
-        """
-
-        return self._tab_item
-
-    @property
-    def tab_attachment(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._tab_attachment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._uuid is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._merchant_reference is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._amount_total is not None:
-            return False
-
-        if self._amount_paid is not None:
-            return False
-
-        if self._qr_code_token is not None:
-            return False
-
-        if self._tab_url is not None:
-            return False
-
-        if self._visibility is not None:
-            return False
-
-        if self._minimum_age is not None:
-            return False
-
-        if self._require_address is not None:
-            return False
-
-        if self._redirect_url is not None:
-            return False
-
-        if self._expiration is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._cash_register_location is not None:
-            return False
-
-        if self._tab_item is not None:
-            return False
-
-        if self._tab_attachment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabUsageSingle
-        """
-
-        return converter.json_to_class(TabUsageSingle, json_str)
-
-
 class TokenQrRequestIdeal(core.BunqModel):
     """
     Using this call you create a request for payment from an external token
     provided with an ideal transaction. Make sure your iDEAL payments are
-    compliant with the iDEAL standards, by following the following manual: <a
-    href="https://www.bunq.com/files/media/legal/en/20170315_ideal_standards_en.pdf">https://www.bunq.com/files/media/legal/en/20170315_ideal_standards_en.pdf</a>.
-    It's very important to keep these points in mind when you are using the
-    endpoint to make iDEAL payments from your application.
+    compliant with the iDEAL standards, by following the following manual:
+    https://www.bunq.com/terms-idealstandards. It's very important to keep these
+    points in mind when you are using the endpoint to make iDEAL payments from
+    your application.
     
     :param _token: The token passed from a site or read from a QR code.
     :type _token: str
@@ -22551,6 +20396,188 @@ class TokenQrRequestSofort(core.BunqModel):
         return converter.json_to_class(TokenQrRequestSofort, json_str)
 
 
+class UserCredentialPasswordIp(core.BunqModel):
+    """
+    Create a credential of a user for server authentication, or delete the
+    credential of a user for server authentication.
+    
+    :param _id_: The id of the credential.
+    :type _id_: int
+    :param _created: The timestamp of the credential object's creation.
+    :type _created: str
+    :param _updated: The timestamp of the credential object's last update.
+    :type _updated: str
+    :param _status: The status of the credential.
+    :type _status: str
+    :param _expiry_time: When the status is PENDING_FIRST_USE: when the
+    credential expires.
+    :type _expiry_time: str
+    :param _token_value: When the status is PENDING_FIRST_USE: the value of the
+    token.
+    :type _token_value: str
+    :param _permitted_device: When the status is ACTIVE: the details of the
+    device that may use the credential.
+    :type _permitted_device: object_.PermittedDevice
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/credential-password-ip/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/credential-password-ip"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "CredentialPasswordIp"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _status = None
+    _expiry_time = None
+    _token_value = None
+    _permitted_device = None
+
+    @classmethod
+    def get(cls, user_credential_password_ip_id, custom_headers=None):
+        """
+        :type api_context: context.ApiContext
+        :type user_id: int
+        :type user_credential_password_ip_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseUserCredentialPasswordIp
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     user_credential_password_ip_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseUserCredentialPasswordIp.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseUserCredentialPasswordIpList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
+            cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseUserCredentialPasswordIpList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def expiry_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_time
+
+    @property
+    def token_value(self):
+        """
+        :rtype: str
+        """
+
+        return self._token_value
+
+    @property
+    def permitted_device(self):
+        """
+        :rtype: object_.PermittedDevice
+        """
+
+        return self._permitted_device
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._expiry_time is not None:
+            return False
+
+        if self._token_value is not None:
+            return False
+
+        if self._permitted_device is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserCredentialPasswordIp
+        """
+
+        return converter.json_to_class(UserCredentialPasswordIp, json_str)
+
+
 class BunqResponseInvoiceList(client.BunqResponse):
     @property
     def value(self):
@@ -22591,81 +20618,11 @@ class BunqResponseInvoiceByUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseChatConversationList(client.BunqResponse):
+class BunqResponseBytes(client.BunqResponse):
     @property
     def value(self):
         """
-        :rtype: list[ChatConversation]
-        """
-
-        return super().value
-
-
-class BunqResponseChatConversation(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: ChatConversation
-        """
-
-        return super().value
-
-
-class BunqResponseChatMessageList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[ChatMessage]
-        """
-
-        return super().value
-
-
-class BunqResponseCardDebit(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: CardDebit
-        """
-
-        return super().value
-
-
-class BunqResponseCardPinChangeList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[CardPinChange]
-        """
-
-        return super().value
-
-
-class BunqResponseCardPinChange(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: CardPinChange
-        """
-
-        return super().value
-
-
-class BunqResponseCardResult(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: CardResult
-        """
-
-        return super().value
-
-
-class BunqResponseCardResultList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[CardResult]
+        :rtype: bytes
         """
 
         return super().value
@@ -22676,346 +20633,6 @@ class BunqResponseInt(client.BunqResponse):
     def value(self):
         """
         :rtype: int
-        """
-
-        return super().value
-
-
-class BunqResponseDraftPaymentList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[DraftPayment]
-        """
-
-        return super().value
-
-
-class BunqResponseDraftPayment(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: DraftPayment
-        """
-
-        return super().value
-
-
-class BunqResponsePayment(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: Payment
-        """
-
-        return super().value
-
-
-class BunqResponsePaymentList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[Payment]
-        """
-
-        return super().value
-
-
-class BunqResponsePaymentBatch(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: PaymentBatch
-        """
-
-        return super().value
-
-
-class BunqResponsePaymentBatchList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[PaymentBatch]
-        """
-
-        return super().value
-
-
-class BunqResponseIdealMerchantTransaction(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: IdealMerchantTransaction
-        """
-
-        return super().value
-
-
-class BunqResponseIdealMerchantTransactionList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[IdealMerchantTransaction]
-        """
-
-        return super().value
-
-
-class BunqResponsePromotionDisplay(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: PromotionDisplay
-        """
-
-        return super().value
-
-
-class BunqResponseRequestInquiryBatch(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: RequestInquiryBatch
-        """
-
-        return super().value
-
-
-class BunqResponseRequestInquiryBatchList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[RequestInquiryBatch]
-        """
-
-        return super().value
-
-
-class BunqResponseRequestInquiry(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: RequestInquiry
-        """
-
-        return super().value
-
-
-class BunqResponseRequestInquiryList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[RequestInquiry]
-        """
-
-        return super().value
-
-
-class BunqResponseMasterCardAction(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MasterCardAction
-        """
-
-        return super().value
-
-
-class BunqResponseMasterCardActionList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MasterCardAction]
-        """
-
-        return super().value
-
-
-class BunqResponseRequestResponse(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: RequestResponse
-        """
-
-        return super().value
-
-
-class BunqResponseRequestResponseList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[RequestResponse]
-        """
-
-        return super().value
-
-
-class BunqResponseScheduleInstance(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: ScheduleInstance
-        """
-
-        return super().value
-
-
-class BunqResponseScheduleInstanceList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[ScheduleInstance]
-        """
-
-        return super().value
-
-
-class BunqResponseTabResultResponse(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: TabResultResponse
-        """
-
-        return super().value
-
-
-class BunqResponseTabResultResponseList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[TabResultResponse]
-        """
-
-        return super().value
-
-
-class BunqResponseTab(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: Tab
-        """
-
-        return super().value
-
-
-class BunqResponseNone(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: None
-        """
-
-        return super().value
-
-
-class BunqResponseSchedule(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: Schedule
-        """
-
-        return super().value
-
-
-class BunqResponseScheduleList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[Schedule]
-        """
-
-        return super().value
-
-
-class BunqResponseSchedulePayment(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: SchedulePayment
-        """
-
-        return super().value
-
-
-class BunqResponseSchedulePaymentList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[SchedulePayment]
-        """
-
-        return super().value
-
-
-class BunqResponseShareInviteBankInquiry(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: ShareInviteBankInquiry
-        """
-
-        return super().value
-
-
-class BunqResponseShareInviteBankInquiryList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[ShareInviteBankInquiry]
-        """
-
-        return super().value
-
-
-class BunqResponseShareInviteBankResponse(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: ShareInviteBankResponse
-        """
-
-        return super().value
-
-
-class BunqResponseShareInviteBankResponseList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[ShareInviteBankResponse]
-        """
-
-        return super().value
-
-
-class BunqResponseUserCredentialPasswordIp(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: UserCredentialPasswordIp
-        """
-
-        return super().value
-
-
-class BunqResponseUserCredentialPasswordIpList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[UserCredentialPasswordIp]
-        """
-
-        return super().value
-
-
-class BunqResponseBytes(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: bytes
         """
 
         return super().value
@@ -23086,6 +20703,36 @@ class BunqResponseBunqMeTab(client.BunqResponse):
     def value(self):
         """
         :rtype: BunqMeTab
+        """
+
+        return super().value
+
+
+class BunqResponsePayment(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: Payment
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[Payment]
+        """
+
+        return super().value
+
+
+class BunqResponseCardDebit(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: CardDebit
         """
 
         return super().value
@@ -23181,6 +20828,76 @@ class BunqResponseCashRegisterList(client.BunqResponse):
         return super().value
 
 
+class BunqResponseTab(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: Tab
+        """
+
+        return super().value
+
+
+class BunqResponseTabList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[Tab]
+        """
+
+        return super().value
+
+
+class BunqResponseNone(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: None
+        """
+
+        return super().value
+
+
+class BunqResponseTabUsageSingle(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TabUsageSingle
+        """
+
+        return super().value
+
+
+class BunqResponseTabUsageSingleList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TabUsageSingle]
+        """
+
+        return super().value
+
+
+class BunqResponseTabUsageMultiple(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TabUsageMultiple
+        """
+
+        return super().value
+
+
+class BunqResponseTabUsageMultipleList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TabUsageMultiple]
+        """
+
+        return super().value
+
+
 class BunqResponseCertificatePinnedList(client.BunqResponse):
     @property
     def value(self):
@@ -23236,6 +20953,46 @@ class BunqResponseDeviceList(client.BunqResponse):
     def value(self):
         """
         :rtype: list[Device]
+        """
+
+        return super().value
+
+
+class BunqResponseDraftPaymentList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[DraftPayment]
+        """
+
+        return super().value
+
+
+class BunqResponseDraftPayment(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: DraftPayment
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentBatch(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentBatch
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentBatchList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[PaymentBatch]
         """
 
         return super().value
@@ -23331,6 +21088,46 @@ class BunqResponseInstallationServerPublicKeyList(client.BunqResponse):
         return super().value
 
 
+class BunqResponseShareInviteBankInquiry(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: ShareInviteBankInquiry
+        """
+
+        return super().value
+
+
+class BunqResponseShareInviteBankInquiryList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[ShareInviteBankInquiry]
+        """
+
+        return super().value
+
+
+class BunqResponseShareInviteBankResponse(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: ShareInviteBankResponse
+        """
+
+        return super().value
+
+
+class BunqResponseShareInviteBankResponseList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[ShareInviteBankResponse]
+        """
+
+        return super().value
+
+
 class BunqResponseMonetaryAccountBank(client.BunqResponse):
     @property
     def value(self):
@@ -23406,6 +21203,186 @@ class BunqResponseMonetaryAccountLightList(client.BunqResponse):
     def value(self):
         """
         :rtype: list[MonetaryAccountLight]
+        """
+
+        return super().value
+
+
+class BunqResponseIdealMerchantTransaction(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: IdealMerchantTransaction
+        """
+
+        return super().value
+
+
+class BunqResponseIdealMerchantTransactionList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[IdealMerchantTransaction]
+        """
+
+        return super().value
+
+
+class BunqResponseMasterCardAction(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MasterCardAction
+        """
+
+        return super().value
+
+
+class BunqResponseMasterCardActionList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MasterCardAction]
+        """
+
+        return super().value
+
+
+class BunqResponseRequestInquiry(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RequestInquiry
+        """
+
+        return super().value
+
+
+class BunqResponseRequestInquiryList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RequestInquiry]
+        """
+
+        return super().value
+
+
+class BunqResponseRequestResponse(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RequestResponse
+        """
+
+        return super().value
+
+
+class BunqResponseRequestResponseList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RequestResponse]
+        """
+
+        return super().value
+
+
+class BunqResponseScheduleInstance(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: ScheduleInstance
+        """
+
+        return super().value
+
+
+class BunqResponseScheduleInstanceList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[ScheduleInstance]
+        """
+
+        return super().value
+
+
+class BunqResponseTabResultResponse(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TabResultResponse
+        """
+
+        return super().value
+
+
+class BunqResponseTabResultResponseList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TabResultResponse]
+        """
+
+        return super().value
+
+
+class BunqResponseRequestInquiryBatch(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RequestInquiryBatch
+        """
+
+        return super().value
+
+
+class BunqResponseRequestInquiryBatchList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RequestInquiryBatch]
+        """
+
+        return super().value
+
+
+class BunqResponseSchedulePayment(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: SchedulePayment
+        """
+
+        return super().value
+
+
+class BunqResponseSchedulePaymentList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[SchedulePayment]
+        """
+
+        return super().value
+
+
+class BunqResponseSchedule(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: Schedule
+        """
+
+        return super().value
+
+
+class BunqResponseScheduleList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[Schedule]
         """
 
         return super().value
@@ -23521,16 +21498,6 @@ class BunqResponseBillingContractSubscriptionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePaymentChatList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[PaymentChat]
-        """
-
-        return super().value
-
-
 class BunqResponsePermittedIp(client.BunqResponse):
     @property
     def value(self):
@@ -23546,26 +21513,6 @@ class BunqResponsePermittedIpList(client.BunqResponse):
     def value(self):
         """
         :rtype: list[PermittedIp]
-        """
-
-        return super().value
-
-
-class BunqResponseRequestInquiryChatList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[RequestInquiryChat]
-        """
-
-        return super().value
-
-
-class BunqResponseRequestResponseChatList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[RequestResponseChat]
         """
 
         return super().value
@@ -23611,46 +21558,6 @@ class BunqResponseTabItemShop(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabUsageMultiple(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: TabUsageMultiple
-        """
-
-        return super().value
-
-
-class BunqResponseTabUsageMultipleList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[TabUsageMultiple]
-        """
-
-        return super().value
-
-
-class BunqResponseTabUsageSingle(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: TabUsageSingle
-        """
-
-        return super().value
-
-
-class BunqResponseTabUsageSingleList(client.BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[TabUsageSingle]
-        """
-
-        return super().value
-
-
 class BunqResponseTokenQrRequestIdeal(client.BunqResponse):
     @property
     def value(self):
@@ -23666,6 +21573,26 @@ class BunqResponseTokenQrRequestSofort(client.BunqResponse):
     def value(self):
         """
         :rtype: TokenQrRequestSofort
+        """
+
+        return super().value
+
+
+class BunqResponseUserCredentialPasswordIp(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: UserCredentialPasswordIp
+        """
+
+        return super().value
+
+
+class BunqResponseUserCredentialPasswordIpList(client.BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[UserCredentialPasswordIp]
         """
 
         return super().value

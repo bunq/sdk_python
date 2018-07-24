@@ -403,6 +403,7 @@ class SessionServer(BunqModel):
     :type _token: SessionToken
     :type _user_person: bunq.sdk.model.generated.UserPerson
     :type _user_company: bunq.sdk.model.generated.UserCompany
+    :type _user_api_key: bunq.sdk.model.generated.UserApiKey
     """
 
     # Endpoint name.
@@ -419,6 +420,7 @@ class SessionServer(BunqModel):
         self._token = None
         self._user_person = None
         self._user_company = None
+        self._user_api_key = None
 
     @property
     def id_(self):
@@ -451,6 +453,14 @@ class SessionServer(BunqModel):
         """
 
         return self._user_company
+
+    @property
+    def user_api_key(self):
+        """
+        :rtype: bunq.sdk.model.generated.UserApiKey
+        """
+
+        return self._user_api_key
 
     @classmethod
     def create(cls, api_context):
@@ -489,9 +499,12 @@ class SessionServer(BunqModel):
         if self.user_company is not None:
             return False
 
+        if self.user_api_key is not None:
+            return False
+
         return True
 
-    def get_referenced_object(self):
+    def get_referenced_user(self):
         """
         :rtype: BunqModel
         """
@@ -501,5 +514,8 @@ class SessionServer(BunqModel):
 
         if self._user_company is not None:
             return self._user_company
+
+        if self._user_api_key is not None:
+            return self._user_api_key
 
         raise BunqException(self._ERROR_ALL_FIELD_IS_NULL)
