@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk import exception
-from bunq.sdk.json import converter
 from bunq.sdk.model import core
+from bunq.sdk import exception
 from bunq.sdk.model.generated import endpoint
+from bunq.sdk.json import converter
 
 
 class InvoiceItemGroup(core.BunqModel):
@@ -1311,6 +1311,158 @@ class Geolocation(core.BunqModel):
         return converter.json_to_class(Geolocation, json_str)
 
 
+class BunqId(core.BunqModel):
+    """
+    :param _id_: An integer ID of an object. Unique per object type.
+    :type _id_: int
+    """
+
+    _id_ = None
+    _id__field_for_request = None
+
+    def __init__(self, id_=None):
+        """
+        :param id_: An integer ID of an object. Unique per object type.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BunqId
+        """
+
+        return converter.json_to_class(BunqId, json_str)
+
+
+class CardBatchEntry(core.BunqModel):
+    """
+    :param _id_: The ID of the card that needs to be updated.
+    :type _id_: int
+    :param _activation_code: The activation code required to set status to
+    ACTIVE initially. Can only set status to ACTIVE using activation code when
+    order_status is ACCEPTED_FOR_PRODUCTION and status is DEACTIVATED.
+    :type _activation_code: str
+    :param _status: The status to set for the card. Can be ACTIVE, DEACTIVATED,
+    LOST, STOLEN or CANCELLED, and can only be set to LOST/STOLEN/CANCELLED when
+    order status is
+    ACCEPTED_FOR_PRODUCTION/DELIVERED_TO_CUSTOMER/CARD_UPDATE_REQUESTED/CARD_UPDATE_SENT/CARD_UPDATE_ACCEPTED.
+    Can only be set to DEACTIVATED after initial activation, i.e. order_status
+    is
+    DELIVERED_TO_CUSTOMER/CARD_UPDATE_REQUESTED/CARD_UPDATE_SENT/CARD_UPDATE_ACCEPTED.
+    Mind that all the possible choices (apart from ACTIVE and DEACTIVATED) are
+    permanent and cannot be changed after.
+    :type _status: str
+    :param _limit: The limits to define for the card, among
+    CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
+    CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS). All the limits
+    must be provided on update.
+    :type _limit: list[CardLimit]
+    :param _mag_stripe_permission: Whether or not it is allowed to use the mag
+    stripe for the card.
+    :type _mag_stripe_permission: CardMagStripePermission
+    :param _country_permission: The countries for which to grant (temporary)
+    permissions to use the card.
+    :type _country_permission: list[CardCountryPermission]
+    :param _monetary_account_id_fallback: ID of the MA to be used as fallback
+    for this card if insufficient balance. Fallback account is removed if not
+    supplied.
+    :type _monetary_account_id_fallback: int
+    """
+
+    _id__field_for_request = None
+    _activation_code_field_for_request = None
+    _status_field_for_request = None
+    _limit_field_for_request = None
+    _mag_stripe_permission_field_for_request = None
+    _country_permission_field_for_request = None
+    _monetary_account_id_fallback_field_for_request = None
+
+    def __init__(self, id_, activation_code=None, status=None, limit=None,
+                 mag_stripe_permission=None, country_permission=None,
+                 monetary_account_id_fallback=None):
+        """
+        :param id_: The ID of the card that needs to be updated.
+        :type id_: int
+        :param activation_code: The activation code required to set status to ACTIVE
+        initially. Can only set status to ACTIVE using activation code when
+        order_status is ACCEPTED_FOR_PRODUCTION and status is DEACTIVATED.
+        :type activation_code: str
+        :param status: The status to set for the card. Can be ACTIVE, DEACTIVATED,
+        LOST, STOLEN or CANCELLED, and can only be set to LOST/STOLEN/CANCELLED when
+        order status is
+        ACCEPTED_FOR_PRODUCTION/DELIVERED_TO_CUSTOMER/CARD_UPDATE_REQUESTED/CARD_UPDATE_SENT/CARD_UPDATE_ACCEPTED.
+        Can only be set to DEACTIVATED after initial activation, i.e. order_status
+        is
+        DELIVERED_TO_CUSTOMER/CARD_UPDATE_REQUESTED/CARD_UPDATE_SENT/CARD_UPDATE_ACCEPTED.
+        Mind that all the possible choices (apart from ACTIVE and DEACTIVATED) are
+        permanent and cannot be changed after.
+        :type status: str
+        :param limit: The limits to define for the card, among
+        CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
+        CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS). All the limits
+        must be provided on update.
+        :type limit: list[CardLimit]
+        :param mag_stripe_permission: Whether or not it is allowed to use the mag
+        stripe for the card.
+        :type mag_stripe_permission: CardMagStripePermission
+        :param country_permission: The countries for which to grant (temporary)
+        permissions to use the card.
+        :type country_permission: list[CardCountryPermission]
+        :param monetary_account_id_fallback: ID of the MA to be used as fallback for
+        this card if insufficient balance. Fallback account is removed if not
+        supplied.
+        :type monetary_account_id_fallback: int
+        """
+
+        self._id__field_for_request = id_
+        self._activation_code_field_for_request = activation_code
+        self._status_field_for_request = status
+        self._limit_field_for_request = limit
+        self._mag_stripe_permission_field_for_request = mag_stripe_permission
+        self._country_permission_field_for_request = country_permission
+        self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardBatchEntry
+        """
+
+        return converter.json_to_class(CardBatchEntry, json_str)
+
+
 class CardLimit(core.BunqModel):
     """
     :param _daily_limit: The daily limit amount.
@@ -1407,6 +1559,52 @@ class CardLimit(core.BunqModel):
         """
 
         return converter.json_to_class(CardLimit, json_str)
+
+
+class CardMagStripePermission(core.BunqModel):
+    """
+    :param _expiry_time: Expiry time of this rule.
+    :type _expiry_time: str
+    """
+
+    _expiry_time = None
+    _expiry_time_field_for_request = None
+
+    def __init__(self, expiry_time=None):
+        """
+        :param expiry_time: Expiry time of this rule.
+        :type expiry_time: str
+        """
+
+        self._expiry_time_field_for_request = expiry_time
+
+    @property
+    def expiry_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_time
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._expiry_time is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardMagStripePermission
+        """
+
+        return converter.json_to_class(CardMagStripePermission, json_str)
 
 
 class CardCountryPermission(core.BunqModel):
@@ -1557,52 +1755,6 @@ class CardPinAssignment(core.BunqModel):
         """
 
         return converter.json_to_class(CardPinAssignment, json_str)
-
-
-class CardMagStripePermission(core.BunqModel):
-    """
-    :param _expiry_time: Expiry time of this rule.
-    :type _expiry_time: str
-    """
-
-    _expiry_time = None
-    _expiry_time_field_for_request = None
-
-    def __init__(self, expiry_time=None):
-        """
-        :param expiry_time: Expiry time of this rule.
-        :type expiry_time: str
-        """
-
-        self._expiry_time_field_for_request = expiry_time
-
-    @property
-    def expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_time
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._expiry_time is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardMagStripePermission
-        """
-
-        return converter.json_to_class(CardMagStripePermission, json_str)
 
 
 class NotificationFilter(core.BunqModel):
@@ -1992,52 +2144,6 @@ class AttachmentTab(core.BunqModel):
         """
 
         return converter.json_to_class(AttachmentTab, json_str)
-
-
-class BunqId(core.BunqModel):
-    """
-    :param _id_: An integer ID of an object. Unique per object type.
-    :type _id_: int
-    """
-
-    _id_ = None
-    _id__field_for_request = None
-
-    def __init__(self, id_=None):
-        """
-        :param id_: An integer ID of an object. Unique per object type.
-        :type id_: int
-        """
-
-        self._id__field_for_request = id_
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BunqId
-        """
-
-        return converter.json_to_class(BunqId, json_str)
 
 
 class Certificate(core.BunqModel):
@@ -4597,23 +4703,32 @@ class TaxResident(core.BunqModel):
     :type _country: str
     :param _tax_number: The tax number.
     :type _tax_number: str
+    :param _status: The status of the tax number. Either CONFIRMED or
+    UNCONFIRMED.
+    :type _status: str
     """
 
     _country = None
     _tax_number = None
+    _status = None
     _country_field_for_request = None
     _tax_number_field_for_request = None
+    _status_field_for_request = None
 
-    def __init__(self, country=None, tax_number=None):
+    def __init__(self, country=None, tax_number=None, status=None):
         """
         :param country: The country of the tax number.
         :type country: str
         :param tax_number: The tax number.
         :type tax_number: str
+        :param status: The status of the tax number. Either CONFIRMED or
+        UNCONFIRMED.
+        :type status: str
         """
 
         self._country_field_for_request = country
         self._tax_number_field_for_request = tax_number
+        self._status_field_for_request = status
 
     @property
     def country(self):
@@ -4631,6 +4746,14 @@ class TaxResident(core.BunqModel):
 
         return self._tax_number
 
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -4640,6 +4763,9 @@ class TaxResident(core.BunqModel):
             return False
 
         if self._tax_number is not None:
+            return False
+
+        if self._status is not None:
             return False
 
         return True
