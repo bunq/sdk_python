@@ -3,7 +3,6 @@ from secrets import token_hex
 from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import MonetaryAccountBank
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestMonetaryAccount(BunqSdkTestCase):

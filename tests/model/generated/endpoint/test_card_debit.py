@@ -9,7 +9,6 @@ from bunq.sdk.model.generated.endpoint import CardName
 from bunq.sdk.model.generated.object_ import CardPinAssignment
 from bunq.sdk.model.generated.object_ import Pointer
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestCardDebit(BunqSdkTestCase):
