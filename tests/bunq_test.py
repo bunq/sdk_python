@@ -8,8 +8,6 @@ from bunq.sdk.client import ApiClient
 from bunq.sdk.exception import BunqException
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
-from tests import config
-
 
 class BunqSdkTestCase(unittest.TestCase):
     """
