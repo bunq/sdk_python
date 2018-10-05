@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from bunq.sdk import client
 from bunq.sdk import context
-from bunq.sdk import security
 from bunq.sdk import exception
+from bunq.sdk import security
+from bunq.sdk.json import converter
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import object_
-from bunq.sdk.json import converter
 
 
 class Invoice(core.BunqModel):
@@ -1879,20 +1879,20 @@ class BunqMeTabEntry(core.BunqModel):
     _description_field_for_request = None
     _redirect_url_field_for_request = None
 
-    def __init__(self, description, amount_inquired=None, redirect_url=None):
+    def __init__(self, amount_inquired, description, redirect_url=None):
         """
+        :param amount_inquired: The Amount requested to be paid. Can be optional.
+        :type amount_inquired: object_.Amount
         :param description: The description for the bunq.me. Maximum 9000
         characters. Field is required but can be an empty string.
         :type description: str
-        :param amount_inquired: The Amount requested to be paid. Can be optional.
-        :type amount_inquired: object_.Amount
         :param redirect_url: The URL which the user is sent to after making a
         payment.
         :type redirect_url: str
         """
 
-        self._description_field_for_request = description
         self._amount_inquired_field_for_request = amount_inquired
+        self._description_field_for_request = description
         self._redirect_url_field_for_request = redirect_url
 
     @property
@@ -3599,7 +3599,9 @@ class Card(core.BunqModel):
     :param _status: The status to set for the card. Can be ACTIVE, DEACTIVATED,
     LOST, STOLEN, CANCELLED, EXPIRED or PIN_TRIES_EXCEEDED.
     :type _status: str
-    :param _limit: The limits to define for the card, among
+    :param _card_limit: The spending limit for the cards
+    :type _card_limit: object_.Amount
+    :param _limit: DEPRECATED: The limits to define for the card, among
     CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
     CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS)
     :type _limit: list[object_.CardLimit]
@@ -3663,6 +3665,7 @@ class Card(core.BunqModel):
     FIELD_PIN_CODE = "pin_code"
     FIELD_ACTIVATION_CODE = "activation_code"
     FIELD_STATUS = "status"
+    FIELD_CARD_LIMIT = "card_limit"
     FIELD_LIMIT = "limit"
     FIELD_MAG_STRIPE_PERMISSION = "mag_stripe_permission"
     FIELD_COUNTRY_PERMISSION = "country_permission"
@@ -3686,6 +3689,7 @@ class Card(core.BunqModel):
     _expiry_date = None
     _name_on_card = None
     _primary_account_number_four_digit = None
+    _card_limit = None
     _limit = None
     _mag_stripe_permission = None
     _country_permission = None
@@ -3697,6 +3701,7 @@ class Card(core.BunqModel):
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
+    _card_limit_field_for_request = None
     _limit_field_for_request = None
     _mag_stripe_permission_field_for_request = None
     _country_permission_field_for_request = None
@@ -3704,7 +3709,7 @@ class Card(core.BunqModel):
     _monetary_account_id_fallback_field_for_request = None
 
     def __init__(self, pin_code=None, activation_code=None, status=None,
-                 limit=None, mag_stripe_permission=None,
+                 card_limit=None, limit=None, mag_stripe_permission=None,
                  country_permission=None, pin_code_assignment=None,
                  monetary_account_id_fallback=None):
         """
@@ -3725,7 +3730,9 @@ class Card(core.BunqModel):
         Mind that all the possible choices (apart from ACTIVE and DEACTIVATED) are
         permanent and cannot be changed after.
         :type status: str
-        :param limit: The limits to define for the card, among
+        :param card_limit: The spending limit for the card.
+        :type card_limit: object_.Amount
+        :param limit: DEPRECATED: The limits to define for the card, among
         CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
         CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS). All the limits
         must be provided on update.
@@ -3748,6 +3755,7 @@ class Card(core.BunqModel):
         self._pin_code_field_for_request = pin_code
         self._activation_code_field_for_request = activation_code
         self._status_field_for_request = status
+        self._card_limit_field_for_request = card_limit
         self._limit_field_for_request = limit
         self._mag_stripe_permission_field_for_request = mag_stripe_permission
         self._country_permission_field_for_request = country_permission
@@ -3756,9 +3764,9 @@ class Card(core.BunqModel):
 
     @classmethod
     def update(cls, card_id, pin_code=None, activation_code=None, status=None,
-               limit=None, mag_stripe_permission=None, country_permission=None,
-               pin_code_assignment=None, monetary_account_id_fallback=None,
-               custom_headers=None):
+               card_limit=None, limit=None, mag_stripe_permission=None,
+               country_permission=None, pin_code_assignment=None,
+               monetary_account_id_fallback=None, custom_headers=None):
         """
         Update the card details. Allow to change pin code, status, limits,
         country permissions and the monetary account connected to the card. When
@@ -3784,7 +3792,9 @@ class Card(core.BunqModel):
         Mind that all the possible choices (apart from ACTIVE and DEACTIVATED)
         are permanent and cannot be changed after.
         :type status: str
-        :param limit: The limits to define for the card, among
+        :param card_limit: The spending limit for the card.
+        :type card_limit: object_.Amount
+        :param limit: DEPRECATED: The limits to define for the card, among
         CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
         CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS). All the
         limits must be provided on update.
@@ -3816,6 +3826,7 @@ class Card(core.BunqModel):
             cls.FIELD_PIN_CODE: pin_code,
             cls.FIELD_ACTIVATION_CODE: activation_code,
             cls.FIELD_STATUS: status,
+            cls.FIELD_CARD_LIMIT: card_limit,
             cls.FIELD_LIMIT: limit,
             cls.FIELD_MAG_STRIPE_PERMISSION: mag_stripe_permission,
             cls.FIELD_COUNTRY_PERMISSION: country_permission,
@@ -3994,6 +4005,14 @@ class Card(core.BunqModel):
         return self._primary_account_number_four_digit
 
     @property
+    def card_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._card_limit
+
+    @property
     def limit(self):
         """
         :rtype: list[object_.CardLimit]
@@ -4099,6 +4118,9 @@ class Card(core.BunqModel):
             return False
 
         if self._primary_account_number_four_digit is not None:
+            return False
+
+        if self._card_limit is not None:
             return False
 
         if self._limit is not None:
@@ -9545,6 +9567,12 @@ class ShareInviteBankResponse(core.BunqModel):
     user deletes an active share) or CANCELLATION_PENDING,
     CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
     :type _status: str
+    :param _id_: The id of the ShareInviteBankResponse.
+    :type _id_: int
+    :param _created: The timestamp of the ShareInviteBankResponse creation.
+    :type _created: str
+    :param _updated: The timestamp of the ShareInviteBankResponse last update.
+    :type _updated: str
     :param _counter_alias: The monetary account and user who created the share.
     :type _counter_alias: object_.MonetaryAccountReference
     :param _user_alias_cancelled: The user who cancelled the share if it has
@@ -9579,6 +9607,9 @@ class ShareInviteBankResponse(core.BunqModel):
     # Object type.
     _OBJECT_TYPE_GET = "ShareInviteBankResponse"
 
+    _id_ = None
+    _created = None
+    _updated = None
     _counter_alias = None
     _user_alias_cancelled = None
     _monetary_account_id = None
@@ -9695,6 +9726,30 @@ class ShareInviteBankResponse(core.BunqModel):
         )
 
     @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
     def counter_alias(self):
         """
         :rtype: object_.MonetaryAccountReference
@@ -9778,6 +9833,15 @@ class ShareInviteBankResponse(core.BunqModel):
         """
         :rtype: bool
         """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
 
         if self._counter_alias is not None:
             return False
@@ -20450,6 +20514,9 @@ class MasterCardAction(core.BunqModel):
     :param _pan_entry_mode_user: The type of entry mode the user used. Can be
     'ATM', 'ICC', 'MAGNETIC_STRIPE' or 'E_COMMERCE'.
     :type _pan_entry_mode_user: str
+    :param _settlement_status: The setlement status in the authorisation
+    process.
+    :type _settlement_status: str
     :param _city: The city where the message originates from as announced by the
     terminal.
     :type _city: str
@@ -20510,6 +20577,7 @@ class MasterCardAction(core.BunqModel):
     _authorisation_status = None
     _authorisation_type = None
     _pan_entry_mode_user = None
+    _settlement_status = None
     _city = None
     _alias = None
     _counterparty_alias = None
@@ -20706,6 +20774,14 @@ class MasterCardAction(core.BunqModel):
         return self._pan_entry_mode_user
 
     @property
+    def settlement_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._settlement_status
+
+    @property
     def city(self):
         """
         :rtype: str
@@ -20852,6 +20928,9 @@ class MasterCardAction(core.BunqModel):
             return False
 
         if self._pan_entry_mode_user is not None:
+            return False
+
+        if self._settlement_status is not None:
             return False
 
         if self._city is not None:
@@ -21648,7 +21727,7 @@ class RequestResponse(core.BunqModel):
     :param _amount_responded: The Amount the RequestResponse was accepted with.
     :type _amount_responded: object_.Amount
     :param _status: The status of the RequestResponse. Can be ACCEPTED, PENDING,
-    REJECTED or REVOKED.
+    REJECTED, REFUND_REQUESTED, REFUNDED or REVOKED.
     :type _status: str
     :param _address_shipping: The shipping address provided by the accepting
     user if an address was requested.
@@ -21669,6 +21748,15 @@ class RequestResponse(core.BunqModel):
     :param _time_expiry: The timestamp of when the RequestResponse expired or
     will expire.
     :type _time_expiry: str
+    :param _time_refund_requested: The timestamp of when a refund request for
+    the RequestResponse was claimed.
+    :type _time_refund_requested: str
+    :param _time_refunded: The timestamp of when the RequestResponse was
+    refunded.
+    :type _time_refunded: str
+    :param _user_refund_requested: The label of the user that requested the
+    refund.
+    :type _user_refund_requested: object_.LabelUser
     :param _monetary_account_id: The id of the MonetaryAccount the
     RequestResponse was received on.
     :type _monetary_account_id: int
@@ -21739,6 +21827,9 @@ class RequestResponse(core.BunqModel):
     _updated = None
     _time_responded = None
     _time_expiry = None
+    _time_refund_requested = None
+    _time_refunded = None
+    _user_refund_requested = None
     _monetary_account_id = None
     _amount_inquired = None
     _amount_responded = None
@@ -21941,6 +22032,30 @@ class RequestResponse(core.BunqModel):
         return self._time_expiry
 
     @property
+    def time_refund_requested(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_refund_requested
+
+    @property
+    def time_refunded(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_refunded
+
+    @property
+    def user_refund_requested(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_refund_requested
+
+    @property
     def monetary_account_id(self):
         """
         :rtype: int
@@ -22126,6 +22241,15 @@ class RequestResponse(core.BunqModel):
             return False
 
         if self._time_expiry is not None:
+            return False
+
+        if self._time_refund_requested is not None:
+            return False
+
+        if self._time_refunded is not None:
+            return False
+
+        if self._user_refund_requested is not None:
             return False
 
         if self._monetary_account_id is not None:
@@ -26210,6 +26334,15 @@ class CustomerLimit(core.BunqModel):
     :type _limit_card_debit_wildcard: int
     :param _limit_card_debit_replacement: The limit of free replacement cards.
     :type _limit_card_debit_replacement: int
+    :param _limit_invite_user_premium_limited: The number of "PREMIUM_LIMITED"
+    invites the user has remaining.
+    :type _limit_invite_user_premium_limited: int
+    :param _limit_amount_monthly: The maximum amount a user is allowed to spend
+    in a month.
+    :type _limit_amount_monthly: object_.Amount
+    :param _spent_amount_monthly: The amount the user has spent in the last
+    month.
+    :type _spent_amount_monthly: object_.Amount
     """
 
     # Endpoint constants.
@@ -26223,6 +26356,9 @@ class CustomerLimit(core.BunqModel):
     _limit_card_debit_mastercard = None
     _limit_card_debit_wildcard = None
     _limit_card_debit_replacement = None
+    _limit_invite_user_premium_limited = None
+    _limit_amount_monthly = None
+    _spent_amount_monthly = None
 
     @classmethod
     def list(cls, params=None, custom_headers=None):
@@ -26291,6 +26427,30 @@ class CustomerLimit(core.BunqModel):
 
         return self._limit_card_debit_replacement
 
+    @property
+    def limit_invite_user_premium_limited(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_invite_user_premium_limited
+
+    @property
+    def limit_amount_monthly(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._limit_amount_monthly
+
+    @property
+    def spent_amount_monthly(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._spent_amount_monthly
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -26309,6 +26469,15 @@ class CustomerLimit(core.BunqModel):
             return False
 
         if self._limit_card_debit_replacement is not None:
+            return False
+
+        if self._limit_invite_user_premium_limited is not None:
+            return False
+
+        if self._limit_amount_monthly is not None:
+            return False
+
+        if self._spent_amount_monthly is not None:
             return False
 
         return True

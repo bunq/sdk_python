@@ -8,8 +8,6 @@ from bunq.sdk.client import ApiClient
 from bunq.sdk.exception import BunqException
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
-from tests import config
-
 
 class BunqSdkTestCase(unittest.TestCase):
     """
@@ -17,10 +15,8 @@ class BunqSdkTestCase(unittest.TestCase):
     :type _cash_register: endpoint.CashRegister
     """
 
+    # Error constants.
     __ERROR_COULD_NOT_DETERMINE_USER = 'Could not determine user alias.'
-
-    # Config values
-    _API_KEY = config.Config.get_api_key()
 
     # Name of bunq config file
     _FILENAME_BUNQ_CONFIG = "/bunq-test.conf"

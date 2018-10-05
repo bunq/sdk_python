@@ -4,7 +4,6 @@ from bunq.sdk.json import converter
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestPaginationScenario(BunqSdkTestCase):
@@ -15,8 +14,6 @@ class TestPaginationScenario(BunqSdkTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls._USER_ID = Config.get_user_id()
-        cls._MONETARY_ACCOUNT_ID = Config.get_monetary_account_id_1()
         cls._PAYMENT_LISTING_PAGE_SIZE = 2
         cls._PAYMENT_REQUIRED_COUNT_MINIMUM = cls._PAYMENT_LISTING_PAGE_SIZE * 2
         cls._NUMBER_ZERO = 0

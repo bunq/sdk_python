@@ -8,7 +8,6 @@ from bunq.sdk.model.generated.object_ import DraftShareInviteEntry
 from bunq.sdk.model.generated.object_ import ShareDetail
 from bunq.sdk.model.generated.object_ import ShareDetailReadOnly
 from tests.bunq_test import BunqSdkTestCase
-from tests.config import Config
 
 
 class TestDraftShareInvite(BunqSdkTestCase):
