@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk.model import core
 from bunq.sdk import exception
-from bunq.sdk.model.generated import endpoint
 from bunq.sdk.json import converter
+from bunq.sdk.model import core
+from bunq.sdk.model.generated import endpoint
 
 
 class InvoiceItemGroup(core.BunqModel):
@@ -1375,11 +1375,13 @@ class CardBatchEntry(core.BunqModel):
     Mind that all the possible choices (apart from ACTIVE and DEACTIVATED) are
     permanent and cannot be changed after.
     :type _status: str
-    :param _limit: The limits to define for the card, among
+    :param _limit: DEPRECATED: The limits to define for the card, among
     CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
     CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS). All the limits
     must be provided on update.
     :type _limit: list[CardLimit]
+    :param _card_limit: The limit to define for the card.
+    :type _card_limit: Amount
     :param _mag_stripe_permission: Whether or not it is allowed to use the mag
     stripe for the card.
     :type _mag_stripe_permission: CardMagStripePermission
@@ -1396,13 +1398,14 @@ class CardBatchEntry(core.BunqModel):
     _activation_code_field_for_request = None
     _status_field_for_request = None
     _limit_field_for_request = None
+    _card_limit_field_for_request = None
     _mag_stripe_permission_field_for_request = None
     _country_permission_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
     def __init__(self, id_, activation_code=None, status=None, limit=None,
-                 mag_stripe_permission=None, country_permission=None,
-                 monetary_account_id_fallback=None):
+                 card_limit=None, mag_stripe_permission=None,
+                 country_permission=None, monetary_account_id_fallback=None):
         """
         :param id_: The ID of the card that needs to be updated.
         :type id_: int
@@ -1420,11 +1423,13 @@ class CardBatchEntry(core.BunqModel):
         Mind that all the possible choices (apart from ACTIVE and DEACTIVATED) are
         permanent and cannot be changed after.
         :type status: str
-        :param limit: The limits to define for the card, among
+        :param limit: DEPRECATED: The limits to define for the card, among
         CARD_LIMIT_CONTACTLESS, CARD_LIMIT_ATM, CARD_LIMIT_DIPPING and
         CARD_LIMIT_POS_ICC (e.g. 25 EUR for CARD_LIMIT_CONTACTLESS). All the limits
         must be provided on update.
         :type limit: list[CardLimit]
+        :param card_limit: The limit to define for the card.
+        :type card_limit: Amount
         :param mag_stripe_permission: Whether or not it is allowed to use the mag
         stripe for the card.
         :type mag_stripe_permission: CardMagStripePermission
@@ -1441,6 +1446,7 @@ class CardBatchEntry(core.BunqModel):
         self._activation_code_field_for_request = activation_code
         self._status_field_for_request = status
         self._limit_field_for_request = limit
+        self._card_limit_field_for_request = card_limit
         self._mag_stripe_permission_field_for_request = mag_stripe_permission
         self._country_permission_field_for_request = country_permission
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
