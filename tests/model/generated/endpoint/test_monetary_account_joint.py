@@ -37,10 +37,10 @@ class TestMonetaryAccountJoint(BunqSdkTestCase):
         with open(file_path, self._FILE_MODE_READ) as f:
             json_string = f.read()
 
-        joint_account: MonetaryAccountJoint = MonetaryAccountJoint.from_json(
+        joint_account = MonetaryAccountJoint.from_json(
             json_string
         )
-
+        self.assertIsInstance(joint_account, MonetaryAccountJoint)
         self.assertIsNotNone(joint_account)
         self.assertIsNotNone(joint_account.all_co_owner)
 

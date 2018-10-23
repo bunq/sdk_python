@@ -52,16 +52,14 @@ class TestPayment(BunqSdkTestCase):
         """
         """
 
-        response_create: endpoint.BunqResponseInt = \
-            endpoint.PaymentBatch.create(
+        response_create = endpoint.PaymentBatch.create(
                 self.__create_payment_list()
             )
-
+        self.assertIsInstance(response_create, endpoint.BunqResponseInt)
         self.assertIsNotNone(response_create)
 
-        response_get: endpoint.BunqResponsePaymentBatch = \
-            endpoint.PaymentBatch.get(response_create.value)
-
+        response_get = endpoint.PaymentBatch.get(response_create.value)
+        self.assertIsInstance(response_get, endpoint.BunqResponsePaymentBatch)
         self.assertIsNotNone(response_get)
         self.assertFalse(response_get.value.is_all_field_none())
 
@@ -70,7 +68,7 @@ class TestPayment(BunqSdkTestCase):
         :rtype: List[Payment]
         """
 
-        all_payment: List[endpoint.Payment] = []
+        all_payment = []
 
         while len(all_payment) < self._MAXIMUM_PAYMENT_IN_BATCH:
             all_payment.append(
@@ -83,5 +81,6 @@ class TestPayment(BunqSdkTestCase):
                     self._PAYMENT_DESCRIPTION
                 )
             )
-
+        self.assertIsInstance(all_payment, List)
+        self.assertIsInstance(all_payment[0], endpoint.Payment)
         return all_payment

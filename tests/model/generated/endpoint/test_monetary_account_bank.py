@@ -1,4 +1,9 @@
-from secrets import token_hex
+try:
+    from secrets import token_hex
+except ImportError:
+    from os import urandom
+    def token_hex():
+        return urandom(16).hex()
 
 from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import MonetaryAccountBank
