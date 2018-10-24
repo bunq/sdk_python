@@ -56,11 +56,12 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
 
-    # Require Python version equal or higher than Python 3.6.
-    python_requires='>=3.6',
+    # Require Python version equal or higher than the requested version.
+    python_requires='>=3.5.3',
 
     # Keywords related to the project
     keywords='open-banking sepa bunq finance api payment',
