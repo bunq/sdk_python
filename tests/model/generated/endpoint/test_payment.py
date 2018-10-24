@@ -55,7 +55,7 @@ class TestPayment(BunqSdkTestCase):
         response_create = endpoint.PaymentBatch.create(
                 self.__create_payment_list()
             )
-            
+
         self.assertIsInstance(response_create, endpoint.BunqResponseInt)
         self.assertIsNotNone(response_create)
 

@@ -2,7 +2,7 @@ try:
     from secrets import token_hex
 except ImportError:
     from os import urandom
-    
+
     def token_hex():
         """ Function to replace import for Python < 3.6. """
         return urandom(16).hex()
