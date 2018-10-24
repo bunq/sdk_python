@@ -49,7 +49,7 @@ class ApiClient(object):
     HEADER_RESPONSE_ID_LOWER_CASED = 'x-bunq-client-response-id'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/1.1.1'
+    _USER_AGENT_BUNQ = 'bunq-sdk-python/1.1.0'
     _GEOLOCATION_ZERO = '0 0 0 0 NL'
     _LANGUAGE_EN_US = 'en_US'
     _REGION_NL_NL = 'nl_NL'
