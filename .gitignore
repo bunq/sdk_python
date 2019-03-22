@@ -71,6 +71,8 @@ modules.xml
 /dist
 /MANIFEST
 /stripe.egg-info
+/bunq_env
+/.vscode
 .python-version
 *.pyc
 *.egg
