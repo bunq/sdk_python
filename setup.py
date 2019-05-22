@@ -28,6 +28,7 @@ setup(
 
     description='bunq Python SDK',
     long_description=long_description,
+    long_description_content_type="text/markdown",
 
     # The project's main homepage.
     url='https://github.com/bunq/sdk_python',
