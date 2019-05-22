@@ -887,6 +887,12 @@ class Address(core.BunqModel):
     :type _city: str
     :param _country: The country as an ISO 3166-1 alpha-2 country code..
     :type _country: str
+    :param _extra: The appartment, building or other extra information for
+    addresses.
+    :type _extra: str
+    :param _mailbox_name: The name on the mailbox (only used for Postal
+    addresses).
+    :type _mailbox_name: str
     :param _province: The province according to local standard.
     :type _province: str
     """
@@ -898,15 +904,20 @@ class Address(core.BunqModel):
     _city = None
     _country = None
     _province = None
+    _extra = None
+    _mailbox_name = None
     _street_field_for_request = None
     _house_number_field_for_request = None
     _po_box_field_for_request = None
     _postal_code_field_for_request = None
     _city_field_for_request = None
     _country_field_for_request = None
+    _extra_field_for_request = None
+    _mailbox_name_field_for_request = None
 
     def __init__(self, street=None, house_number=None, postal_code=None,
-                 city=None, country=None, po_box=None):
+                 city=None, country=None, po_box=None, extra=None,
+                 mailbox_name=None):
         """
         :param street: The street.
         :type street: str
@@ -920,6 +931,12 @@ class Address(core.BunqModel):
         :type country: str
         :param po_box: The PO box.
         :type po_box: str
+        :param extra: The appartment, building or other extra information for
+        addresses.
+        :type extra: str
+        :param mailbox_name: The name on the mailbox (only used for Postal
+        addresses).
+        :type mailbox_name: str
         """
 
         self._street_field_for_request = street
@@ -928,6 +945,8 @@ class Address(core.BunqModel):
         self._city_field_for_request = city
         self._country_field_for_request = country
         self._po_box_field_for_request = po_box
+        self._extra_field_for_request = extra
+        self._mailbox_name_field_for_request = mailbox_name
 
     @property
     def street(self):
@@ -985,6 +1004,22 @@ class Address(core.BunqModel):
 
         return self._province
 
+    @property
+    def extra(self):
+        """
+        :rtype: str
+        """
+
+        return self._extra
+
+    @property
+    def mailbox_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._mailbox_name
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -1009,6 +1044,12 @@ class Address(core.BunqModel):
             return False
 
         if self._province is not None:
+            return False
+
+        if self._extra is not None:
+            return False
+
+        if self._mailbox_name is not None:
             return False
 
         return True
@@ -1456,10 +1497,6 @@ class CardBatchEntry(core.BunqModel):
     """
     :param _id_: The ID of the card that needs to be updated.
     :type _id_: int
-    :param _activation_code: The activation code required to set status to
-    ACTIVE initially. Can only set status to ACTIVE using activation code when
-    order_status is ACCEPTED_FOR_PRODUCTION and status is DEACTIVATED.
-    :type _activation_code: str
     :param _status: The status to set for the card. Can be ACTIVE, DEACTIVATED,
     LOST, STOLEN or CANCELLED, and can only be set to LOST/STOLEN/CANCELLED when
     order status is
@@ -1474,10 +1511,6 @@ class CardBatchEntry(core.BunqModel):
     :type _card_limit: Amount
     :param _card_limit_atm: The ATM spending limit for the card.
     :type _card_limit_atm: Amount
-    :param _limit: DEPRECATED: The limits to define for the card, among
-    CARD_LIMIT_ATM and CARD_LIMIT_POS_ICC. All the limits must be provided on
-    update.
-    :type _limit: list[CardLimit]
     :param _country_permission: The countries for which to grant (temporary)
     permissions to use the card.
     :type _country_permission: list[CardCountryPermission]
@@ -1488,24 +1521,17 @@ class CardBatchEntry(core.BunqModel):
     """
 
     _id__field_for_request = None
-    _activation_code_field_for_request = None
     _status_field_for_request = None
     _card_limit_field_for_request = None
     _card_limit_atm_field_for_request = None
-    _limit_field_for_request = None
     _country_permission_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
-    def __init__(self, id_, activation_code=None, status=None, card_limit=None,
-                 card_limit_atm=None, limit=None, country_permission=None,
-                 monetary_account_id_fallback=None):
+    def __init__(self, id_, status=None, card_limit=None, card_limit_atm=None,
+                 country_permission=None, monetary_account_id_fallback=None):
         """
         :param id_: The ID of the card that needs to be updated.
         :type id_: int
-        :param activation_code: The activation code required to set status to ACTIVE
-        initially. Can only set status to ACTIVE using activation code when
-        order_status is ACCEPTED_FOR_PRODUCTION and status is DEACTIVATED.
-        :type activation_code: str
         :param status: The status to set for the card. Can be ACTIVE, DEACTIVATED,
         LOST, STOLEN or CANCELLED, and can only be set to LOST/STOLEN/CANCELLED when
         order status is
@@ -1520,10 +1546,6 @@ class CardBatchEntry(core.BunqModel):
         :type card_limit: Amount
         :param card_limit_atm: The ATM spending limit for the card.
         :type card_limit_atm: Amount
-        :param limit: DEPRECATED: The limits to define for the card, among
-        CARD_LIMIT_ATM and CARD_LIMIT_POS_ICC. All the limits must be provided on
-        update.
-        :type limit: list[CardLimit]
         :param country_permission: The countries for which to grant (temporary)
         permissions to use the card.
         :type country_permission: list[CardCountryPermission]
@@ -1534,11 +1556,9 @@ class CardBatchEntry(core.BunqModel):
         """
 
         self._id__field_for_request = id_
-        self._activation_code_field_for_request = activation_code
         self._status_field_for_request = status
         self._card_limit_field_for_request = card_limit
         self._card_limit_atm_field_for_request = card_limit_atm
-        self._limit_field_for_request = limit
         self._country_permission_field_for_request = country_permission
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
 
@@ -1558,104 +1578,6 @@ class CardBatchEntry(core.BunqModel):
         """
 
         return converter.json_to_class(CardBatchEntry, json_str)
-
-
-class CardLimit(core.BunqModel):
-    """
-    :param _daily_limit: The daily limit amount.
-    :type _daily_limit: str
-    :param _currency: Currency for the daily limit.
-    :type _currency: str
-    :param _type_: The type of transaction for the limit. Can be CARD_LIMIT_ATM,
-    CARD_LIMIT_CONTACTLESS, CARD_LIMIT_DIPPING or CARD_LIMIT_POS_ICC.
-    :type _type_: str
-    :param _id_: The id of the card limit entry.
-    :type _id_: int
-    """
-
-    _id_ = None
-    _daily_limit = None
-    _currency = None
-    _type_ = None
-    _daily_limit_field_for_request = None
-    _currency_field_for_request = None
-    _type__field_for_request = None
-
-    def __init__(self, daily_limit=None, currency=None, type_=None):
-        """
-        :param daily_limit: The daily limit amount.
-        :type daily_limit: str
-        :param currency: Currency for the daily limit.
-        :type currency: str
-        :param type_: The type of transaction for the limit. Can be CARD_LIMIT_ATM,
-        CARD_LIMIT_CONTACTLESS, CARD_LIMIT_DIPPING or CARD_LIMIT_POS_ICC.
-        :type type_: str
-        """
-
-        self._daily_limit_field_for_request = daily_limit
-        self._currency_field_for_request = currency
-        self._type__field_for_request = type_
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: str
-        """
-
-        return self._daily_limit
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardLimit
-        """
-
-        return converter.json_to_class(CardLimit, json_str)
 
 
 class CardCountryPermission(core.BunqModel):
@@ -1938,6 +1860,137 @@ class CardVirtualPrimaryAccountNumber(core.BunqModel):
 
         return converter.json_to_class(CardVirtualPrimaryAccountNumber,
                                        json_str)
+
+
+class CardPrimaryAccountNumber(core.BunqModel):
+    """
+    :param _id_: The ID for this Virtual PAN.
+    :type _id_: int
+    :param _description: The description for this PAN.
+    :type _description: str
+    :param _status: The status for this PAN, only for Online Cards.
+    :type _status: str
+    :param _monetary_account_id: The ID of the monetary account to assign to
+    this PAN, only for Online Cards.
+    :type _monetary_account_id: int
+    :param _uuid: The UUID for this Virtual PAN.
+    :type _uuid: str
+    :param _four_digit: The last four digits of the PAN.
+    :type _four_digit: str
+    """
+
+    _id_ = None
+    _uuid = None
+    _description = None
+    _status = None
+    _monetary_account_id = None
+    _four_digit = None
+    _id__field_for_request = None
+    _description_field_for_request = None
+    _status_field_for_request = None
+    _monetary_account_id_field_for_request = None
+
+    def __init__(self, id_=None, description=None, status=None,
+                 monetary_account_id=None):
+        """
+        :param id_: The ID for this PAN.
+        :type id_: int
+        :param description: The description for this PAN.
+        :type description: str
+        :param status: The status for this PAN, only for Online Cards.
+        :type status: str
+        :param monetary_account_id: The ID of the monetary account to assign to this
+        PAN, only for Online Cards.
+        :type monetary_account_id: int
+        """
+
+        self._id__field_for_request = id_
+        self._description_field_for_request = description
+        self._status_field_for_request = status
+        self._monetary_account_id_field_for_request = monetary_account_id
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def four_digit(self):
+        """
+        :rtype: str
+        """
+
+        return self._four_digit
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._uuid is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._four_digit is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardPrimaryAccountNumber
+        """
+
+        return converter.json_to_class(CardPrimaryAccountNumber, json_str)
 
 
 class CardMagStripePermission(core.BunqModel):
@@ -4882,6 +4935,120 @@ class CoOwner(core.BunqModel):
         return converter.json_to_class(CoOwner, json_str)
 
 
+class NotificationFilterPush(core.BunqModel):
+    """
+    :param _category: The notification category that will match this
+    notification filter.
+    :type _category: str
+    """
+
+    _category = None
+    _category_field_for_request = None
+
+    def __init__(self, category=None):
+        """
+        :param category: The notification category that will match this notification
+        filter.
+        :type category: str
+        """
+
+        self._category_field_for_request = category
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._category is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilterPush
+        """
+
+        return converter.json_to_class(NotificationFilterPush, json_str)
+
+
+class NotificationFilterUrl(core.BunqModel):
+    """
+    :param _category: The notification category that will match this
+    notification filter.
+    :type _category: str
+    :param _notification_target: The URL to which the callback should be made.
+    :type _notification_target: str
+    """
+
+    _category = None
+    _notification_target = None
+    _category_field_for_request = None
+    _notification_target_field_for_request = None
+
+    def __init__(self, category=None, notification_target=None):
+        """
+        :param category: The notification category that will match this notification
+        filter.
+        :type category: str
+        :param notification_target: The URL to which the callback should be made.
+        :type notification_target: str
+        """
+
+        self._category_field_for_request = category
+        self._notification_target_field_for_request = notification_target
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    @property
+    def notification_target(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_target
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._category is not None:
+            return False
+
+        if self._notification_target is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilterUrl
+        """
+
+        return converter.json_to_class(NotificationFilterUrl, json_str)
+
+
 class NotificationUrl(core.BunqModel):
     """
     :param _target_url: 
@@ -5543,6 +5710,8 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
     :type _UserPerson: endpoint.UserPerson
     :param _UserCompany: 
     :type _UserCompany: endpoint.UserCompany
+    :param _UserPaymentServiceProvider: 
+    :type _UserPaymentServiceProvider: endpoint.UserPaymentServiceProvider
     """
 
     # Error constants.
@@ -5550,6 +5719,7 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
 
     _UserPerson = None
     _UserCompany = None
+    _UserPaymentServiceProvider = None
 
     @property
     def UserPerson(self):
@@ -5567,6 +5737,14 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
 
         return self._UserCompany
 
+    @property
+    def UserPaymentServiceProvider(self):
+        """
+        :rtype: endpoint.UserPaymentServiceProvider
+        """
+
+        return self._UserPaymentServiceProvider
+
     def get_referenced_object(self):
         """
         :rtype: core.BunqModel
@@ -5579,6 +5757,9 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
         if self._UserCompany is not None:
             return self._UserCompany
 
+        if self._UserPaymentServiceProvider is not None:
+            return self._UserPaymentServiceProvider
+
         raise exception.BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
@@ -5590,6 +5771,9 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
             return False
 
         if self._UserCompany is not None:
+            return False
+
+        if self._UserPaymentServiceProvider is not None:
             return False
 
         return True

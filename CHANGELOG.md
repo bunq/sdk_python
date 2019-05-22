@@ -1,20 +1,43 @@
 # Change Log
 
-## [Unreleased](https://github.com/bunq/sdk_python/tree/1.0.0)
+## [Unreleased](https://github.com/bunq/sdk_python/tree/HEAD)
 
-[Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.1...1.0.0)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.1...HEAD)
 
 **Closed issues:**
 
-- Update Sandbox API key procedure [\#100](https://github.com/bunq/sdk_python/issues/100)
+- MonetaryAccountJoint.list not availeble [\#112](https://github.com/bunq/sdk_python/issues/112)
+
+## [1.10.1](https://github.com/bunq/sdk_python/tree/1.10.1) (2019-03-22)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.0...1.10.1)
+
+## [1.10.0](https://github.com/bunq/sdk_python/tree/1.10.0) (2019-03-22)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.1.0...1.10.0)
+
+**Closed issues:**
+
+- Minimum Python version to 3.5.3 [\#108](https://github.com/bunq/sdk_python/issues/108)
 
 **Merged pull requests:**
 
-- Oauth bunq/sdk\_python\#102 [\#103](https://github.com/bunq/sdk_python/pull/103) ([OGKevin](https://github.com/OGKevin))
-- Update Sandbox API key procedure. \(bunq/sdk\_python\#100\) [\#101](https://github.com/bunq/sdk_python/pull/101) ([sandervdo](https://github.com/sandervdo))
+- Edits to allow Python 3.5.3 as minimum [\#109](https://github.com/bunq/sdk_python/pull/109) ([eavanvalkenburg](https://github.com/eavanvalkenburg))
 
-## [0.13.1](https://github.com/bunq/sdk_python/tree/0.13.1) (2018-05-30)
-[Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.0...0.13.1)
+## [1.1.0](https://github.com/bunq/sdk_python/tree/1.1.0) (2018-10-05)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.0.1...1.1.0)
+
+**Closed issues:**
+
+- Setting the Status of ShareInviteBankInquiry to ACCEPTED causes error at reciver [\#105](https://github.com/bunq/sdk_python/issues/105)
+
+**Merged pull requests:**
+
+- Bunq/sdk\_python\#78/remove config dep [\#106](https://github.com/bunq/sdk_python/pull/106) ([OGKevin](https://github.com/OGKevin))
+
+## [1.0.1](https://github.com/bunq/sdk_python/tree/1.0.1) (2018-09-01)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.0.0...1.0.1)
+
+## [1.0.0](https://github.com/bunq/sdk_python/tree/1.0.0) (2018-07-24)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.1...1.0.0)
 
 **Implemented enhancements:**
 
@@ -37,17 +60,13 @@
 
 **Closed issues:**
 
-- Bunq sdk release request [\#97](https://github.com/bunq/sdk_python/issues/97)
-- reopening of question \#12 generated.Payment.FIELD\_COUNTERPARTY\_ALIAS not working with IBAN [\#96](https://github.com/bunq/sdk_python/issues/96)
-- Update samples and readme [\#93](https://github.com/bunq/sdk_python/issues/93)
-- bunq.sdk.exception.BunqException: ApiContext has not been loaded. Please load ApiContext in BunqContext [\#92](https://github.com/bunq/sdk_python/issues/92)
-- Sample for reading/using shared accounts [\#90](https://github.com/bunq/sdk_python/issues/90)
+- Update Sandbox API key procedure [\#100](https://github.com/bunq/sdk_python/issues/100)
 - Python 3.4.2: ImportError: cannot import name 'context'  \(cyclic import?\) [\#73](https://github.com/bunq/sdk_python/issues/73)
-- Add oath support. [\#102](https://github.com/bunq/sdk_python/issues/102)
-- Move to new sandbox env.  [\#98](https://github.com/bunq/sdk_python/issues/98)
 
 **Merged pull requests:**
 
+- Oauth bunq/sdk\_python\#102 [\#103](https://github.com/bunq/sdk_python/pull/103) ([OGKevin](https://github.com/OGKevin))
+- Update Sandbox API key procedure. \(bunq/sdk\_python\#100\) [\#101](https://github.com/bunq/sdk_python/pull/101) ([sandervdo](https://github.com/sandervdo))
 - Updated readme to point to tinker for examples. \(bunq/sdk\_python\#87\) [\#95](https://github.com/bunq/sdk_python/pull/95) ([OGKevin](https://github.com/OGKevin))
 - Fix monetary account joint retrieval bunq/sdk\_python\#52 [\#94](https://github.com/bunq/sdk_python/pull/94) ([OGKevin](https://github.com/OGKevin))
 - Fix supperfouls fields error bunq/sdk\_python\#77 [\#91](https://github.com/bunq/sdk_python/pull/91) ([OGKevin](https://github.com/OGKevin))
@@ -56,6 +75,22 @@
 - Replace examples with tinker bunq/sdk\_pyhton\#68 [\#84](https://github.com/bunq/sdk_python/pull/84) ([OGKevin](https://github.com/OGKevin))
 - Use ValueError isntead of JsonDecodeError. \(bunq/sdk\_python\#72\) [\#83](https://github.com/bunq/sdk_python/pull/83) ([OGKevin](https://github.com/OGKevin))
 - Optimise test framework auto topup bunq/sdk\_python\#78 [\#81](https://github.com/bunq/sdk_python/pull/81) ([OGKevin](https://github.com/OGKevin))
+
+## [0.13.1](https://github.com/bunq/sdk_python/tree/0.13.1) (2018-05-30)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.0...0.13.1)
+
+**Closed issues:**
+
+- Bunq sdk release request [\#97](https://github.com/bunq/sdk_python/issues/97)
+- reopening of question \#12 generated.Payment.FIELD\_COUNTERPARTY\_ALIAS not working with IBAN [\#96](https://github.com/bunq/sdk_python/issues/96)
+- Update samples and readme [\#93](https://github.com/bunq/sdk_python/issues/93)
+- bunq.sdk.exception.BunqException: ApiContext has not been loaded. Please load ApiContext in BunqContext [\#92](https://github.com/bunq/sdk_python/issues/92)
+- Sample for reading/using shared accounts [\#90](https://github.com/bunq/sdk_python/issues/90)
+- Add oath support. [\#102](https://github.com/bunq/sdk_python/issues/102)
+- Move to new sandbox env.  [\#98](https://github.com/bunq/sdk_python/issues/98)
+
+**Merged pull requests:**
+
 - Move to new sandbox bunq/sdk\_python\#98 [\#99](https://github.com/bunq/sdk_python/pull/99) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.13.0](https://github.com/bunq/sdk_python/tree/0.13.0) (2018-03-20)
