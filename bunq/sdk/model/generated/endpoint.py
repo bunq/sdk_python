@@ -90,8 +90,7 @@ class BillingContractSubscription(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseBillingContractSubscriptionList.cast_from_bunq_response(
@@ -219,7 +218,7 @@ class BillingContractSubscription(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BillingContractSubscription
         """
 
@@ -229,7 +228,7 @@ class BillingContractSubscription(core.BunqModel):
 class CustomerLimit(core.BunqModel):
     """
     Show the limits for the authenticated user.
-
+    
     :param _limit_monetary_account: The limit of monetary accounts.
     :type _limit_monetary_account: int
     :param _limit_monetary_account_remaining: The amount of additional monetary
@@ -239,11 +238,17 @@ class CustomerLimit(core.BunqModel):
     :type _limit_card_debit_maestro: int
     :param _limit_card_debit_mastercard: The limit of MasterCard cards.
     :type _limit_card_debit_mastercard: int
-    :param _limit_card_debit_wildcard: The limit of wildcards, e.g. Maestro or
-    MasterCard cards.
+    :param _limit_card_debit_wildcard: DEPRECTATED: The limit of wildcards, e.g.
+    Maestro or MasterCard cards.
     :type _limit_card_debit_wildcard: int
-    :param _limit_card_debit_replacement: The limit of free replacement cards.
+    :param _limit_card_wildcard: The limit of wildcards, e.g. Maestro or
+    MasterCard cards.
+    :type _limit_card_wildcard: int
+    :param _limit_card_debit_replacement: DEPRECTATED: The limit of free
+    replacement debit cards, replaced by: limit_card_replacement
     :type _limit_card_debit_replacement: int
+    :param _limit_card_replacement: The limit of free replacement cards.
+    :type _limit_card_replacement: int
     :param _limit_amount_monthly: The maximum amount a user is allowed to spend
     in a month.
     :type _limit_amount_monthly: object_.Amount
@@ -263,7 +268,9 @@ class CustomerLimit(core.BunqModel):
     _limit_card_debit_maestro = None
     _limit_card_debit_mastercard = None
     _limit_card_debit_wildcard = None
+    _limit_card_wildcard = None
     _limit_card_debit_replacement = None
+    _limit_card_replacement = None
     _limit_amount_monthly = None
     _spent_amount_monthly = None
 
@@ -271,11 +278,11 @@ class CustomerLimit(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Get all limits for the authenticated user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCustomerLimitList
         """
 
@@ -286,8 +293,7 @@ class CustomerLimit(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCustomerLimitList.cast_from_bunq_response(
@@ -335,12 +341,28 @@ class CustomerLimit(core.BunqModel):
         return self._limit_card_debit_wildcard
 
     @property
+    def limit_card_wildcard(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_card_wildcard
+
+    @property
     def limit_card_debit_replacement(self):
         """
         :rtype: int
         """
 
         return self._limit_card_debit_replacement
+
+    @property
+    def limit_card_replacement(self):
+        """
+        :rtype: int
+        """
+
+        return self._limit_card_replacement
 
     @property
     def limit_amount_monthly(self):
@@ -378,7 +400,13 @@ class CustomerLimit(core.BunqModel):
         if self._limit_card_debit_wildcard is not None:
             return False
 
+        if self._limit_card_wildcard is not None:
+            return False
+
         if self._limit_card_debit_replacement is not None:
+            return False
+
+        if self._limit_card_replacement is not None:
             return False
 
         if self._limit_amount_monthly is not None:
@@ -393,7 +421,7 @@ class CustomerLimit(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CustomerLimit
         """
 
@@ -417,7 +445,7 @@ class InvoiceExportPdfContent(core.BunqModel):
         :type user_id: int
         :type invoice_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -425,8 +453,7 @@ class InvoiceExportPdfContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), invoice_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), invoice_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -444,7 +471,7 @@ class InvoiceExportPdfContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: InvoiceExportPdfContent
         """
 
@@ -454,7 +481,7 @@ class InvoiceExportPdfContent(core.BunqModel):
 class Invoice(core.BunqModel):
     """
     Used to view a bunq invoice.
-
+    
     :param _status: The invoice status.
     :type _status: str
     :param _description: The description provided by the admin.
@@ -554,7 +581,7 @@ class Invoice(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInvoiceList
         """
 
@@ -565,9 +592,8 @@ class Invoice(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseInvoiceList.cast_from_bunq_response(
@@ -582,7 +608,7 @@ class Invoice(core.BunqModel):
         :type monetary_account_id: int
         :type invoice_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInvoice
         """
 
@@ -591,8 +617,7 @@ class Invoice(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      invoice_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -798,7 +823,7 @@ class Invoice(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Invoice
         """
 
@@ -808,7 +833,7 @@ class Invoice(core.BunqModel):
 class InvoiceByUser(core.BunqModel):
     """
     Used to list bunq invoices by user.
-
+    
     :param _id_: The id of the invoice object.
     :type _id_: int
     :param _created: The timestamp of the invoice object's creation.
@@ -876,7 +901,7 @@ class InvoiceByUser(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInvoiceByUserList
         """
 
@@ -887,8 +912,7 @@ class InvoiceByUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseInvoiceByUserList.cast_from_bunq_response(
@@ -902,7 +926,7 @@ class InvoiceByUser(core.BunqModel):
         :type user_id: int
         :type invoice_by_user_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInvoiceByUser
         """
 
@@ -910,8 +934,7 @@ class InvoiceByUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     invoice_by_user_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), invoice_by_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseInvoiceByUser.cast_from_bunq_response(
@@ -1105,7 +1128,7 @@ class InvoiceByUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: InvoiceByUser
         """
 
@@ -1128,12 +1151,12 @@ class AttachmentConversationContent(core.BunqModel):
     def list(cls, chat_conversation_id, attachment_id, custom_headers=None):
         """
         Get the raw content of a specific attachment.
-
+        
         :type user_id: int
         :type chat_conversation_id: int
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -1141,8 +1164,7 @@ class AttachmentConversationContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), chat_conversation_id, attachment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), chat_conversation_id, attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -1160,11 +1182,68 @@ class AttachmentConversationContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentConversationContent
         """
 
         return converter.json_to_class(AttachmentConversationContent, json_str)
+
+
+class AttachmentMonetaryAccountContent(core.BunqModel):
+    """
+    Fetch the raw content of a monetary account attachment with given ID. The
+    raw content is the binary representation of a file, without any JSON
+    wrapping.
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/attachment/{}/content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "AttachmentMonetaryAccountContent"
+
+    @classmethod
+    def list(cls, attachment_id, monetary_account_id=None, custom_headers=None):
+        """
+        Get the raw content of a specific attachment.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type attachment_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseBytes
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        attachment_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentMonetaryAccountContent
+        """
+
+        return converter.json_to_class(AttachmentMonetaryAccountContent, json_str)
 
 
 class AttachmentPublicContent(core.BunqModel):
@@ -1183,10 +1262,10 @@ class AttachmentPublicContent(core.BunqModel):
     def list(cls, attachment_public_uuid, custom_headers=None):
         """
         Get the raw content of a specific attachment.
-
+        
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -1212,7 +1291,7 @@ class AttachmentPublicContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentPublicContent
         """
 
@@ -1232,16 +1311,15 @@ class AttachmentTabContent(core.BunqModel):
     _OBJECT_TYPE_GET = "AttachmentTabContent"
 
     @classmethod
-    def list(cls, attachment_tab_id, monetary_account_id=None,
-             custom_headers=None):
+    def list(cls, attachment_tab_id, monetary_account_id=None, custom_headers=None):
         """
         Get the raw content of a specific attachment.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -1249,10 +1327,9 @@ class AttachmentTabContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            attachment_tab_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -1270,11 +1347,64 @@ class AttachmentTabContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentTabContent
         """
 
         return converter.json_to_class(AttachmentTabContent, json_str)
+
+
+class AttachmentUserContent(core.BunqModel):
+    """
+    Fetch the raw content of a user attachment with given ID. The raw content is
+    the binary representation of a file, without any JSON wrapping.
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/attachment/{}/content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "AttachmentUserContent"
+
+    @classmethod
+    def list(cls, attachment_id, custom_headers=None):
+        """
+        Get the raw content of a specific attachment.
+        
+        :type user_id: int
+        :type attachment_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseBytes
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), attachment_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentUserContent
+        """
+
+        return converter.json_to_class(AttachmentUserContent, json_str)
 
 
 class TabAttachmentTabContent(core.BunqModel):
@@ -1293,11 +1423,11 @@ class TabAttachmentTabContent(core.BunqModel):
     def list(cls, tab_uuid, attachment_id, custom_headers=None):
         """
         Get the raw content of a specific attachment.
-
+        
         :type tab_uuid: str
         :type attachment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -1323,7 +1453,7 @@ class TabAttachmentTabContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabAttachmentTabContent
         """
 
@@ -1335,7 +1465,7 @@ class AttachmentMonetaryAccount(core.BunqModel):
     This call is used to upload an attachment that can be referenced to in
     payment requests and payments sent from a specific monetary account.
     Attachments supported are png, jpg and gif.
-
+    
     :param _attachment: The attachment.
     :type _attachment: object_.Attachment
     :param _id_: The ID of the attachment created.
@@ -1349,19 +1479,18 @@ class AttachmentMonetaryAccount(core.BunqModel):
     _id_ = None
 
     @classmethod
-    def create(cls, request_bytes, monetary_account_id=None,
-               custom_headers=None):
+    def create(cls, request_bytes, monetary_account_id=None, custom_headers=None):
         """
         Create a new monetary account attachment. Create a POST request with a
         payload that contains the binary representation of the file, without any
         JSON wrapping. Make sure you define the MIME type (i.e. image/jpeg) in
         the Content-Type header. You are required to provide a description of
         the attachment using the X-Bunq-Attachment-Description header.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -1370,10 +1499,8 @@ class AttachmentMonetaryAccount(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -1412,7 +1539,7 @@ class AttachmentMonetaryAccount(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentMonetaryAccount
         """
 
@@ -1424,7 +1551,7 @@ class AttachmentPublic(core.BunqModel):
     This call is used to upload an attachment that can be referenced to as an
     avatar (through the Avatar endpoint) or in a tab sent. Attachments supported
     are png, jpg and gif.
-
+    
     :param _uuid: The UUID of the attachment.
     :type _uuid: str
     :param _created: The timestamp of the attachment's creation.
@@ -1457,9 +1584,9 @@ class AttachmentPublic(core.BunqModel):
         image/png) in the Content-Type header. You are required to provide a
         description of the attachment using the X-Bunq-Attachment-Description
         header.
-
+        
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseStr
         """
 
@@ -1468,8 +1595,7 @@ class AttachmentPublic(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseStr.cast_from_bunq_response(
             cls._process_for_uuid(response_raw)
@@ -1481,11 +1607,11 @@ class AttachmentPublic(core.BunqModel):
         Get a specific attachment's metadata through its UUID. The Content-Type
         header of the response will describe the MIME type of the attachment
         file.
-
+        
         :type api_context: context.ApiContext
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseAttachmentPublic
         """
 
@@ -1555,7 +1681,7 @@ class AttachmentPublic(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentPublic
         """
 
@@ -1567,7 +1693,7 @@ class AttachmentTab(core.BunqModel):
     This call is used to upload an attachment that will be accessible only
     through tabs. This can be used for example to upload special promotions or
     other attachments. Attachments supported are png, jpg and gif.
-
+    
     :param _id_: The id of the attachment.
     :type _id_: int
     :param _created: The timestamp of the attachment's creation.
@@ -1591,8 +1717,7 @@ class AttachmentTab(core.BunqModel):
     _attachment = None
 
     @classmethod
-    def create(cls, request_bytes, monetary_account_id=None,
-               custom_headers=None):
+    def create(cls, request_bytes, monetary_account_id=None, custom_headers=None):
         """
         Upload a new attachment to use with a tab, and to read its metadata.
         Create a POST request with a payload that contains the binary
@@ -1600,11 +1725,11 @@ class AttachmentTab(core.BunqModel):
         define the MIME type (i.e. image/jpeg) in the Content-Type header. You
         are required to provide a description of the attachment using the
         X-Bunq-Attachment-Description header.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -1613,28 +1738,25 @@ class AttachmentTab(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, attachment_tab_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, attachment_tab_id, monetary_account_id=None, custom_headers=None):
         """
         Get a specific attachment. The header of the response contains the
         content-type of the attachment.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseAttachmentTab
         """
 
@@ -1643,8 +1765,7 @@ class AttachmentTab(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -1707,7 +1828,7 @@ class AttachmentTab(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentTab
         """
 
@@ -1717,7 +1838,7 @@ class AttachmentTab(core.BunqModel):
 class TabAttachmentTab(core.BunqModel):
     """
     This call is used to view an attachment that is linked to a tab.
-
+    
     :param _id_: The id of the attachment.
     :type _id_: int
     :param _created: The timestamp of the attachment's creation.
@@ -1744,12 +1865,12 @@ class TabAttachmentTab(core.BunqModel):
         """
         Get a specific attachment. The header of the response contains the
         content-type of the attachment.
-
+        
         :type api_context: context.ApiContext
         :type tab_uuid: str
         :type tab_attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabAttachmentTab
         """
 
@@ -1757,8 +1878,7 @@ class TabAttachmentTab(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid,
-                                                     tab_attachment_tab_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid, tab_attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseTabAttachmentTab.cast_from_bunq_response(
@@ -1820,7 +1940,7 @@ class TabAttachmentTab(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabAttachmentTab
         """
 
@@ -1832,7 +1952,7 @@ class AttachmentUser(core.BunqModel):
     This call is used to upload an attachment that is accessible only by a
     specific user. This can be used for example to upload passport scans or
     other documents. Attachments supported are png, jpg and gif.
-
+    
     :param _id_: The id of the attachment.
     :type _id_: int
     :param _created: The timestamp of the attachment's creation.
@@ -1859,12 +1979,12 @@ class AttachmentUser(core.BunqModel):
         """
         Get a specific attachment. The header of the response contains the
         content-type of the attachment.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type attachment_user_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseAttachmentUser
         """
 
@@ -1872,8 +1992,7 @@ class AttachmentUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     attachment_user_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), attachment_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseAttachmentUser.cast_from_bunq_response(
@@ -1935,7 +2054,7 @@ class AttachmentUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentUser
         """
 
@@ -1950,7 +2069,7 @@ class Avatar(core.BunqModel):
     image you would like to use through AttachmentPublic. Using the
     attachment_public_uuid which is returned you can update your Avatar. Avatars
     used for cash registers and company accounts will be reviewed by bunq.
-
+    
     :param _attachment_public_uuid: The public UUID of the public attachment
     from which an avatar image must be created.
     :type _attachment_public_uuid: str
@@ -1991,7 +2110,7 @@ class Avatar(core.BunqModel):
         from which an avatar image must be created.
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseStr
         """
 
@@ -2007,8 +2126,7 @@ class Avatar(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseStr.cast_from_bunq_response(
             cls._process_for_uuid(response_raw)
@@ -2020,7 +2138,7 @@ class Avatar(core.BunqModel):
         :type api_context: context.ApiContext
         :type avatar_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseAvatar
         """
 
@@ -2068,7 +2186,7 @@ class Avatar(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Avatar
         """
 
@@ -2079,7 +2197,7 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     """
     An incoming payment made towards an account of an external bank and
     redirected to a bunq account via switch service.
-
+    
     :param _bank_switch_service: The bank switch service details.
     :type _bank_switch_service: BankSwitchServiceNetherlandsIncoming
     :param _payment: The payment made using bank switch service.
@@ -2096,15 +2214,14 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     _payment = None
 
     @classmethod
-    def get(cls, bank_switch_service_netherlands_incoming_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, bank_switch_service_netherlands_incoming_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bank_switch_service_netherlands_incoming_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBankSwitchServiceNetherlandsIncomingPayment
         """
 
@@ -2113,8 +2230,7 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      bank_switch_service_netherlands_incoming_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -2155,18 +2271,17 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BankSwitchServiceNetherlandsIncomingPayment
         """
 
-        return converter.json_to_class(
-            BankSwitchServiceNetherlandsIncomingPayment, json_str)
+        return converter.json_to_class(BankSwitchServiceNetherlandsIncomingPayment, json_str)
 
 
 class BankSwitchServiceNetherlandsIncoming(core.BunqModel):
     """
     Endpoint for using the Equens Bank Switch Service.
-
+    
     :param _alias: The label of the monetary of this switch service.
     :type _alias: object_.MonetaryAccountReference
     :param _counterparty_alias: The IBAN alias that's displayed for this switch
@@ -2213,8 +2328,7 @@ class BankSwitchServiceNetherlandsIncoming(core.BunqModel):
     _sub_status_field_for_request = None
     _time_start_actual_field_for_request = None
 
-    def __init__(self, alias, counterparty_alias, status=None, sub_status=None,
-                 time_start_actual=None):
+    def __init__(self, alias, counterparty_alias, status=None, sub_status=None, time_start_actual=None):
         """
         :param alias: The alias of the Monetary Account this switch service is for.
         :type alias: object_.Pointer
@@ -2349,12 +2463,11 @@ class BankSwitchServiceNetherlandsIncoming(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BankSwitchServiceNetherlandsIncoming
         """
 
-        return converter.json_to_class(BankSwitchServiceNetherlandsIncoming,
-                                       json_str)
+        return converter.json_to_class(BankSwitchServiceNetherlandsIncoming, json_str)
 
 
 class Payment(core.BunqModel):
@@ -2365,7 +2478,7 @@ class Payment(core.BunqModel):
     Attachments. These will be received by the counter-party as part of the
     Payment. You can also retrieve a single Payment or all executed Payments of
     a specific monetary account.
-
+    
     :param _amount: The Amount transferred by the Payment. Will be negative for
     outgoing Payments and positive for incoming Payments (relative to the
     MonetaryAccount indicated by monetary_account_id).
@@ -2488,8 +2601,8 @@ class Payment(core.BunqModel):
     _merchant_reference_field_for_request = None
     _allow_bunqto_field_for_request = None
 
-    def __init__(self, amount, counterparty_alias, description, attachment=None,
-                 merchant_reference=None, allow_bunqto=None):
+    def __init__(self, amount, counterparty_alias, description, attachment=None, merchant_reference=None,
+                 allow_bunqto=None):
         """
         :param amount: The Amount to transfer with the Payment. Must be bigger than
         0 and smaller than the MonetaryAccount's balance.
@@ -2519,12 +2632,11 @@ class Payment(core.BunqModel):
         self._allow_bunqto_field_for_request = allow_bunqto
 
     @classmethod
-    def create(cls, amount, counterparty_alias, description,
-               monetary_account_id=None, attachment=None,
+    def create(cls, amount, counterparty_alias, description, monetary_account_id=None, attachment=None,
                merchant_reference=None, allow_bunqto=None, custom_headers=None):
         """
         Create a new Payment.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param amount: The Amount to transfer with the Payment. Must be bigger
@@ -2549,7 +2661,7 @@ class Payment(core.BunqModel):
         allowed.
         :type allow_bunqto: bool
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -2570,10 +2682,8 @@ class Payment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -2583,13 +2693,13 @@ class Payment(core.BunqModel):
     def get(cls, payment_id, monetary_account_id=None, custom_headers=None):
         """
         Get a specific previous Payment.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePayment
         """
 
@@ -2598,8 +2708,7 @@ class Payment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -2612,12 +2721,12 @@ class Payment(core.BunqModel):
         """
         Get a listing of all Payments performed on a given MonetaryAccount
         (incoming and outgoing).
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePaymentList
         """
 
@@ -2628,9 +2737,8 @@ class Payment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponsePaymentList.cast_from_bunq_response(
@@ -2923,7 +3031,7 @@ class Payment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Payment
         """
 
@@ -2933,7 +3041,7 @@ class Payment(core.BunqModel):
 class BunqMeFundraiserProfileUser(core.BunqModel):
     """
     bunq.me public profile of the user.
-
+    
     :param _monetary_account_id: Id of the monetary account on which you want to
     receive bunq.me payments.
     :type _monetary_account_id: int
@@ -2994,9 +3102,8 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
     _redirect_url_field_for_request = None
     _status_field_for_request = None
 
-    def __init__(self, monetary_account_id=None, description=None, pointer=None,
-                 color=None, attachment_public_uuid=None, redirect_url=None,
-                 status=None):
+    def __init__(self, monetary_account_id=None, description=None, pointer=None, color=None,
+                 attachment_public_uuid=None, redirect_url=None, status=None):
         """
         :param monetary_account_id: ID of the monetary account on which you want to
         receive bunq.me fundraiser payments.
@@ -3035,7 +3142,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
         :type user_id: int
         :type bunq_me_fundraiser_profile_user_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBunqMeFundraiserProfileUser
         """
 
@@ -3043,8 +3150,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     bunq_me_fundraiser_profile_user_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), bunq_me_fundraiser_profile_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBunqMeFundraiserProfileUser.cast_from_bunq_response(
@@ -3057,7 +3163,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBunqMeFundraiserProfileUserList
         """
 
@@ -3068,8 +3174,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseBunqMeFundraiserProfileUserList.cast_from_bunq_response(
@@ -3175,7 +3280,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeFundraiserProfileUser
         """
 
@@ -3185,7 +3290,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
 class BunqMeFundraiserResult(core.BunqModel):
     """
     bunq.me fundraiser result containing all payments.
-
+    
     :param _id_: The id of the bunq.me.
     :type _id_: int
     :param _created: The timestamp when the bunq.me was created.
@@ -3212,15 +3317,14 @@ class BunqMeFundraiserResult(core.BunqModel):
     _payments = None
 
     @classmethod
-    def get(cls, bunq_me_fundraiser_result_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, bunq_me_fundraiser_result_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunq_me_fundraiser_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBunqMeFundraiserResult
         """
 
@@ -3229,8 +3333,7 @@ class BunqMeFundraiserResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      bunq_me_fundraiser_result_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -3304,7 +3407,7 @@ class BunqMeFundraiserResult(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeFundraiserResult
         """
 
@@ -3314,7 +3417,7 @@ class BunqMeFundraiserResult(core.BunqModel):
 class BunqMeFundraiserProfile(core.BunqModel):
     """
     bunq.me public profile of the user.
-
+    
     :param _pointer: The pointer (url) which will be used to access the bunq.me
     fundraiser profile.
     :type _pointer: object_.MonetaryAccountReference
@@ -3460,7 +3563,7 @@ class BunqMeFundraiserProfile(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeFundraiserProfile
         """
 
@@ -3472,7 +3575,7 @@ class BunqMeTabResultResponse(core.BunqModel):
     Used to view bunq.me TabResultResponse objects belonging to a tab. A
     TabResultResponse is an object that holds details on a tab which has been
     paid from the provided monetary account.
-
+    
     :param _payment: The payment made for the bunq.me tab.
     :type _payment: Payment
     """
@@ -3486,15 +3589,14 @@ class BunqMeTabResultResponse(core.BunqModel):
     _payment = None
 
     @classmethod
-    def get(cls, bunq_me_tab_result_response_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, bunq_me_tab_result_response_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunq_me_tab_result_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBunqMeTabResultResponse
         """
 
@@ -3503,8 +3605,7 @@ class BunqMeTabResultResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      bunq_me_tab_result_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -3534,7 +3635,7 @@ class BunqMeTabResultResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeTabResultResponse
         """
 
@@ -3546,7 +3647,7 @@ class BunqMeTab(core.BunqModel):
     bunq.me tabs allows you to create a payment request and share the link
     through e-mail, chat, etc. Multiple persons are able to respond to the
     payment request and pay through bunq, iDeal or SOFORT.
-
+    
     :param _bunqme_tab_entry: The bunq.me entry containing the payment
     information.
     :type _bunqme_tab_entry: BunqMeTabEntry
@@ -3612,8 +3713,7 @@ class BunqMeTab(core.BunqModel):
         self._status_field_for_request = status
 
     @classmethod
-    def create(cls, bunqme_tab_entry, monetary_account_id=None, status=None,
-               custom_headers=None):
+    def create(cls, bunqme_tab_entry, monetary_account_id=None, status=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -3625,7 +3725,7 @@ class BunqMeTab(core.BunqModel):
         with a PUT request.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -3642,18 +3742,15 @@ class BunqMeTab(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, bunq_me_tab_id, monetary_account_id=None, status=None,
-               custom_headers=None):
+    def update(cls, bunq_me_tab_id, monetary_account_id=None, status=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -3663,7 +3760,7 @@ class BunqMeTab(core.BunqModel):
         with a PUT request.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -3680,11 +3777,9 @@ class BunqMeTab(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunq_me_tab_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -3697,7 +3792,7 @@ class BunqMeTab(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBunqMeTabList
         """
 
@@ -3708,9 +3803,8 @@ class BunqMeTab(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseBunqMeTabList.cast_from_bunq_response(
@@ -3725,7 +3819,7 @@ class BunqMeTab(core.BunqModel):
         :type monetary_account_id: int
         :type bunq_me_tab_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBunqMeTab
         """
 
@@ -3734,8 +3828,7 @@ class BunqMeTab(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      bunq_me_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -3853,7 +3946,7 @@ class BunqMeTab(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeTab
         """
 
@@ -3865,7 +3958,7 @@ class BunqMeTabEntry(core.BunqModel):
     bunq.me tabs allows you to create a payment request and share the link
     through e-mail, chat, etc. Multiple persons are able to respond to the
     payment request and pay through bunq, iDeal or SOFORT.
-
+    
     :param _amount_inquired: The requested Amount.
     :type _amount_inquired: object_.Amount
     :param _description: The description for the bunq.me. Maximum 9000
@@ -4006,7 +4099,7 @@ class BunqMeTabEntry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeTabEntry
         """
 
@@ -4018,7 +4111,7 @@ class BunqMeTabResultInquiry(core.BunqModel):
     Used to view bunq.me TabResultInquiry objects belonging to a tab. A
     TabResultInquiry is an object that holds details on both the tab and a
     single payment made for that tab.
-
+    
     :param _payment: The payment made for the Tab.
     :type _payment: Payment
     :param _bunq_me_tab_id: The Id of the bunq.me tab that this
@@ -4062,7 +4155,7 @@ class BunqMeTabResultInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeTabResultInquiry
         """
 
@@ -4072,7 +4165,7 @@ class BunqMeTabResultInquiry(core.BunqModel):
 class CardBatch(core.BunqModel):
     """
     Used to update multiple cards in a batch.
-
+    
     :param _cards: The cards that need to be updated.
     :type _cards: list[object_.CardBatchEntry]
     :param _updated_card_ids: The ids of the cards that have been updated.
@@ -4106,7 +4199,7 @@ class CardBatch(core.BunqModel):
         :param cards: The cards that need to be updated.
         :type cards: list[object_.CardBatchEntry]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCardBatch
         """
 
@@ -4122,8 +4215,7 @@ class CardBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseCardBatch.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -4151,7 +4243,7 @@ class CardBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardBatch
         """
 
@@ -4163,7 +4255,7 @@ class CardDebit(core.BunqModel):
     With bunq it is possible to order debit cards that can then be connected
     with each one of the monetary accounts the user has access to (including
     connected accounts).
-
+    
     :param _second_line: The second line of text on the card
     :type _second_line: str
     :param _name_on_card: The user's name as will be on the card
@@ -4254,8 +4346,8 @@ class CardDebit(core.BunqModel):
     _pin_code_assignment_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
-    def __init__(self, second_line, name_on_card, alias=None, type_=None,
-                 pin_code_assignment=None, monetary_account_id_fallback=None):
+    def __init__(self, second_line, name_on_card, alias=None, type_=None, pin_code_assignment=None,
+                 monetary_account_id_fallback=None):
         """
         :param second_line: The second line of text on the card, used as
         name/description for it. It can contain at most 17 characters and it can be
@@ -4287,12 +4379,11 @@ class CardDebit(core.BunqModel):
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
 
     @classmethod
-    def create(cls, second_line, name_on_card, alias=None, type_=None,
-               pin_code_assignment=None, monetary_account_id_fallback=None,
-               custom_headers=None):
+    def create(cls, second_line, name_on_card, alias=None, type_=None, pin_code_assignment=None,
+               monetary_account_id_fallback=None, custom_headers=None):
         """
         Create a new debit card request.
-
+        
         :type user_id: int
         :param second_line: The second line of text on the card, used as
         name/description for it. It can contain at most 17 characters and it can
@@ -4315,7 +4406,7 @@ class CardDebit(core.BunqModel):
         not supplied.
         :type monetary_account_id_fallback: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCardDebit
         """
 
@@ -4335,11 +4426,9 @@ class CardDebit(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
-        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
-                                         custom_headers)
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseCardDebit.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -4565,7 +4654,7 @@ class CardDebit(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardDebit
         """
 
@@ -4575,7 +4664,7 @@ class CardDebit(core.BunqModel):
 class CardGeneratedCvc2(core.BunqModel):
     """
     Endpoint for generating and retrieving a new CVC2 code.
-
+    
     :param _type_: The type of generated cvc2. Can be STATIC or GENERATED.
     :type _type_: str
     :param _id_: The id of the cvc code.
@@ -4626,13 +4715,13 @@ class CardGeneratedCvc2(core.BunqModel):
     def create(cls, card_id, type_=None, custom_headers=None):
         """
         Generate a new CVC2 code for a card.
-
+        
         :type user_id: int
         :type card_id: int
         :param type_: The type of generated cvc2. Can be STATIC or GENERATED.
         :type type_: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -4647,12 +4736,9 @@ class CardGeneratedCvc2(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
-        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
-                                         custom_headers)
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       card_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -4662,13 +4748,13 @@ class CardGeneratedCvc2(core.BunqModel):
     def get(cls, card_id, card_generated_cvc2_id, custom_headers=None):
         """
         Get the details for a specific generated CVC2 code.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type card_id: int
         :type card_generated_cvc2_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCardGeneratedCvc2
         """
 
@@ -4676,9 +4762,7 @@ class CardGeneratedCvc2(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     card_id,
-                                                     card_generated_cvc2_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), card_id, card_generated_cvc2_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseCardGeneratedCvc2.cast_from_bunq_response(
@@ -4686,8 +4770,7 @@ class CardGeneratedCvc2(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, card_id, card_generated_cvc2_id, type_=None,
-               custom_headers=None):
+    def update(cls, card_id, card_generated_cvc2_id, type_=None, custom_headers=None):
         """
         :type user_id: int
         :type card_id: int
@@ -4695,7 +4778,7 @@ class CardGeneratedCvc2(core.BunqModel):
         :param type_: The type of generated cvc2. Can be STATIC or GENERATED.
         :type type_: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -4711,13 +4794,9 @@ class CardGeneratedCvc2(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
-                                         custom_headers)
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       card_id,
-                                                       card_generated_cvc2_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), card_id, card_generated_cvc2_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -4727,12 +4806,12 @@ class CardGeneratedCvc2(core.BunqModel):
     def list(cls, card_id, params=None, custom_headers=None):
         """
         Get all generated CVC2 codes for a card.
-
+        
         :type user_id: int
         :type card_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCardGeneratedCvc2List
         """
 
@@ -4743,8 +4822,7 @@ class CardGeneratedCvc2(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), card_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCardGeneratedCvc2List.cast_from_bunq_response(
@@ -4839,7 +4917,7 @@ class CardGeneratedCvc2(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardGeneratedCvc2
         """
 
@@ -4852,7 +4930,7 @@ class CardName(core.BunqModel):
     allow total freedom in choosing the name that is going to be printed on the
     card, the following formats are accepted: Name Surname, N. Surname, N
     Surname or Surname.
-
+    
     :param _possible_card_name_array: All possible variations (of suitable
     length) of user's legal name for the debit card.
     :type _possible_card_name_array: list[str]
@@ -4870,11 +4948,11 @@ class CardName(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Return all the accepted card names for a specific user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCardNameList
         """
 
@@ -4885,8 +4963,7 @@ class CardName(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCardNameList.cast_from_bunq_response(
@@ -4915,7 +4992,7 @@ class CardName(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardName
         """
 
@@ -4930,7 +5007,7 @@ class CardReplace(core.BunqModel):
     expiry date and the same pricing as the old card, but it will have a new
     card number. You can change the description and optional the PIN through the
     card replacement endpoint.
-
+    
     :param _name_on_card: The user's name as it will be on the card. Check
     'card-name' for the available card names for a user.
     :type _name_on_card: str
@@ -4973,11 +5050,10 @@ class CardReplace(core.BunqModel):
         self._second_line_field_for_request = second_line
 
     @classmethod
-    def create(cls, card_id, name_on_card=None, pin_code=None, second_line=None,
-               custom_headers=None):
+    def create(cls, card_id, name_on_card=None, pin_code=None, second_line=None, custom_headers=None):
         """
         Request a card replacement.
-
+        
         :type user_id: int
         :type card_id: int
         :param name_on_card: The user's name as it will be on the card. Check
@@ -4989,7 +5065,7 @@ class CardReplace(core.BunqModel):
         :param second_line: The second line on the card.
         :type second_line: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -5006,12 +5082,9 @@ class CardReplace(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
-        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
-                                         custom_headers)
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       card_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -5039,7 +5112,7 @@ class CardReplace(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardReplace
         """
 
@@ -5049,7 +5122,7 @@ class CardReplace(core.BunqModel):
 class Card(core.BunqModel):
     """
     Endpoint for retrieving details for the cards the user has access to.
-
+    
     :param _pin_code: The plaintext pin code. Requests require encryption to be
     enabled.
     :type _pin_code: str
@@ -5177,12 +5250,9 @@ class Card(core.BunqModel):
     _primary_account_numbers_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
-    def __init__(self, pin_code=None, activation_code=None, status=None,
-                 card_limit=None, card_limit_atm=None,
-                 mag_stripe_permission=None, country_permission=None,
-                 pin_code_assignment=None, primary_account_numbers_virtual=None,
-                 primary_account_numbers=None,
-                 monetary_account_id_fallback=None):
+    def __init__(self, pin_code=None, activation_code=None, status=None, card_limit=None, card_limit_atm=None,
+                 mag_stripe_permission=None, country_permission=None, pin_code_assignment=None,
+                 primary_account_numbers_virtual=None, primary_account_numbers=None, monetary_account_id_fallback=None):
         """
         :param pin_code: The plaintext pin code. Requests require encryption to be
         enabled.
@@ -5238,18 +5308,16 @@ class Card(core.BunqModel):
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
 
     @classmethod
-    def update(cls, card_id, pin_code=None, activation_code=None, status=None,
-               card_limit=None, card_limit_atm=None, mag_stripe_permission=None,
-               country_permission=None, pin_code_assignment=None,
-               primary_account_numbers_virtual=None,
-               primary_account_numbers=None, monetary_account_id_fallback=None,
+    def update(cls, card_id, pin_code=None, activation_code=None, status=None, card_limit=None, card_limit_atm=None,
+               mag_stripe_permission=None, country_permission=None, pin_code_assignment=None,
+               primary_account_numbers_virtual=None, primary_account_numbers=None, monetary_account_id_fallback=None,
                custom_headers=None):
         """
         Update the card details. Allow to change pin code, status, limits,
         country permissions and the monetary account connected to the card. When
         the card has been received, it can be also activated through this
         endpoint.
-
+        
         :type user_id: int
         :type card_id: int
         :param pin_code: The plaintext pin code. Requests require encryption to
@@ -5292,7 +5360,7 @@ class Card(core.BunqModel):
         not supplied.
         :type monetary_account_id_fallback: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCard
         """
 
@@ -5318,12 +5386,9 @@ class Card(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        request_bytes = security.encrypt(cls._get_api_context(), request_bytes,
-                                         custom_headers)
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       card_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseCard.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
@@ -5333,12 +5398,12 @@ class Card(core.BunqModel):
     def get(cls, card_id, custom_headers=None):
         """
         Return the details of a specific card.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type card_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCard
         """
 
@@ -5346,8 +5411,7 @@ class Card(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     card_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), card_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseCard.cast_from_bunq_response(
@@ -5358,11 +5422,11 @@ class Card(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Return all the cards available to the user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCardList
         """
 
@@ -5373,8 +5437,7 @@ class Card(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCardList.cast_from_bunq_response(
@@ -5645,7 +5708,7 @@ class Card(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Card
         """
 
@@ -5665,17 +5728,16 @@ class CashRegisterQrCodeContent(core.BunqModel):
     _OBJECT_TYPE_GET = "CashRegisterQrCodeContent"
 
     @classmethod
-    def list(cls, cash_register_id, qr_code_id, monetary_account_id=None,
-             custom_headers=None):
+    def list(cls, cash_register_id, qr_code_id, monetary_account_id=None, custom_headers=None):
         """
         Show the raw contents of a QR code
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type qr_code_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -5683,10 +5745,9 @@ class CashRegisterQrCodeContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id, qr_code_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id, qr_code_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -5704,7 +5765,7 @@ class CashRegisterQrCodeContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CashRegisterQrCodeContent
         """
 
@@ -5717,7 +5778,7 @@ class CashRegisterQrCode(core.BunqModel):
     The visibility of a tab can be modified to be linked to this QR code. If a
     user of the bunq app scans this QR code, the linked tab will be shown on his
     device.
-
+    
     :param _status: The status of this QR code. If the status is "ACTIVE" the QR
     code can be scanned to see the linked CashRegister and tab. If the status is
     "INACTIVE" the QR code does not link to a anything.
@@ -5767,12 +5828,11 @@ class CashRegisterQrCode(core.BunqModel):
         self._status_field_for_request = status
 
     @classmethod
-    def create(cls, cash_register_id, status, monetary_account_id=None,
-               custom_headers=None):
+    def create(cls, cash_register_id, status, monetary_account_id=None, custom_headers=None):
         """
         Create a new QR code for this CashRegister. You can only have one ACTIVE
         CashRegister QR code at the time.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -5781,7 +5841,7 @@ class CashRegisterQrCode(core.BunqModel):
         to ACTIVE will deactivate any other CashRegister QR codes.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -5797,23 +5857,21 @@ class CashRegisterQrCode(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, cash_register_id, cash_register_qr_code_id,
-               monetary_account_id=None, status=None, custom_headers=None):
+    def update(cls, cash_register_id, cash_register_qr_code_id, monetary_account_id=None, status=None,
+               custom_headers=None):
         """
         Modify a QR code in a given CashRegister. You can only have one ACTIVE
         CashRegister QR code at the time.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -5823,7 +5881,7 @@ class CashRegisterQrCode(core.BunqModel):
         to ACTIVE will deactivate any other CashRegister QR codes.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -5840,31 +5898,27 @@ class CashRegisterQrCode(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       cash_register_qr_code_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, cash_register_qr_code_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, cash_register_id, cash_register_qr_code_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, cash_register_id, cash_register_qr_code_id, monetary_account_id=None, custom_headers=None):
         """
         Get the information of a specific QR code. To get the RAW content of the
         QR code use ../qr-code/{id}/content
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type cash_register_qr_code_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCashRegisterQrCode
         """
 
@@ -5873,10 +5927,8 @@ class CashRegisterQrCode(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id,
-                                                     cash_register_qr_code_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     cash_register_id, cash_register_qr_code_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseCashRegisterQrCode.cast_from_bunq_response(
@@ -5884,17 +5936,16 @@ class CashRegisterQrCode(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, cash_register_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, cash_register_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a collection of QR code information from a given CashRegister
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCashRegisterQrCodeList
         """
 
@@ -5905,10 +5956,9 @@ class CashRegisterQrCode(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCashRegisterQrCodeList.cast_from_bunq_response(
@@ -5992,7 +6042,7 @@ class CashRegisterQrCode(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CashRegisterQrCode
         """
 
@@ -6009,7 +6059,7 @@ class CashRegister(core.BunqModel):
     payments</a>.<br/><br/>Notification filters can be set on a CashRegister to
     receive callbacks. For more information check the <a
     href="/api/1/page/callbacks">dedicated callbacks page</a>.
-
+    
     :param _name: The name of the CashRegister.
     :type _name: str
     :param _status: The status of the CashRegister. Can be PENDING_APPROVAL,
@@ -6070,8 +6120,8 @@ class CashRegister(core.BunqModel):
     _notification_filters_field_for_request = None
     _tab_text_waiting_screen_field_for_request = None
 
-    def __init__(self, name=None, status=None, avatar_uuid=None, location=None,
-                 notification_filters=None, tab_text_waiting_screen=None):
+    def __init__(self, name=None, status=None, avatar_uuid=None, location=None, notification_filters=None,
+                 tab_text_waiting_screen=None):
         """
         :param name: The name of the CashRegister. Must be unique for this
         MonetaryAccount.
@@ -6101,8 +6151,7 @@ class CashRegister(core.BunqModel):
         self._tab_text_waiting_screen_field_for_request = tab_text_waiting_screen
 
     @classmethod
-    def create(cls, name, status, avatar_uuid, monetary_account_id=None,
-               location=None, notification_filters=None,
+    def create(cls, name, status, avatar_uuid, monetary_account_id=None, location=None, notification_filters=None,
                tab_text_waiting_screen=None, custom_headers=None):
         """
         Create a new CashRegister. Only an UserCompany can create a
@@ -6110,7 +6159,7 @@ class CashRegister(core.BunqModel):
         bunq admin has to approve your CashRegister before you can use it. In
         the sandbox testing environment an CashRegister will be automatically
         approved immediately after creation.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param name: The name of the CashRegister. Must be unique for this
@@ -6132,7 +6181,7 @@ class CashRegister(core.BunqModel):
         CashRegister.
         :type tab_text_waiting_screen: list[object_.TabTextWaitingScreen]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -6153,27 +6202,24 @@ class CashRegister(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, cash_register_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, cash_register_id, monetary_account_id=None, custom_headers=None):
         """
         Get a specific CashRegister.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCashRegister
         """
 
@@ -6182,8 +6228,7 @@ class CashRegister(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -6192,15 +6237,13 @@ class CashRegister(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, cash_register_id, monetary_account_id=None, name=None,
-               status=None, avatar_uuid=None, location=None,
-               notification_filters=None, tab_text_waiting_screen=None,
-               custom_headers=None):
+    def update(cls, cash_register_id, monetary_account_id=None, name=None, status=None, avatar_uuid=None, location=None,
+               notification_filters=None, tab_text_waiting_screen=None, custom_headers=None):
         """
         Modify or close an existing CashRegister. You must set the status back
         to PENDING_APPROVAL if you modify the name, avatar or location of a
         CashRegister. To close a cash register put its status to CLOSED.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -6223,7 +6266,7 @@ class CashRegister(core.BunqModel):
         CashRegister.
         :type tab_text_waiting_screen: list[object_.TabTextWaitingScreen]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -6245,11 +6288,9 @@ class CashRegister(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -6259,12 +6300,12 @@ class CashRegister(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a collection of CashRegister for a given user and monetary account.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCashRegisterList
         """
 
@@ -6275,9 +6316,8 @@ class CashRegister(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCashRegisterList.cast_from_bunq_response(
@@ -6394,7 +6434,7 @@ class CashRegister(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CashRegister
         """
 
@@ -6410,10 +6450,10 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
     /tab-usage-multiple. A TabUsageSingle is a Tab that can be paid once. A
     TabUsageMultiple is a Tab that can be paid multiple times by different
     users.
-
-    :param _TabUsageSingle:
+    
+    :param _TabUsageSingle: 
     :type _TabUsageSingle: TabUsageSingle
-    :param _TabUsageMultiple:
+    :param _TabUsageMultiple: 
     :type _TabUsageMultiple: TabUsageMultiple
     """
 
@@ -6431,18 +6471,17 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
     _TabUsageMultiple = None
 
     @classmethod
-    def get(cls, cash_register_id, tab_uuid, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, cash_register_id, tab_uuid, monetary_account_id=None, custom_headers=None):
         """
         Get a specific tab. This returns a TabUsageSingle or TabUsageMultiple.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTab
         """
 
@@ -6451,8 +6490,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -6461,17 +6499,16 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
         )
 
     @classmethod
-    def list(cls, cash_register_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, cash_register_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a collection of tabs.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabList
         """
 
@@ -6482,10 +6519,9 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseTabList.cast_from_bunq_response(
@@ -6539,7 +6575,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Tab
         """
 
@@ -6557,7 +6593,7 @@ class TabUsageSingle(core.BunqModel):
     TabUsageSingle with the status OPEN or WAITING_FOR_PAYMENT can be made
     visible to customers. As soon as a customer pays the TabUsageSingle its
     status changes to PAID, and it can't be paid again.
-
+    
     :param _merchant_reference: The merchant reference of the Tab, as defined by
     the owner.
     :type _merchant_reference: str
@@ -6679,11 +6715,9 @@ class TabUsageSingle(core.BunqModel):
     _expiration_field_for_request = None
     _tab_attachment_field_for_request = None
 
-    def __init__(self, description, status=None, amount_total=None,
-                 merchant_reference=None, allow_amount_higher=None,
-                 allow_amount_lower=None, want_tip=None, minimum_age=None,
-                 require_address=None, redirect_url=None, visibility=None,
-                 expiration=None, tab_attachment=None):
+    def __init__(self, description, status=None, amount_total=None, merchant_reference=None, allow_amount_higher=None,
+                 allow_amount_lower=None, want_tip=None, minimum_age=None, require_address=None, redirect_url=None,
+                 visibility=None, expiration=None, tab_attachment=None):
         """
         :param description: The description of the Tab. Maximum 9000 characters.
         Field is required but can be an empty string.
@@ -6748,15 +6782,13 @@ class TabUsageSingle(core.BunqModel):
         self._tab_attachment_field_for_request = tab_attachment
 
     @classmethod
-    def create(cls, cash_register_id, description, status, amount_total,
-               monetary_account_id=None, merchant_reference=None,
-               allow_amount_higher=None, allow_amount_lower=None, want_tip=None,
-               minimum_age=None, require_address=None, redirect_url=None,
-               visibility=None, expiration=None, tab_attachment=None,
-               custom_headers=None):
+    def create(cls, cash_register_id, description, status, amount_total, monetary_account_id=None,
+               merchant_reference=None, allow_amount_higher=None, allow_amount_lower=None, want_tip=None,
+               minimum_age=None, require_address=None, redirect_url=None, visibility=None, expiration=None,
+               tab_attachment=None, custom_headers=None):
         """
         Create a TabUsageSingle. The initial status must be OPEN
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -6808,7 +6840,7 @@ class TabUsageSingle(core.BunqModel):
         Uploaded through the POST /user/{userid}/attachment-tab endpoint.
         :type tab_attachment: list[object_.BunqId]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseStr
         """
 
@@ -6836,27 +6868,23 @@ class TabUsageSingle(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseStr.cast_from_bunq_response(
             cls._process_for_uuid(response_raw)
         )
 
     @classmethod
-    def update(cls, cash_register_id, tab_usage_single_uuid,
-               monetary_account_id=None, status=None, amount_total=None,
-               visibility=None, expiration=None, tab_attachment=None,
-               custom_headers=None):
+    def update(cls, cash_register_id, tab_usage_single_uuid, monetary_account_id=None, status=None, amount_total=None,
+               visibility=None, expiration=None, tab_attachment=None, custom_headers=None):
         """
         Modify a specific TabUsageSingle. You can change the amount_total,
         status and visibility. Once you change the status to WAITING_FOR_PAYMENT
         the TabUsageSingle will expire after 5 minutes (default) or up to 1 hour
         if a different expiration is provided.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -6881,7 +6909,7 @@ class TabUsageSingle(core.BunqModel):
         Uploaded through the POST /user/{userid}/attachment-tab endpoint.
         :type tab_attachment: list[object_.BunqId]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseStr
         """
 
@@ -6902,29 +6930,25 @@ class TabUsageSingle(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_single_uuid)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_usage_single_uuid)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseStr.cast_from_bunq_response(
             cls._process_for_uuid(response_raw)
         )
 
     @classmethod
-    def delete(cls, cash_register_id, tab_usage_single_uuid,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, cash_register_id, tab_usage_single_uuid, monetary_account_id=None, custom_headers=None):
         """
         Cancel a specific TabUsageSingle.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -6933,10 +6957,8 @@ class TabUsageSingle(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_single_uuid)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_usage_single_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -6944,18 +6966,17 @@ class TabUsageSingle(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, cash_register_id, tab_usage_single_uuid,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, cash_register_id, tab_usage_single_uuid, monetary_account_id=None, custom_headers=None):
         """
         Get a specific TabUsageSingle.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_usage_single_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabUsageSingle
         """
 
@@ -6964,10 +6985,8 @@ class TabUsageSingle(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id,
-                                                     tab_usage_single_uuid)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     cash_register_id, tab_usage_single_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseTabUsageSingle.cast_from_bunq_response(
@@ -6975,17 +6994,16 @@ class TabUsageSingle(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, cash_register_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, cash_register_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a collection of TabUsageSingle.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabUsageSingleList
         """
 
@@ -6996,10 +7014,9 @@ class TabUsageSingle(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseTabUsageSingleList.cast_from_bunq_response(
@@ -7226,7 +7243,7 @@ class TabUsageSingle(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabUsageSingle
         """
 
@@ -7236,7 +7253,7 @@ class TabUsageSingle(core.BunqModel):
 class TabItem(core.BunqModel):
     """
     Used to get items on a tab.
-
+    
     :param _id_: The id of the tab item.
     :type _id_: int
     :param _description: The item's brief description.
@@ -7351,7 +7368,7 @@ class TabItem(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabItem
         """
 
@@ -7369,7 +7386,7 @@ class TabUsageMultiple(core.BunqModel):
     example: you can create a TabUsageMultiple with require_address set to true.
     Now show the QR code of this Tab on your webshop, and any bunq user can
     instantly pay and order something from your webshop.
-
+    
     :param _description: The description of the TabUsageMultiple. Maximum 9000
     characters.
     :type _description: str
@@ -7482,11 +7499,9 @@ class TabUsageMultiple(core.BunqModel):
     _expiration_field_for_request = None
     _tab_attachment_field_for_request = None
 
-    def __init__(self, description, status=None, amount_total=None,
-                 allow_amount_higher=None, allow_amount_lower=None,
-                 want_tip=None, minimum_age=None, require_address=None,
-                 redirect_url=None, visibility=None, expiration=None,
-                 tab_attachment=None):
+    def __init__(self, description, status=None, amount_total=None, allow_amount_higher=None, allow_amount_lower=None,
+                 want_tip=None, minimum_age=None, require_address=None, redirect_url=None, visibility=None,
+                 expiration=None, tab_attachment=None):
         """
         :param description: The description of the TabUsageMultiple. Maximum 9000
         characters. Field is required but can be an empty string.
@@ -7545,14 +7560,12 @@ class TabUsageMultiple(core.BunqModel):
         self._tab_attachment_field_for_request = tab_attachment
 
     @classmethod
-    def create(cls, cash_register_id, description, status, amount_total,
-               monetary_account_id=None, allow_amount_higher=None,
-               allow_amount_lower=None, want_tip=None, minimum_age=None,
-               require_address=None, redirect_url=None, visibility=None,
-               expiration=None, tab_attachment=None, custom_headers=None):
+    def create(cls, cash_register_id, description, status, amount_total, monetary_account_id=None,
+               allow_amount_higher=None, allow_amount_lower=None, want_tip=None, minimum_age=None, require_address=None,
+               redirect_url=None, visibility=None, expiration=None, tab_attachment=None, custom_headers=None):
         """
         Create a TabUsageMultiple. On creation the status must be set to OPEN
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -7601,7 +7614,7 @@ class TabUsageMultiple(core.BunqModel):
         Uploaded through the POST /user/{userid}/attachment-tab endpoint.
         :type tab_attachment: list[object_.BunqId]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseStr
         """
 
@@ -7628,21 +7641,17 @@ class TabUsageMultiple(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseStr.cast_from_bunq_response(
             cls._process_for_uuid(response_raw)
         )
 
     @classmethod
-    def update(cls, cash_register_id, tab_usage_multiple_uuid,
-               monetary_account_id=None, status=None, amount_total=None,
-               visibility=None, expiration=None, tab_attachment=None,
-               custom_headers=None):
+    def update(cls, cash_register_id, tab_usage_multiple_uuid, monetary_account_id=None, status=None, amount_total=None,
+               visibility=None, expiration=None, tab_attachment=None, custom_headers=None):
         """
         Modify a specific TabUsageMultiple. You can change the amount_total,
         status and visibility. Once you change the status to PAYABLE the
@@ -7650,7 +7659,7 @@ class TabUsageMultiple(core.BunqModel):
         any TabItems for a Tab the sum of the amounts of these items must be
         equal to the total_amount of the Tab when you change its status to
         PAYABLE.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -7677,7 +7686,7 @@ class TabUsageMultiple(core.BunqModel):
         Uploaded through the POST /user/{userid}/attachment-tab endpoint.
         :type tab_attachment: list[object_.BunqId]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseStr
         """
 
@@ -7698,29 +7707,25 @@ class TabUsageMultiple(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_multiple_uuid)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_usage_multiple_uuid)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseStr.cast_from_bunq_response(
             cls._process_for_uuid(response_raw)
         )
 
     @classmethod
-    def delete(cls, cash_register_id, tab_usage_multiple_uuid,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, cash_register_id, tab_usage_multiple_uuid, monetary_account_id=None, custom_headers=None):
         """
         Close a specific TabUsageMultiple.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -7729,10 +7734,8 @@ class TabUsageMultiple(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_usage_multiple_uuid)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_usage_multiple_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -7740,18 +7743,17 @@ class TabUsageMultiple(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, cash_register_id, tab_usage_multiple_uuid,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, cash_register_id, tab_usage_multiple_uuid, monetary_account_id=None, custom_headers=None):
         """
         Get a specific TabUsageMultiple.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_usage_multiple_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabUsageMultiple
         """
 
@@ -7760,10 +7762,8 @@ class TabUsageMultiple(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id,
-                                                     tab_usage_multiple_uuid)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     cash_register_id, tab_usage_multiple_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseTabUsageMultiple.cast_from_bunq_response(
@@ -7771,17 +7771,16 @@ class TabUsageMultiple(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, cash_register_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, cash_register_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a collection of TabUsageMultiple.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabUsageMultipleList
         """
 
@@ -7792,10 +7791,9 @@ class TabUsageMultiple(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseTabUsageMultipleList.cast_from_bunq_response(
@@ -8000,7 +7998,7 @@ class TabUsageMultiple(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabUsageMultiple
         """
 
@@ -8012,7 +8010,7 @@ class CertificatePinned(core.BunqModel):
     This endpoint allow you to pin the certificate chains to your account. These
     certificate chains are used for SSL validation whenever a callback is
     initiated to one of your https callback urls.
-
+    
     :param _certificate_chain: The certificate chain in .PEM format.
     Certificates are glued with newline characters.
     :type _certificate_chain: str
@@ -8048,12 +8046,12 @@ class CertificatePinned(core.BunqModel):
     def create(cls, certificate_chain, custom_headers=None):
         """
         Pin the certificate chain.
-
+        
         :type user_id: int
         :param certificate_chain: The certificate chain in .PEM format.
         :type certificate_chain: list[object_.Certificate]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -8069,8 +8067,7 @@ class CertificatePinned(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -8080,11 +8077,11 @@ class CertificatePinned(core.BunqModel):
     def delete(cls, certificate_pinned_id, custom_headers=None):
         """
         Remove the pinned certificate chain with the specific ID.
-
+        
         :type user_id: int
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -8092,8 +8089,7 @@ class CertificatePinned(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       certificate_pinned_id)
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), certificate_pinned_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -8104,11 +8100,11 @@ class CertificatePinned(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         List all the pinned certificate chain for the given user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCertificatePinnedList
         """
 
@@ -8119,8 +8115,7 @@ class CertificatePinned(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCertificatePinnedList.cast_from_bunq_response(
@@ -8131,12 +8126,12 @@ class CertificatePinned(core.BunqModel):
     def get(cls, certificate_pinned_id, custom_headers=None):
         """
         Get the pinned certificate chain with the specified ID.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCertificatePinned
         """
 
@@ -8144,8 +8139,7 @@ class CertificatePinned(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     certificate_pinned_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), certificate_pinned_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseCertificatePinned.cast_from_bunq_response(
@@ -8185,7 +8179,7 @@ class CertificatePinned(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CertificatePinned
         """
 
@@ -8195,7 +8189,7 @@ class CertificatePinned(core.BunqModel):
 class ConfirmationOfFunds(core.BunqModel):
     """
     Used to confirm availability of funds on an account.
-
+    
     :param _pointer_iban: The pointer (IBAN) of the account we're querying.
     :type _pointer_iban: object_.Pointer
     :param _amount: The amount we want to check for.
@@ -8238,7 +8232,7 @@ class ConfirmationOfFunds(core.BunqModel):
         :param amount: The amount we want to check for.
         :type amount: object_.Amount
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseConfirmationOfFunds
         """
 
@@ -8255,8 +8249,7 @@ class ConfirmationOfFunds(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseConfirmationOfFunds.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -8284,7 +8277,7 @@ class ConfirmationOfFunds(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ConfirmationOfFunds
         """
 
@@ -8295,7 +8288,7 @@ class DeviceServer(core.BunqModel):
     """
     After having created an Installation you can now create a DeviceServer. A
     DeviceServer is needed to do a login call with session-server.
-
+    
     :param _description: The description of the DeviceServer.
     :type _description: str
     :param _secret: The API key. You can request an API key in the bunq app.
@@ -8356,8 +8349,7 @@ class DeviceServer(core.BunqModel):
         self._permitted_ips_field_for_request = permitted_ips
 
     @classmethod
-    def create(cls, description, secret, permitted_ips=None,
-               custom_headers=None):
+    def create(cls, description, secret, permitted_ips=None, custom_headers=None):
         """
         Create a new DeviceServer providing the installation token in the header
         and signing the request with the private part of the key you used to
@@ -8368,7 +8360,7 @@ class DeviceServer(core.BunqModel):
         device-server.<br/><br/>Find out more at this link <a
         href="https://bunq.com/en/apikey-dynamic-ip"
         target="_blank">https://bunq.com/en/apikey-dynamic-ip</a>.
-
+        
         :param description: The description of the DeviceServer. This is only
         for your own reference when reading the DeviceServer again.
         :type description: str
@@ -8378,7 +8370,7 @@ class DeviceServer(core.BunqModel):
         be able to do calls from. These will be linked to the API key.
         :type permitted_ips: list[str]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -8396,8 +8388,7 @@ class DeviceServer(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -8407,11 +8398,11 @@ class DeviceServer(core.BunqModel):
     def get(cls, device_server_id, custom_headers=None):
         """
         Get one of your DeviceServers.
-
+        
         :type api_context: context.ApiContext
         :type device_server_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDeviceServer
         """
 
@@ -8430,10 +8421,10 @@ class DeviceServer(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Get a collection of all the DeviceServers you have created.
-
+        
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDeviceServerList
         """
 
@@ -8528,7 +8519,7 @@ class DeviceServer(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DeviceServer
         """
 
@@ -8539,8 +8530,8 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
     """
     Used to get a Device or a listing of Devices. Creating a DeviceServer should
     happen via /device-server
-
-    :param _DeviceServer:
+    
+    :param _DeviceServer: 
     :type _DeviceServer: DeviceServer
     """
 
@@ -8560,11 +8551,11 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
     def get(cls, device_id, custom_headers=None):
         """
         Get a single Device. A Device is either a DevicePhone or a DeviceServer.
-
+        
         :type api_context: context.ApiContext
         :type device_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDevice
         """
 
@@ -8584,10 +8575,10 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         """
         Get a collection of Devices. A Device is either a DevicePhone or a
         DeviceServer.
-
+        
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDeviceList
         """
 
@@ -8638,7 +8629,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Device
         """
 
@@ -8649,7 +8640,7 @@ class DraftPayment(core.BunqModel):
     """
     A DraftPayment is like a regular Payment, but it needs to be accepted by the
     sending party before the actual Payment is done.
-
+    
     :param _status: The status of the DraftPayment.
     :type _status: str
     :param _entries: The entries in the DraftPayment.
@@ -8711,8 +8702,7 @@ class DraftPayment(core.BunqModel):
     _previous_updated_timestamp_field_for_request = None
     _number_of_required_accepts_field_for_request = None
 
-    def __init__(self, number_of_required_accepts, entries=None, status=None,
-                 previous_updated_timestamp=None):
+    def __init__(self, number_of_required_accepts, entries=None, status=None, previous_updated_timestamp=None):
         """
         :param entries: The list of entries in the DraftPayment. Each entry will
         result in a payment when the DraftPayment is accepted.
@@ -8734,12 +8724,11 @@ class DraftPayment(core.BunqModel):
         self._previous_updated_timestamp_field_for_request = previous_updated_timestamp
 
     @classmethod
-    def create(cls, entries, number_of_required_accepts,
-               monetary_account_id=None, status=None,
+    def create(cls, entries, number_of_required_accepts, monetary_account_id=None, status=None,
                previous_updated_timestamp=None, custom_headers=None):
         """
         Create a new DraftPayment.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param entries: The list of entries in the DraftPayment. Each entry will
@@ -8756,7 +8745,7 @@ class DraftPayment(core.BunqModel):
         race conditions.
         :type previous_updated_timestamp: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -8775,22 +8764,19 @@ class DraftPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, draft_payment_id, monetary_account_id=None, status=None,
-               entries=None, previous_updated_timestamp=None,
-               custom_headers=None):
+    def update(cls, draft_payment_id, monetary_account_id=None, status=None, entries=None,
+               previous_updated_timestamp=None, custom_headers=None):
         """
         Update a DraftPayment.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
@@ -8804,7 +8790,7 @@ class DraftPayment(core.BunqModel):
         race conditions.
         :type previous_updated_timestamp: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -8823,11 +8809,9 @@ class DraftPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        draft_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -8837,12 +8821,12 @@ class DraftPayment(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a listing of all DraftPayments from a given MonetaryAccount.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftPaymentList
         """
 
@@ -8853,9 +8837,8 @@ class DraftPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseDraftPaymentList.cast_from_bunq_response(
@@ -8863,17 +8846,16 @@ class DraftPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, draft_payment_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
         Get a specific DraftPayment.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftPayment
         """
 
@@ -8882,8 +8864,7 @@ class DraftPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      draft_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -9001,7 +8982,7 @@ class DraftPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftPayment
         """
 
@@ -9011,7 +8992,7 @@ class DraftPayment(core.BunqModel):
 class PaymentBatch(core.BunqModel):
     """
     Create a payment batch, or show the payment batches of a monetary account.
-
+    
     :param _payments: The list of mutations that were made.
     :type _payments: list[Payment]
     """
@@ -9044,13 +9025,13 @@ class PaymentBatch(core.BunqModel):
         """
         Create a payment batch by sending an array of single payment objects,
         that will become part of the batch.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param payments: The list of payments we want to send in a single batch.
         :type payments: list[Payment]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -9066,27 +9047,24 @@ class PaymentBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, payment_batch_id, monetary_account_id=None,
-               custom_headers=None):
+    def update(cls, payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         Revoke a bunq.to payment batch. The status of all the payments will be
         set to REVOKED.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -9103,28 +9081,25 @@ class PaymentBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, payment_batch_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         Return the details of a specific payment batch.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePaymentBatch
         """
 
@@ -9133,8 +9108,7 @@ class PaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -9146,12 +9120,12 @@ class PaymentBatch(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Return all the payment batches for a monetary account.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePaymentBatchList
         """
 
@@ -9162,9 +9136,8 @@ class PaymentBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponsePaymentBatchList.cast_from_bunq_response(
@@ -9193,7 +9166,7 @@ class PaymentBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: PaymentBatch
         """
 
@@ -9219,11 +9192,11 @@ class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
         Returns the raw content of the QR code that links to this draft share
         invite. The raw content is the binary representation of a file, without
         any JSON wrapping.
-
+        
         :type user_id: int
         :type draft_share_invite_api_key_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -9231,8 +9204,7 @@ class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), draft_share_invite_api_key_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), draft_share_invite_api_key_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -9250,12 +9222,11 @@ class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftShareInviteApiKeyQrCodeContent
         """
 
-        return converter.json_to_class(DraftShareInviteApiKeyQrCodeContent,
-                                       json_str)
+        return converter.json_to_class(DraftShareInviteApiKeyQrCodeContent, json_str)
 
 
 class DraftShareInviteApiKey(core.BunqModel):
@@ -9263,7 +9234,7 @@ class DraftShareInviteApiKey(core.BunqModel):
     Used to create a draft share invite for a user with another bunq user. The
     user that accepts the invite can share his MAs with the user that created
     the invite.
-
+    
     :param _status: The status of the draft share invite. Can be USED, CANCELLED
     and PENDING.
     :type _status: str
@@ -9326,8 +9297,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         self._sub_status_field_for_request = sub_status
 
     @classmethod
-    def create(cls, expiration, status=None, sub_status=None,
-               custom_headers=None):
+    def create(cls, expiration, status=None, sub_status=None, custom_headers=None):
         """
         :type user_id: int
         :param expiration: The moment when this draft share invite expires.
@@ -9339,7 +9309,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         NONE, ACCEPTED or REJECTED.
         :type sub_status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -9357,8 +9327,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -9368,12 +9337,12 @@ class DraftShareInviteApiKey(core.BunqModel):
     def get(cls, draft_share_invite_api_key_id, custom_headers=None):
         """
         Get the details of a specific draft of a share invite.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type draft_share_invite_api_key_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftShareInviteApiKey
         """
 
@@ -9381,8 +9350,7 @@ class DraftShareInviteApiKey(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     draft_share_invite_api_key_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), draft_share_invite_api_key_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseDraftShareInviteApiKey.cast_from_bunq_response(
@@ -9390,12 +9358,11 @@ class DraftShareInviteApiKey(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, draft_share_invite_api_key_id, status=None, sub_status=None,
-               expiration=None, custom_headers=None):
+    def update(cls, draft_share_invite_api_key_id, status=None, sub_status=None, expiration=None, custom_headers=None):
         """
         Update a draft share invite. When sending status CANCELLED it is
         possible to cancel the draft share invite.
-
+        
         :type user_id: int
         :type draft_share_invite_api_key_id: int
         :param status: The status of the draft share invite. Can be CANCELLED
@@ -9407,7 +9374,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         :param expiration: The moment when this draft share invite expires.
         :type expiration: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftShareInviteApiKey
         """
 
@@ -9425,10 +9392,8 @@ class DraftShareInviteApiKey(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       draft_share_invite_api_key_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), draft_share_invite_api_key_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseDraftShareInviteApiKey.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
@@ -9440,7 +9405,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftShareInviteApiKeyList
         """
 
@@ -9451,8 +9416,7 @@ class DraftShareInviteApiKey(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseDraftShareInviteApiKeyList.cast_from_bunq_response(
@@ -9547,7 +9511,7 @@ class DraftShareInviteApiKey(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftShareInviteApiKey
         """
 
@@ -9573,11 +9537,11 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
         Returns the raw content of the QR code that links to this draft share
         invite. The raw content is the binary representation of a file, without
         any JSON wrapping.
-
+        
         :type user_id: int
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -9585,8 +9549,7 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), draft_share_invite_bank_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -9604,12 +9567,11 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftShareInviteBankQrCodeContent
         """
 
-        return converter.json_to_class(DraftShareInviteBankQrCodeContent,
-                                       json_str)
+        return converter.json_to_class(DraftShareInviteBankQrCodeContent, json_str)
 
 
 class DraftShareInviteBank(core.BunqModel):
@@ -9618,7 +9580,7 @@ class DraftShareInviteBank(core.BunqModel):
     user, as in the 'Connect' feature in the bunq app. The user that accepts the
     invite can share one of their MonetaryAccounts with the user that created
     the invite.
-
+    
     :param _status: The status of the draft share invite. Can be USED, CANCELLED
     and PENDING.
     :type _status: str
@@ -9679,8 +9641,7 @@ class DraftShareInviteBank(core.BunqModel):
         self._status_field_for_request = status
 
     @classmethod
-    def create(cls, expiration, draft_share_settings, status=None,
-               custom_headers=None):
+    def create(cls, expiration, draft_share_settings, status=None, custom_headers=None):
         """
         :type user_id: int
         :param expiration: The moment when this draft share invite expires.
@@ -9691,7 +9652,7 @@ class DraftShareInviteBank(core.BunqModel):
         (the user cancels the draft share before it's used).
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -9709,8 +9670,7 @@ class DraftShareInviteBank(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -9720,12 +9680,12 @@ class DraftShareInviteBank(core.BunqModel):
     def get(cls, draft_share_invite_bank_id, custom_headers=None):
         """
         Get the details of a specific draft of a share invite.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftShareInviteBank
         """
 
@@ -9733,8 +9693,7 @@ class DraftShareInviteBank(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     draft_share_invite_bank_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseDraftShareInviteBank.cast_from_bunq_response(
@@ -9742,12 +9701,12 @@ class DraftShareInviteBank(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, draft_share_invite_bank_id, status=None, expiration=None,
-               draft_share_settings=None, custom_headers=None):
+    def update(cls, draft_share_invite_bank_id, status=None, expiration=None, draft_share_settings=None,
+               custom_headers=None):
         """
         Update a draft share invite. When sending status CANCELLED it is
         possible to cancel the draft share invite.
-
+        
         :type user_id: int
         :type draft_share_invite_bank_id: int
         :param status: The status of the draft share invite. Can be CANCELLED
@@ -9758,7 +9717,7 @@ class DraftShareInviteBank(core.BunqModel):
         :param draft_share_settings: The draft share invite details.
         :type draft_share_settings: object_.DraftShareInviteEntry
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -9776,10 +9735,8 @@ class DraftShareInviteBank(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       draft_share_invite_bank_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), draft_share_invite_bank_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -9791,7 +9748,7 @@ class DraftShareInviteBank(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseDraftShareInviteBankList
         """
 
@@ -9802,8 +9759,7 @@ class DraftShareInviteBank(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseDraftShareInviteBankList.cast_from_bunq_response(
@@ -9898,7 +9854,7 @@ class DraftShareInviteBank(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftShareInviteBank
         """
 
@@ -9912,7 +9868,7 @@ class Event(core.BunqModel):
     app events are shown in your 'overview'. Examples of when events are created
     or modified: payment sent, payment received, request for payment received or
     connect invite received.
-
+    
     :param _id_: The id of the event.
     :type _id_: int
     :param _created: The timestamp of the event's creation.
@@ -9956,12 +9912,12 @@ class Event(core.BunqModel):
     def get(cls, event_id, custom_headers=None):
         """
         Get a specific event for a given user.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type event_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseEvent
         """
 
@@ -9969,8 +9925,7 @@ class Event(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     event_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), event_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseEvent.cast_from_bunq_response(
@@ -9990,11 +9945,11 @@ class Event(core.BunqModel):
         from the response, when not provided user events are displayed. User
         events are events that are not related to a monetary account (for
         example: connect invites).
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseEventList
         """
 
@@ -10005,8 +9960,7 @@ class Event(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseEventList.cast_from_bunq_response(
@@ -10112,7 +10066,7 @@ class Event(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Event
         """
 
@@ -10122,7 +10076,7 @@ class Event(core.BunqModel):
 class FeatureAnnouncement(core.BunqModel):
     """
     view for updating the feature display.
-
+    
     :param _avatar: The Avatar of the event overview.
     :type _avatar: object_.Avatar
     :param _title: The event overview title of the feature display
@@ -10148,7 +10102,7 @@ class FeatureAnnouncement(core.BunqModel):
         :type user_id: int
         :type feature_announcement_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseFeatureAnnouncement
         """
 
@@ -10156,8 +10110,7 @@ class FeatureAnnouncement(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     feature_announcement_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), feature_announcement_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseFeatureAnnouncement.cast_from_bunq_response(
@@ -10208,7 +10161,7 @@ class FeatureAnnouncement(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: FeatureAnnouncement
         """
 
@@ -10218,7 +10171,7 @@ class FeatureAnnouncement(core.BunqModel):
 class IdealMerchantTransaction(core.BunqModel):
     """
     View for requesting iDEAL transactions and polling their status.
-
+    
     :param _amount_requested: The requested amount of money to add.
     :type _amount_requested: object_.Amount
     :param _issuer: The BIC of the issuer.
@@ -10238,7 +10191,7 @@ class IdealMerchantTransaction(core.BunqModel):
     :type _expiration: str
     :param _issuer_name: The Name of the issuer.
     :type _issuer_name: str
-    :param _issuer_authentication_url: The URL to visit to
+    :param _issuer_authentication_url: The URL to visit to 
     :type _issuer_authentication_url: str
     :param _purchase_identifier: The 'purchase ID' of the iDEAL transaction.
     :type _purchase_identifier: str
@@ -10294,8 +10247,7 @@ class IdealMerchantTransaction(core.BunqModel):
         self._issuer_field_for_request = issuer
 
     @classmethod
-    def create(cls, amount_requested, issuer, monetary_account_id=None,
-               custom_headers=None):
+    def create(cls, amount_requested, issuer, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -10304,7 +10256,7 @@ class IdealMerchantTransaction(core.BunqModel):
         :param issuer: The BIC of the issuing bank to ask for money.
         :type issuer: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -10321,25 +10273,22 @@ class IdealMerchantTransaction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, ideal_merchant_transaction_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, ideal_merchant_transaction_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseIdealMerchantTransaction
         """
 
@@ -10348,8 +10297,7 @@ class IdealMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      ideal_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -10364,7 +10312,7 @@ class IdealMerchantTransaction(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseIdealMerchantTransactionList
         """
 
@@ -10375,9 +10323,8 @@ class IdealMerchantTransaction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseIdealMerchantTransactionList.cast_from_bunq_response(
@@ -10549,7 +10496,7 @@ class IdealMerchantTransaction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: IdealMerchantTransaction
         """
 
@@ -10559,7 +10506,7 @@ class IdealMerchantTransaction(core.BunqModel):
 class SchedulePayment(core.BunqModel):
     """
     Endpoint for schedule payments.
-
+    
     :param _payment: The payment details.
     :type _payment: object_.SchedulePaymentEntry
     :param _schedule: The schedule details.
@@ -10598,8 +10545,7 @@ class SchedulePayment(core.BunqModel):
         self._schedule_field_for_request = schedule
 
     @classmethod
-    def create(cls, payment, schedule, monetary_account_id=None,
-               custom_headers=None):
+    def create(cls, payment, schedule, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -10609,7 +10555,7 @@ class SchedulePayment(core.BunqModel):
         scheduled payment.
         :type schedule: Schedule
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -10626,24 +10572,21 @@ class SchedulePayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_payment_id, monetary_account_id=None,
-               custom_headers=None):
+    def delete(cls, schedule_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -10652,8 +10595,7 @@ class SchedulePayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -10662,15 +10604,14 @@ class SchedulePayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_payment_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, schedule_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseSchedulePayment
         """
 
@@ -10679,8 +10620,7 @@ class SchedulePayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -10695,7 +10635,7 @@ class SchedulePayment(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseSchedulePaymentList
         """
 
@@ -10706,9 +10646,8 @@ class SchedulePayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseSchedulePaymentList.cast_from_bunq_response(
@@ -10716,8 +10655,7 @@ class SchedulePayment(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, schedule_payment_id, monetary_account_id=None, payment=None,
-               schedule=None, custom_headers=None):
+    def update(cls, schedule_payment_id, monetary_account_id=None, payment=None, schedule=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -10728,7 +10666,7 @@ class SchedulePayment(core.BunqModel):
         scheduled payment.
         :type schedule: Schedule
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -10746,11 +10684,9 @@ class SchedulePayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -10789,7 +10725,7 @@ class SchedulePayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: SchedulePayment
         """
 
@@ -10799,7 +10735,7 @@ class SchedulePayment(core.BunqModel):
 class Schedule(core.BunqModel):
     """
     view for reading the scheduled definitions.
-
+    
     :param _time_start: The schedule start time (UTC).
     :type _time_start: str
     :param _time_end: The schedule end time (UTC).
@@ -10840,8 +10776,7 @@ class Schedule(core.BunqModel):
     _recurrence_unit_field_for_request = None
     _recurrence_size_field_for_request = None
 
-    def __init__(self, time_start=None, recurrence_unit=None,
-                 recurrence_size=None, time_end=None):
+    def __init__(self, time_start=None, recurrence_unit=None, recurrence_size=None, time_end=None):
         """
         :param time_start: The schedule start time (UTC).
         :type time_start: str
@@ -10864,13 +10799,13 @@ class Schedule(core.BunqModel):
     def get(cls, schedule_id, monetary_account_id=None, custom_headers=None):
         """
         Get a specific schedule definition for a given monetary account.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseSchedule
         """
 
@@ -10879,8 +10814,7 @@ class Schedule(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -10896,12 +10830,12 @@ class Schedule(core.BunqModel):
         type={SCHEDULE_DEFINITION_PAYMENT,SCHEDULE_DEFINITION_PAYMENT_BATCH} is
         provided only schedule definition object that relate to these
         definitions are returned.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseScheduleList
         """
 
@@ -10912,9 +10846,8 @@ class Schedule(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseScheduleList.cast_from_bunq_response(
@@ -10998,7 +10931,7 @@ class Schedule(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Schedule
         """
 
@@ -11008,7 +10941,7 @@ class Schedule(core.BunqModel):
 class SchedulePaymentBatch(core.BunqModel):
     """
     Endpoint for schedule payment batches.
-
+    
     :param _payments: The payment details.
     :type _payments: list[object_.SchedulePaymentEntry]
     :param _schedule: The schedule details.
@@ -11041,8 +10974,7 @@ class SchedulePaymentBatch(core.BunqModel):
         self._schedule_field_for_request = schedule
 
     @classmethod
-    def create(cls, payments, schedule, monetary_account_id=None,
-               custom_headers=None):
+    def create(cls, payments, schedule, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -11051,7 +10983,7 @@ class SchedulePaymentBatch(core.BunqModel):
         :param schedule: The schedule details when creating a scheduled payment.
         :type schedule: Schedule
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -11068,18 +11000,16 @@ class SchedulePaymentBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_payment_batch_id, monetary_account_id=None,
-               payments=None, schedule=None, custom_headers=None):
+    def update(cls, schedule_payment_batch_id, monetary_account_id=None, payments=None, schedule=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -11089,7 +11019,7 @@ class SchedulePaymentBatch(core.BunqModel):
         :param schedule: The schedule details when creating a scheduled payment.
         :type schedule: Schedule
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -11107,25 +11037,22 @@ class SchedulePaymentBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_payment_batch_id, monetary_account_id=None,
-               custom_headers=None):
+    def delete(cls, schedule_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -11134,8 +11061,7 @@ class SchedulePaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -11176,7 +11102,7 @@ class SchedulePaymentBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: SchedulePaymentBatch
         """
 
@@ -11186,7 +11112,7 @@ class SchedulePaymentBatch(core.BunqModel):
 class ScheduleInstance(core.BunqModel):
     """
     view for reading, updating and listing the scheduled instance.
-
+    
     :param _state: The state of the scheduleInstance. (FINISHED_SUCCESSFULLY,
     RETRY, FAILED_USER_ERROR)
     :type _state: str
@@ -11238,8 +11164,7 @@ class ScheduleInstance(core.BunqModel):
         self._state_field_for_request = state
 
     @classmethod
-    def get(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, schedule_id, schedule_instance_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -11247,7 +11172,7 @@ class ScheduleInstance(core.BunqModel):
         :type schedule_id: int
         :type schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseScheduleInstance
         """
 
@@ -11256,10 +11181,8 @@ class ScheduleInstance(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_id,
-                                                     schedule_instance_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     schedule_id, schedule_instance_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseScheduleInstance.cast_from_bunq_response(
@@ -11267,8 +11190,7 @@ class ScheduleInstance(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-               state=None, custom_headers=None):
+    def update(cls, schedule_id, schedule_instance_id, monetary_account_id=None, state=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -11278,7 +11200,7 @@ class ScheduleInstance(core.BunqModel):
         FAILED_USER_ERROR to RETRY.
         :type state: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -11295,27 +11217,23 @@ class ScheduleInstance(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def list(cls, schedule_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, schedule_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseScheduleInstanceList
         """
 
@@ -11326,10 +11244,9 @@ class ScheduleInstance(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseScheduleInstanceList.cast_from_bunq_response(
@@ -11424,7 +11341,7 @@ class ScheduleInstance(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ScheduleInstance
         """
 
@@ -11434,7 +11351,7 @@ class ScheduleInstance(core.BunqModel):
 class MasterCardAction(core.BunqModel):
     """
     MasterCard transaction view.
-
+    
     :param _id_: The id of the MastercardAction.
     :type _id_: int
     :param _monetary_account_id: The id of the monetary account this action
@@ -11482,6 +11399,8 @@ class MasterCardAction(core.BunqModel):
     :param _settlement_status: The setlement status in the authorisation
     process.
     :type _settlement_status: str
+    :param _maturity_date: The maturity date.
+    :type _maturity_date: str
     :param _city: The city where the message originates from as announced by the
     terminal.
     :type _city: str
@@ -11541,6 +11460,7 @@ class MasterCardAction(core.BunqModel):
     _authorisation_type = None
     _pan_entry_mode_user = None
     _settlement_status = None
+    _maturity_date = None
     _city = None
     _alias = None
     _counterparty_alias = None
@@ -11554,15 +11474,14 @@ class MasterCardAction(core.BunqModel):
     _request_reference_split_the_bill = None
 
     @classmethod
-    def get(cls, master_card_action_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, master_card_action_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type master_card_action_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMasterCardAction
         """
 
@@ -11571,8 +11490,7 @@ class MasterCardAction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      master_card_action_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -11587,7 +11505,7 @@ class MasterCardAction(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMasterCardActionList
         """
 
@@ -11598,9 +11516,8 @@ class MasterCardAction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseMasterCardActionList.cast_from_bunq_response(
@@ -11752,6 +11669,14 @@ class MasterCardAction(core.BunqModel):
         return self._settlement_status
 
     @property
+    def maturity_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._maturity_date
+
+    @property
     def city(self):
         """
         :rtype: str
@@ -11898,6 +11823,9 @@ class MasterCardAction(core.BunqModel):
         if self._settlement_status is not None:
             return False
 
+        if self._maturity_date is not None:
+            return False
+
         if self._city is not None:
             return False
 
@@ -11937,7 +11865,7 @@ class MasterCardAction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MasterCardAction
         """
 
@@ -11948,7 +11876,7 @@ class RequestInquiryBatch(core.BunqModel):
     """
     Create a batch of requests for payment, or show the request batches of a
     monetary account.
-
+    
     :param _request_inquiries: The list of requests that were made.
     :type _request_inquiries: list[RequestInquiry]
     :param _status: The status of the request.
@@ -11989,8 +11917,7 @@ class RequestInquiryBatch(core.BunqModel):
     _total_amount_inquired_field_for_request = None
     _event_id_field_for_request = None
 
-    def __init__(self, request_inquiries, total_amount_inquired, status=None,
-                 event_id=None):
+    def __init__(self, request_inquiries, total_amount_inquired, status=None, event_id=None):
         """
         :param request_inquiries: The list of request inquiries we want to send in 1
         batch.
@@ -12011,13 +11938,12 @@ class RequestInquiryBatch(core.BunqModel):
         self._event_id_field_for_request = event_id
 
     @classmethod
-    def create(cls, request_inquiries, total_amount_inquired,
-               monetary_account_id=None, status=None, event_id=None,
+    def create(cls, request_inquiries, total_amount_inquired, monetary_account_id=None, status=None, event_id=None,
                custom_headers=None):
         """
         Create a request batch by sending an array of single request objects,
         that will become part of the batch.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param request_inquiries: The list of request inquiries we want to send
@@ -12032,7 +11958,7 @@ class RequestInquiryBatch(core.BunqModel):
         made using 'split the bill'.
         :type event_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -12051,29 +11977,26 @@ class RequestInquiryBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_inquiry_batch_id, monetary_account_id=None,
-               status=None, custom_headers=None):
+    def update(cls, request_inquiry_batch_id, monetary_account_id=None, status=None, custom_headers=None):
         """
         Revoke a request batch. The status of all the requests will be set to
         REVOKED.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
         :param status: The status of the request.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -12090,28 +12013,25 @@ class RequestInquiryBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, request_inquiry_batch_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, request_inquiry_batch_id, monetary_account_id=None, custom_headers=None):
         """
         Return the details of a specific request batch.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestInquiryBatch
         """
 
@@ -12120,8 +12040,7 @@ class RequestInquiryBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -12133,12 +12052,12 @@ class RequestInquiryBatch(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Return all the request batches for a monetary account.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestInquiryBatchList
         """
 
@@ -12149,9 +12068,8 @@ class RequestInquiryBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseRequestInquiryBatchList.cast_from_bunq_response(
@@ -12202,7 +12120,7 @@ class RequestInquiryBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RequestInquiryBatch
         """
 
@@ -12217,7 +12135,7 @@ class RequestInquiry(core.BunqModel):
     a RFP. Requests for Payment are the foundation for a number of consumer
     features like 'Split the bill' and 'Request forwarding'. We invite you to
     invent your own based on the bunq api!
-
+    
     :param _amount_inquired: The requested amount.
     :type _amount_inquired: object_.Amount
     :param _counterparty_alias: The LabelMonetaryAccount with the public
@@ -12368,11 +12286,9 @@ class RequestInquiry(core.BunqModel):
     _redirect_url_field_for_request = None
     _event_id_field_for_request = None
 
-    def __init__(self, amount_inquired, counterparty_alias, description,
-                 allow_bunqme, attachment=None, merchant_reference=None,
-                 status=None, minimum_age=None, require_address=None,
-                 want_tip=None, allow_amount_lower=None,
-                 allow_amount_higher=None, redirect_url=None, event_id=None):
+    def __init__(self, amount_inquired, counterparty_alias, description, allow_bunqme, attachment=None,
+                 merchant_reference=None, status=None, minimum_age=None, require_address=None, want_tip=None,
+                 allow_amount_lower=None, allow_amount_higher=None, redirect_url=None, event_id=None):
         """
         :param amount_inquired: The Amount requested to be paid by the person the
         RequestInquiry is sent to. Must be bigger than 0.
@@ -12439,15 +12355,13 @@ class RequestInquiry(core.BunqModel):
         self._event_id_field_for_request = event_id
 
     @classmethod
-    def create(cls, amount_inquired, counterparty_alias, description,
-               allow_bunqme, monetary_account_id=None, attachment=None,
-               merchant_reference=None, status=None, minimum_age=None,
-               require_address=None, want_tip=None, allow_amount_lower=None,
-               allow_amount_higher=None, redirect_url=None, event_id=None,
+    def create(cls, amount_inquired, counterparty_alias, description, allow_bunqme, monetary_account_id=None,
+               attachment=None, merchant_reference=None, status=None, minimum_age=None, require_address=None,
+               want_tip=None, allow_amount_lower=None, allow_amount_higher=None, redirect_url=None, event_id=None,
                custom_headers=None):
         """
         Create a new payment request.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param amount_inquired: The Amount requested to be paid by the person
@@ -12502,7 +12416,7 @@ class RequestInquiry(core.BunqModel):
         using 'split the bill'.
         :type event_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -12531,21 +12445,18 @@ class RequestInquiry(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_inquiry_id, monetary_account_id=None, status=None,
-               custom_headers=None):
+    def update(cls, request_inquiry_id, monetary_account_id=None, status=None, custom_headers=None):
         """
         Revoke a request for payment, by updating the status to REVOKED.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
@@ -12554,7 +12465,7 @@ class RequestInquiry(core.BunqModel):
         setting REVOKED with a PUT request.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestInquiry
         """
 
@@ -12571,11 +12482,9 @@ class RequestInquiry(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseRequestInquiry.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
@@ -12585,12 +12494,12 @@ class RequestInquiry(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get all payment requests for a user's monetary account.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestInquiryList
         """
 
@@ -12601,9 +12510,8 @@ class RequestInquiry(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseRequestInquiryList.cast_from_bunq_response(
@@ -12611,17 +12519,16 @@ class RequestInquiry(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_inquiry_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         Get the details of a specific payment request, including its status.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestInquiry
         """
 
@@ -12630,8 +12537,7 @@ class RequestInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -12936,7 +12842,7 @@ class RequestInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RequestInquiry
         """
 
@@ -12950,7 +12856,7 @@ class RequestResponse(core.BunqModel):
     the user that sent it and that wants to receive the money. A RequestResponse
     is what the other side sees, i.e. the user that pays the money to accept the
     request. The content is almost identical.
-
+    
     :param _amount_responded: The Amount the RequestResponse was accepted with.
     :type _amount_responded: object_.Amount
     :param _status: The status of the RequestResponse. Can be ACCEPTED, PENDING,
@@ -13083,8 +12989,7 @@ class RequestResponse(core.BunqModel):
     _address_shipping_field_for_request = None
     _address_billing_field_for_request = None
 
-    def __init__(self, status=None, amount_responded=None,
-                 address_shipping=None, address_billing=None):
+    def __init__(self, status=None, amount_responded=None, address_shipping=None, address_billing=None):
         """
         :param status: The responding status of the RequestResponse. Can be ACCEPTED
         or REJECTED.
@@ -13107,12 +13012,11 @@ class RequestResponse(core.BunqModel):
         self._address_billing_field_for_request = address_billing
 
     @classmethod
-    def update(cls, request_response_id, monetary_account_id=None,
-               amount_responded=None, status=None, address_shipping=None,
-               address_billing=None, custom_headers=None):
+    def update(cls, request_response_id, monetary_account_id=None, amount_responded=None, status=None,
+               address_shipping=None, address_billing=None, custom_headers=None):
         """
         Update the status to accept or reject the RequestResponse.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
@@ -13130,7 +13034,7 @@ class RequestResponse(core.BunqModel):
         is set to BILLING, BILLING_SHIPPING or OPTIONAL.
         :type address_billing: object_.Address
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestResponse
         """
 
@@ -13150,11 +13054,9 @@ class RequestResponse(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseRequestResponse.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
@@ -13164,12 +13066,12 @@ class RequestResponse(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get all RequestResponses for a MonetaryAccount.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestResponseList
         """
 
@@ -13180,9 +13082,8 @@ class RequestResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseRequestResponseList.cast_from_bunq_response(
@@ -13190,17 +13091,16 @@ class RequestResponse(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_response_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, request_response_id, monetary_account_id=None, custom_headers=None):
         """
         Get the details for a specific existing RequestResponse.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRequestResponse
         """
 
@@ -13209,8 +13109,7 @@ class RequestResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      request_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -13548,7 +13447,7 @@ class RequestResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RequestResponse
         """
 
@@ -13560,7 +13459,7 @@ class TabResultResponse(core.BunqModel):
     Used to view TabResultResponse objects belonging to a tab. A
     TabResultResponse is an object that holds details on a tab which has been
     paid from the provided monetary account.
-
+    
     :param _tab: The Tab details.
     :type _tab: Tab
     :param _payment: The payment made for the Tab.
@@ -13583,17 +13482,16 @@ class TabResultResponse(core.BunqModel):
     _request_reference_split_the_bill = None
 
     @classmethod
-    def get(cls, tab_result_response_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, tab_result_response_id, monetary_account_id=None, custom_headers=None):
         """
         Used to view a single TabResultResponse belonging to a tab.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type tab_result_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabResultResponse
         """
 
@@ -13602,8 +13500,7 @@ class TabResultResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      tab_result_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -13615,12 +13512,12 @@ class TabResultResponse(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         Used to view a list of TabResultResponse objects belonging to a tab.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabResultResponseList
         """
 
@@ -13631,9 +13528,8 @@ class TabResultResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseTabResultResponseList.cast_from_bunq_response(
@@ -13684,7 +13580,7 @@ class TabResultResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabResultResponse
         """
 
@@ -13694,7 +13590,7 @@ class TabResultResponse(core.BunqModel):
 class WhitelistResult(core.BunqModel):
     """
     Whitelist an SDD so that when one comes in, it is automatically accepted.
-
+    
     :param _id_: The ID of the whitelist entry.
     :type _id_: int
     :param _monetary_account_paying_id: The account from which payments will be
@@ -13812,7 +13708,7 @@ class WhitelistResult(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: WhitelistResult
         """
 
@@ -13835,7 +13731,7 @@ class Whitelist(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Whitelist
         """
 
@@ -13845,7 +13741,7 @@ class Whitelist(core.BunqModel):
 class RewardRecipient(core.BunqModel):
     """
     Used to view Rewards.
-
+    
     :param _id_: The id of the reward.
     :type _id_: int
     :param _created: The time the reward was created.
@@ -13889,7 +13785,7 @@ class RewardRecipient(core.BunqModel):
         :type user_id: int
         :type reward_recipient_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRewardRecipient
         """
 
@@ -13897,8 +13793,7 @@ class RewardRecipient(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     reward_recipient_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), reward_recipient_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseRewardRecipient.cast_from_bunq_response(
@@ -13911,7 +13806,7 @@ class RewardRecipient(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRewardRecipientList
         """
 
@@ -13922,8 +13817,7 @@ class RewardRecipient(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseRewardRecipientList.cast_from_bunq_response(
@@ -14029,7 +13923,7 @@ class RewardRecipient(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RewardRecipient
         """
 
@@ -14039,7 +13933,7 @@ class RewardRecipient(core.BunqModel):
 class RewardSender(core.BunqModel):
     """
     Used to view Rewards.
-
+    
     :param _id_: The id of the reward.
     :type _id_: int
     :param _created: The time the reward was created.
@@ -14083,7 +13977,7 @@ class RewardSender(core.BunqModel):
         :type user_id: int
         :type reward_sender_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRewardSender
         """
 
@@ -14091,8 +13985,7 @@ class RewardSender(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     reward_sender_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), reward_sender_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseRewardSender.cast_from_bunq_response(
@@ -14105,7 +13998,7 @@ class RewardSender(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRewardSenderList
         """
 
@@ -14116,8 +14009,7 @@ class RewardSender(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseRewardSenderList.cast_from_bunq_response(
@@ -14223,7 +14115,7 @@ class RewardSender(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RewardSender
         """
 
@@ -14236,7 +14128,7 @@ class ShareInviteBankInquiryBatch(core.BunqModel):
     feature in the bunq app. Allow the creation of share inquiries that, in the
     same way as request inquiries, can be revoked by the user creating them or
     accepted/rejected by the other party.
-
+    
     :param _share_invite_bank_inquiries: The list of share invite bank inquiries
     that were made.
     :type _share_invite_bank_inquiries: list[ShareInviteBankInquiry]
@@ -14281,7 +14173,7 @@ class ShareInviteBankInquiryBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteBankInquiryBatch
         """
 
@@ -14295,7 +14187,7 @@ class ShareInviteBankInquiry(core.BunqModel):
     bunq app. Allow the creation of share inquiries that, in the same way as
     request inquiries, can be revoked by the user creating them or
     accepted/rejected by the other party.
-
+    
     :param _counter_user_alias: The label of the user to share with.
     :type _counter_user_alias: object_.LabelUser
     :param _draft_share_invite_bank_id: The id of the draft share invite bank.
@@ -14365,9 +14257,8 @@ class ShareInviteBankInquiry(core.BunqModel):
     _start_date_field_for_request = None
     _end_date_field_for_request = None
 
-    def __init__(self, counter_user_alias, share_detail=None, status=None,
-                 draft_share_invite_bank_id=None, share_type=None,
-                 start_date=None, end_date=None):
+    def __init__(self, counter_user_alias, share_detail=None, status=None, draft_share_invite_bank_id=None,
+                 share_type=None, start_date=None, end_date=None):
         """
         :param counter_user_alias: The pointer of the user to share with.
         :type counter_user_alias: object_.Pointer
@@ -14399,15 +14290,13 @@ class ShareInviteBankInquiry(core.BunqModel):
         self._end_date_field_for_request = end_date
 
     @classmethod
-    def create(cls, counter_user_alias, share_detail, status,
-               monetary_account_id=None, draft_share_invite_bank_id=None,
-               share_type=None, start_date=None, end_date=None,
-               custom_headers=None):
+    def create(cls, counter_user_alias, share_detail, status, monetary_account_id=None, draft_share_invite_bank_id=None,
+               share_type=None, start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-inquiry] Create a new
         share inquiry for a monetary account, specifying the permission the
         other bunq user will have on it.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param counter_user_alias: The pointer of the user to share with.
@@ -14431,7 +14320,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         :param end_date: The expiration date of this share.
         :type end_date: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -14453,28 +14342,25 @@ class ShareInviteBankInquiry(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, share_invite_bank_inquiry_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, share_invite_bank_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-inquiry] Get the
         details of a specific share inquiry.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_bank_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteBankInquiry
         """
 
@@ -14483,8 +14369,7 @@ class ShareInviteBankInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      share_invite_bank_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -14493,14 +14378,13 @@ class ShareInviteBankInquiry(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, share_invite_bank_inquiry_id, monetary_account_id=None,
-               share_detail=None, status=None, start_date=None, end_date=None,
-               custom_headers=None):
+    def update(cls, share_invite_bank_inquiry_id, monetary_account_id=None, share_detail=None, status=None,
+               start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-inquiry] Update the
         details of a share. This includes updating status (revoking or
         cancelling it), granted permission and validity period of this share.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_bank_inquiry_id: int
@@ -14518,7 +14402,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         :param end_date: The expiration date of this share.
         :type end_date: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -14538,11 +14422,9 @@ class ShareInviteBankInquiry(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        share_invite_bank_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -14555,12 +14437,12 @@ class ShareInviteBankInquiry(core.BunqModel):
         with all the share inquiries for a monetary account, only if the
         requesting user has permission to change the details of the various
         ones.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteBankInquiryList
         """
 
@@ -14571,9 +14453,8 @@ class ShareInviteBankInquiry(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseShareInviteBankInquiryList.cast_from_bunq_response(
@@ -14723,7 +14604,7 @@ class ShareInviteBankInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteBankInquiry
         """
 
@@ -14735,7 +14616,7 @@ class ShareInviteBankResponse(core.BunqModel):
     Used to view or respond to shares a user was invited to. See
     'share-invite-bank-inquiry' for more information about the inquiring
     endpoint.
-
+    
     :param _status: The status of the share. Can be PENDING, REVOKED (the user
     deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
     user deletes an active share) or CANCELLATION_PENDING,
@@ -14811,12 +14692,12 @@ class ShareInviteBankResponse(core.BunqModel):
     def get(cls, share_invite_bank_response_id, custom_headers=None):
         """
         Return the details of a specific share a user was invited to.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type share_invite_bank_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteBankResponse
         """
 
@@ -14824,8 +14705,7 @@ class ShareInviteBankResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     share_invite_bank_response_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), share_invite_bank_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseShareInviteBankResponse.cast_from_bunq_response(
@@ -14833,11 +14713,10 @@ class ShareInviteBankResponse(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, share_invite_bank_response_id, status=None,
-               custom_headers=None):
+    def update(cls, share_invite_bank_response_id, status=None, custom_headers=None):
         """
         Accept or reject a share a user was invited to.
-
+        
         :type user_id: int
         :type share_invite_bank_response_id: int
         :param status: The status of the share. Can be PENDING, REVOKED (the
@@ -14847,7 +14726,7 @@ class ShareInviteBankResponse(core.BunqModel):
         connects)
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -14863,10 +14742,8 @@ class ShareInviteBankResponse(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       share_invite_bank_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), share_invite_bank_response_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -14876,11 +14753,11 @@ class ShareInviteBankResponse(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Return all the shares a user was invited to.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteBankResponseList
         """
 
@@ -14891,8 +14768,7 @@ class ShareInviteBankResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseShareInviteBankResponseList.cast_from_bunq_response(
@@ -15053,7 +14929,7 @@ class ShareInviteBankResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteBankResponse
         """
 
@@ -15063,7 +14939,7 @@ class ShareInviteBankResponse(core.BunqModel):
 class SofortMerchantTransaction(core.BunqModel):
     """
     View for requesting Sofort transactions and polling their status.
-
+    
     :param _amount_requested: The requested amount of money to add.
     :type _amount_requested: object_.Amount
     :param _issuer: The BIC of the issuer.
@@ -15079,7 +14955,7 @@ class SofortMerchantTransaction(core.BunqModel):
     :param _amount_guaranteed: In case of a successful transaction, the amount
     of money that will be transferred.
     :type _amount_guaranteed: object_.Amount
-    :param _issuer_authentication_url: The URL to visit to
+    :param _issuer_authentication_url: The URL to visit to 
     :type _issuer_authentication_url: str
     :param _status: The status of the transaction.
     :type _status: str
@@ -15126,15 +15002,14 @@ class SofortMerchantTransaction(core.BunqModel):
         self._issuer_field_for_request = issuer
 
     @classmethod
-    def get(cls, sofort_merchant_transaction_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, sofort_merchant_transaction_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseSofortMerchantTransaction
         """
 
@@ -15143,8 +15018,7 @@ class SofortMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      sofort_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -15159,7 +15033,7 @@ class SofortMerchantTransaction(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseSofortMerchantTransactionList
         """
 
@@ -15170,9 +15044,8 @@ class SofortMerchantTransaction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseSofortMerchantTransactionList.cast_from_bunq_response(
@@ -15300,7 +15173,7 @@ class SofortMerchantTransaction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: SofortMerchantTransaction
         """
 
@@ -15312,7 +15185,7 @@ class TabResultInquiry(core.BunqModel):
     Used to view TabResultInquiry objects belonging to a tab. A TabResultInquiry
     is an object that holds details on both the tab and a single payment made
     for that tab.
-
+    
     :param _tab: The Tab details.
     :type _tab: Tab
     :param _payment: The payment made for the Tab.
@@ -15330,11 +15203,10 @@ class TabResultInquiry(core.BunqModel):
     _payment = None
 
     @classmethod
-    def get(cls, cash_register_id, tab_uuid, tab_result_inquiry_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, cash_register_id, tab_uuid, tab_result_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         Used to view a single TabResultInquiry belonging to a tab.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
@@ -15342,7 +15214,7 @@ class TabResultInquiry(core.BunqModel):
         :type tab_uuid: str
         :type tab_result_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabResultInquiry
         """
 
@@ -15351,10 +15223,8 @@ class TabResultInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id, tab_uuid,
-                                                     tab_result_inquiry_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     cash_register_id, tab_uuid, tab_result_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseTabResultInquiry.cast_from_bunq_response(
@@ -15362,18 +15232,17 @@ class TabResultInquiry(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, cash_register_id, tab_uuid, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, cash_register_id, tab_uuid, monetary_account_id=None, params=None, custom_headers=None):
         """
         Used to view a list of TabResultInquiry objects belonging to a tab.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabResultInquiryList
         """
 
@@ -15384,10 +15253,9 @@ class TabResultInquiry(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id, tab_uuid)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseTabResultInquiryList.cast_from_bunq_response(
@@ -15427,7 +15295,7 @@ class TabResultInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabResultInquiry
         """
 
@@ -15437,7 +15305,7 @@ class TabResultInquiry(core.BunqModel):
 class TransferwiseTransfer(core.BunqModel):
     """
     Used to create Transferwise payments.
-
+    
     :param _monetary_account_id: The id of the monetary account the payment
     should be made from.
     :type _monetary_account_id: str
@@ -15513,15 +15381,14 @@ class TransferwiseTransfer(core.BunqModel):
         self._recipient_id_field_for_request = recipient_id
 
     @classmethod
-    def get(cls, transferwise_quote_id, transferwise_transfer_id,
-            custom_headers=None):
+    def get(cls, transferwise_quote_id, transferwise_transfer_id, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type transferwise_quote_id: int
         :type transferwise_transfer_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTransferwiseTransfer
         """
 
@@ -15529,8 +15396,7 @@ class TransferwiseTransfer(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     transferwise_quote_id,
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), transferwise_quote_id,
                                                      transferwise_transfer_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -15692,7 +15558,7 @@ class TransferwiseTransfer(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TransferwiseTransfer
         """
 
@@ -15703,7 +15569,7 @@ class TransferwiseQuote(core.BunqModel):
     """
     Used to get quotes from Transferwise. These can be used to initiate
     payments.
-
+    
     :param _currency_source: The source currency.
     :type _currency_source: str
     :param _currency_target: The target currency.
@@ -15751,8 +15617,7 @@ class TransferwiseQuote(core.BunqModel):
     _amount_source_field_for_request = None
     _amount_target_field_for_request = None
 
-    def __init__(self, currency_source, currency_target, amount_source=None,
-                 amount_target=None):
+    def __init__(self, currency_source, currency_target, amount_source=None, amount_target=None):
         """
         :param currency_source: The source currency.
         :type currency_source: str
@@ -15892,7 +15757,7 @@ class TransferwiseQuote(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TransferwiseQuote
         """
 
@@ -15916,11 +15781,11 @@ class ExportAnnualOverviewContent(core.BunqModel):
     def list(cls, export_annual_overview_id, custom_headers=None):
         """
         Used to retrieve the raw content of an annual overview.
-
+        
         :type user_id: int
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -15928,8 +15793,7 @@ class ExportAnnualOverviewContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), export_annual_overview_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -15947,7 +15811,7 @@ class ExportAnnualOverviewContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ExportAnnualOverviewContent
         """
 
@@ -15959,7 +15823,7 @@ class ExportAnnualOverview(core.BunqModel):
     Used to create new and read existing annual overviews of all the user's
     monetary accounts. Once created, annual overviews can be downloaded in PDF
     format via the 'export-annual-overview/{id}/content' endpoint.
-
+    
     :param _year: The year for which the overview is.
     :type _year: int
     :param _id_: The id of the annual overview as created on the server.
@@ -16004,12 +15868,12 @@ class ExportAnnualOverview(core.BunqModel):
         """
         Create a new annual overview for a specific year. An overview can be
         generated only for a past year.
-
+        
         :type user_id: int
         :param year: The year for which the overview is.
         :type year: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -16025,8 +15889,7 @@ class ExportAnnualOverview(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -16036,12 +15899,12 @@ class ExportAnnualOverview(core.BunqModel):
     def get(cls, export_annual_overview_id, custom_headers=None):
         """
         Get an annual overview for a user by its id.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseExportAnnualOverview
         """
 
@@ -16049,8 +15912,7 @@ class ExportAnnualOverview(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     export_annual_overview_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseExportAnnualOverview.cast_from_bunq_response(
@@ -16063,7 +15925,7 @@ class ExportAnnualOverview(core.BunqModel):
         :type user_id: int
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -16071,8 +15933,7 @@ class ExportAnnualOverview(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       export_annual_overview_id)
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), export_annual_overview_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -16083,11 +15944,11 @@ class ExportAnnualOverview(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         List all the annual overviews for a user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseExportAnnualOverviewList
         """
 
@@ -16098,8 +15959,7 @@ class ExportAnnualOverview(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseExportAnnualOverviewList.cast_from_bunq_response(
@@ -16172,7 +16032,7 @@ class ExportAnnualOverview(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ExportAnnualOverview
         """
 
@@ -16194,14 +16054,13 @@ class CustomerStatementExportContent(core.BunqModel):
     _OBJECT_TYPE_GET = "CustomerStatementExportContent"
 
     @classmethod
-    def list(cls, customer_statement_id, monetary_account_id=None,
-             custom_headers=None):
+    def list(cls, customer_statement_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type customer_statement_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -16209,10 +16068,9 @@ class CustomerStatementExportContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            customer_statement_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        customer_statement_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -16230,7 +16088,7 @@ class CustomerStatementExportContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CustomerStatementExportContent
         """
 
@@ -16252,12 +16110,12 @@ class ExportRibContent(core.BunqModel):
     def list(cls, export_rib_id, monetary_account_id=None, custom_headers=None):
         """
         Used to retrieve the raw content of an RIB.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type export_rib_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -16265,10 +16123,9 @@ class ExportRibContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            export_rib_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        export_rib_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -16286,7 +16143,7 @@ class ExportRibContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ExportRibContent
         """
 
@@ -16296,7 +16153,7 @@ class ExportRibContent(core.BunqModel):
 class ExportRib(core.BunqModel):
     """
     Used to create new and read existing RIBs of a monetary account
-
+    
     :param _id_: The id of the rib as created on the server.
     :type _id_: int
     :param _created: The timestamp of the RIB's creation.
@@ -16322,11 +16179,11 @@ class ExportRib(core.BunqModel):
     def create(cls, monetary_account_id=None, custom_headers=None):
         """
         Create a new RIB.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -16342,10 +16199,8 @@ class ExportRib(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -16355,13 +16210,13 @@ class ExportRib(core.BunqModel):
     def get(cls, export_rib_id, monetary_account_id=None, custom_headers=None):
         """
         Get a RIB for a monetary account by its id.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type export_rib_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseExportRib
         """
 
@@ -16370,8 +16225,7 @@ class ExportRib(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      export_rib_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -16380,14 +16234,13 @@ class ExportRib(core.BunqModel):
         )
 
     @classmethod
-    def delete(cls, export_rib_id, monetary_account_id=None,
-               custom_headers=None):
+    def delete(cls, export_rib_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type export_rib_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -16396,8 +16249,7 @@ class ExportRib(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        export_rib_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -16409,12 +16261,12 @@ class ExportRib(core.BunqModel):
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
         List all the RIBs for a monetary account.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseExportRibList
         """
 
@@ -16425,9 +16277,8 @@ class ExportRib(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseExportRibList.cast_from_bunq_response(
@@ -16478,17 +16329,71 @@ class ExportRib(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ExportRib
         """
 
         return converter.json_to_class(ExportRib, json_str)
 
 
+class ExportStatementPaymentContent(core.BunqModel):
+    """
+    Fetch the raw content of a payment statement export.
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/event/{}/statement/{}/content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ExportStatementPayment"
+
+    @classmethod
+    def list(cls, event_id, statement_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type event_id: int
+        :type statement_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseBytes
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = client.ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        event_id, statement_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseBytes.cast_from_bunq_response(
+            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+        )
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ExportStatementPaymentContent
+        """
+
+        return converter.json_to_class(ExportStatementPaymentContent, json_str)
+
+
 class ExportStatementPayment(core.BunqModel):
     """
     Used to create a statement export of a single payment.
-
+    
     :param _id_: The id of the single payment statement model.
     :type _id_: int
     :param _created: The timestamp of the statement model's creation.
@@ -16518,7 +16423,7 @@ class ExportStatementPayment(core.BunqModel):
         :type monetary_account_id: int
         :type event_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -16534,19 +16439,16 @@ class ExportStatementPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        event_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, event_id, export_statement_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, event_id, export_statement_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -16554,7 +16456,7 @@ class ExportStatementPayment(core.BunqModel):
         :type event_id: int
         :type export_statement_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseExportStatementPayment
         """
 
@@ -16563,9 +16465,7 @@ class ExportStatementPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     event_id,
+                                                     cls._determine_monetary_account_id(monetary_account_id), event_id,
                                                      export_statement_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -16628,7 +16528,7 @@ class ExportStatementPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ExportStatementPayment
         """
 
@@ -16639,7 +16539,7 @@ class CustomerStatementExport(core.BunqModel):
     """
     Used to create new and read existing statement exports. Statement exports
     can be created in either CSV, MT940 or PDF file format.
-
+    
     :param _statement_format: The format of statement.
     :type _statement_format: str
     :param _date_start: The date from when this statement shows transactions.
@@ -16694,8 +16594,7 @@ class CustomerStatementExport(core.BunqModel):
     _date_end_field_for_request = None
     _regional_format_field_for_request = None
 
-    def __init__(self, statement_format, date_start, date_end,
-                 regional_format=None):
+    def __init__(self, statement_format, date_start, date_end, regional_format=None):
         """
         :param statement_format: The format type of statement. Allowed values:
         MT940, CSV, PDF.
@@ -16715,8 +16614,7 @@ class CustomerStatementExport(core.BunqModel):
         self._regional_format_field_for_request = regional_format
 
     @classmethod
-    def create(cls, statement_format, date_start, date_end,
-               monetary_account_id=None, regional_format=None,
+    def create(cls, statement_format, date_start, date_end, monetary_account_id=None, regional_format=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -16733,7 +16631,7 @@ class CustomerStatementExport(core.BunqModel):
         (semicolon-separated).
         :type regional_format: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -16752,25 +16650,22 @@ class CustomerStatementExport(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, customer_statement_export_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, customer_statement_export_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type customer_statement_export_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCustomerStatementExport
         """
 
@@ -16779,8 +16674,7 @@ class CustomerStatementExport(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      customer_statement_export_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -16795,7 +16689,7 @@ class CustomerStatementExport(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseCustomerStatementExportList
         """
 
@@ -16806,9 +16700,8 @@ class CustomerStatementExport(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseCustomerStatementExportList.cast_from_bunq_response(
@@ -16816,14 +16709,13 @@ class CustomerStatementExport(core.BunqModel):
         )
 
     @classmethod
-    def delete(cls, customer_statement_export_id, monetary_account_id=None,
-               custom_headers=None):
+    def delete(cls, customer_statement_export_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type customer_statement_export_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -16832,8 +16724,7 @@ class CustomerStatementExport(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        customer_statement_export_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -16962,7 +16853,7 @@ class CustomerStatementExport(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CustomerStatementExport
         """
 
@@ -16973,7 +16864,7 @@ class InstallationServerPublicKey(core.BunqModel):
     """
     Using /installation/_/server-public-key you can request the ServerPublicKey
     again. This is done by referring to the id of the Installation.
-
+    
     :param _server_public_key: The server's public key for this Installation.
     :type _server_public_key: str
     """
@@ -16990,11 +16881,11 @@ class InstallationServerPublicKey(core.BunqModel):
     def list(cls, installation_id, params=None, custom_headers=None):
         """
         Show the ServerPublicKey for this Installation.
-
+        
         :type installation_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInstallationServerPublicKeyList
         """
 
@@ -17034,7 +16925,7 @@ class InstallationServerPublicKey(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: InstallationServerPublicKey
         """
 
@@ -17050,7 +16941,7 @@ class MonetaryAccountBank(core.BunqModel):
     account.<br/><br/>Notification filters can be set on a monetary account
     level to receive callbacks. For more information check the <a
     href="/api/1/page/callbacks">dedicated callbacks page</a>.
-
+    
     :param _currency: The currency of the MonetaryAccountBank as an ISO 4217
     formatted currency code.
     :type _currency: str
@@ -17096,7 +16987,8 @@ class MonetaryAccountBank(core.BunqModel):
     :param _overdraft_limit: The maximum Amount the MonetaryAccountBank can be
     'in the red'.
     :type _overdraft_limit: object_.Amount
-    :param _balance: The current balance Amount of the MonetaryAccountBank.
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountBank.
     :type _balance: object_.Amount
     :param _alias: The Aliases for the MonetaryAccountBank.
     :type _alias: list[object_.Pointer]
@@ -17160,10 +17052,8 @@ class MonetaryAccountBank(core.BunqModel):
     _notification_filters_field_for_request = None
     _setting_field_for_request = None
 
-    def __init__(self, currency, description=None, daily_limit=None,
-                 avatar_uuid=None, status=None, sub_status=None, reason=None,
-                 reason_description=None, notification_filters=None,
-                 setting=None):
+    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None,
+                 reason=None, reason_description=None, notification_filters=None, setting=None):
         """
         :param currency: The currency of the MonetaryAccountBank as an ISO 4217
         formatted currency code.
@@ -17217,13 +17107,11 @@ class MonetaryAccountBank(core.BunqModel):
         self._setting_field_for_request = setting
 
     @classmethod
-    def create(cls, currency, description=None, daily_limit=None,
-               avatar_uuid=None, status=None, sub_status=None, reason=None,
-               reason_description=None, notification_filters=None, setting=None,
-               custom_headers=None):
+    def create(cls, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None,
+               reason=None, reason_description=None, notification_filters=None, setting=None, custom_headers=None):
         """
         Create new MonetaryAccountBank.
-
+        
         :type user_id: int
         :param currency: The currency of the MonetaryAccountBank as an ISO 4217
         formatted currency code.
@@ -17264,7 +17152,7 @@ class MonetaryAccountBank(core.BunqModel):
         :param setting: The settings of the MonetaryAccountBank.
         :type setting: object_.MonetaryAccountSetting
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -17289,8 +17177,7 @@ class MonetaryAccountBank(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -17300,12 +17187,12 @@ class MonetaryAccountBank(core.BunqModel):
     def get(cls, monetary_account_bank_id, custom_headers=None):
         """
         Get a specific MonetaryAccountBank.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_bank_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountBank
         """
 
@@ -17313,8 +17200,7 @@ class MonetaryAccountBank(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     monetary_account_bank_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseMonetaryAccountBank.cast_from_bunq_response(
@@ -17322,13 +17208,12 @@ class MonetaryAccountBank(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, monetary_account_bank_id, description=None,
-               daily_limit=None, avatar_uuid=None, status=None, sub_status=None,
-               reason=None, reason_description=None, notification_filters=None,
-               setting=None, custom_headers=None):
+    def update(cls, monetary_account_bank_id, description=None, daily_limit=None, avatar_uuid=None, status=None,
+               sub_status=None, reason=None, reason_description=None, notification_filters=None, setting=None,
+               custom_headers=None):
         """
         Update a specific existing MonetaryAccountBank.
-
+        
         :type user_id: int
         :type monetary_account_bank_id: int
         :param description: The description of the MonetaryAccountBank. Defaults
@@ -17367,7 +17252,7 @@ class MonetaryAccountBank(core.BunqModel):
         :param setting: The settings of the MonetaryAccountBank.
         :type setting: object_.MonetaryAccountSetting
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -17391,10 +17276,8 @@ class MonetaryAccountBank(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       monetary_account_bank_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_bank_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -17404,11 +17287,11 @@ class MonetaryAccountBank(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Gets a listing of all MonetaryAccountBanks of a given user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountBankList
         """
 
@@ -17419,8 +17302,7 @@ class MonetaryAccountBank(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseMonetaryAccountBankList.cast_from_bunq_response(
@@ -17658,7 +17540,7 @@ class MonetaryAccountBank(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountBank
         """
 
@@ -17669,7 +17551,7 @@ class MonetaryAccountProfile(core.BunqModel):
     """
     Used to update and read up monetary account profiles, to keep the balance
     between specific thresholds.
-
+    
     :param _profile_fill: The profile settings for triggering the fill of a
     monetary account.
     :type _profile_fill: object_.MonetaryAccountProfileFill
@@ -17733,7 +17615,7 @@ class MonetaryAccountProfile(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountProfile
         """
 
@@ -17743,7 +17625,7 @@ class MonetaryAccountProfile(core.BunqModel):
 class MonetaryAccountJoint(core.BunqModel):
     """
     The endpoint for joint monetary accounts.
-
+    
     :param _currency: The currency of the MonetaryAccountJoint as an ISO 4217
     formatted currency code.
     :type _currency: str
@@ -17793,7 +17675,8 @@ class MonetaryAccountJoint(core.BunqModel):
     :type _avatar: object_.Avatar
     :param _daily_spent: Total Amount of money spent today. Timezone aware.
     :type _daily_spent: object_.Amount
-    :param _balance: The current balance Amount of the MonetaryAccountJoint.
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountJoint.
     :type _balance: object_.Amount
     :param _public_uuid: The MonetaryAccountJoint's public UUID.
     :type _public_uuid: str
@@ -17862,11 +17745,9 @@ class MonetaryAccountJoint(core.BunqModel):
     _notification_filters_field_for_request = None
     _setting_field_for_request = None
 
-    def __init__(self, currency, all_co_owner, description=None,
-                 daily_limit=None, overdraft_limit=None, alias=None,
-                 avatar_uuid=None, status=None, sub_status=None, reason=None,
-                 reason_description=None, notification_filters=None,
-                 setting=None):
+    def __init__(self, currency, all_co_owner, description=None, daily_limit=None, overdraft_limit=None, alias=None,
+                 avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None,
+                 notification_filters=None, setting=None):
         """
         :param currency: The currency of the MonetaryAccountJoint as an ISO 4217
         formatted currency code.
@@ -17931,9 +17812,8 @@ class MonetaryAccountJoint(core.BunqModel):
         self._setting_field_for_request = setting
 
     @classmethod
-    def create(cls, currency, all_co_owner, description=None, daily_limit=None,
-               overdraft_limit=None, alias=None, avatar_uuid=None, status=None,
-               sub_status=None, reason=None, reason_description=None,
+    def create(cls, currency, all_co_owner, description=None, daily_limit=None, overdraft_limit=None, alias=None,
+               avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None,
                notification_filters=None, setting=None, custom_headers=None):
         """
         :type user_id: int
@@ -17984,7 +17864,7 @@ class MonetaryAccountJoint(core.BunqModel):
         :param setting: The settings of the MonetaryAccountJoint.
         :type setting: object_.MonetaryAccountSetting
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -18012,8 +17892,7 @@ class MonetaryAccountJoint(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -18026,7 +17905,7 @@ class MonetaryAccountJoint(core.BunqModel):
         :type user_id: int
         :type monetary_account_joint_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountJoint
         """
 
@@ -18034,8 +17913,7 @@ class MonetaryAccountJoint(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     monetary_account_joint_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_joint_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseMonetaryAccountJoint.cast_from_bunq_response(
@@ -18043,10 +17921,9 @@ class MonetaryAccountJoint(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, monetary_account_joint_id, description=None,
-               daily_limit=None, avatar_uuid=None, status=None, sub_status=None,
-               reason=None, reason_description=None, notification_filters=None,
-               setting=None, custom_headers=None):
+    def update(cls, monetary_account_joint_id, description=None, daily_limit=None, avatar_uuid=None, status=None,
+               sub_status=None, reason=None, reason_description=None, notification_filters=None, setting=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_joint_id: int
@@ -18086,7 +17963,7 @@ class MonetaryAccountJoint(core.BunqModel):
         :param setting: The settings of the MonetaryAccountJoint.
         :type setting: object_.MonetaryAccountSetting
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -18110,10 +17987,8 @@ class MonetaryAccountJoint(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       monetary_account_joint_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_joint_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -18125,7 +18000,7 @@ class MonetaryAccountJoint(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountJointList
         """
 
@@ -18136,8 +18011,7 @@ class MonetaryAccountJoint(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseMonetaryAccountJointList.cast_from_bunq_response(
@@ -18386,7 +18260,7 @@ class MonetaryAccountJoint(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountJoint
         """
 
@@ -18396,7 +18270,7 @@ class MonetaryAccountJoint(core.BunqModel):
 class MonetaryAccountSavings(core.BunqModel):
     """
     With MonetaryAccountSavings you can create a new savings account.
-
+    
     :param _currency: The currency of the MonetaryAccountSavings as an ISO 4217
     formatted currency code.
     :type _currency: str
@@ -18446,7 +18320,8 @@ class MonetaryAccountSavings(core.BunqModel):
     :param _overdraft_limit: The maximum Amount the MonetaryAccountSavings can
     be 'in the red'. Must be 0 EUR or omitted.
     :type _overdraft_limit: object_.Amount
-    :param _balance: The current balance Amount of the MonetaryAccountSavings.
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountSavings.
     :type _balance: object_.Amount
     :param _alias: The Aliases for the MonetaryAccountSavings.
     :type _alias: list[object_.Pointer]
@@ -18520,10 +18395,9 @@ class MonetaryAccountSavings(core.BunqModel):
     _setting_field_for_request = None
     _savings_goal_field_for_request = None
 
-    def __init__(self, currency, savings_goal=None, description=None,
-                 daily_limit=None, avatar_uuid=None, status=None,
-                 sub_status=None, reason=None, reason_description=None,
-                 all_co_owner=None, notification_filters=None, setting=None):
+    def __init__(self, currency, savings_goal=None, description=None, daily_limit=None, avatar_uuid=None, status=None,
+                 sub_status=None, reason=None, reason_description=None, all_co_owner=None, notification_filters=None,
+                 setting=None):
         """
         :param currency: The currency of the MonetaryAccountSavings as an ISO 4217
         formatted currency code.
@@ -18583,13 +18457,12 @@ class MonetaryAccountSavings(core.BunqModel):
         self._setting_field_for_request = setting
 
     @classmethod
-    def create(cls, currency, savings_goal, description=None, daily_limit=None,
-               avatar_uuid=None, status=None, sub_status=None, reason=None,
-               reason_description=None, all_co_owner=None,
-               notification_filters=None, setting=None, custom_headers=None):
+    def create(cls, currency, savings_goal, description=None, daily_limit=None, avatar_uuid=None, status=None,
+               sub_status=None, reason=None, reason_description=None, all_co_owner=None, notification_filters=None,
+               setting=None, custom_headers=None):
         """
         Create new MonetaryAccountSavings.
-
+        
         :type user_id: int
         :param currency: The currency of the MonetaryAccountSavings as an ISO
         4217 formatted currency code.
@@ -18637,7 +18510,7 @@ class MonetaryAccountSavings(core.BunqModel):
         :param setting: The settings of the MonetaryAccountSavings.
         :type setting: object_.MonetaryAccountSetting
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -18664,8 +18537,7 @@ class MonetaryAccountSavings(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -18675,12 +18547,12 @@ class MonetaryAccountSavings(core.BunqModel):
     def get(cls, monetary_account_savings_id, custom_headers=None):
         """
         Get a specific MonetaryAccountSavings.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_savings_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountSavings
         """
 
@@ -18688,8 +18560,7 @@ class MonetaryAccountSavings(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     monetary_account_savings_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_savings_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseMonetaryAccountSavings.cast_from_bunq_response(
@@ -18697,13 +18568,12 @@ class MonetaryAccountSavings(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, monetary_account_savings_id, description=None,
-               daily_limit=None, avatar_uuid=None, status=None, sub_status=None,
-               reason=None, reason_description=None, notification_filters=None,
-               setting=None, savings_goal=None, custom_headers=None):
+    def update(cls, monetary_account_savings_id, description=None, daily_limit=None, avatar_uuid=None, status=None,
+               sub_status=None, reason=None, reason_description=None, notification_filters=None, setting=None,
+               savings_goal=None, custom_headers=None):
         """
         Update a specific existing MonetaryAccountSavings.
-
+        
         :type user_id: int
         :type monetary_account_savings_id: int
         :param description: The description of the MonetaryAccountSavings.
@@ -18747,7 +18617,7 @@ class MonetaryAccountSavings(core.BunqModel):
         MonetaryAccountSavings.
         :type savings_goal: object_.Amount
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -18772,10 +18642,8 @@ class MonetaryAccountSavings(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       monetary_account_savings_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_savings_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -18785,11 +18653,11 @@ class MonetaryAccountSavings(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Gets a listing of all MonetaryAccountSavingss of a given user.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountSavingsList
         """
 
@@ -18800,8 +18668,7 @@ class MonetaryAccountSavings(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseMonetaryAccountSavingsList.cast_from_bunq_response(
@@ -19072,7 +18939,7 @@ class MonetaryAccountSavings(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountSavings
         """
 
@@ -19086,14 +18953,14 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
     monetary-account-bank.<br/><br/>Notification filters can be set on a
     monetary account level to receive callbacks. For more information check the
     <a href="/api/2/page/callbacks">dedicated callbacks page</a>.
-
-    :param _MonetaryAccountBank:
+    
+    :param _MonetaryAccountBank: 
     :type _MonetaryAccountBank: MonetaryAccountBank
-    :param _MonetaryAccountJoint:
+    :param _MonetaryAccountJoint: 
     :type _MonetaryAccountJoint: MonetaryAccountJoint
-    :param _MonetaryAccountLight:
+    :param _MonetaryAccountLight: 
     :type _MonetaryAccountLight: MonetaryAccountLight
-    :param _MonetaryAccountSavings:
+    :param _MonetaryAccountSavings: 
     :type _MonetaryAccountSavings: MonetaryAccountSavings
     """
 
@@ -19116,12 +18983,12 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
     def get(cls, monetary_account_id, custom_headers=None):
         """
         Get a specific MonetaryAccount.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccount
         """
 
@@ -19130,8 +18997,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id))
+                                                     cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseMonetaryAccount.cast_from_bunq_response(
@@ -19142,11 +19008,11 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
     def list(cls, params=None, custom_headers=None):
         """
         Get a collection of all your MonetaryAccounts.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseMonetaryAccountList
         """
 
@@ -19157,8 +19023,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseMonetaryAccountList.cast_from_bunq_response(
@@ -19240,7 +19105,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccount
         """
 
@@ -19254,7 +19119,7 @@ class MonetaryAccountLight(core.BunqModel):
     MonetaryAccountLights and update specific fields of an existing
     MonetaryAccountLight. Examples of fields that can be updated are the
     description, the daily limit and the avatar of the account.
-
+    
     :param _currency: The currency of the MonetaryAccountLight as an ISO 4217
     formatted currency code.
     :type _currency: str
@@ -19297,8 +19162,12 @@ class MonetaryAccountLight(core.BunqModel):
     :type _avatar: object_.Avatar
     :param _daily_spent: Total Amount of money spent today. Timezone aware.
     :type _daily_spent: object_.Amount
-    :param _balance: The current balance Amount of the MonetaryAccountLight.
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountLight.
     :type _balance: object_.Amount
+    :param _balance_real: The current real balance Amount of the
+    MonetaryAccountLight.
+    :type _balance_real: object_.Amount
     :param _alias: The Aliases for the MonetaryAccountLight.
     :type _alias: list[object_.Pointer]
     :param _public_uuid: The MonetaryAccountLight's public UUID.
@@ -19345,6 +19214,7 @@ class MonetaryAccountLight(core.BunqModel):
     _daily_limit = None
     _daily_spent = None
     _balance = None
+    _balance_real = None
     _alias = None
     _public_uuid = None
     _status = None
@@ -19372,10 +19242,8 @@ class MonetaryAccountLight(core.BunqModel):
     _notification_filters_field_for_request = None
     _setting_field_for_request = None
 
-    def __init__(self, currency, description=None, daily_limit=None,
-                 avatar_uuid=None, status=None, sub_status=None, reason=None,
-                 reason_description=None, notification_filters=None,
-                 setting=None):
+    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None,
+                 reason=None, reason_description=None, notification_filters=None, setting=None):
         """
         :param currency: The currency of the MonetaryAccountLight as an ISO 4217
         formatted currency code.
@@ -19498,6 +19366,14 @@ class MonetaryAccountLight(core.BunqModel):
         """
 
         return self._balance
+
+    @property
+    def balance_real(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_real
 
     @property
     def alias(self):
@@ -19659,6 +19535,9 @@ class MonetaryAccountLight(core.BunqModel):
         if self._balance is not None:
             return False
 
+        if self._balance_real is not None:
+            return False
+
         if self._alias is not None:
             return False
 
@@ -19713,7 +19592,7 @@ class MonetaryAccountLight(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountLight
         """
 
@@ -19723,7 +19602,7 @@ class MonetaryAccountLight(core.BunqModel):
 class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -19777,8 +19656,8 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, switch_service_payment_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, switch_service_payment_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -19789,7 +19668,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -19806,19 +19685,16 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, switch_service_payment_id,
-               note_attachment_bank_switch_service_netherlands_incoming_payment_id,
+    def update(cls, switch_service_payment_id, note_attachment_bank_switch_service_netherlands_incoming_payment_id,
                monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
@@ -19829,7 +19705,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -19846,20 +19722,17 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id,
                                                        note_attachment_bank_switch_service_netherlands_incoming_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, switch_service_payment_id,
-               note_attachment_bank_switch_service_netherlands_incoming_payment_id,
+    def delete(cls, switch_service_payment_id, note_attachment_bank_switch_service_netherlands_incoming_payment_id,
                monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
@@ -19868,7 +19741,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :type
         note_attachment_bank_switch_service_netherlands_incoming_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -19877,8 +19750,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id,
                                                        note_attachment_bank_switch_service_netherlands_incoming_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -19888,17 +19760,16 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, switch_service_payment_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, switch_service_payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type switch_service_payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype:
         BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList
         """
@@ -19910,10 +19781,9 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            switch_service_payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        switch_service_payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList.cast_from_bunq_response(
@@ -19921,8 +19791,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, switch_service_payment_id,
-            note_attachment_bank_switch_service_netherlands_incoming_payment_id,
+    def get(cls, switch_service_payment_id, note_attachment_bank_switch_service_netherlands_incoming_payment_id,
             monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -19932,7 +19801,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :type
         note_attachment_bank_switch_service_netherlands_incoming_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype:
         BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment
         """
@@ -19942,8 +19811,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      switch_service_payment_id,
                                                      note_attachment_bank_switch_service_netherlands_incoming_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -20029,18 +19897,17 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment
         """
 
-        return converter.json_to_class(
-            NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment, json_str)
+        return converter.json_to_class(NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment, json_str)
 
 
 class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -20082,8 +19949,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, switch_service_payment_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, switch_service_payment_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -20091,7 +19957,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -20107,19 +19973,16 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, switch_service_payment_id,
-               note_text_bank_switch_service_netherlands_incoming_payment_id,
+    def update(cls, switch_service_payment_id, note_text_bank_switch_service_netherlands_incoming_payment_id,
                monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
@@ -20129,7 +19992,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -20146,20 +20009,17 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id,
                                                        note_text_bank_switch_service_netherlands_incoming_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, switch_service_payment_id,
-               note_text_bank_switch_service_netherlands_incoming_payment_id,
+    def delete(cls, switch_service_payment_id, note_text_bank_switch_service_netherlands_incoming_payment_id,
                monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
@@ -20167,7 +20027,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :type switch_service_payment_id: int
         :type note_text_bank_switch_service_netherlands_incoming_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -20176,8 +20036,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id,
                                                        note_text_bank_switch_service_netherlands_incoming_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -20187,17 +20046,16 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, switch_service_payment_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, switch_service_payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type switch_service_payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype:
         BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList
         """
@@ -20209,10 +20067,9 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            switch_service_payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        switch_service_payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList.cast_from_bunq_response(
@@ -20220,8 +20077,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, switch_service_payment_id,
-            note_text_bank_switch_service_netherlands_incoming_payment_id,
+    def get(cls, switch_service_payment_id, note_text_bank_switch_service_netherlands_incoming_payment_id,
             monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -20230,7 +20086,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         :type switch_service_payment_id: int
         :type note_text_bank_switch_service_netherlands_incoming_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPayment
         """
 
@@ -20239,8 +20095,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      switch_service_payment_id,
                                                      note_text_bank_switch_service_netherlands_incoming_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -20315,18 +20170,17 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextBankSwitchServiceNetherlandsIncomingPayment
         """
 
-        return converter.json_to_class(
-            NoteTextBankSwitchServiceNetherlandsIncomingPayment, json_str)
+        return converter.json_to_class(NoteTextBankSwitchServiceNetherlandsIncomingPayment, json_str)
 
 
 class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -20380,8 +20234,8 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, bunqme_fundraiser_result_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, bunqme_fundraiser_result_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -20392,7 +20246,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -20409,20 +20263,17 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, bunqme_fundraiser_result_id,
-               note_attachment_bunq_me_fundraiser_result_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, bunqme_fundraiser_result_id, note_attachment_bunq_me_fundraiser_result_id, monetary_account_id=None,
+               description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -20431,7 +20282,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -20448,28 +20299,25 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id,
                                                        note_attachment_bunq_me_fundraiser_result_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, bunqme_fundraiser_result_id,
-               note_attachment_bunq_me_fundraiser_result_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, bunqme_fundraiser_result_id, note_attachment_bunq_me_fundraiser_result_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type bunqme_fundraiser_result_id: int
         :type note_attachment_bunq_me_fundraiser_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -20478,8 +20326,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id,
                                                        note_attachment_bunq_me_fundraiser_result_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -20489,17 +20336,16 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, bunqme_fundraiser_result_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, bunqme_fundraiser_result_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type bunqme_fundraiser_result_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentBunqMeFundraiserResultList
         """
 
@@ -20510,10 +20356,9 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            bunqme_fundraiser_result_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        bunqme_fundraiser_result_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentBunqMeFundraiserResultList.cast_from_bunq_response(
@@ -20521,9 +20366,8 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, bunqme_fundraiser_result_id,
-            note_attachment_bunq_me_fundraiser_result_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, bunqme_fundraiser_result_id, note_attachment_bunq_me_fundraiser_result_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -20531,7 +20375,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         :type bunqme_fundraiser_result_id: int
         :type note_attachment_bunq_me_fundraiser_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentBunqMeFundraiserResult
         """
 
@@ -20540,8 +20384,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      bunqme_fundraiser_result_id,
                                                      note_attachment_bunq_me_fundraiser_result_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -20627,18 +20470,17 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentBunqMeFundraiserResult
         """
 
-        return converter.json_to_class(NoteAttachmentBunqMeFundraiserResult,
-                                       json_str)
+        return converter.json_to_class(NoteAttachmentBunqMeFundraiserResult, json_str)
 
 
 class NoteTextBunqMeFundraiserResult(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -20680,8 +20522,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, bunqme_fundraiser_result_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, bunqme_fundraiser_result_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -20689,7 +20530,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -20705,19 +20546,16 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, bunqme_fundraiser_result_id,
-               note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
+    def update(cls, bunqme_fundraiser_result_id, note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
                content=None, custom_headers=None):
         """
         :type user_id: int
@@ -20727,7 +20565,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -20744,20 +20582,17 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id,
                                                        note_text_bunq_me_fundraiser_result_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, bunqme_fundraiser_result_id,
-               note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
+    def delete(cls, bunqme_fundraiser_result_id, note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -20765,7 +20600,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         :type bunqme_fundraiser_result_id: int
         :type note_text_bunq_me_fundraiser_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -20774,8 +20609,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id,
                                                        note_text_bunq_me_fundraiser_result_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -20785,17 +20619,16 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, bunqme_fundraiser_result_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, bunqme_fundraiser_result_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type bunqme_fundraiser_result_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextBunqMeFundraiserResultList
         """
 
@@ -20806,10 +20639,9 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            bunqme_fundraiser_result_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        bunqme_fundraiser_result_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextBunqMeFundraiserResultList.cast_from_bunq_response(
@@ -20817,8 +20649,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, bunqme_fundraiser_result_id,
-            note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
+    def get(cls, bunqme_fundraiser_result_id, note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -20827,7 +20658,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         :type bunqme_fundraiser_result_id: int
         :type note_text_bunq_me_fundraiser_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextBunqMeFundraiserResult
         """
 
@@ -20836,8 +20667,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      bunqme_fundraiser_result_id,
                                                      note_text_bunq_me_fundraiser_result_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -20912,7 +20742,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextBunqMeFundraiserResult
         """
 
@@ -20922,7 +20752,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
 class NoteAttachmentDraftPayment(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -20976,8 +20806,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, draft_payment_id, attachment_id, monetary_account_id=None,
-               description=None, custom_headers=None):
+    def create(cls, draft_payment_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -20988,7 +20817,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21005,19 +20834,17 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        draft_payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, draft_payment_id, note_attachment_draft_payment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, draft_payment_id, note_attachment_draft_payment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -21026,7 +20853,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21043,27 +20870,23 @@ class NoteAttachmentDraftPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       draft_payment_id,
-                                                       note_attachment_draft_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       draft_payment_id, note_attachment_draft_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, draft_payment_id, note_attachment_draft_payment_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, draft_payment_id, note_attachment_draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
         :type note_attachment_draft_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -21072,10 +20895,8 @@ class NoteAttachmentDraftPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       draft_payment_id,
-                                                       note_attachment_draft_payment_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       draft_payment_id, note_attachment_draft_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -21083,17 +20904,16 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, draft_payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, draft_payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentDraftPaymentList
         """
 
@@ -21104,10 +20924,9 @@ class NoteAttachmentDraftPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            draft_payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        draft_payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentDraftPaymentList.cast_from_bunq_response(
@@ -21115,8 +20934,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, draft_payment_id, note_attachment_draft_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, draft_payment_id, note_attachment_draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -21124,7 +20942,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         :type draft_payment_id: int
         :type note_attachment_draft_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentDraftPayment
         """
 
@@ -21133,10 +20951,8 @@ class NoteAttachmentDraftPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     draft_payment_id,
-                                                     note_attachment_draft_payment_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     draft_payment_id, note_attachment_draft_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentDraftPayment.cast_from_bunq_response(
@@ -21220,7 +21036,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentDraftPayment
         """
 
@@ -21230,7 +21046,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
 class NoteTextDraftPayment(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -21272,8 +21088,7 @@ class NoteTextDraftPayment(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, draft_payment_id, monetary_account_id=None, content=None,
-               custom_headers=None):
+    def create(cls, draft_payment_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -21281,7 +21096,7 @@ class NoteTextDraftPayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21297,19 +21112,17 @@ class NoteTextDraftPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        draft_payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, draft_payment_id, note_text_draft_payment_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, draft_payment_id, note_text_draft_payment_id, monetary_account_id=None, content=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -21318,7 +21131,7 @@ class NoteTextDraftPayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21335,27 +21148,23 @@ class NoteTextDraftPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       draft_payment_id,
-                                                       note_text_draft_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       draft_payment_id, note_text_draft_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, draft_payment_id, note_text_draft_payment_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, draft_payment_id, note_text_draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
         :type note_text_draft_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -21364,10 +21173,8 @@ class NoteTextDraftPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       draft_payment_id,
-                                                       note_text_draft_payment_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       draft_payment_id, note_text_draft_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -21375,17 +21182,16 @@ class NoteTextDraftPayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, draft_payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, draft_payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextDraftPaymentList
         """
 
@@ -21396,10 +21202,9 @@ class NoteTextDraftPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            draft_payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        draft_payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextDraftPaymentList.cast_from_bunq_response(
@@ -21407,8 +21212,7 @@ class NoteTextDraftPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, draft_payment_id, note_text_draft_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, draft_payment_id, note_text_draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -21416,7 +21220,7 @@ class NoteTextDraftPayment(core.BunqModel):
         :type draft_payment_id: int
         :type note_text_draft_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextDraftPayment
         """
 
@@ -21425,10 +21229,8 @@ class NoteTextDraftPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     draft_payment_id,
-                                                     note_text_draft_payment_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     draft_payment_id, note_text_draft_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextDraftPayment.cast_from_bunq_response(
@@ -21501,7 +21303,7 @@ class NoteTextDraftPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextDraftPayment
         """
 
@@ -21511,7 +21313,7 @@ class NoteTextDraftPayment(core.BunqModel):
 class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -21565,8 +21367,8 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, ideal_merchant_transaction_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, ideal_merchant_transaction_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -21577,7 +21379,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21594,19 +21396,16 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, ideal_merchant_transaction_id,
-               note_attachment_ideal_merchant_transaction_id,
+    def update(cls, ideal_merchant_transaction_id, note_attachment_ideal_merchant_transaction_id,
                monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
@@ -21616,7 +21415,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21633,20 +21432,17 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id,
                                                        note_attachment_ideal_merchant_transaction_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, ideal_merchant_transaction_id,
-               note_attachment_ideal_merchant_transaction_id,
+    def delete(cls, ideal_merchant_transaction_id, note_attachment_ideal_merchant_transaction_id,
                monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
@@ -21654,7 +21450,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         :type ideal_merchant_transaction_id: int
         :type note_attachment_ideal_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -21663,8 +21459,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id,
                                                        note_attachment_ideal_merchant_transaction_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -21674,17 +21469,16 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, ideal_merchant_transaction_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, ideal_merchant_transaction_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentIdealMerchantTransactionList
         """
 
@@ -21695,10 +21489,9 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            ideal_merchant_transaction_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        ideal_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentIdealMerchantTransactionList.cast_from_bunq_response(
@@ -21706,9 +21499,8 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, ideal_merchant_transaction_id,
-            note_attachment_ideal_merchant_transaction_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, ideal_merchant_transaction_id, note_attachment_ideal_merchant_transaction_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -21716,7 +21508,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         :type ideal_merchant_transaction_id: int
         :type note_attachment_ideal_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentIdealMerchantTransaction
         """
 
@@ -21725,8 +21517,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      ideal_merchant_transaction_id,
                                                      note_attachment_ideal_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -21812,18 +21603,17 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentIdealMerchantTransaction
         """
 
-        return converter.json_to_class(NoteAttachmentIdealMerchantTransaction,
-                                       json_str)
+        return converter.json_to_class(NoteAttachmentIdealMerchantTransaction, json_str)
 
 
 class NoteTextIdealMerchantTransaction(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -21865,8 +21655,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, ideal_merchant_transaction_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, ideal_merchant_transaction_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -21874,7 +21663,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21890,20 +21679,17 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, ideal_merchant_transaction_id,
-               note_text_ideal_merchant_transaction_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, ideal_merchant_transaction_id, note_text_ideal_merchant_transaction_id, monetary_account_id=None,
+               content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -21912,7 +21698,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -21929,28 +21715,25 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id,
                                                        note_text_ideal_merchant_transaction_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, ideal_merchant_transaction_id,
-               note_text_ideal_merchant_transaction_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, ideal_merchant_transaction_id, note_text_ideal_merchant_transaction_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
         :type note_text_ideal_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -21959,8 +21742,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id,
                                                        note_text_ideal_merchant_transaction_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -21970,17 +21752,16 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, ideal_merchant_transaction_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, ideal_merchant_transaction_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextIdealMerchantTransactionList
         """
 
@@ -21991,10 +21772,9 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            ideal_merchant_transaction_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        ideal_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextIdealMerchantTransactionList.cast_from_bunq_response(
@@ -22002,8 +21782,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, ideal_merchant_transaction_id,
-            note_text_ideal_merchant_transaction_id, monetary_account_id=None,
+    def get(cls, ideal_merchant_transaction_id, note_text_ideal_merchant_transaction_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -22012,7 +21791,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         :type ideal_merchant_transaction_id: int
         :type note_text_ideal_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextIdealMerchantTransaction
         """
 
@@ -22021,8 +21800,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      ideal_merchant_transaction_id,
                                                      note_text_ideal_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -22097,18 +21875,17 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextIdealMerchantTransaction
         """
 
-        return converter.json_to_class(NoteTextIdealMerchantTransaction,
-                                       json_str)
+        return converter.json_to_class(NoteTextIdealMerchantTransaction, json_str)
 
 
 class NoteAttachmentMasterCardAction(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -22162,8 +21939,8 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, mastercard_action_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, mastercard_action_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -22174,7 +21951,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -22191,19 +21968,17 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        mastercard_action_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, mastercard_action_id, note_attachment_master_card_action_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, mastercard_action_id, note_attachment_master_card_action_id, monetary_account_id=None,
+               description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -22212,7 +21987,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -22229,27 +22004,24 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       mastercard_action_id,
-                                                       note_attachment_master_card_action_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       mastercard_action_id, note_attachment_master_card_action_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, mastercard_action_id, note_attachment_master_card_action_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, mastercard_action_id, note_attachment_master_card_action_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
         :type note_attachment_master_card_action_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -22258,10 +22030,8 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       mastercard_action_id,
-                                                       note_attachment_master_card_action_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       mastercard_action_id, note_attachment_master_card_action_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -22269,17 +22039,16 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, mastercard_action_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, mastercard_action_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentMasterCardActionList
         """
 
@@ -22290,10 +22059,9 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            mastercard_action_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        mastercard_action_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentMasterCardActionList.cast_from_bunq_response(
@@ -22301,8 +22069,8 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, mastercard_action_id, note_attachment_master_card_action_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, mastercard_action_id, note_attachment_master_card_action_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -22310,7 +22078,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         :type mastercard_action_id: int
         :type note_attachment_master_card_action_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentMasterCardAction
         """
 
@@ -22319,10 +22087,8 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     mastercard_action_id,
-                                                     note_attachment_master_card_action_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     mastercard_action_id, note_attachment_master_card_action_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentMasterCardAction.cast_from_bunq_response(
@@ -22406,7 +22172,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentMasterCardAction
         """
 
@@ -22416,7 +22182,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
 class NoteTextMasterCardAction(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -22458,8 +22224,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, mastercard_action_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, mastercard_action_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -22467,7 +22232,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -22483,19 +22248,17 @@ class NoteTextMasterCardAction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        mastercard_action_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, mastercard_action_id, note_text_master_card_action_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, mastercard_action_id, note_text_master_card_action_id, monetary_account_id=None, content=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -22504,7 +22267,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -22521,27 +22284,24 @@ class NoteTextMasterCardAction(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       mastercard_action_id,
-                                                       note_text_master_card_action_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       mastercard_action_id, note_text_master_card_action_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, mastercard_action_id, note_text_master_card_action_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, mastercard_action_id, note_text_master_card_action_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
         :type note_text_master_card_action_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -22550,10 +22310,8 @@ class NoteTextMasterCardAction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       mastercard_action_id,
-                                                       note_text_master_card_action_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       mastercard_action_id, note_text_master_card_action_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -22561,17 +22319,16 @@ class NoteTextMasterCardAction(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, mastercard_action_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, mastercard_action_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextMasterCardActionList
         """
 
@@ -22582,10 +22339,9 @@ class NoteTextMasterCardAction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            mastercard_action_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        mastercard_action_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextMasterCardActionList.cast_from_bunq_response(
@@ -22593,8 +22349,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, mastercard_action_id, note_text_master_card_action_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, mastercard_action_id, note_text_master_card_action_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -22602,7 +22357,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         :type mastercard_action_id: int
         :type note_text_master_card_action_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextMasterCardAction
         """
 
@@ -22611,10 +22366,8 @@ class NoteTextMasterCardAction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     mastercard_action_id,
-                                                     note_text_master_card_action_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     mastercard_action_id, note_text_master_card_action_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextMasterCardAction.cast_from_bunq_response(
@@ -22687,7 +22440,7 @@ class NoteTextMasterCardAction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextMasterCardAction
         """
 
@@ -22697,7 +22450,7 @@ class NoteTextMasterCardAction(core.BunqModel):
 class NoteAttachmentPaymentBatch(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -22751,8 +22504,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, payment_batch_id, attachment_id, monetary_account_id=None,
-               description=None, custom_headers=None):
+    def create(cls, payment_batch_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -22763,7 +22515,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -22780,19 +22532,17 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_batch_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, payment_batch_id, note_attachment_payment_batch_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, payment_batch_id, note_attachment_payment_batch_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -22801,7 +22551,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -22818,27 +22568,23 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_batch_id,
-                                                       note_attachment_payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_batch_id, note_attachment_payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, payment_batch_id, note_attachment_payment_batch_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, payment_batch_id, note_attachment_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
         :type note_attachment_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -22847,10 +22593,8 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_batch_id,
-                                                       note_attachment_payment_batch_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_batch_id, note_attachment_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -22858,17 +22602,16 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, payment_batch_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, payment_batch_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentPaymentBatchList
         """
 
@@ -22879,10 +22622,9 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            payment_batch_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        payment_batch_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentPaymentBatchList.cast_from_bunq_response(
@@ -22890,8 +22632,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, payment_batch_id, note_attachment_payment_batch_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, payment_batch_id, note_attachment_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -22899,7 +22640,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         :type payment_batch_id: int
         :type note_attachment_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentPaymentBatch
         """
 
@@ -22908,10 +22649,8 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     payment_batch_id,
-                                                     note_attachment_payment_batch_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     payment_batch_id, note_attachment_payment_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentPaymentBatch.cast_from_bunq_response(
@@ -22995,7 +22734,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentPaymentBatch
         """
 
@@ -23005,7 +22744,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
 class NoteTextPaymentBatch(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -23047,8 +22786,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, payment_batch_id, monetary_account_id=None, content=None,
-               custom_headers=None):
+    def create(cls, payment_batch_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23056,7 +22794,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23072,19 +22810,17 @@ class NoteTextPaymentBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_batch_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, payment_batch_id, note_text_payment_batch_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, payment_batch_id, note_text_payment_batch_id, monetary_account_id=None, content=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23093,7 +22829,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23110,27 +22846,23 @@ class NoteTextPaymentBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_batch_id,
-                                                       note_text_payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_batch_id, note_text_payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, payment_batch_id, note_text_payment_batch_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, payment_batch_id, note_text_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
         :type note_text_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -23139,10 +22871,8 @@ class NoteTextPaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_batch_id,
-                                                       note_text_payment_batch_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_batch_id, note_text_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -23150,17 +22880,16 @@ class NoteTextPaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, payment_batch_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, payment_batch_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextPaymentBatchList
         """
 
@@ -23171,10 +22900,9 @@ class NoteTextPaymentBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            payment_batch_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        payment_batch_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextPaymentBatchList.cast_from_bunq_response(
@@ -23182,8 +22910,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, payment_batch_id, note_text_payment_batch_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, payment_batch_id, note_text_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -23191,7 +22918,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         :type payment_batch_id: int
         :type note_text_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextPaymentBatch
         """
 
@@ -23200,10 +22927,8 @@ class NoteTextPaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     payment_batch_id,
-                                                     note_text_payment_batch_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     payment_batch_id, note_text_payment_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextPaymentBatch.cast_from_bunq_response(
@@ -23276,7 +23001,7 @@ class NoteTextPaymentBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextPaymentBatch
         """
 
@@ -23286,7 +23011,7 @@ class NoteTextPaymentBatch(core.BunqModel):
 class NoteAttachmentPayment(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -23340,8 +23065,7 @@ class NoteAttachmentPayment(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, payment_id, attachment_id, monetary_account_id=None,
-               description=None, custom_headers=None):
+    def create(cls, payment_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23352,7 +23076,7 @@ class NoteAttachmentPayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23369,19 +23093,17 @@ class NoteAttachmentPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, payment_id, note_attachment_payment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, payment_id, note_attachment_payment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23390,7 +23112,7 @@ class NoteAttachmentPayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23407,27 +23129,23 @@ class NoteAttachmentPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_id,
-                                                       note_attachment_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_id, note_attachment_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, payment_id, note_attachment_payment_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, payment_id, note_attachment_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
         :type note_attachment_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -23436,10 +23154,8 @@ class NoteAttachmentPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_id,
-                                                       note_attachment_payment_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_id, note_attachment_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -23447,17 +23163,16 @@ class NoteAttachmentPayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentPaymentList
         """
 
@@ -23468,9 +23183,9 @@ class NoteAttachmentPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id), payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentPaymentList.cast_from_bunq_response(
@@ -23478,8 +23193,7 @@ class NoteAttachmentPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, payment_id, note_attachment_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, payment_id, note_attachment_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -23487,7 +23201,7 @@ class NoteAttachmentPayment(core.BunqModel):
         :type payment_id: int
         :type note_attachment_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentPayment
         """
 
@@ -23496,10 +23210,8 @@ class NoteAttachmentPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     payment_id,
-                                                     note_attachment_payment_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     payment_id, note_attachment_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentPayment.cast_from_bunq_response(
@@ -23583,7 +23295,7 @@ class NoteAttachmentPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentPayment
         """
 
@@ -23593,7 +23305,7 @@ class NoteAttachmentPayment(core.BunqModel):
 class NoteTextPayment(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -23635,8 +23347,7 @@ class NoteTextPayment(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, payment_id, monetary_account_id=None, content=None,
-               custom_headers=None):
+    def create(cls, payment_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23644,7 +23355,7 @@ class NoteTextPayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23660,19 +23371,16 @@ class NoteTextPayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, payment_id, note_text_payment_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def update(cls, payment_id, note_text_payment_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23681,7 +23389,7 @@ class NoteTextPayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23698,27 +23406,23 @@ class NoteTextPayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_id,
-                                                       note_text_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_id, note_text_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, payment_id, note_text_payment_id, monetary_account_id=None,
-               custom_headers=None):
+    def delete(cls, payment_id, note_text_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
         :type note_text_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -23727,10 +23431,8 @@ class NoteTextPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       payment_id,
-                                                       note_text_payment_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_id, note_text_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -23738,17 +23440,16 @@ class NoteTextPayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextPaymentList
         """
 
@@ -23759,9 +23460,9 @@ class NoteTextPayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id), payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextPaymentList.cast_from_bunq_response(
@@ -23769,8 +23470,7 @@ class NoteTextPayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, payment_id, note_text_payment_id, monetary_account_id=None,
-            custom_headers=None):
+    def get(cls, payment_id, note_text_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -23778,7 +23478,7 @@ class NoteTextPayment(core.BunqModel):
         :type payment_id: int
         :type note_text_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextPayment
         """
 
@@ -23787,10 +23487,8 @@ class NoteTextPayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     payment_id,
-                                                     note_text_payment_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     payment_id, note_text_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextPayment.cast_from_bunq_response(
@@ -23863,7 +23561,7 @@ class NoteTextPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextPayment
         """
 
@@ -23873,7 +23571,7 @@ class NoteTextPayment(core.BunqModel):
 class NoteAttachmentRequestInquiryBatch(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -23927,8 +23625,8 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, request_inquiry_batch_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, request_inquiry_batch_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23939,7 +23637,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23956,20 +23654,17 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_inquiry_batch_id,
-               note_attachment_request_inquiry_batch_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, request_inquiry_batch_id, note_attachment_request_inquiry_batch_id, monetary_account_id=None,
+               description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -23978,7 +23673,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -23995,28 +23690,25 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id,
                                                        note_attachment_request_inquiry_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, request_inquiry_batch_id,
-               note_attachment_request_inquiry_batch_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, request_inquiry_batch_id, note_attachment_request_inquiry_batch_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
         :type note_attachment_request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -24025,8 +23717,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id,
                                                        note_attachment_request_inquiry_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -24036,17 +23727,16 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, request_inquiry_batch_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, request_inquiry_batch_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentRequestInquiryBatchList
         """
 
@@ -24057,10 +23747,9 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_inquiry_batch_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        request_inquiry_batch_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentRequestInquiryBatchList.cast_from_bunq_response(
@@ -24068,8 +23757,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_inquiry_batch_id,
-            note_attachment_request_inquiry_batch_id, monetary_account_id=None,
+    def get(cls, request_inquiry_batch_id, note_attachment_request_inquiry_batch_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -24078,7 +23766,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         :type request_inquiry_batch_id: int
         :type note_attachment_request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentRequestInquiryBatch
         """
 
@@ -24087,10 +23775,8 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_inquiry_batch_id,
-                                                     note_attachment_request_inquiry_batch_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     request_inquiry_batch_id, note_attachment_request_inquiry_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentRequestInquiryBatch.cast_from_bunq_response(
@@ -24174,18 +23860,17 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentRequestInquiryBatch
         """
 
-        return converter.json_to_class(NoteAttachmentRequestInquiryBatch,
-                                       json_str)
+        return converter.json_to_class(NoteAttachmentRequestInquiryBatch, json_str)
 
 
 class NoteTextRequestInquiryBatch(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -24227,8 +23912,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, request_inquiry_batch_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, request_inquiry_batch_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -24236,7 +23920,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -24252,19 +23936,16 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_inquiry_batch_id,
-               note_text_request_inquiry_batch_id, monetary_account_id=None,
+    def update(cls, request_inquiry_batch_id, note_text_request_inquiry_batch_id, monetary_account_id=None,
                content=None, custom_headers=None):
         """
         :type user_id: int
@@ -24274,7 +23955,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -24291,20 +23972,16 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_batch_id,
-                                                       note_text_request_inquiry_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_inquiry_batch_id, note_text_request_inquiry_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, request_inquiry_batch_id,
-               note_text_request_inquiry_batch_id, monetary_account_id=None,
+    def delete(cls, request_inquiry_batch_id, note_text_request_inquiry_batch_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -24312,7 +23989,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         :type request_inquiry_batch_id: int
         :type note_text_request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -24321,10 +23998,8 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_batch_id,
-                                                       note_text_request_inquiry_batch_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_inquiry_batch_id, note_text_request_inquiry_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -24332,17 +24007,16 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, request_inquiry_batch_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, request_inquiry_batch_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextRequestInquiryBatchList
         """
 
@@ -24353,10 +24027,9 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_inquiry_batch_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        request_inquiry_batch_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextRequestInquiryBatchList.cast_from_bunq_response(
@@ -24364,8 +24037,8 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_inquiry_batch_id, note_text_request_inquiry_batch_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, request_inquiry_batch_id, note_text_request_inquiry_batch_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -24373,7 +24046,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         :type request_inquiry_batch_id: int
         :type note_text_request_inquiry_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextRequestInquiryBatch
         """
 
@@ -24382,10 +24055,8 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_inquiry_batch_id,
-                                                     note_text_request_inquiry_batch_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     request_inquiry_batch_id, note_text_request_inquiry_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextRequestInquiryBatch.cast_from_bunq_response(
@@ -24458,7 +24129,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextRequestInquiryBatch
         """
 
@@ -24468,7 +24139,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
 class NoteAttachmentRequestInquiry(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -24522,8 +24193,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, request_inquiry_id, attachment_id, monetary_account_id=None,
-               description=None, custom_headers=None):
+    def create(cls, request_inquiry_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -24534,7 +24204,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -24551,19 +24221,17 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_inquiry_id, note_attachment_request_inquiry_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, request_inquiry_id, note_attachment_request_inquiry_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -24572,7 +24240,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -24589,27 +24257,24 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id,
-                                                       note_attachment_request_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_inquiry_id, note_attachment_request_inquiry_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, request_inquiry_id, note_attachment_request_inquiry_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, request_inquiry_id, note_attachment_request_inquiry_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
         :type note_attachment_request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -24618,10 +24283,8 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id,
-                                                       note_attachment_request_inquiry_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_inquiry_id, note_attachment_request_inquiry_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -24629,17 +24292,16 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, request_inquiry_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, request_inquiry_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentRequestInquiryList
         """
 
@@ -24650,10 +24312,9 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_inquiry_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        request_inquiry_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentRequestInquiryList.cast_from_bunq_response(
@@ -24661,8 +24322,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_inquiry_id, note_attachment_request_inquiry_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, request_inquiry_id, note_attachment_request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -24670,7 +24330,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         :type request_inquiry_id: int
         :type note_attachment_request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentRequestInquiry
         """
 
@@ -24679,10 +24339,8 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_inquiry_id,
-                                                     note_attachment_request_inquiry_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     request_inquiry_id, note_attachment_request_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentRequestInquiry.cast_from_bunq_response(
@@ -24766,7 +24424,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentRequestInquiry
         """
 
@@ -24776,7 +24434,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
 class NoteTextRequestInquiry(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -24818,8 +24476,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, request_inquiry_id, monetary_account_id=None, content=None,
-               custom_headers=None):
+    def create(cls, request_inquiry_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -24827,7 +24484,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -24843,19 +24500,17 @@ class NoteTextRequestInquiry(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_inquiry_id, note_text_request_inquiry_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, request_inquiry_id, note_text_request_inquiry_id, monetary_account_id=None, content=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -24864,7 +24519,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -24881,27 +24536,23 @@ class NoteTextRequestInquiry(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id,
-                                                       note_text_request_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_inquiry_id, note_text_request_inquiry_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, request_inquiry_id, note_text_request_inquiry_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, request_inquiry_id, note_text_request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
         :type note_text_request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -24910,10 +24561,8 @@ class NoteTextRequestInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_inquiry_id,
-                                                       note_text_request_inquiry_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_inquiry_id, note_text_request_inquiry_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -24921,17 +24570,16 @@ class NoteTextRequestInquiry(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, request_inquiry_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, request_inquiry_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextRequestInquiryList
         """
 
@@ -24942,10 +24590,9 @@ class NoteTextRequestInquiry(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_inquiry_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        request_inquiry_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextRequestInquiryList.cast_from_bunq_response(
@@ -24953,8 +24600,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_inquiry_id, note_text_request_inquiry_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, request_inquiry_id, note_text_request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -24962,7 +24608,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         :type request_inquiry_id: int
         :type note_text_request_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextRequestInquiry
         """
 
@@ -24971,10 +24617,8 @@ class NoteTextRequestInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_inquiry_id,
-                                                     note_text_request_inquiry_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     request_inquiry_id, note_text_request_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextRequestInquiry.cast_from_bunq_response(
@@ -25047,7 +24691,7 @@ class NoteTextRequestInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextRequestInquiry
         """
 
@@ -25057,7 +24701,7 @@ class NoteTextRequestInquiry(core.BunqModel):
 class NoteAttachmentRequestResponse(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -25111,8 +24755,8 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, request_response_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, request_response_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -25123,7 +24767,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -25140,19 +24784,17 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_response_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_response_id, note_attachment_request_response_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, request_response_id, note_attachment_request_response_id, monetary_account_id=None,
+               description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -25161,7 +24803,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -25178,27 +24820,24 @@ class NoteAttachmentRequestResponse(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id,
-                                                       note_attachment_request_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_response_id, note_attachment_request_response_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, request_response_id, note_attachment_request_response_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, request_response_id, note_attachment_request_response_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
         :type note_attachment_request_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -25207,10 +24846,8 @@ class NoteAttachmentRequestResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id,
-                                                       note_attachment_request_response_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_response_id, note_attachment_request_response_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -25218,17 +24855,16 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, request_response_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, request_response_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentRequestResponseList
         """
 
@@ -25239,10 +24875,9 @@ class NoteAttachmentRequestResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_response_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        request_response_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentRequestResponseList.cast_from_bunq_response(
@@ -25250,8 +24885,8 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_response_id, note_attachment_request_response_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, request_response_id, note_attachment_request_response_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -25259,7 +24894,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         :type request_response_id: int
         :type note_attachment_request_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentRequestResponse
         """
 
@@ -25268,10 +24903,8 @@ class NoteAttachmentRequestResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_response_id,
-                                                     note_attachment_request_response_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     request_response_id, note_attachment_request_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentRequestResponse.cast_from_bunq_response(
@@ -25355,7 +24988,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentRequestResponse
         """
 
@@ -25365,7 +24998,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
 class NoteTextRequestResponse(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -25407,8 +25040,7 @@ class NoteTextRequestResponse(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, request_response_id, monetary_account_id=None, content=None,
-               custom_headers=None):
+    def create(cls, request_response_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -25416,7 +25048,7 @@ class NoteTextRequestResponse(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -25432,19 +25064,17 @@ class NoteTextRequestResponse(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        request_response_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, request_response_id, note_text_request_response_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, request_response_id, note_text_request_response_id, monetary_account_id=None, content=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -25453,7 +25083,7 @@ class NoteTextRequestResponse(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -25470,27 +25100,23 @@ class NoteTextRequestResponse(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id,
-                                                       note_text_request_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_response_id, note_text_request_response_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, request_response_id, note_text_request_response_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, request_response_id, note_text_request_response_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
         :type note_text_request_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -25499,10 +25125,8 @@ class NoteTextRequestResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       request_response_id,
-                                                       note_text_request_response_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       request_response_id, note_text_request_response_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -25510,17 +25134,16 @@ class NoteTextRequestResponse(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, request_response_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, request_response_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextRequestResponseList
         """
 
@@ -25531,10 +25154,9 @@ class NoteTextRequestResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            request_response_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        request_response_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextRequestResponseList.cast_from_bunq_response(
@@ -25542,8 +25164,7 @@ class NoteTextRequestResponse(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, request_response_id, note_text_request_response_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, request_response_id, note_text_request_response_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -25551,7 +25172,7 @@ class NoteTextRequestResponse(core.BunqModel):
         :type request_response_id: int
         :type note_text_request_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextRequestResponse
         """
 
@@ -25560,10 +25181,8 @@ class NoteTextRequestResponse(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     request_response_id,
-                                                     note_text_request_response_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     request_response_id, note_text_request_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextRequestResponse.cast_from_bunq_response(
@@ -25636,7 +25255,7 @@ class NoteTextRequestResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextRequestResponse
         """
 
@@ -25646,7 +25265,7 @@ class NoteTextRequestResponse(core.BunqModel):
 class NoteAttachmentScheduleInstance(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -25700,8 +25319,8 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, schedule_id, schedule_instance_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, schedule_id, schedule_instance_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -25713,7 +25332,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -25730,20 +25349,16 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_id, schedule_instance_id,
-               note_attachment_schedule_instance_id, monetary_account_id=None,
+    def update(cls, schedule_id, schedule_instance_id, note_attachment_schedule_instance_id, monetary_account_id=None,
                description=None, custom_headers=None):
         """
         :type user_id: int
@@ -25754,7 +25369,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -25771,21 +25386,17 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id,
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id,
                                                        note_attachment_schedule_instance_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_id, schedule_instance_id,
-               note_attachment_schedule_instance_id, monetary_account_id=None,
+    def delete(cls, schedule_id, schedule_instance_id, note_attachment_schedule_instance_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -25794,7 +25405,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         :type schedule_instance_id: int
         :type note_attachment_schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -25803,10 +25414,8 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id,
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id,
                                                        note_attachment_schedule_instance_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -25815,18 +25424,17 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, schedule_id, schedule_instance_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
         :type schedule_instance_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentScheduleInstanceList
         """
 
@@ -25837,10 +25445,9 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_id, schedule_instance_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_id, schedule_instance_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentScheduleInstanceList.cast_from_bunq_response(
@@ -25848,8 +25455,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_id, schedule_instance_id,
-            note_attachment_schedule_instance_id, monetary_account_id=None,
+    def get(cls, schedule_id, schedule_instance_id, note_attachment_schedule_instance_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -25859,7 +25465,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         :type schedule_instance_id: int
         :type note_attachment_schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentScheduleInstance
         """
 
@@ -25868,10 +25474,8 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_id,
-                                                     schedule_instance_id,
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     schedule_id, schedule_instance_id,
                                                      note_attachment_schedule_instance_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -25956,7 +25560,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentScheduleInstance
         """
 
@@ -25966,7 +25570,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
 class NoteTextScheduleInstance(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -26008,8 +25612,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, schedule_id, schedule_instance_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -26018,7 +25621,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26034,20 +25637,16 @@ class NoteTextScheduleInstance(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_id, schedule_instance_id,
-               note_text_schedule_instance_id, monetary_account_id=None,
+    def update(cls, schedule_id, schedule_instance_id, note_text_schedule_instance_id, monetary_account_id=None,
                content=None, custom_headers=None):
         """
         :type user_id: int
@@ -26058,7 +25657,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26075,21 +25674,17 @@ class NoteTextScheduleInstance(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id,
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id,
                                                        note_text_schedule_instance_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_id, schedule_instance_id,
-               note_text_schedule_instance_id, monetary_account_id=None,
+    def delete(cls, schedule_id, schedule_instance_id, note_text_schedule_instance_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -26098,7 +25693,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         :type schedule_instance_id: int
         :type note_text_schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -26107,10 +25702,8 @@ class NoteTextScheduleInstance(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_id,
-                                                       schedule_instance_id,
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_id, schedule_instance_id,
                                                        note_text_schedule_instance_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -26119,18 +25712,17 @@ class NoteTextScheduleInstance(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, schedule_id, schedule_instance_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, schedule_id, schedule_instance_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
         :type schedule_instance_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextScheduleInstanceList
         """
 
@@ -26141,10 +25733,9 @@ class NoteTextScheduleInstance(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_id, schedule_instance_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_id, schedule_instance_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextScheduleInstanceList.cast_from_bunq_response(
@@ -26152,8 +25743,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_id, schedule_instance_id,
-            note_text_schedule_instance_id, monetary_account_id=None,
+    def get(cls, schedule_id, schedule_instance_id, note_text_schedule_instance_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -26163,7 +25753,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         :type schedule_instance_id: int
         :type note_text_schedule_instance_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextScheduleInstance
         """
 
@@ -26172,11 +25762,8 @@ class NoteTextScheduleInstance(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_id,
-                                                     schedule_instance_id,
-                                                     note_text_schedule_instance_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     schedule_id, schedule_instance_id, note_text_schedule_instance_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextScheduleInstance.cast_from_bunq_response(
@@ -26249,7 +25836,7 @@ class NoteTextScheduleInstance(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextScheduleInstance
         """
 
@@ -26259,7 +25846,7 @@ class NoteTextScheduleInstance(core.BunqModel):
 class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -26313,8 +25900,8 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, schedule_payment_batch_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, schedule_payment_batch_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -26325,7 +25912,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26342,20 +25929,17 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_payment_batch_id,
-               note_attachment_schedule_payment_batch_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, schedule_payment_batch_id, note_attachment_schedule_payment_batch_id, monetary_account_id=None,
+               description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -26364,7 +25948,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26381,28 +25965,25 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id,
                                                        note_attachment_schedule_payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_payment_batch_id,
-               note_attachment_schedule_payment_batch_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, schedule_payment_batch_id, note_attachment_schedule_payment_batch_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_batch_id: int
         :type note_attachment_schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -26411,8 +25992,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id,
                                                        note_attachment_schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -26422,17 +26002,16 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, schedule_payment_batch_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, schedule_payment_batch_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_batch_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentSchedulePaymentBatchList
         """
 
@@ -26443,10 +26022,9 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_payment_batch_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_payment_batch_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentSchedulePaymentBatchList.cast_from_bunq_response(
@@ -26454,8 +26032,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_payment_batch_id,
-            note_attachment_schedule_payment_batch_id, monetary_account_id=None,
+    def get(cls, schedule_payment_batch_id, note_attachment_schedule_payment_batch_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -26464,7 +26041,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         :type schedule_payment_batch_id: int
         :type note_attachment_schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentSchedulePaymentBatch
         """
 
@@ -26473,8 +26050,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_batch_id,
                                                      note_attachment_schedule_payment_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -26560,18 +26136,17 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentSchedulePaymentBatch
         """
 
-        return converter.json_to_class(NoteAttachmentSchedulePaymentBatch,
-                                       json_str)
+        return converter.json_to_class(NoteAttachmentSchedulePaymentBatch, json_str)
 
 
 class NoteTextSchedulePaymentBatch(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -26613,8 +26188,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, schedule_payment_batch_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, schedule_payment_batch_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -26622,7 +26196,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26638,19 +26212,16 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_payment_batch_id,
-               note_text_schedule_payment_batch_id, monetary_account_id=None,
+    def update(cls, schedule_payment_batch_id, note_text_schedule_payment_batch_id, monetary_account_id=None,
                content=None, custom_headers=None):
         """
         :type user_id: int
@@ -26660,7 +26231,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26677,20 +26248,16 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_batch_id,
-                                                       note_text_schedule_payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_payment_batch_id, note_text_schedule_payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_payment_batch_id,
-               note_text_schedule_payment_batch_id, monetary_account_id=None,
+    def delete(cls, schedule_payment_batch_id, note_text_schedule_payment_batch_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -26698,7 +26265,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         :type schedule_payment_batch_id: int
         :type note_text_schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -26707,10 +26274,8 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_batch_id,
-                                                       note_text_schedule_payment_batch_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_payment_batch_id, note_text_schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -26718,17 +26283,16 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, schedule_payment_batch_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, schedule_payment_batch_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_batch_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextSchedulePaymentBatchList
         """
 
@@ -26739,10 +26303,9 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_payment_batch_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_payment_batch_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextSchedulePaymentBatchList.cast_from_bunq_response(
@@ -26750,8 +26313,8 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_payment_batch_id, note_text_schedule_payment_batch_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, schedule_payment_batch_id, note_text_schedule_payment_batch_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -26759,7 +26322,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         :type schedule_payment_batch_id: int
         :type note_text_schedule_payment_batch_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextSchedulePaymentBatch
         """
 
@@ -26768,10 +26331,8 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_payment_batch_id,
-                                                     note_text_schedule_payment_batch_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     schedule_payment_batch_id, note_text_schedule_payment_batch_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextSchedulePaymentBatch.cast_from_bunq_response(
@@ -26844,7 +26405,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextSchedulePaymentBatch
         """
 
@@ -26854,7 +26415,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
 class NoteAttachmentSchedulePayment(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -26908,8 +26469,8 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, schedule_payment_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, schedule_payment_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -26920,7 +26481,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26937,19 +26498,17 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_payment_id, note_attachment_schedule_payment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def update(cls, schedule_payment_id, note_attachment_schedule_payment_id, monetary_account_id=None,
+               description=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -26958,7 +26517,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -26975,27 +26534,24 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_id,
-                                                       note_attachment_schedule_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_payment_id, note_attachment_schedule_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_payment_id, note_attachment_schedule_payment_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, schedule_payment_id, note_attachment_schedule_payment_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
         :type note_attachment_schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -27004,10 +26560,8 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_id,
-                                                       note_attachment_schedule_payment_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_payment_id, note_attachment_schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -27015,17 +26569,16 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, schedule_payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, schedule_payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentSchedulePaymentList
         """
 
@@ -27036,10 +26589,9 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentSchedulePaymentList.cast_from_bunq_response(
@@ -27047,8 +26599,8 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_payment_id, note_attachment_schedule_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, schedule_payment_id, note_attachment_schedule_payment_id, monetary_account_id=None,
+            custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -27056,7 +26608,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         :type schedule_payment_id: int
         :type note_attachment_schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentSchedulePayment
         """
 
@@ -27065,10 +26617,8 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_payment_id,
-                                                     note_attachment_schedule_payment_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     schedule_payment_id, note_attachment_schedule_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteAttachmentSchedulePayment.cast_from_bunq_response(
@@ -27152,7 +26702,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentSchedulePayment
         """
 
@@ -27162,7 +26712,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
 class NoteTextSchedulePayment(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -27204,8 +26754,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, schedule_payment_id, monetary_account_id=None, content=None,
-               custom_headers=None):
+    def create(cls, schedule_payment_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -27213,7 +26762,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -27229,19 +26778,17 @@ class NoteTextSchedulePayment(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, schedule_payment_id, note_text_schedule_payment_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, schedule_payment_id, note_text_schedule_payment_id, monetary_account_id=None, content=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -27250,7 +26797,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -27267,27 +26814,23 @@ class NoteTextSchedulePayment(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_id,
-                                                       note_text_schedule_payment_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_payment_id, note_text_schedule_payment_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, schedule_payment_id, note_text_schedule_payment_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, schedule_payment_id, note_text_schedule_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
         :type note_text_schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -27296,10 +26839,8 @@ class NoteTextSchedulePayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       schedule_payment_id,
-                                                       note_text_schedule_payment_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       schedule_payment_id, note_text_schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -27307,17 +26848,16 @@ class NoteTextSchedulePayment(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, schedule_payment_id, monetary_account_id=None, params=None,
-             custom_headers=None):
+    def list(cls, schedule_payment_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextSchedulePaymentList
         """
 
@@ -27328,10 +26868,9 @@ class NoteTextSchedulePayment(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            schedule_payment_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        schedule_payment_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextSchedulePaymentList.cast_from_bunq_response(
@@ -27339,8 +26878,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, schedule_payment_id, note_text_schedule_payment_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, schedule_payment_id, note_text_schedule_payment_id, monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
@@ -27348,7 +26886,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         :type schedule_payment_id: int
         :type note_text_schedule_payment_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextSchedulePayment
         """
 
@@ -27357,10 +26895,8 @@ class NoteTextSchedulePayment(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     schedule_payment_id,
-                                                     note_text_schedule_payment_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     schedule_payment_id, note_text_schedule_payment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextSchedulePayment.cast_from_bunq_response(
@@ -27433,7 +26969,7 @@ class NoteTextSchedulePayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextSchedulePayment
         """
 
@@ -27443,7 +26979,7 @@ class NoteTextSchedulePayment(core.BunqModel):
 class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -27497,8 +27033,8 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, sofort_merchant_transaction_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, sofort_merchant_transaction_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -27509,7 +27045,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -27526,19 +27062,16 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, sofort_merchant_transaction_id,
-               note_attachment_sofort_merchant_transaction_id,
+    def update(cls, sofort_merchant_transaction_id, note_attachment_sofort_merchant_transaction_id,
                monetary_account_id=None, description=None, custom_headers=None):
         """
         :type user_id: int
@@ -27548,7 +27081,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -27565,20 +27098,17 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id,
                                                        note_attachment_sofort_merchant_transaction_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, sofort_merchant_transaction_id,
-               note_attachment_sofort_merchant_transaction_id,
+    def delete(cls, sofort_merchant_transaction_id, note_attachment_sofort_merchant_transaction_id,
                monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
@@ -27586,7 +27116,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         :type sofort_merchant_transaction_id: int
         :type note_attachment_sofort_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -27595,8 +27125,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id,
                                                        note_attachment_sofort_merchant_transaction_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -27606,17 +27135,16 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, sofort_merchant_transaction_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, sofort_merchant_transaction_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentSofortMerchantTransactionList
         """
 
@@ -27627,10 +27155,9 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            sofort_merchant_transaction_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        sofort_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentSofortMerchantTransactionList.cast_from_bunq_response(
@@ -27638,8 +27165,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, sofort_merchant_transaction_id,
-            note_attachment_sofort_merchant_transaction_id,
+    def get(cls, sofort_merchant_transaction_id, note_attachment_sofort_merchant_transaction_id,
             monetary_account_id=None, custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -27648,7 +27174,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         :type sofort_merchant_transaction_id: int
         :type note_attachment_sofort_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentSofortMerchantTransaction
         """
 
@@ -27657,8 +27183,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      sofort_merchant_transaction_id,
                                                      note_attachment_sofort_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -27744,18 +27269,17 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentSofortMerchantTransaction
         """
 
-        return converter.json_to_class(NoteAttachmentSofortMerchantTransaction,
-                                       json_str)
+        return converter.json_to_class(NoteAttachmentSofortMerchantTransaction, json_str)
 
 
 class NoteTextSofortMerchantTransaction(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -27797,8 +27321,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, sofort_merchant_transaction_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, sofort_merchant_transaction_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -27806,7 +27329,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -27822,20 +27345,17 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, sofort_merchant_transaction_id,
-               note_text_sofort_merchant_transaction_id,
-               monetary_account_id=None, content=None, custom_headers=None):
+    def update(cls, sofort_merchant_transaction_id, note_text_sofort_merchant_transaction_id, monetary_account_id=None,
+               content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -27844,7 +27364,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -27861,28 +27381,25 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id,
                                                        note_text_sofort_merchant_transaction_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, sofort_merchant_transaction_id,
-               note_text_sofort_merchant_transaction_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, sofort_merchant_transaction_id, note_text_sofort_merchant_transaction_id, monetary_account_id=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
         :type note_text_sofort_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -27891,8 +27408,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id,
                                                        note_text_sofort_merchant_transaction_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -27902,17 +27418,16 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, sofort_merchant_transaction_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, sofort_merchant_transaction_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextSofortMerchantTransactionList
         """
 
@@ -27923,10 +27438,9 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            sofort_merchant_transaction_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        sofort_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextSofortMerchantTransactionList.cast_from_bunq_response(
@@ -27934,8 +27448,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, sofort_merchant_transaction_id,
-            note_text_sofort_merchant_transaction_id, monetary_account_id=None,
+    def get(cls, sofort_merchant_transaction_id, note_text_sofort_merchant_transaction_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -27944,7 +27457,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         :type sofort_merchant_transaction_id: int
         :type note_text_sofort_merchant_transaction_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextSofortMerchantTransaction
         """
 
@@ -27953,8 +27466,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      sofort_merchant_transaction_id,
                                                      note_text_sofort_merchant_transaction_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -28029,18 +27541,17 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextSofortMerchantTransaction
         """
 
-        return converter.json_to_class(NoteTextSofortMerchantTransaction,
-                                       json_str)
+        return converter.json_to_class(NoteTextSofortMerchantTransaction, json_str)
 
 
 class NoteAttachmentWhitelistResult(core.BunqModel):
     """
     Used to manage attachment notes.
-
+    
     :param _description: Optional description of the attachment.
     :type _description: str
     :param _attachment_id: The reference to the uploaded file to attach to this
@@ -28094,8 +27605,8 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         self._description_field_for_request = description
 
     @classmethod
-    def create(cls, whitelist_id, whitelist_result_id, attachment_id,
-               monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls, whitelist_id, whitelist_result_id, attachment_id, monetary_account_id=None, description=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -28107,7 +27618,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -28124,20 +27635,16 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       whitelist_id,
-                                                       whitelist_result_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       whitelist_id, whitelist_result_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, whitelist_id, whitelist_result_id,
-               note_attachment_whitelist_result_id, monetary_account_id=None,
+    def update(cls, whitelist_id, whitelist_result_id, note_attachment_whitelist_result_id, monetary_account_id=None,
                description=None, custom_headers=None):
         """
         :type user_id: int
@@ -28148,7 +27655,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         :param description: Optional description of the attachment.
         :type description: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -28165,21 +27672,17 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       whitelist_id,
-                                                       whitelist_result_id,
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       whitelist_id, whitelist_result_id,
                                                        note_attachment_whitelist_result_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, whitelist_id, whitelist_result_id,
-               note_attachment_whitelist_result_id, monetary_account_id=None,
+    def delete(cls, whitelist_id, whitelist_result_id, note_attachment_whitelist_result_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -28188,7 +27691,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         :type whitelist_result_id: int
         :type note_attachment_whitelist_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -28197,10 +27700,8 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       whitelist_id,
-                                                       whitelist_result_id,
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       whitelist_id, whitelist_result_id,
                                                        note_attachment_whitelist_result_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
@@ -28209,18 +27710,17 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, whitelist_id, whitelist_result_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, whitelist_id, whitelist_result_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type whitelist_id: int
         :type whitelist_result_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentWhitelistResultList
         """
 
@@ -28231,10 +27731,9 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            whitelist_id, whitelist_result_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        whitelist_id, whitelist_result_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteAttachmentWhitelistResultList.cast_from_bunq_response(
@@ -28242,8 +27741,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, whitelist_id, whitelist_result_id,
-            note_attachment_whitelist_result_id, monetary_account_id=None,
+    def get(cls, whitelist_id, whitelist_result_id, note_attachment_whitelist_result_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -28253,7 +27751,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         :type whitelist_result_id: int
         :type note_attachment_whitelist_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteAttachmentWhitelistResult
         """
 
@@ -28262,10 +27760,8 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     whitelist_id,
-                                                     whitelist_result_id,
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     whitelist_id, whitelist_result_id,
                                                      note_attachment_whitelist_result_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -28350,7 +27846,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteAttachmentWhitelistResult
         """
 
@@ -28360,7 +27856,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
 class NoteTextWhitelistResult(core.BunqModel):
     """
     Used to manage text notes.
-
+    
     :param _content: The content of the note.
     :type _content: str
     :param _id_: The id of the note.
@@ -28402,8 +27898,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         self._content_field_for_request = content
 
     @classmethod
-    def create(cls, whitelist_id, whitelist_result_id, monetary_account_id=None,
-               content=None, custom_headers=None):
+    def create(cls, whitelist_id, whitelist_result_id, monetary_account_id=None, content=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -28412,7 +27907,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -28428,20 +27923,16 @@ class NoteTextWhitelistResult(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       whitelist_id,
-                                                       whitelist_result_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       whitelist_id, whitelist_result_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, whitelist_id, whitelist_result_id,
-               note_text_whitelist_result_id, monetary_account_id=None,
+    def update(cls, whitelist_id, whitelist_result_id, note_text_whitelist_result_id, monetary_account_id=None,
                content=None, custom_headers=None):
         """
         :type user_id: int
@@ -28452,7 +27943,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         :param content: The content of the note.
         :type content: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -28469,21 +27960,16 @@ class NoteTextWhitelistResult(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       whitelist_id,
-                                                       whitelist_result_id,
-                                                       note_text_whitelist_result_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       whitelist_id, whitelist_result_id, note_text_whitelist_result_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, whitelist_id, whitelist_result_id,
-               note_text_whitelist_result_id, monetary_account_id=None,
+    def delete(cls, whitelist_id, whitelist_result_id, note_text_whitelist_result_id, monetary_account_id=None,
                custom_headers=None):
         """
         :type user_id: int
@@ -28492,7 +27978,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         :type whitelist_result_id: int
         :type note_text_whitelist_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -28501,11 +27987,8 @@ class NoteTextWhitelistResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       whitelist_id,
-                                                       whitelist_result_id,
-                                                       note_text_whitelist_result_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       whitelist_id, whitelist_result_id, note_text_whitelist_result_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -28513,18 +27996,17 @@ class NoteTextWhitelistResult(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, whitelist_id, whitelist_result_id, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, whitelist_id, whitelist_result_id, monetary_account_id=None, params=None, custom_headers=None):
         """
         Manage the notes for a given user.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type whitelist_id: int
         :type whitelist_result_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextWhitelistResultList
         """
 
@@ -28535,10 +28017,9 @@ class NoteTextWhitelistResult(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            whitelist_id, whitelist_result_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        whitelist_id, whitelist_result_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNoteTextWhitelistResultList.cast_from_bunq_response(
@@ -28546,8 +28027,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, whitelist_id, whitelist_result_id,
-            note_text_whitelist_result_id, monetary_account_id=None,
+    def get(cls, whitelist_id, whitelist_result_id, note_text_whitelist_result_id, monetary_account_id=None,
             custom_headers=None):
         """
         :type api_context: context.ApiContext
@@ -28557,7 +28037,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         :type whitelist_result_id: int
         :type note_text_whitelist_result_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNoteTextWhitelistResult
         """
 
@@ -28566,11 +28046,8 @@ class NoteTextWhitelistResult(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     whitelist_id,
-                                                     whitelist_result_id,
-                                                     note_text_whitelist_result_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     whitelist_id, whitelist_result_id, note_text_whitelist_result_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseNoteTextWhitelistResult.cast_from_bunq_response(
@@ -28643,7 +28120,7 @@ class NoteTextWhitelistResult(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NoteTextWhitelistResult
         """
 
@@ -28653,7 +28130,7 @@ class NoteTextWhitelistResult(core.BunqModel):
 class NotificationFilterPushUser(core.BunqModel):
     """
     Manage the push notification filters for a user.
-
+    
     :param _notification_filters: The types of notifications that will result in
     a push notification for this user.
     :type _notification_filters: list[object_.NotificationFilterPush]
@@ -28690,7 +28167,7 @@ class NotificationFilterPushUser(core.BunqModel):
         in a push notification for this user.
         :type notification_filters: list[object_.NotificationFilterPush]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNotificationFilterPushUser
         """
 
@@ -28706,8 +28183,7 @@ class NotificationFilterPushUser(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseNotificationFilterPushUser.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -28719,7 +28195,7 @@ class NotificationFilterPushUser(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNotificationFilterPushUserList
         """
 
@@ -28730,8 +28206,7 @@ class NotificationFilterPushUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNotificationFilterPushUserList.cast_from_bunq_response(
@@ -28760,7 +28235,7 @@ class NotificationFilterPushUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationFilterPushUser
         """
 
@@ -28770,7 +28245,7 @@ class NotificationFilterPushUser(core.BunqModel):
 class NotificationFilterUrlMonetaryAccount(core.BunqModel):
     """
     Manage the url notification filters for a user.
-
+    
     :param _notification_filters: The types of notifications that will result in
     a url notification for this monetary account.
     :type _notification_filters: list[object_.NotificationFilterUrl]
@@ -28799,8 +28274,7 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         self._notification_filters_field_for_request = notification_filters
 
     @classmethod
-    def create(cls, monetary_account_id=None, notification_filters=None,
-               custom_headers=None):
+    def create(cls, monetary_account_id=None, notification_filters=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -28808,7 +28282,7 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         in a url notification for this monetary account.
         :type notification_filters: list[object_.NotificationFilterUrl]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -28824,10 +28298,8 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -28840,7 +28312,7 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNotificationFilterUrlMonetaryAccountList
         """
 
@@ -28851,9 +28323,8 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNotificationFilterUrlMonetaryAccountList.cast_from_bunq_response(
@@ -28882,18 +28353,17 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationFilterUrlMonetaryAccount
         """
 
-        return converter.json_to_class(NotificationFilterUrlMonetaryAccount,
-                                       json_str)
+        return converter.json_to_class(NotificationFilterUrlMonetaryAccount, json_str)
 
 
 class NotificationFilterUrlUser(core.BunqModel):
     """
     Manage the url notification filters for a user.
-
+    
     :param _notification_filters: The types of notifications that will result in
     a url notification for this user.
     :type _notification_filters: list[object_.NotificationFilterUrl]
@@ -28929,7 +28399,7 @@ class NotificationFilterUrlUser(core.BunqModel):
         in a url notification for this user.
         :type notification_filters: list[object_.NotificationFilterUrl]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -28945,8 +28415,7 @@ class NotificationFilterUrlUser(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -28958,7 +28427,7 @@ class NotificationFilterUrlUser(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNotificationFilterUrlUserList
         """
 
@@ -28969,8 +28438,7 @@ class NotificationFilterUrlUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseNotificationFilterUrlUserList.cast_from_bunq_response(
@@ -28999,7 +28467,7 @@ class NotificationFilterUrlUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationFilterUrlUser
         """
 
@@ -29022,7 +28490,7 @@ class ChatMessage(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ChatMessage
         """
 
@@ -29033,16 +28501,16 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     """
     Using this call you can retrieve information of the user you are logged in
     as. This includes your user id, which is referred to in endpoints.
-
-    :param _UserLight:
+    
+    :param _UserLight: 
     :type _UserLight: UserLight
-    :param _UserPerson:
+    :param _UserPerson: 
     :type _UserPerson: UserPerson
-    :param _UserCompany:
+    :param _UserCompany: 
     :type _UserCompany: UserCompany
-    :param _UserApiKey:
+    :param _UserApiKey: 
     :type _UserApiKey: UserApiKey
-    :param _UserPaymentServiceProvider:
+    :param _UserPaymentServiceProvider: 
     :type _UserPaymentServiceProvider: UserPaymentServiceProvider
     """
 
@@ -29066,11 +28534,11 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     def get(cls, custom_headers=None):
         """
         Get a specific user.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUser
         """
 
@@ -29089,10 +28557,10 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     def list(cls, params=None, custom_headers=None):
         """
         Get a collection of all available users.
-
+        
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserList
         """
 
@@ -29199,7 +28667,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: User
         """
 
@@ -29209,7 +28677,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
 class UserLight(core.BunqModel):
     """
     Show the authenticated user, if it is a light user.
-
+    
     :param _first_name: The user's first name.
     :type _first_name: str
     :param _middle_name: The user's middle name.
@@ -29394,18 +28862,13 @@ class UserLight(core.BunqModel):
     _daily_limit_without_confirmation_login_field_for_request = None
     _notification_filters_field_for_request = None
 
-    def __init__(self, social_security_number=None, legal_guardian_alias=None,
-                 gender=None, nationality=None, country_of_birth=None,
-                 place_of_birth=None, document_back_attachment_id=None,
-                 document_front_attachment_id=None,
-                 document_country_of_issuance=None, document_number=None,
-                 document_type=None, tax_resident=None, address_postal=None,
-                 first_name=None, middle_name=None,
-                 daily_limit_without_confirmation_login=None,
-                 session_timeout=None, sub_status=None, status=None,
-                 region=None, language=None, date_of_birth=None,
-                 avatar_uuid=None, address_main=None, public_nick_name=None,
-                 last_name=None, notification_filters=None):
+    def __init__(self, social_security_number=None, legal_guardian_alias=None, gender=None, nationality=None,
+                 country_of_birth=None, place_of_birth=None, document_back_attachment_id=None,
+                 document_front_attachment_id=None, document_country_of_issuance=None, document_number=None,
+                 document_type=None, tax_resident=None, address_postal=None, first_name=None, middle_name=None,
+                 daily_limit_without_confirmation_login=None, session_timeout=None, sub_status=None, status=None,
+                 region=None, language=None, date_of_birth=None, avatar_uuid=None, address_main=None,
+                 public_nick_name=None, last_name=None, notification_filters=None):
         """
         :param first_name: The user's first name.
         :type first_name: str
@@ -29873,7 +29336,7 @@ class UserLight(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserLight
         """
 
@@ -29886,7 +29349,7 @@ class UserPerson(core.BunqModel):
     UserPerson and update specific fields.<br/><br/>Notification filters can be
     set on a UserPerson level to receive callbacks. For more information check
     the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
-
+    
     :param _first_name: The person's first name.
     :type _first_name: str
     :param _middle_name: The person's middle name.
@@ -30075,17 +29538,13 @@ class UserPerson(core.BunqModel):
     _notification_filters_field_for_request = None
     _display_name_field_for_request = None
 
-    def __init__(self, sub_status=None, notification_filters=None,
-                 document_back_attachment_id=None, tax_resident=None,
-                 address_postal=None, public_nick_name=None, last_name=None,
-                 middle_name=None, first_name=None,
-                 daily_limit_without_confirmation_login=None,
-                 session_timeout=None, legal_guardian_alias=None, status=None,
-                 address_main=None, gender=None, region=None, language=None,
-                 nationality=None, country_of_birth=None, place_of_birth=None,
-                 date_of_birth=None, document_front_attachment_id=None,
-                 document_country_of_issuance=None, document_number=None,
-                 document_type=None, avatar_uuid=None, display_name=None):
+    def __init__(self, sub_status=None, notification_filters=None, document_back_attachment_id=None, tax_resident=None,
+                 address_postal=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None,
+                 daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None,
+                 status=None, address_main=None, gender=None, region=None, language=None, nationality=None,
+                 country_of_birth=None, place_of_birth=None, date_of_birth=None, document_front_attachment_id=None,
+                 document_country_of_issuance=None, document_number=None, document_type=None, avatar_uuid=None,
+                 display_name=None):
         """
         :param address_main: The user's main address.
         :type address_main: object_.Address
@@ -30195,11 +29654,11 @@ class UserPerson(core.BunqModel):
     def get(cls, custom_headers=None):
         """
         Get a specific person.
-
+        
         :type api_context: context.ApiContext
         :type user_person_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserPerson
         """
 
@@ -30215,21 +29674,16 @@ class UserPerson(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, first_name=None, middle_name=None, last_name=None,
-               public_nick_name=None, address_main=None, address_postal=None,
-               avatar_uuid=None, tax_resident=None, document_type=None,
-               document_number=None, document_country_of_issuance=None,
-               document_front_attachment_id=None,
-               document_back_attachment_id=None, date_of_birth=None,
-               place_of_birth=None, country_of_birth=None, nationality=None,
-               language=None, region=None, gender=None, status=None,
-               sub_status=None, legal_guardian_alias=None, session_timeout=None,
-               daily_limit_without_confirmation_login=None,
-               notification_filters=None, display_name=None,
+    def update(cls, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None,
+               address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None,
+               document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None,
+               date_of_birth=None, place_of_birth=None, country_of_birth=None, nationality=None, language=None,
+               region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None,
+               daily_limit_without_confirmation_login=None, notification_filters=None, display_name=None,
                custom_headers=None):
         """
         Modify a specific person object's data.
-
+        
         :type user_person_id: int
         :param first_name: The person's first name.
         :type first_name: str
@@ -30306,7 +29760,7 @@ class UserPerson(core.BunqModel):
         be listed via the 'user/{user_id}/legal-name' endpoint.
         :type display_name: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -30349,8 +29803,7 @@ class UserPerson(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id())
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -30708,7 +30161,7 @@ class UserPerson(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserPerson
         """
 
@@ -30721,7 +30174,7 @@ class UserCompany(core.BunqModel):
     UserCompany and update specific fields.<br/><br/>Notification filters can be
     set on a UserCompany level to receive callbacks. For more information check
     the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
-
+    
     :param _name: The company name.
     :type _name: str
     :param _public_nick_name: The company's public nick name.
@@ -30872,11 +30325,9 @@ class UserCompany(core.BunqModel):
     _daily_limit_without_confirmation_login_field_for_request = None
     _notification_filters_field_for_request = None
 
-    def __init__(self, ubo=None, daily_limit_without_confirmation_login=None,
-                 session_timeout=None, sub_status=None, status=None,
-                 legal_form=None, chamber_of_commerce_number=None, country=None,
-                 address_main=None, address_postal=None, avatar_uuid=None,
-                 public_nick_name=None, name=None, region=None, language=None,
+    def __init__(self, ubo=None, daily_limit_without_confirmation_login=None, session_timeout=None, sub_status=None,
+                 status=None, legal_form=None, chamber_of_commerce_number=None, country=None, address_main=None,
+                 address_postal=None, avatar_uuid=None, public_nick_name=None, name=None, region=None, language=None,
                  notification_filters=None):
         """
         :param address_main: The user's main address.
@@ -30944,11 +30395,11 @@ class UserCompany(core.BunqModel):
     def get(cls, custom_headers=None):
         """
         Get a specific company.
-
+        
         :type api_context: context.ApiContext
         :type user_company_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserCompany
         """
 
@@ -30964,16 +30415,13 @@ class UserCompany(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, name=None, public_nick_name=None, avatar_uuid=None,
-               address_main=None, address_postal=None, language=None,
-               region=None, country=None, ubo=None,
-               chamber_of_commerce_number=None, legal_form=None, status=None,
-               sub_status=None, session_timeout=None,
-               daily_limit_without_confirmation_login=None,
+    def update(cls, name=None, public_nick_name=None, avatar_uuid=None, address_main=None, address_postal=None,
+               language=None, region=None, country=None, ubo=None, chamber_of_commerce_number=None, legal_form=None,
+               status=None, sub_status=None, session_timeout=None, daily_limit_without_confirmation_login=None,
                notification_filters=None, custom_headers=None):
         """
         Modify a specific company's data.
-
+        
         :type user_company_id: int
         :param name: The company name.
         :type name: str
@@ -31019,7 +30467,7 @@ class UserCompany(core.BunqModel):
         in a push notification or URL callback for this UserCompany.
         :type notification_filters: list[object_.NotificationFilter]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -31051,8 +30499,7 @@ class UserCompany(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id())
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -31399,7 +30846,7 @@ class UserCompany(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserCompany
         """
 
@@ -31409,7 +30856,7 @@ class UserCompany(core.BunqModel):
 class Customer(core.BunqModel):
     """
     Used to view a customer.
-
+    
     :param _billing_account_id: The primary billing account account's id.
     :type _billing_account_id: str
     :param _invoice_notification_preference: The preferred notification type for
@@ -31435,8 +30882,7 @@ class Customer(core.BunqModel):
     _billing_account_id_field_for_request = None
     _invoice_notification_preference_field_for_request = None
 
-    def __init__(self, billing_account_id=None,
-                 invoice_notification_preference=None):
+    def __init__(self, billing_account_id=None, invoice_notification_preference=None):
         """
         :param billing_account_id: The primary billing account account's id.
         :type billing_account_id: str
@@ -31514,7 +30960,7 @@ class Customer(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Customer
         """
 
@@ -31524,7 +30970,7 @@ class Customer(core.BunqModel):
 class UserApiKey(core.BunqModel):
     """
     Used to view OAuth request detais in events.
-
+    
     :param _id_: The id of the user.
     :type _id_: int
     :param _created: The timestamp of the user object's creation.
@@ -31609,7 +31055,7 @@ class UserApiKey(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserApiKey
         """
 
@@ -31619,7 +31065,7 @@ class UserApiKey(core.BunqModel):
 class UserPaymentServiceProvider(core.BunqModel):
     """
     Used to view UserPaymentServiceProvider for session creation.
-
+    
     :param _id_: The id of the user.
     :type _id_: int
     :param _created: The timestamp of the user object's creation.
@@ -31682,7 +31128,7 @@ class UserPaymentServiceProvider(core.BunqModel):
         :type api_context: context.ApiContext
         :type user_payment_service_provider_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserPaymentServiceProvider
         """
 
@@ -31690,8 +31136,7 @@ class UserPaymentServiceProvider(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(
-            user_payment_service_provider_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(user_payment_service_provider_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseUserPaymentServiceProvider.cast_from_bunq_response(
@@ -31863,7 +31308,7 @@ class UserPaymentServiceProvider(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserPaymentServiceProvider
         """
 
@@ -31873,7 +31318,7 @@ class UserPaymentServiceProvider(core.BunqModel):
 class OauthCallbackUrl(core.BunqModel):
     """
     Used for managing OAuth Client Callback URLs.
-
+    
     :param _url: The URL for this callback.
     :type _url: str
     """
@@ -31910,7 +31355,7 @@ class OauthCallbackUrl(core.BunqModel):
         :type oauth_client_id: int
         :type oauth_callback_url_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseOauthCallbackUrl
         """
 
@@ -31918,9 +31363,7 @@ class OauthCallbackUrl(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     oauth_client_id,
-                                                     oauth_callback_url_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), oauth_client_id, oauth_callback_url_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseOauthCallbackUrl.cast_from_bunq_response(
@@ -31935,7 +31378,7 @@ class OauthCallbackUrl(core.BunqModel):
         :param url: The URL for this callback.
         :type url: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -31950,18 +31393,15 @@ class OauthCallbackUrl(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       oauth_client_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), oauth_client_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, oauth_client_id, oauth_callback_url_id, url=None,
-               custom_headers=None):
+    def update(cls, oauth_client_id, oauth_callback_url_id, url=None, custom_headers=None):
         """
         :type user_id: int
         :type oauth_client_id: int
@@ -31969,7 +31409,7 @@ class OauthCallbackUrl(core.BunqModel):
         :param url: The URL for this callback.
         :type url: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -31985,11 +31425,8 @@ class OauthCallbackUrl(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       oauth_client_id,
-                                                       oauth_callback_url_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), oauth_client_id, oauth_callback_url_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -32002,7 +31439,7 @@ class OauthCallbackUrl(core.BunqModel):
         :type oauth_client_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseOauthCallbackUrlList
         """
 
@@ -32013,8 +31450,7 @@ class OauthCallbackUrl(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), oauth_client_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), oauth_client_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseOauthCallbackUrlList.cast_from_bunq_response(
@@ -32022,14 +31458,13 @@ class OauthCallbackUrl(core.BunqModel):
         )
 
     @classmethod
-    def delete(cls, oauth_client_id, oauth_callback_url_id,
-               custom_headers=None):
+    def delete(cls, oauth_client_id, oauth_callback_url_id, custom_headers=None):
         """
         :type user_id: int
         :type oauth_client_id: int
         :type oauth_callback_url_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -32037,9 +31472,7 @@ class OauthCallbackUrl(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       oauth_client_id,
-                                                       oauth_callback_url_id)
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), oauth_client_id, oauth_callback_url_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -32068,7 +31501,7 @@ class OauthCallbackUrl(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: OauthCallbackUrl
         """
 
@@ -32078,7 +31511,7 @@ class OauthCallbackUrl(core.BunqModel):
 class OauthClient(core.BunqModel):
     """
     Used for managing OAuth Clients.
-
+    
     :param _status: The status of the pack group, can be ACTIVE, CANCELLED or
     CANCELLED_PENDING.
     :type _status: str
@@ -32126,7 +31559,7 @@ class OauthClient(core.BunqModel):
         :type user_id: int
         :type oauth_client_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseOauthClient
         """
 
@@ -32134,8 +31567,7 @@ class OauthClient(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     oauth_client_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), oauth_client_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseOauthClient.cast_from_bunq_response(
@@ -32150,7 +31582,7 @@ class OauthClient(core.BunqModel):
         CANCELLED.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -32166,8 +31598,7 @@ class OauthClient(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -32182,7 +31613,7 @@ class OauthClient(core.BunqModel):
         CANCELLED.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -32198,10 +31629,8 @@ class OauthClient(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       oauth_client_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), oauth_client_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -32213,7 +31642,7 @@ class OauthClient(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseOauthClientList
         """
 
@@ -32224,8 +31653,7 @@ class OauthClient(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseOauthClientList.cast_from_bunq_response(
@@ -32298,7 +31726,7 @@ class OauthClient(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: OauthClient
         """
 
@@ -32308,7 +31736,7 @@ class OauthClient(core.BunqModel):
 class PaymentServiceProviderCredential(core.BunqModel):
     """
     Register a Payment Service Provider and provide credentials
-
+    
     :param _client_payment_service_provider_certificate: Payment Services
     Directive 2 compatible QSEAL certificate
     :type _client_payment_service_provider_certificate: str
@@ -32362,8 +31790,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
     _client_payment_service_provider_certificate_chain_field_for_request = None
     _client_public_key_signature_field_for_request = None
 
-    def __init__(self, client_payment_service_provider_certificate,
-                 client_payment_service_provider_certificate_chain,
+    def __init__(self, client_payment_service_provider_certificate, client_payment_service_provider_certificate_chain,
                  client_public_key_signature):
         """
         :param client_payment_service_provider_certificate: Payment Services
@@ -32389,7 +31816,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         :type api_context: context.ApiContext
         :type payment_service_provider_credential_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePaymentServiceProviderCredential
         """
 
@@ -32397,8 +31824,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(
-            payment_service_provider_credential_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(payment_service_provider_credential_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponsePaymentServiceProviderCredential.cast_from_bunq_response(
@@ -32406,8 +31832,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         )
 
     @classmethod
-    def create(cls, client_payment_service_provider_certificate,
-               client_payment_service_provider_certificate_chain,
+    def create(cls, client_payment_service_provider_certificate, client_payment_service_provider_certificate_chain,
                client_public_key_signature, custom_headers=None):
         """
         :param client_payment_service_provider_certificate: Payment Services
@@ -32422,7 +31847,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         certificate.
         :type client_public_key_signature: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -32440,8 +31865,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -32535,19 +31959,18 @@ class PaymentServiceProviderCredential(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: PaymentServiceProviderCredential
         """
 
-        return converter.json_to_class(PaymentServiceProviderCredential,
-                                       json_str)
+        return converter.json_to_class(PaymentServiceProviderCredential, json_str)
 
 
 class PermittedIp(core.BunqModel):
     """
     Manage the IPs which may be used for a credential of a user for server
     authentication.
-
+    
     :param _ip: The IP address.
     :type _ip: str
     :param _status: The status of the IP. May be "ACTIVE" or "INACTIVE". It is
@@ -32588,15 +32011,14 @@ class PermittedIp(core.BunqModel):
         self._status_field_for_request = status
 
     @classmethod
-    def get(cls, credential_password_ip_id, permitted_ip_id,
-            custom_headers=None):
+    def get(cls, credential_password_ip_id, permitted_ip_id, custom_headers=None):
         """
         :type api_context: context.ApiContext
         :type user_id: int
         :type credential_password_ip_id: int
         :type permitted_ip_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePermittedIp
         """
 
@@ -32604,8 +32026,7 @@ class PermittedIp(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     credential_password_ip_id,
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), credential_password_ip_id,
                                                      permitted_ip_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -32614,8 +32035,7 @@ class PermittedIp(core.BunqModel):
         )
 
     @classmethod
-    def create(cls, credential_password_ip_id, ip, status=None,
-               custom_headers=None):
+    def create(cls, credential_password_ip_id, ip, status=None, custom_headers=None):
         """
         :type user_id: int
         :type credential_password_ip_id: int
@@ -32626,7 +32046,7 @@ class PermittedIp(core.BunqModel):
         "ACTIVE" IPs will be billed.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -32642,10 +32062,8 @@ class PermittedIp(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       credential_password_ip_id)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), credential_password_ip_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -32658,7 +32076,7 @@ class PermittedIp(core.BunqModel):
         :type credential_password_ip_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponsePermittedIpList
         """
 
@@ -32669,8 +32087,7 @@ class PermittedIp(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(), credential_password_ip_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), credential_password_ip_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponsePermittedIpList.cast_from_bunq_response(
@@ -32678,8 +32095,7 @@ class PermittedIp(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, credential_password_ip_id, permitted_ip_id, status=None,
-               custom_headers=None):
+    def update(cls, credential_password_ip_id, permitted_ip_id, status=None, custom_headers=None):
         """
         :type user_id: int
         :type credential_password_ip_id: int
@@ -32689,7 +32105,7 @@ class PermittedIp(core.BunqModel):
         "ACTIVE" IPs will be billed.
         :type status: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -32705,11 +32121,9 @@ class PermittedIp(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       credential_password_ip_id,
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), credential_password_ip_id,
                                                        permitted_ip_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -32748,7 +32162,7 @@ class PermittedIp(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: PermittedIp
         """
 
@@ -32758,7 +32172,7 @@ class PermittedIp(core.BunqModel):
 class Reward(core.BunqModel):
     """
     Used to view Rewards.
-
+    
     :param _id_: The id of the reward.
     :type _id_: int
     :param _created: The time the reward was created.
@@ -32802,7 +32216,7 @@ class Reward(core.BunqModel):
         :type user_id: int
         :type reward_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseReward
         """
 
@@ -32810,8 +32224,7 @@ class Reward(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     reward_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), reward_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseReward.cast_from_bunq_response(
@@ -32824,7 +32237,7 @@ class Reward(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseRewardList
         """
 
@@ -32835,8 +32248,7 @@ class Reward(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseRewardList.cast_from_bunq_response(
@@ -32942,7 +32354,7 @@ class Reward(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Reward
         """
 
@@ -32952,7 +32364,7 @@ class Reward(core.BunqModel):
 class SandboxUser(core.BunqModel):
     """
     Used to create a sandbox user.
-
+    
     :param _api_key: The API key of the newly created sandbox user.
     :type _api_key: str
     """
@@ -32969,7 +32381,7 @@ class SandboxUser(core.BunqModel):
     def create(cls, custom_headers=None):
         """
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseSandboxUser
         """
 
@@ -32985,8 +32397,7 @@ class SandboxUser(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseSandboxUser.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -33014,7 +32425,7 @@ class SandboxUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: SandboxUser
         """
 
@@ -33041,11 +32452,11 @@ class ScheduleUser(core.BunqModel):
         type={SCHEDULE_DEFINITION_PAYMENT,SCHEDULE_DEFINITION_PAYMENT_BATCH} is
         provided only schedule definition object that relate to these
         definitions are returned.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseScheduleUserList
         """
 
@@ -33056,8 +32467,7 @@ class ScheduleUser(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseScheduleUserList.cast_from_bunq_response(
@@ -33075,7 +32485,7 @@ class ScheduleUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ScheduleUser
         """
 
@@ -33094,10 +32504,10 @@ class Session(core.BunqModel):
     def delete(cls, session_id, custom_headers=None):
         """
         Deletes the current session.
-
+        
         :type session_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -33123,7 +32533,7 @@ class Session(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Session
         """
 
@@ -33143,20 +32553,19 @@ class ShareInviteBankAmountUsed(core.BunqModel):
     _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/share-invite-bank-inquiry/{}/amount-used/{}"
 
     @classmethod
-    def delete(cls, share_invite_bank_inquiry_id,
-               share_invite_bank_amount_used_id, monetary_account_id=None,
+    def delete(cls, share_invite_bank_inquiry_id, share_invite_bank_amount_used_id, monetary_account_id=None,
                custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-inquiry/ID/amount-used]
         Reset the available budget for a bank account share. To be called
         without any ID at the end of the path.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_bank_inquiry_id: int
         :type share_invite_bank_amount_used_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -33165,10 +32574,8 @@ class ShareInviteBankAmountUsed(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       share_invite_bank_inquiry_id,
-                                                       share_invite_bank_amount_used_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       share_invite_bank_inquiry_id, share_invite_bank_amount_used_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -33186,7 +32593,7 @@ class ShareInviteBankAmountUsed(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteBankAmountUsed
         """
 
@@ -33205,19 +32612,18 @@ class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
     _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/share-invite-monetary-account-inquiry/{}/amount-used/{}"
 
     @classmethod
-    def delete(cls, share_invite_monetary_account_inquiry_id,
-               share_invite_monetary_account_amount_used_id,
+    def delete(cls, share_invite_monetary_account_inquiry_id, share_invite_monetary_account_amount_used_id,
                monetary_account_id=None, custom_headers=None):
         """
         Reset the available budget for an account share. To be called without
         any ID at the end of the path.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_monetary_account_inquiry_id: int
         :type share_invite_monetary_account_amount_used_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -33226,8 +32632,7 @@ class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        share_invite_monetary_account_inquiry_id,
                                                        share_invite_monetary_account_amount_used_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
@@ -33247,12 +32652,11 @@ class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteMonetaryAccountAmountUsed
         """
 
-        return converter.json_to_class(ShareInviteMonetaryAccountAmountUsed,
-                                       json_str)
+        return converter.json_to_class(ShareInviteMonetaryAccountAmountUsed, json_str)
 
 
 class ShareInviteMonetaryAccountInquiry(core.BunqModel):
@@ -33262,7 +32666,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
     bunq app. Allow the creation of share inquiries that, in the same way as
     request inquiries, can be revoked by the user creating them or
     accepted/rejected by the other party.
-
+    
     :param _counter_user_alias: The label of the user to share with.
     :type _counter_user_alias: object_.LabelUser
     :param _draft_share_invite_bank_id: The id of the draft share invite bank.
@@ -33332,9 +32736,8 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
     _start_date_field_for_request = None
     _end_date_field_for_request = None
 
-    def __init__(self, counter_user_alias, share_detail=None, status=None,
-                 draft_share_invite_bank_id=None, share_type=None,
-                 start_date=None, end_date=None):
+    def __init__(self, counter_user_alias, share_detail=None, status=None, draft_share_invite_bank_id=None,
+                 share_type=None, start_date=None, end_date=None):
         """
         :param counter_user_alias: The pointer of the user to share with.
         :type counter_user_alias: object_.Pointer
@@ -33366,15 +32769,13 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         self._end_date_field_for_request = end_date
 
     @classmethod
-    def create(cls, counter_user_alias, share_detail, status,
-               monetary_account_id=None, draft_share_invite_bank_id=None,
-               share_type=None, start_date=None, end_date=None,
-               custom_headers=None):
+    def create(cls, counter_user_alias, share_detail, status, monetary_account_id=None, draft_share_invite_bank_id=None,
+               share_type=None, start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-response] Create a new
         share inquiry for a monetary account, specifying the permission the
         other bunq user will have on it.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :param counter_user_alias: The pointer of the user to share with.
@@ -33398,7 +32799,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         :param end_date: The expiration date of this share.
         :type end_date: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -33420,28 +32821,25 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def get(cls, share_invite_monetary_account_inquiry_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, share_invite_monetary_account_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-response] Get the
         details of a specific share inquiry.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_monetary_account_inquiry_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteMonetaryAccountInquiry
         """
 
@@ -33450,8 +32848,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
                                                      share_invite_monetary_account_inquiry_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -33460,14 +32857,13 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, share_invite_monetary_account_inquiry_id,
-               monetary_account_id=None, share_detail=None, status=None,
+    def update(cls, share_invite_monetary_account_inquiry_id, monetary_account_id=None, share_detail=None, status=None,
                start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-response] Update the
         details of a share. This includes updating status (revoking or
         cancelling it), granted permission and validity period of this share.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_monetary_account_inquiry_id: int
@@ -33485,7 +32881,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         :param end_date: The expiration date of this share.
         :type end_date: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -33505,11 +32901,9 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
                                                        share_invite_monetary_account_inquiry_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -33522,12 +32916,12 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         with all the share inquiries for a monetary account, only if the
         requesting user has permission to change the details of the various
         ones.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteMonetaryAccountInquiryList
         """
 
@@ -33538,9 +32932,8 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id))
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseShareInviteMonetaryAccountInquiryList.cast_from_bunq_response(
@@ -33690,12 +33083,11 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteMonetaryAccountInquiry
         """
 
-        return converter.json_to_class(ShareInviteMonetaryAccountInquiry,
-                                       json_str)
+        return converter.json_to_class(ShareInviteMonetaryAccountInquiry, json_str)
 
 
 class ShareInviteMonetaryAccountResponse(core.BunqModel):
@@ -33703,7 +33095,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
     Used to view or respond to shares a user was invited to. See
     'share-invite-bank-inquiry' for more information about the inquiring
     endpoint.
-
+    
     :param _status: The status of the share. Can be PENDING, REVOKED (the user
     deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
     user deletes an active share) or CANCELLATION_PENDING,
@@ -33785,16 +33177,15 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         self._card_id_field_for_request = card_id
 
     @classmethod
-    def get(cls, share_invite_monetary_account_response_id,
-            custom_headers=None):
+    def get(cls, share_invite_monetary_account_response_id, custom_headers=None):
         """
         Return the details of a specific share a user was invited to.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type share_invite_monetary_account_response_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteMonetaryAccountResponse
         """
 
@@ -33811,11 +33202,10 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         )
 
     @classmethod
-    def update(cls, share_invite_monetary_account_response_id, status=None,
-               card_id=None, custom_headers=None):
+    def update(cls, share_invite_monetary_account_response_id, status=None, card_id=None, custom_headers=None):
         """
         Accept or reject a share a user was invited to.
-
+        
         :type user_id: int
         :type share_invite_monetary_account_response_id: int
         :param status: The status of the share. Can be PENDING, REVOKED (the
@@ -33828,7 +33218,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         only if share_detail is ShareDetailCardPayment.
         :type card_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -33847,8 +33237,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
                                                        share_invite_monetary_account_response_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -33858,11 +33247,11 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
     def list(cls, params=None, custom_headers=None):
         """
         Return all the shares a user was invited to.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseShareInviteMonetaryAccountResponseList
         """
 
@@ -33873,8 +33262,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseShareInviteMonetaryAccountResponseList.cast_from_bunq_response(
@@ -34035,18 +33423,17 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareInviteMonetaryAccountResponse
         """
 
-        return converter.json_to_class(ShareInviteMonetaryAccountResponse,
-                                       json_str)
+        return converter.json_to_class(ShareInviteMonetaryAccountResponse, json_str)
 
 
 class TabItemShopBatch(core.BunqModel):
     """
     Create a batch of tab items.
-
+    
     :param _tab_items: The list of tab items in the batch.
     :type _tab_items: list[TabItemShop]
     """
@@ -34070,11 +33457,10 @@ class TabItemShopBatch(core.BunqModel):
         self._tab_items_field_for_request = tab_items
 
     @classmethod
-    def create(cls, cash_register_id, tab_uuid, tab_items,
-               monetary_account_id=None, custom_headers=None):
+    def create(cls, cash_register_id, tab_uuid, tab_items, monetary_account_id=None, custom_headers=None):
         """
         Create tab items as a batch.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -34083,7 +33469,7 @@ class TabItemShopBatch(core.BunqModel):
         batch. Limited to 50 items per batch.
         :type tab_items: list[TabItemShop]
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -34099,12 +33485,9 @@ class TabItemShopBatch(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_uuid)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_uuid)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -34132,7 +33515,7 @@ class TabItemShopBatch(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabItemShopBatch
         """
 
@@ -34148,7 +33531,7 @@ class TabItemShop(core.BunqModel):
     created any TabItems for a Tab the sum of the amounts of these items must be
     equal to the total_amount of the Tab when you change its status to
     PAYABLE/WAITING_FOR_PAYMENT.
-
+    
     :param _description: The TabItem's brief description.
     :type _description: str
     :param _ean_code: The TabItem's EAN code.
@@ -34201,9 +33584,8 @@ class TabItemShop(core.BunqModel):
     _quantity_field_for_request = None
     _amount_field_for_request = None
 
-    def __init__(self, description=None, ean_code=None,
-                 avatar_attachment_uuid=None, tab_attachment=None,
-                 quantity=None, amount=None):
+    def __init__(self, description=None, ean_code=None, avatar_attachment_uuid=None, tab_attachment=None, quantity=None,
+                 amount=None):
         """
         :param description: The TabItem's brief description. Can't be empty and must
         be no longer than 100 characters
@@ -34231,13 +33613,11 @@ class TabItemShop(core.BunqModel):
         self._amount_field_for_request = amount
 
     @classmethod
-    def create(cls, cash_register_id, tab_uuid, description,
-               monetary_account_id=None, ean_code=None,
-               avatar_attachment_uuid=None, tab_attachment=None, quantity=None,
-               amount=None, custom_headers=None):
+    def create(cls, cash_register_id, tab_uuid, description, monetary_account_id=None, ean_code=None,
+               avatar_attachment_uuid=None, tab_attachment=None, quantity=None, amount=None, custom_headers=None):
         """
         Create a new TabItem for a given Tab.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -34259,7 +33639,7 @@ class TabItemShop(core.BunqModel):
         value of the corresponding Tab.
         :type amount: object_.Amount
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -34280,25 +33660,21 @@ class TabItemShop(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_uuid)
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_uuid)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, cash_register_id, tab_uuid, tab_item_shop_id,
-               monetary_account_id=None, description=None, ean_code=None,
-               avatar_attachment_uuid=None, tab_attachment=None, quantity=None,
-               amount=None, custom_headers=None):
+    def update(cls, cash_register_id, tab_uuid, tab_item_shop_id, monetary_account_id=None, description=None,
+               ean_code=None, avatar_attachment_uuid=None, tab_attachment=None, quantity=None, amount=None,
+               custom_headers=None):
         """
         Modify a TabItem from a given Tab.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -34321,7 +33697,7 @@ class TabItemShop(core.BunqModel):
         value of the corresponding Tab.
         :type amount: object_.Amount
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -34343,31 +33719,26 @@ class TabItemShop(core.BunqModel):
 
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_uuid,
-                                                       tab_item_shop_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_uuid, tab_item_shop_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def delete(cls, cash_register_id, tab_uuid, tab_item_shop_id,
-               monetary_account_id=None, custom_headers=None):
+    def delete(cls, cash_register_id, tab_uuid, tab_item_shop_id, monetary_account_id=None, custom_headers=None):
         """
         Delete a specific TabItem from a Tab.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -34376,11 +33747,8 @@ class TabItemShop(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(
-                                                           monetary_account_id),
-                                                       cash_register_id,
-                                                       tab_uuid,
-                                                       tab_item_shop_id)
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       cash_register_id, tab_uuid, tab_item_shop_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -34388,18 +33756,17 @@ class TabItemShop(core.BunqModel):
         )
 
     @classmethod
-    def list(cls, cash_register_id, tab_uuid, monetary_account_id=None,
-             params=None, custom_headers=None):
+    def list(cls, cash_register_id, tab_uuid, monetary_account_id=None, params=None, custom_headers=None):
         """
         Get a collection of TabItems from a given Tab.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabItemShopList
         """
 
@@ -34410,10 +33777,9 @@ class TabItemShop(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id, tab_uuid)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseTabItemShopList.cast_from_bunq_response(
@@ -34421,11 +33787,10 @@ class TabItemShop(core.BunqModel):
         )
 
     @classmethod
-    def get(cls, cash_register_id, tab_uuid, tab_item_shop_id,
-            monetary_account_id=None, custom_headers=None):
+    def get(cls, cash_register_id, tab_uuid, tab_item_shop_id, monetary_account_id=None, custom_headers=None):
         """
         Get a specific TabItem from a given Tab.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
@@ -34433,7 +33798,7 @@ class TabItemShop(core.BunqModel):
         :type tab_uuid: str
         :type tab_item_shop_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTabItemShop
         """
 
@@ -34442,10 +33807,8 @@ class TabItemShop(core.BunqModel):
 
         api_client = client.ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(
-                                                         monetary_account_id),
-                                                     cash_register_id, tab_uuid,
-                                                     tab_item_shop_id)
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     cash_register_id, tab_uuid, tab_item_shop_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseTabItemShop.cast_from_bunq_response(
@@ -34540,7 +33903,7 @@ class TabItemShop(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabItemShop
         """
 
@@ -34561,19 +33924,18 @@ class TabQrCodeContent(core.BunqModel):
     _OBJECT_TYPE_GET = "TabQrCodeContent"
 
     @classmethod
-    def list(cls, cash_register_id, tab_uuid, monetary_account_id=None,
-             custom_headers=None):
+    def list(cls, cash_register_id, tab_uuid, monetary_account_id=None, custom_headers=None):
         """
         Returns the raw content of the QR code that links to this Tab. The raw
         content is the binary representation of a file, without any JSON
         wrapping.
-
+        
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
         :type tab_uuid: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseBytes
         """
 
@@ -34581,10 +33943,9 @@ class TabQrCodeContent(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id(),
-            cls._determine_monetary_account_id(monetary_account_id),
-            cash_register_id, tab_uuid)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -34602,7 +33963,7 @@ class TabQrCodeContent(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabQrCodeContent
         """
 
@@ -34617,7 +33978,7 @@ class TokenQrRequestIdeal(core.BunqModel):
     https://www.bunq.com/terms-idealstandards. It's very important to keep these
     points in mind when you are using the endpoint to make iDEAL payments from
     your application.
-
+    
     :param _token: The token passed from a site or read from a QR code.
     :type _token: str
     :param _id_: The id of the RequestResponse.
@@ -34721,12 +34082,12 @@ class TokenQrRequestIdeal(core.BunqModel):
     def create(cls, token, custom_headers=None):
         """
         Create a request from an ideal transaction.
-
+        
         :type user_id: int
         :param token: The token passed from a site or read from a QR code.
         :type token: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTokenQrRequestIdeal
         """
 
@@ -34742,8 +34103,7 @@ class TokenQrRequestIdeal(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseTokenQrRequestIdeal.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -34991,7 +34351,7 @@ class TokenQrRequestIdeal(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TokenQrRequestIdeal
         """
 
@@ -35002,7 +34362,7 @@ class TokenQrRequestSofort(core.BunqModel):
     """
     Using this call you can create a SOFORT Request assigned to your User by
     providing the Token of the request.
-
+    
     :param _token: The token passed from a site or read from a QR code.
     :type _token: str
     """
@@ -35030,12 +34390,12 @@ class TokenQrRequestSofort(core.BunqModel):
     def create(cls, token, custom_headers=None):
         """
         Create a request from an SOFORT transaction.
-
+        
         :type user_id: int
         :param token: The token passed from a site or read from a QR code.
         :type token: str
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseTokenQrRequestSofort
         """
 
@@ -35051,8 +34411,7 @@ class TokenQrRequestSofort(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseTokenQrRequestSofort.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
@@ -35069,7 +34428,7 @@ class TokenQrRequestSofort(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TokenQrRequestSofort
         """
 
@@ -35080,7 +34439,7 @@ class UserCompanyName(core.BunqModel):
     """
     Endpoint for getting all the known (trade) names for a user company. This is
     needed for updating the user name, as we only accept legal or trade names.
-
+    
     :param _name_array: All known (trade) names for a user company.
     :type _name_array: list[str]
     """
@@ -35097,11 +34456,11 @@ class UserCompanyName(core.BunqModel):
     def list(cls, user_company_id, params=None, custom_headers=None):
         """
         Return all the known (trade) names for a specific user company.
-
+        
         :type user_company_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserCompanyNameList
         """
 
@@ -35112,8 +34471,7 @@ class UserCompanyName(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseUserCompanyNameList.cast_from_bunq_response(
@@ -35142,7 +34500,7 @@ class UserCompanyName(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserCompanyName
         """
 
@@ -35153,7 +34511,7 @@ class UserCredentialPasswordIp(core.BunqModel):
     """
     Create a credential of a user for server authentication, or delete the
     credential of a user for server authentication.
-
+    
     :param _id_: The id of the credential.
     :type _id_: int
     :param _created: The timestamp of the credential object's creation.
@@ -35195,7 +34553,7 @@ class UserCredentialPasswordIp(core.BunqModel):
         :type user_id: int
         :type user_credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserCredentialPasswordIp
         """
 
@@ -35203,8 +34561,7 @@ class UserCredentialPasswordIp(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     user_credential_password_ip_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), user_credential_password_ip_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseUserCredentialPasswordIp.cast_from_bunq_response(
@@ -35217,7 +34574,7 @@ class UserCredentialPasswordIp(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserCredentialPasswordIpList
         """
 
@@ -35228,8 +34585,7 @@ class UserCredentialPasswordIp(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseUserCredentialPasswordIpList.cast_from_bunq_response(
@@ -35324,7 +34680,7 @@ class UserCredentialPasswordIp(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserCredentialPasswordIp
         """
 
@@ -35334,7 +34690,7 @@ class UserCredentialPasswordIp(core.BunqModel):
 class UserLegalName(core.BunqModel):
     """
     Endpoint for getting available legal names that can be used by the user.
-
+    
     :param _legal_names: All legal names that can be used by the user
     :type _legal_names: list[str]
     """
@@ -35353,7 +34709,7 @@ class UserLegalName(core.BunqModel):
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseUserLegalNameList
         """
 
@@ -35364,8 +34720,7 @@ class UserLegalName(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseUserLegalNameList.cast_from_bunq_response(
@@ -35394,7 +34749,7 @@ class UserLegalName(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserLegalName
         """
 
@@ -35404,7 +34759,7 @@ class UserLegalName(core.BunqModel):
 class WhitelistSdd(core.BunqModel):
     """
     Whitelist an SDD so that when one comes in, it is automatically accepted.
-
+    
     :param _monetary_account_paying_id: The account from which payments will be
     deducted when a transaction is matched with this whitelist.
     :type _monetary_account_paying_id: int
@@ -35463,8 +34818,7 @@ class WhitelistSdd(core.BunqModel):
     _request_id_field_for_request = None
     _maximum_amount_per_month_field_for_request = None
 
-    def __init__(self, request_id, monetary_account_paying_id=None,
-                 maximum_amount_per_month=None):
+    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None):
         """
         :param monetary_account_paying_id: ID of the monetary account of which you
         want to pay from.
@@ -35485,12 +34839,12 @@ class WhitelistSdd(core.BunqModel):
     def get(cls, whitelist_sdd_id, custom_headers=None):
         """
         Get a specific SDD whitelist entry.
-
+        
         :type api_context: context.ApiContext
         :type user_id: int
         :type whitelist_sdd_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseWhitelistSdd
         """
 
@@ -35498,8 +34852,7 @@ class WhitelistSdd(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     whitelist_sdd_id)
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), whitelist_sdd_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseWhitelistSdd.cast_from_bunq_response(
@@ -35507,11 +34860,10 @@ class WhitelistSdd(core.BunqModel):
         )
 
     @classmethod
-    def create(cls, monetary_account_paying_id, request_id,
-               maximum_amount_per_month, custom_headers=None):
+    def create(cls, monetary_account_paying_id, request_id, maximum_amount_per_month, custom_headers=None):
         """
         Create a new SDD whitelist entry.
-
+        
         :type user_id: int
         :param monetary_account_paying_id: ID of the monetary account of which
         you want to pay from.
@@ -35523,7 +34875,7 @@ class WhitelistSdd(core.BunqModel):
         allowed to be deducted based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -35541,16 +34893,15 @@ class WhitelistSdd(core.BunqModel):
         api_client = client.ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes,
-                                       custom_headers)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
 
     @classmethod
-    def update(cls, whitelist_sdd_id, monetary_account_paying_id=None,
-               maximum_amount_per_month=None, custom_headers=None):
+    def update(cls, whitelist_sdd_id, monetary_account_paying_id=None, maximum_amount_per_month=None,
+               custom_headers=None):
         """
         :type user_id: int
         :type whitelist_sdd_id: int
@@ -35561,7 +34912,7 @@ class WhitelistSdd(core.BunqModel):
         allowed to be deducted based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseInt
         """
 
@@ -35578,10 +34929,8 @@ class WhitelistSdd(core.BunqModel):
         request_map_string = cls._remove_field_for_request(request_map_string)
 
         request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       whitelist_sdd_id)
-        response_raw = api_client.put(endpoint_url, request_bytes,
-                                      custom_headers)
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), whitelist_sdd_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
 
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
@@ -35593,7 +34942,7 @@ class WhitelistSdd(core.BunqModel):
         :type user_id: int
         :type whitelist_sdd_id: int
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseNone
         """
 
@@ -35601,8 +34950,7 @@ class WhitelistSdd(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
-                                                       whitelist_sdd_id)
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), whitelist_sdd_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
@@ -35614,11 +34962,11 @@ class WhitelistSdd(core.BunqModel):
         """
         Get a listing of all SDD whitelist entries for a target monetary
         account.
-
+        
         :type user_id: int
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
-
+        
         :rtype: BunqResponseWhitelistSddList
         """
 
@@ -35629,8 +34977,7 @@ class WhitelistSdd(core.BunqModel):
             custom_headers = {}
 
         api_client = client.ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(
-            cls._determine_user_id())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseWhitelistSddList.cast_from_bunq_response(
@@ -35758,7 +35105,7 @@ class WhitelistSdd(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: WhitelistSdd
         """
 
@@ -35905,8 +35252,7 @@ class BunqResponseAvatar(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBankSwitchServiceNetherlandsIncomingPayment(
-    client.BunqResponse):
+class BunqResponseBankSwitchServiceNetherlandsIncomingPayment(client.BunqResponse):
     @property
     def value(self):
         """
@@ -36826,8 +36172,7 @@ class BunqResponseMonetaryAccountList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList(
-    client.BunqResponse):
+class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList(client.BunqResponse):
     @property
     def value(self):
         """
@@ -36837,8 +36182,7 @@ class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList(
         return super().value
 
 
-class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(
-    client.BunqResponse):
+class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(client.BunqResponse):
     @property
     def value(self):
         """
@@ -36848,8 +36192,7 @@ class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(
         return super().value
 
 
-class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList(
-    client.BunqResponse):
+class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList(client.BunqResponse):
     @property
     def value(self):
         """
@@ -36859,8 +36202,7 @@ class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList(
         return super().value
 
 
-class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPayment(
-    client.BunqResponse):
+class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPayment(client.BunqResponse):
     @property
     def value(self):
         """
@@ -36950,8 +36292,7 @@ class BunqResponseNoteTextDraftPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentIdealMerchantTransactionList(
-    client.BunqResponse):
+class BunqResponseNoteAttachmentIdealMerchantTransactionList(client.BunqResponse):
     @property
     def value(self):
         """
@@ -37351,8 +36692,7 @@ class BunqResponseNoteTextSchedulePayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentSofortMerchantTransactionList(
-    client.BunqResponse):
+class BunqResponseNoteAttachmentSofortMerchantTransactionList(client.BunqResponse):
     @property
     def value(self):
         """

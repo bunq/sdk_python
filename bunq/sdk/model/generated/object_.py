@@ -915,9 +915,8 @@ class Address(core.BunqModel):
     _extra_field_for_request = None
     _mailbox_name_field_for_request = None
 
-    def __init__(self, street=None, house_number=None, postal_code=None,
-                 city=None, country=None, po_box=None, extra=None,
-                 mailbox_name=None):
+    def __init__(self, street=None, house_number=None, postal_code=None, city=None, country=None, po_box=None,
+                 extra=None, mailbox_name=None):
         """
         :param street: The street.
         :type street: str
@@ -1226,8 +1225,7 @@ class AttachmentMonetaryAccountPayment(core.BunqModel):
         :rtype: AttachmentMonetaryAccountPayment
         """
 
-        return converter.json_to_class(AttachmentMonetaryAccountPayment,
-                                       json_str)
+        return converter.json_to_class(AttachmentMonetaryAccountPayment, json_str)
 
 
 class Geolocation(core.BunqModel):
@@ -1251,8 +1249,7 @@ class Geolocation(core.BunqModel):
     _altitude_field_for_request = None
     _radius_field_for_request = None
 
-    def __init__(self, latitude=None, longitude=None, altitude=None,
-                 radius=None):
+    def __init__(self, latitude=None, longitude=None, altitude=None, radius=None):
         """
         :param latitude: The latitude for a geolocation restriction.
         :type latitude: str
@@ -1527,8 +1524,8 @@ class CardBatchEntry(core.BunqModel):
     _country_permission_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
-    def __init__(self, id_, status=None, card_limit=None, card_limit_atm=None,
-                 country_permission=None, monetary_account_id_fallback=None):
+    def __init__(self, id_, status=None, card_limit=None, card_limit_atm=None, country_permission=None,
+                 monetary_account_id_fallback=None):
         """
         :param id_: The ID of the card that needs to be updated.
         :type id_: int
@@ -1758,8 +1755,7 @@ class CardVirtualPrimaryAccountNumber(core.BunqModel):
     _status_field_for_request = None
     _monetary_account_id_field_for_request = None
 
-    def __init__(self, id_=None, description=None, status=None,
-                 monetary_account_id=None):
+    def __init__(self, id_=None, description=None, status=None, monetary_account_id=None):
         """
         :param id_: The ID for this Virtual PAN.
         :type id_: int
@@ -1858,8 +1854,7 @@ class CardVirtualPrimaryAccountNumber(core.BunqModel):
         :rtype: CardVirtualPrimaryAccountNumber
         """
 
-        return converter.json_to_class(CardVirtualPrimaryAccountNumber,
-                                       json_str)
+        return converter.json_to_class(CardVirtualPrimaryAccountNumber, json_str)
 
 
 class CardPrimaryAccountNumber(core.BunqModel):
@@ -1890,8 +1885,7 @@ class CardPrimaryAccountNumber(core.BunqModel):
     _status_field_for_request = None
     _monetary_account_id_field_for_request = None
 
-    def __init__(self, id_=None, description=None, status=None,
-                 monetary_account_id=None):
+    def __init__(self, id_=None, description=None, status=None, monetary_account_id=None):
         """
         :param id_: The ID for this PAN.
         :type id_: int
@@ -2066,8 +2060,7 @@ class NotificationFilter(core.BunqModel):
     _notification_target_field_for_request = None
     _category_field_for_request = None
 
-    def __init__(self, notification_delivery_method=None,
-                 notification_target=None, category=None):
+    def __init__(self, notification_delivery_method=None, notification_target=None, category=None):
         """
         :param notification_delivery_method: The delivery method via which
         notifications that match this notification filter will be delivered.
@@ -2226,8 +2219,7 @@ class TabVisibility(core.BunqModel):
     _tab_qr_code_field_for_request = None
     _location_field_for_request = None
 
-    def __init__(self, cash_register_qr_code=None, tab_qr_code=None,
-                 location=None):
+    def __init__(self, cash_register_qr_code=None, tab_qr_code=None, location=None):
         """
         :param cash_register_qr_code: When true the Tab will be linked to the ACTIVE
         cash registers QR code. If no cash register QR code exists, one will be
@@ -2499,8 +2491,8 @@ class DraftPaymentEntry(core.BunqModel):
     _merchant_reference_field_for_request = None
     _attachment_field_for_request = None
 
-    def __init__(self, amount=None, counterparty_alias=None, description=None,
-                 merchant_reference=None, attachment=None):
+    def __init__(self, amount=None, counterparty_alias=None, description=None, merchant_reference=None,
+                 attachment=None):
         """
         :param amount: The amount of the payment.
         :type amount: Amount
@@ -2907,8 +2899,7 @@ class ShareDetailPayment(core.BunqModel):
     _view_new_events_field_for_request = None
     _budget_field_for_request = None
 
-    def __init__(self, make_payments=None, view_balance=None,
-                 view_old_events=None, view_new_events=None,
+    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None,
                  make_draft_payments=None, budget=None):
         """
         :param make_payments: If set to true, the invited user will be able to make
@@ -3107,8 +3098,7 @@ class ShareDetailReadOnly(core.BunqModel):
     _view_old_events_field_for_request = None
     _view_new_events_field_for_request = None
 
-    def __init__(self, view_balance=None, view_old_events=None,
-                 view_new_events=None):
+    def __init__(self, view_balance=None, view_old_events=None, view_new_events=None):
         """
         :param view_balance: If set to true, the invited user will be able to view
         the account balance.
@@ -3201,8 +3191,7 @@ class ShareDetailDraftPayment(core.BunqModel):
     _view_old_events_field_for_request = None
     _view_new_events_field_for_request = None
 
-    def __init__(self, make_draft_payments=None, view_balance=None,
-                 view_old_events=None, view_new_events=None):
+    def __init__(self, make_draft_payments=None, view_balance=None, view_old_events=None, view_new_events=None):
         """
         :param make_draft_payments: If set to true, the invited user will be able to
         make draft payments from the shared account.
@@ -3834,8 +3823,8 @@ class SchedulePaymentEntry(core.BunqModel):
     _merchant_reference_field_for_request = None
     _allow_bunqto_field_for_request = None
 
-    def __init__(self, amount=None, counterparty_alias=None, description=None,
-                 attachment=None, merchant_reference=None, allow_bunqto=None):
+    def __init__(self, amount=None, counterparty_alias=None, description=None, attachment=None, merchant_reference=None,
+                 allow_bunqto=None):
         """
         :param amount: The Amount to transfer with the Payment. Must be bigger 0 and
         smaller than the MonetaryAccount's balance.
@@ -4068,8 +4057,7 @@ class Error(core.BunqModel):
         return converter.json_to_class(Error, json_str)
 
 
-class ScheduleInstanceAnchorObject(core.BunqModel,
-                                   core.AnchoredObjectInterface):
+class ScheduleInstanceAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :param _Payment: 
     :type _Payment: endpoint.Payment
@@ -4244,8 +4232,7 @@ class LabelCard(core.BunqModel):
         return converter.json_to_class(LabelCard, json_str)
 
 
-class RequestReferenceSplitTheBillAnchorObject(core.BunqModel,
-                                               core.AnchoredObjectInterface):
+class RequestReferenceSplitTheBillAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     """
     :param _BillingInvoice: 
     :type _BillingInvoice: endpoint.Invoice
@@ -4429,8 +4416,7 @@ class RequestReferenceSplitTheBillAnchorObject(core.BunqModel,
         :rtype: RequestReferenceSplitTheBillAnchorObject
         """
 
-        return converter.json_to_class(RequestReferenceSplitTheBillAnchorObject,
-                                       json_str)
+        return converter.json_to_class(RequestReferenceSplitTheBillAnchorObject, json_str)
 
 
 class WhitelistResultViewAnchoredObject(core.BunqModel):
@@ -4495,8 +4481,7 @@ class WhitelistResultViewAnchoredObject(core.BunqModel):
         :rtype: WhitelistResultViewAnchoredObject
         """
 
-        return converter.json_to_class(WhitelistResultViewAnchoredObject,
-                                       json_str)
+        return converter.json_to_class(WhitelistResultViewAnchoredObject, json_str)
 
 
 class MonetaryAccountProfileFill(core.BunqModel):
@@ -4526,8 +4511,7 @@ class MonetaryAccountProfileFill(core.BunqModel):
     _method_fill_field_for_request = None
     _issuer_field_for_request = None
 
-    def __init__(self, status, balance_preferred, balance_threshold_low,
-                 method_fill, issuer=None):
+    def __init__(self, status, balance_preferred, balance_threshold_low, method_fill, issuer=None):
         """
         :param status: The status of the profile.
         :type status: str
@@ -4707,8 +4691,7 @@ class MonetaryAccountProfileDrain(core.BunqModel):
     _balance_threshold_high_field_for_request = None
     _savings_account_alias_field_for_request = None
 
-    def __init__(self, status, balance_preferred, balance_threshold_high,
-                 savings_account_alias):
+    def __init__(self, status, balance_preferred, balance_threshold_high, savings_account_alias):
         """
         :param status: The status of the profile.
         :type status: str
@@ -4791,6 +4774,8 @@ class MonetaryAccountSetting(core.BunqModel):
     """
     :param _color: The color chosen for the MonetaryAccount.
     :type _color: str
+    :param _icon: The icon chosen for the MonetaryAccount.
+    :type _icon: str
     :param _default_avatar_status: The status of the avatar. Can be either
     AVATAR_DEFAULT, AVATAR_CUSTOM or AVATAR_UNDETERMINED.
     :type _default_avatar_status: str
@@ -4800,18 +4785,21 @@ class MonetaryAccountSetting(core.BunqModel):
     """
 
     _color = None
+    _icon = None
     _default_avatar_status = None
     _restriction_chat = None
     _color_field_for_request = None
+    _icon_field_for_request = None
     _default_avatar_status_field_for_request = None
     _restriction_chat_field_for_request = None
 
-    def __init__(self, color=None, default_avatar_status=None,
-                 restriction_chat=None):
+    def __init__(self, color=None, icon=None, default_avatar_status=None, restriction_chat=None):
         """
         :param color: The color chosen for the MonetaryAccount in hexadecimal
         format.
         :type color: str
+        :param icon: The icon chosen for the MonetaryAccount.
+        :type icon: str
         :param default_avatar_status: The status of the avatar. Cannot be updated
         directly.
         :type default_avatar_status: str
@@ -4821,6 +4809,7 @@ class MonetaryAccountSetting(core.BunqModel):
         """
 
         self._color_field_for_request = color
+        self._icon_field_for_request = icon
         self._default_avatar_status_field_for_request = default_avatar_status
         self._restriction_chat_field_for_request = restriction_chat
 
@@ -4831,6 +4820,14 @@ class MonetaryAccountSetting(core.BunqModel):
         """
 
         return self._color
+
+    @property
+    def icon(self):
+        """
+        :rtype: str
+        """
+
+        return self._icon
 
     @property
     def default_avatar_status(self):
@@ -4854,6 +4851,9 @@ class MonetaryAccountSetting(core.BunqModel):
         """
 
         if self._color is not None:
+            return False
+
+        if self._icon is not None:
             return False
 
         if self._default_avatar_status is not None:
@@ -5791,28 +5791,20 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
 
 class OauthCallbackUrl(core.BunqModel):
     """
-    :param _url: The Callback URL.
-    :type _url: str
     :param _id_: The id of the callback URL.
     :type _id_: int
     :param _created: The timestamp of the callback URL's creation.
     :type _created: str
     :param _updated: The timestamp of the callback URL's last update.
     :type _updated: str
+    :param _url: The Callback URL.
+    :type _url: str
     """
 
-    _url = None
     _id_ = None
     _created = None
     _updated = None
-
-    @property
-    def url(self):
-        """
-        :rtype: str
-        """
-
-        return self._url
+    _url = None
 
     @property
     def id_(self):
@@ -5838,13 +5830,18 @@ class OauthCallbackUrl(core.BunqModel):
 
         return self._updated
 
+    @property
+    def url(self):
+        """
+        :rtype: str
+        """
+
+        return self._url
+
     def is_all_field_none(self):
         """
         :rtype: bool
         """
-
-        if self._url is not None:
-            return False
 
         if self._id_ is not None:
             return False
@@ -5853,6 +5850,9 @@ class OauthCallbackUrl(core.BunqModel):
             return False
 
         if self._updated is not None:
+            return False
+
+        if self._url is not None:
             return False
 
         return True

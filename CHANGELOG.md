@@ -2,7 +2,18 @@
 
 ## [Unreleased](https://github.com/bunq/sdk_python/tree/HEAD)
 
-[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.1...HEAD)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.2...HEAD)
+
+**Closed issues:**
+
+- Fix README.md preventing from uploading a new version of sdk [\#113](https://github.com/bunq/sdk_python/issues/113)
+
+**Merged pull requests:**
+
+- Markdown fix. \(bunq/sdk\_python\#113\) [\#114](https://github.com/bunq/sdk_python/pull/114) ([kojoru](https://github.com/kojoru))
+
+## [1.10.2](https://github.com/bunq/sdk_python/tree/1.10.2) (2019-05-22)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.1...1.10.2)
 
 **Closed issues:**
 
