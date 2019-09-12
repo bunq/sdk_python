@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk.exception import exception
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
@@ -6556,7 +6556,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
         if self._TabUsageMultiple is not None:
             return self._TabUsageMultiple
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -8613,7 +8613,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         if self._DeviceServer is not None:
             return self._DeviceServer
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -19080,7 +19080,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
         if self._MonetaryAccountSavings is not None:
             return self._MonetaryAccountSavings
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -28639,7 +28639,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
         if self._UserPaymentServiceProvider is not None:
             return self._UserPaymentServiceProvider
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """

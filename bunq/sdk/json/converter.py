@@ -4,9 +4,9 @@ import re
 import sys
 import warnings
 
-from bunq.sdk.exception import exception
-
 # Indentation size we use for the serialized JSON output
+from bunq.sdk.exception.bunq_exception import BunqException
+
 _JSON_INDENT = 4
 
 
@@ -345,7 +345,7 @@ class JsonAdapter(object):
 
         error_message = cls._ERROR_COULD_NOT_FIND_CLASS.format(string)
 
-        raise exception.BunqException(error_message)
+        raise BunqException(error_message)
 
     @classmethod
     def _deserialize_value(cls, types, value):

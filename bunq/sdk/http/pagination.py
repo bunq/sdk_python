@@ -1,4 +1,4 @@
-from bunq.sdk.exception import exception
+from bunq.sdk.exception.bunq_exception import BunqException
 
 
 class Pagination(object):
@@ -45,7 +45,7 @@ class Pagination(object):
         """
 
         if not self.has_previous_page():
-            raise exception.BunqException(self._ERROR_NO_PREVIOUS_PAGE)
+            raise BunqException(self._ERROR_NO_PREVIOUS_PAGE)
 
     def has_previous_page(self):
         """
@@ -101,7 +101,7 @@ class Pagination(object):
         """
 
         if self._next_id is None:
-            raise exception.BunqException(self._ERROR_NO_NEXT_PAGE)
+            raise BunqException(self._ERROR_NO_NEXT_PAGE)
 
     @property
     def _next_id(self):

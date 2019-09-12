@@ -1,7 +1,7 @@
-from bunq.sdk.exception.exception import ApiException
+from bunq.sdk.context.bunq_context import BunqContext
+from bunq.sdk.exception.api_exception import ApiException
 from bunq.sdk.model.generated.endpoint import MonetaryAccountBank
 from tests.bunq_test import BunqSdkTestCase
-from bunq.sdk.context.api_context import BunqContext
 
 
 class TestPagination(BunqSdkTestCase):

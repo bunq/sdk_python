@@ -1,6 +1,6 @@
 from bunq import Pagination
 from bunq.sdk.context.bunq_context import BunqContext
-from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http import api_client
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.http.bunq_response import BunqResponse

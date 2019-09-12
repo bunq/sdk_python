@@ -4,9 +4,9 @@ import unittest
 
 from bunq.sdk.context import api_context
 from bunq.sdk.context.bunq_context import BunqContext
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.util import util
 from bunq.sdk.http.api_client import ApiClient
-from bunq.sdk.exception.exception import BunqException
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 

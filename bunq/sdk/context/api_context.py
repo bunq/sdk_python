@@ -5,7 +5,7 @@ from Cryptodome.PublicKey import RSA
 from bunq.sdk.context.api_environment_type import ApiEnvironmentType
 from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
-from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint

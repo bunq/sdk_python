@@ -1,5 +1,5 @@
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http import api_client
-from bunq.sdk.exception import exception
 from tests.bunq_test import BunqSdkTestCase
 
 
@@ -118,7 +118,7 @@ class TestPagination(BunqSdkTestCase):
             _ = pagination.url_params_previous_page
 
         self.assertFalse(pagination.has_previous_page())
-        self.assertRaises(exception.BunqException,
+        self.assertRaises(BunqException,
                           access_url_params_previous_page)
 
     def test_get_url_params_next_page_from_pagination_with_no_next_page(self):
@@ -129,4 +129,4 @@ class TestPagination(BunqSdkTestCase):
         def access_url_params_next_page():
             _ = pagination.url_params_next_page
 
-        self.assertRaises(exception.BunqException, access_url_params_next_page)
+        self.assertRaises(BunqException, access_url_params_next_page)

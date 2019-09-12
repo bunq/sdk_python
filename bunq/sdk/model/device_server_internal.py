@@ -1,4 +1,4 @@
-from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated.endpoint import BunqResponseInt

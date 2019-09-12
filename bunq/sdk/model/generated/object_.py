@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk.exception import exception
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
@@ -2666,7 +2666,7 @@ class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
         if self._PaymentBatch is not None:
             return self._PaymentBatch
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -3681,7 +3681,7 @@ class EventObject(core.BunqModel, core.AnchoredObjectInterface):
         if self._TransferwiseTransfer is not None:
             return self._TransferwiseTransfer
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -3979,7 +3979,7 @@ class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
         if self._PaymentBatch is not None:
             return self._PaymentBatch
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -4099,7 +4099,7 @@ class ScheduleInstanceAnchorObject(core.BunqModel, core.AnchoredObjectInterface)
         if self._PaymentBatch is not None:
             return self._PaymentBatch
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -4372,7 +4372,7 @@ class RequestReferenceSplitTheBillAnchorObject(core.BunqModel, core.AnchoredObje
         if self._WhitelistResult is not None:
             return self._WhitelistResult
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -5450,7 +5450,7 @@ class NotificationAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
         if self._User is not None:
             return self._User
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """
@@ -5760,7 +5760,7 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
         if self._UserPaymentServiceProvider is not None:
             return self._UserPaymentServiceProvider
 
-        raise exception.BunqException(self._ERROR_NULL_FIELDS)
+        raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
         """

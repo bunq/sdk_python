@@ -1,6 +1,6 @@
 from bunq.sdk.context.api_context import ApiContext
 from bunq.sdk.context.user_context import UserContext
-from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.exception.bunq_exception import BunqException
 
 
 class BunqContext(object):

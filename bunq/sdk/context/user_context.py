@@ -1,4 +1,4 @@
-from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 

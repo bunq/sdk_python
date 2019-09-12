@@ -53,7 +53,7 @@ Because we raise different exceptions for each error, you can catch an error
 if you expect it to be raised.
 
 ```python
-from bunq.sdk.exception.exception import BadRequestException
+from bunq.sdk.exception.bad_request_exception import BadRequestException
 from bunq.sdk.context.api_context import ApiEnvironmentType, ApiContext
 
 API_KEY = "Some invalid API key"

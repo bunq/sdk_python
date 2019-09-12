@@ -2,10 +2,9 @@ import datetime
 import urllib.parse as urlparse
 
 from bunq import Pagination
-from bunq.sdk.http import api_client
 from bunq.sdk.context import api_context
+from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.security import security
-from bunq.sdk.exception.exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
