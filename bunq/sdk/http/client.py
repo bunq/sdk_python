@@ -3,9 +3,9 @@ from urllib.parse import urlencode
 
 import requests
 
-from bunq.sdk import exception
-from bunq.sdk import security
-from bunq.sdk.exception_factory import ExceptionFactory
+from bunq.sdk.exception import exception
+from bunq.sdk.security import security
+from bunq.sdk.exception.exception_factory import ExceptionFactory
 from bunq.sdk.json import converter
 
 
@@ -113,7 +113,7 @@ class ApiClient(object):
                                                               params)
         if uri_relative not in self._URIS_NOT_REQUIRING_ACTIVE_SESSION:
             if self._api_context.ensure_session_active():
-                from bunq.sdk.context import BunqContext
+                from bunq.sdk.context.api_context import BunqContext
 
                 BunqContext.update_api_context(self._api_context)
 

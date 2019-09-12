@@ -4,7 +4,7 @@ import re
 import sys
 import warnings
 
-from bunq.sdk import exception
+from bunq.sdk.exception import exception
 
 # Indentation size we use for the serialized JSON output
 _JSON_INDENT = 4

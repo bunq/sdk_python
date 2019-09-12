@@ -1,8 +1,8 @@
 from bunq.sdk.model.generated.endpoint import DeviceServer
 from bunq.sdk.model.generated.endpoint import BunqResponseInt
-from bunq.sdk import client
+from bunq.sdk.http import client
 from bunq.sdk.json import converter
-from bunq.sdk.exception import BunqException
+from bunq.sdk.exception.exception import BunqException
 
 
 class DeviceServerInternal(DeviceServer):

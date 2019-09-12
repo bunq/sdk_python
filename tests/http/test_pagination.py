@@ -1,5 +1,5 @@
-from bunq.sdk import client
-from bunq.sdk import exception
+from bunq.sdk.http import client
+from bunq.sdk.exception import exception
 from tests.bunq_test import BunqSdkTestCase
 
 

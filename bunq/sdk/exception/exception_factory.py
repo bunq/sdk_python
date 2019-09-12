@@ -1,12 +1,12 @@
-from bunq.sdk.exception import BadRequestException
-from bunq.sdk.exception import UnauthorizedException
-from bunq.sdk.exception import ForbiddenException
-from bunq.sdk.exception import NotFoundException
-from bunq.sdk.exception import MethodNotAllowedException
-from bunq.sdk.exception import TooManyRequestsException
-from bunq.sdk.exception import PleaseContactBunqException
-from bunq.sdk.exception import UnknownApiErrorException
-from bunq.sdk.exception import ApiException
+from bunq.sdk.exception.exception import BadRequestException
+from bunq.sdk.exception.exception import UnauthorizedException
+from bunq.sdk.exception.exception import ForbiddenException
+from bunq.sdk.exception.exception import NotFoundException
+from bunq.sdk.exception.exception import MethodNotAllowedException
+from bunq.sdk.exception.exception import TooManyRequestsException
+from bunq.sdk.exception.exception import PleaseContactBunqException
+from bunq.sdk.exception.exception import UnknownApiErrorException
+from bunq.sdk.exception.exception import ApiException
 
 
 class ExceptionFactory:

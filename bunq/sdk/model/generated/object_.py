@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk import exception
+from bunq.sdk.exception import exception
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint

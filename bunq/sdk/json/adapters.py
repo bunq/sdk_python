@@ -1,10 +1,10 @@
 import datetime
 import urllib.parse as urlparse
 
-from bunq.sdk import client
-from bunq.sdk import context
-from bunq.sdk import security
-from bunq.sdk.exception import BunqException
+from bunq.sdk.http import client
+from bunq.sdk.context import api_context
+from bunq.sdk.security import security
+from bunq.sdk.exception.exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
@@ -259,7 +259,7 @@ class InstallationContextAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, obj):
         """
-        :type target_class: context.InstallationContext|type
+        :type target_class: api_context.InstallationContext|type
         :type obj: dict
 
         :rtype: context.InstallationContext
@@ -287,7 +287,7 @@ class InstallationContextAdapter(converter.JsonAdapter):
     @classmethod
     def serialize(cls, installation_context):
         """
-        :type installation_context: context.InstallationContext
+        :type installation_context: api_context.InstallationContext
 
         :rtype: dict
         """
@@ -310,7 +310,7 @@ class ApiEnvironmentTypeAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, name):
         """
-        :type target_class: context.ApiEnvironmentType|type
+        :type target_class: api_context.ApiEnvironmentType|type
         :type name: str
 
         :rtype: context.ApiEnvironmentType
@@ -318,12 +318,12 @@ class ApiEnvironmentTypeAdapter(converter.JsonAdapter):
 
         _ = target_class
 
-        return context.ApiEnvironmentType[name]
+        return api_context.ApiEnvironmentType[name]
 
     @classmethod
     def serialize(cls, api_environment_type):
         """
-        :type api_environment_type: context.ApiEnvironmentType
+        :type api_environment_type: api_context.ApiEnvironmentType
 
         :rtype: str
         """

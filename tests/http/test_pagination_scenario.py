@@ -1,5 +1,5 @@
-from bunq.sdk import client
-from bunq.sdk.context import BunqContext
+from bunq.sdk.http import client
+from bunq.sdk.context.api_context import BunqContext
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_

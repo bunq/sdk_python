@@ -1,13 +1,11 @@
 import random
 import string
 
-from bunq.sdk.context import BunqContext
-from bunq.sdk.exception import BunqException
+from bunq.sdk.context.bunq_context import BunqContext
 from bunq.sdk.model.generated.endpoint import Card
 from bunq.sdk.model.generated.endpoint import CardDebit
 from bunq.sdk.model.generated.endpoint import CardName
 from bunq.sdk.model.generated.object_ import CardPinAssignment
-from bunq.sdk.model.generated.object_ import Pointer
 from tests.bunq_test import BunqSdkTestCase
 
 

@@ -1,7 +1,8 @@
-from bunq.sdk import client
+# from bunq.sdk.context.api_context import ApiContext
+from bunq.sdk.context.bunq_context import BunqContext
+from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.http import client
 from bunq.sdk.json import converter
-from bunq.sdk.exception import BunqException
-from bunq.sdk import context
 
 
 class AnchoredObjectInterface:
@@ -138,16 +139,15 @@ class BunqModel(object):
         pagination = converter.deserialize(client.Pagination,
                                            obj[cls._FIELD_PAGINATION])
 
-        return client.BunqResponse(array_deserialized, response_raw.headers,
-                                   pagination)
+        return client.BunqResponse(array_deserialized, response_raw.headers, pagination)
 
     @classmethod
     def _get_api_context(cls):
         """
-        :rtype: context.ApiContext
+        :rtype: api_context.ApiContext
         """
 
-        return context.BunqContext.api_context()
+        return BunqContext.api_context()
 
     @classmethod
     def _determine_user_id(cls):
@@ -155,7 +155,7 @@ class BunqModel(object):
         :rtype: int
         """
 
-        return context.BunqContext.user_context().user_id
+        return BunqContext.user_context().user_id
 
     @classmethod
     def _determine_monetary_account_id(cls, monetary_account_id=None):
@@ -166,7 +166,7 @@ class BunqModel(object):
         """
 
         if monetary_account_id is None:
-            return context.BunqContext.user_context().primary_monetary_account.id_
+            return BunqContext.user_context().primary_monetary_account.id_
 
         return monetary_account_id
 

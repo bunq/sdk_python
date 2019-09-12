@@ -2,12 +2,14 @@ import os
 import time
 import unittest
 
-from bunq.sdk import context
-from bunq.sdk import util
-from bunq.sdk.client import ApiClient
-from bunq.sdk.exception import BunqException
+from bunq.sdk.context import api_context
+from bunq.sdk.context.bunq_context import BunqContext
+from bunq.sdk.util import util
+from bunq.sdk.http.client import ApiClient
+from bunq.sdk.exception.exception import BunqException
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
+
 
 class BunqSdkTestCase(unittest.TestCase):
     """
@@ -51,13 +53,13 @@ class BunqSdkTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        context.BunqContext.load_api_context(cls._get_api_context())
+        BunqContext.load_api_context(cls._get_api_context())
 
     def setUp(self):
         self.__set_second_monetary_account()
         self.__request_spending_money()
         time.sleep(self.__TIME_OUT_AUTO_ACCEPT_SPENDING_MONEY)
-        context.BunqContext.user_context().refresh_user_context()
+        BunqContext.user_context().refresh_user_context()
 
     def __set_second_monetary_account(self):
         response = endpoint.MonetaryAccountBank.create(
@@ -99,7 +101,7 @@ class BunqSdkTestCase(unittest.TestCase):
     @classmethod
     def _get_api_context(cls):
         """
-        :rtype: context.ApiContext
+        :rtype: api_context.ApiContext
         """
 
         return util.automatic_sandbox_install()
@@ -160,12 +162,12 @@ class BunqSdkTestCase(unittest.TestCase):
         :rtype: Pointer
         """
 
-        if context.BunqContext.user_context().is_only_user_company_set():
-            return context.BunqContext.user_context().user_company.alias[
+        if BunqContext.user_context().is_only_user_company_set():
+            return BunqContext.user_context().user_company.alias[
                 self._FIRST_INDEX]
 
-        if context.BunqContext.user_context().is_only_user_person_set():
-            return context.BunqContext.user_context().user_person.alias[
+        if BunqContext.user_context().is_only_user_person_set():
+            return BunqContext.user_context().user_person.alias[
                 self._FIRST_INDEX]
 
         raise BunqException(self.__ERROR_COULD_NOT_DETERMINE_USER)

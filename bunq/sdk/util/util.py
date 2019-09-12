@@ -3,9 +3,9 @@ import socket
 
 import requests
 
-from bunq.sdk.client import ApiClient
-from bunq.sdk.context import ApiContext, ApiEnvironmentType
-from bunq.sdk.exception import BunqException
+from bunq.sdk.http.client import ApiClient
+from bunq.sdk.context.api_context import ApiContext, ApiEnvironmentType
+from bunq.sdk.exception.exception import BunqException
 from bunq.sdk.model.generated import endpoint
 
 __UNIQUE_REQUEST_ID = "uniqueness-is-required"

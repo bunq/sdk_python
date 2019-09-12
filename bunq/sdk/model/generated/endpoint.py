@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk import client
-from bunq.sdk import context
-from bunq.sdk import exception
-from bunq.sdk import security
+from bunq.sdk.http import client
+from bunq.sdk.exception import exception
+from bunq.sdk.security import security
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import object_
@@ -603,7 +602,7 @@ class Invoice(core.BunqModel):
     @classmethod
     def get(cls, invoice_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type invoice_id: int
@@ -922,7 +921,7 @@ class InvoiceByUser(core.BunqModel):
     @classmethod
     def get(cls, invoice_by_user_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type invoice_by_user_id: int
         :type custom_headers: dict[str, str]|None
@@ -1608,7 +1607,7 @@ class AttachmentPublic(core.BunqModel):
         header of the response will describe the MIME type of the attachment
         file.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type attachment_public_uuid: str
         :type custom_headers: dict[str, str]|None
         
@@ -1751,7 +1750,7 @@ class AttachmentTab(core.BunqModel):
         Get a specific attachment. The header of the response contains the
         content-type of the attachment.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type attachment_tab_id: int
@@ -1866,7 +1865,7 @@ class TabAttachmentTab(core.BunqModel):
         Get a specific attachment. The header of the response contains the
         content-type of the attachment.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type tab_uuid: str
         :type tab_attachment_tab_id: int
         :type custom_headers: dict[str, str]|None
@@ -1980,7 +1979,7 @@ class AttachmentUser(core.BunqModel):
         Get a specific attachment. The header of the response contains the
         content-type of the attachment.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type attachment_user_id: int
         :type custom_headers: dict[str, str]|None
@@ -2135,7 +2134,7 @@ class Avatar(core.BunqModel):
     @classmethod
     def get(cls, avatar_uuid, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type avatar_uuid: str
         :type custom_headers: dict[str, str]|None
         
@@ -2216,7 +2215,7 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     @classmethod
     def get(cls, bank_switch_service_netherlands_incoming_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bank_switch_service_netherlands_incoming_payment_id: int
@@ -2694,7 +2693,7 @@ class Payment(core.BunqModel):
         """
         Get a specific previous Payment.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
@@ -3138,7 +3137,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
     @classmethod
     def get(cls, bunq_me_fundraiser_profile_user_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type bunq_me_fundraiser_profile_user_id: int
         :type custom_headers: dict[str, str]|None
@@ -3319,7 +3318,7 @@ class BunqMeFundraiserResult(core.BunqModel):
     @classmethod
     def get(cls, bunq_me_fundraiser_result_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunq_me_fundraiser_result_id: int
@@ -3591,7 +3590,7 @@ class BunqMeTabResultResponse(core.BunqModel):
     @classmethod
     def get(cls, bunq_me_tab_result_response_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunq_me_tab_result_response_id: int
@@ -3814,7 +3813,7 @@ class BunqMeTab(core.BunqModel):
     @classmethod
     def get(cls, bunq_me_tab_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunq_me_tab_id: int
@@ -4749,7 +4748,7 @@ class CardGeneratedCvc2(core.BunqModel):
         """
         Get the details for a specific generated CVC2 code.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type card_id: int
         :type card_generated_cvc2_id: int
@@ -5399,7 +5398,7 @@ class Card(core.BunqModel):
         """
         Return the details of a specific card.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type card_id: int
         :type custom_headers: dict[str, str]|None
@@ -5912,7 +5911,7 @@ class CashRegisterQrCode(core.BunqModel):
         Get the information of a specific QR code. To get the RAW content of the
         QR code use ../qr-code/{id}/content
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -6214,7 +6213,7 @@ class CashRegister(core.BunqModel):
         """
         Get a specific CashRegister.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -6475,7 +6474,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
         """
         Get a specific tab. This returns a TabUsageSingle or TabUsageMultiple.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -6970,7 +6969,7 @@ class TabUsageSingle(core.BunqModel):
         """
         Get a specific TabUsageSingle.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -7747,7 +7746,7 @@ class TabUsageMultiple(core.BunqModel):
         """
         Get a specific TabUsageMultiple.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -8127,7 +8126,7 @@ class CertificatePinned(core.BunqModel):
         """
         Get the pinned certificate chain with the specified ID.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type certificate_pinned_id: int
         :type custom_headers: dict[str, str]|None
@@ -8399,7 +8398,7 @@ class DeviceServer(core.BunqModel):
         """
         Get one of your DeviceServers.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type device_server_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -8552,7 +8551,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         """
         Get a single Device. A Device is either a DevicePhone or a DeviceServer.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type device_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -8850,7 +8849,7 @@ class DraftPayment(core.BunqModel):
         """
         Get a specific DraftPayment.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
@@ -9094,7 +9093,7 @@ class PaymentBatch(core.BunqModel):
         """
         Return the details of a specific payment batch.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
@@ -9338,7 +9337,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         """
         Get the details of a specific draft of a share invite.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type draft_share_invite_api_key_id: int
         :type custom_headers: dict[str, str]|None
@@ -9681,7 +9680,7 @@ class DraftShareInviteBank(core.BunqModel):
         """
         Get the details of a specific draft of a share invite.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type draft_share_invite_bank_id: int
         :type custom_headers: dict[str, str]|None
@@ -9913,7 +9912,7 @@ class Event(core.BunqModel):
         """
         Get a specific event for a given user.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type event_id: int
         :type custom_headers: dict[str, str]|None
@@ -10098,7 +10097,7 @@ class FeatureAnnouncement(core.BunqModel):
     @classmethod
     def get(cls, feature_announcement_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type feature_announcement_id: int
         :type custom_headers: dict[str, str]|None
@@ -10283,7 +10282,7 @@ class IdealMerchantTransaction(core.BunqModel):
     @classmethod
     def get(cls, ideal_merchant_transaction_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
@@ -10606,7 +10605,7 @@ class SchedulePayment(core.BunqModel):
     @classmethod
     def get(cls, schedule_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
@@ -10800,7 +10799,7 @@ class Schedule(core.BunqModel):
         """
         Get a specific schedule definition for a given monetary account.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
@@ -11166,7 +11165,7 @@ class ScheduleInstance(core.BunqModel):
     @classmethod
     def get(cls, schedule_id, schedule_instance_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
@@ -11476,7 +11475,7 @@ class MasterCardAction(core.BunqModel):
     @classmethod
     def get(cls, master_card_action_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type master_card_action_id: int
@@ -12026,7 +12025,7 @@ class RequestInquiryBatch(core.BunqModel):
         """
         Return the details of a specific request batch.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
@@ -12523,7 +12522,7 @@ class RequestInquiry(core.BunqModel):
         """
         Get the details of a specific payment request, including its status.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
@@ -13095,7 +13094,7 @@ class RequestResponse(core.BunqModel):
         """
         Get the details for a specific existing RequestResponse.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
@@ -13486,7 +13485,7 @@ class TabResultResponse(core.BunqModel):
         """
         Used to view a single TabResultResponse belonging to a tab.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type tab_result_response_id: int
@@ -13781,7 +13780,7 @@ class RewardRecipient(core.BunqModel):
     @classmethod
     def get(cls, reward_recipient_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type reward_recipient_id: int
         :type custom_headers: dict[str, str]|None
@@ -13973,7 +13972,7 @@ class RewardSender(core.BunqModel):
     @classmethod
     def get(cls, reward_sender_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type reward_sender_id: int
         :type custom_headers: dict[str, str]|None
@@ -14355,7 +14354,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         [DEPRECATED - use /share-invite-monetary-account-inquiry] Get the
         details of a specific share inquiry.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_bank_inquiry_id: int
@@ -14693,7 +14692,7 @@ class ShareInviteBankResponse(core.BunqModel):
         """
         Return the details of a specific share a user was invited to.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type share_invite_bank_response_id: int
         :type custom_headers: dict[str, str]|None
@@ -15004,7 +15003,7 @@ class SofortMerchantTransaction(core.BunqModel):
     @classmethod
     def get(cls, sofort_merchant_transaction_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
@@ -15207,7 +15206,7 @@ class TabResultInquiry(core.BunqModel):
         """
         Used to view a single TabResultInquiry belonging to a tab.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -15383,7 +15382,7 @@ class TransferwiseTransfer(core.BunqModel):
     @classmethod
     def get(cls, transferwise_quote_id, transferwise_transfer_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type transferwise_quote_id: int
         :type transferwise_transfer_id: int
@@ -15900,7 +15899,7 @@ class ExportAnnualOverview(core.BunqModel):
         """
         Get an annual overview for a user by its id.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type export_annual_overview_id: int
         :type custom_headers: dict[str, str]|None
@@ -16211,7 +16210,7 @@ class ExportRib(core.BunqModel):
         """
         Get a RIB for a monetary account by its id.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type export_rib_id: int
@@ -16450,7 +16449,7 @@ class ExportStatementPayment(core.BunqModel):
     @classmethod
     def get(cls, event_id, export_statement_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type event_id: int
@@ -16660,7 +16659,7 @@ class CustomerStatementExport(core.BunqModel):
     @classmethod
     def get(cls, customer_statement_export_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type customer_statement_export_id: int
@@ -17188,7 +17187,7 @@ class MonetaryAccountBank(core.BunqModel):
         """
         Get a specific MonetaryAccountBank.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_bank_id: int
         :type custom_headers: dict[str, str]|None
@@ -17901,7 +17900,7 @@ class MonetaryAccountJoint(core.BunqModel):
     @classmethod
     def get(cls, monetary_account_joint_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_joint_id: int
         :type custom_headers: dict[str, str]|None
@@ -18548,7 +18547,7 @@ class MonetaryAccountSavings(core.BunqModel):
         """
         Get a specific MonetaryAccountSavings.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_savings_id: int
         :type custom_headers: dict[str, str]|None
@@ -18984,7 +18983,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
         """
         Get a specific MonetaryAccount.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type custom_headers: dict[str, str]|None
@@ -19794,7 +19793,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     def get(cls, switch_service_payment_id, note_attachment_bank_switch_service_netherlands_incoming_payment_id,
             monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type switch_service_payment_id: int
@@ -20080,7 +20079,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
     def get(cls, switch_service_payment_id, note_text_bank_switch_service_netherlands_incoming_payment_id,
             monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type switch_service_payment_id: int
@@ -20369,7 +20368,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
     def get(cls, bunqme_fundraiser_result_id, note_attachment_bunq_me_fundraiser_result_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunqme_fundraiser_result_id: int
@@ -20652,7 +20651,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
     def get(cls, bunqme_fundraiser_result_id, note_text_bunq_me_fundraiser_result_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type bunqme_fundraiser_result_id: int
@@ -20936,7 +20935,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
     @classmethod
     def get(cls, draft_payment_id, note_attachment_draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
@@ -21214,7 +21213,7 @@ class NoteTextDraftPayment(core.BunqModel):
     @classmethod
     def get(cls, draft_payment_id, note_text_draft_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type draft_payment_id: int
@@ -21502,7 +21501,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
     def get(cls, ideal_merchant_transaction_id, note_attachment_ideal_merchant_transaction_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
@@ -21785,7 +21784,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
     def get(cls, ideal_merchant_transaction_id, note_text_ideal_merchant_transaction_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type ideal_merchant_transaction_id: int
@@ -22072,7 +22071,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
     def get(cls, mastercard_action_id, note_attachment_master_card_action_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
@@ -22351,7 +22350,7 @@ class NoteTextMasterCardAction(core.BunqModel):
     @classmethod
     def get(cls, mastercard_action_id, note_text_master_card_action_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
@@ -22634,7 +22633,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
     @classmethod
     def get(cls, payment_batch_id, note_attachment_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
@@ -22912,7 +22911,7 @@ class NoteTextPaymentBatch(core.BunqModel):
     @classmethod
     def get(cls, payment_batch_id, note_text_payment_batch_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_batch_id: int
@@ -23195,7 +23194,7 @@ class NoteAttachmentPayment(core.BunqModel):
     @classmethod
     def get(cls, payment_id, note_attachment_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
@@ -23472,7 +23471,7 @@ class NoteTextPayment(core.BunqModel):
     @classmethod
     def get(cls, payment_id, note_text_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type payment_id: int
@@ -23760,7 +23759,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
     def get(cls, request_inquiry_batch_id, note_attachment_request_inquiry_batch_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
@@ -24040,7 +24039,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
     def get(cls, request_inquiry_batch_id, note_text_request_inquiry_batch_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_batch_id: int
@@ -24324,7 +24323,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
     @classmethod
     def get(cls, request_inquiry_id, note_attachment_request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
@@ -24602,7 +24601,7 @@ class NoteTextRequestInquiry(core.BunqModel):
     @classmethod
     def get(cls, request_inquiry_id, note_text_request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_inquiry_id: int
@@ -24888,7 +24887,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
     def get(cls, request_response_id, note_attachment_request_response_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
@@ -25166,7 +25165,7 @@ class NoteTextRequestResponse(core.BunqModel):
     @classmethod
     def get(cls, request_response_id, note_text_request_response_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type request_response_id: int
@@ -25458,7 +25457,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
     def get(cls, schedule_id, schedule_instance_id, note_attachment_schedule_instance_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
@@ -25746,7 +25745,7 @@ class NoteTextScheduleInstance(core.BunqModel):
     def get(cls, schedule_id, schedule_instance_id, note_text_schedule_instance_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_id: int
@@ -26035,7 +26034,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
     def get(cls, schedule_payment_batch_id, note_attachment_schedule_payment_batch_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_batch_id: int
@@ -26316,7 +26315,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
     def get(cls, schedule_payment_batch_id, note_text_schedule_payment_batch_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_batch_id: int
@@ -26602,7 +26601,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
     def get(cls, schedule_payment_id, note_attachment_schedule_payment_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
@@ -26880,7 +26879,7 @@ class NoteTextSchedulePayment(core.BunqModel):
     @classmethod
     def get(cls, schedule_payment_id, note_text_schedule_payment_id, monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type schedule_payment_id: int
@@ -27168,7 +27167,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
     def get(cls, sofort_merchant_transaction_id, note_attachment_sofort_merchant_transaction_id,
             monetary_account_id=None, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
@@ -27451,7 +27450,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
     def get(cls, sofort_merchant_transaction_id, note_text_sofort_merchant_transaction_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type sofort_merchant_transaction_id: int
@@ -27744,7 +27743,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
     def get(cls, whitelist_id, whitelist_result_id, note_attachment_whitelist_result_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type whitelist_id: int
@@ -28030,7 +28029,7 @@ class NoteTextWhitelistResult(core.BunqModel):
     def get(cls, whitelist_id, whitelist_result_id, note_text_whitelist_result_id, monetary_account_id=None,
             custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type whitelist_id: int
@@ -28535,7 +28534,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
         """
         Get a specific user.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -29655,7 +29654,7 @@ class UserPerson(core.BunqModel):
         """
         Get a specific person.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_person_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -30396,7 +30395,7 @@ class UserCompany(core.BunqModel):
         """
         Get a specific company.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_company_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -31125,7 +31124,7 @@ class UserPaymentServiceProvider(core.BunqModel):
     @classmethod
     def get(cls, user_payment_service_provider_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_payment_service_provider_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -31350,7 +31349,7 @@ class OauthCallbackUrl(core.BunqModel):
     @classmethod
     def get(cls, oauth_client_id, oauth_callback_url_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type oauth_client_id: int
         :type oauth_callback_url_id: int
@@ -31555,7 +31554,7 @@ class OauthClient(core.BunqModel):
     @classmethod
     def get(cls, oauth_client_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type oauth_client_id: int
         :type custom_headers: dict[str, str]|None
@@ -31813,7 +31812,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
     @classmethod
     def get(cls, payment_service_provider_credential_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type payment_service_provider_credential_id: int
         :type custom_headers: dict[str, str]|None
         
@@ -32013,7 +32012,7 @@ class PermittedIp(core.BunqModel):
     @classmethod
     def get(cls, credential_password_ip_id, permitted_ip_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type credential_password_ip_id: int
         :type permitted_ip_id: int
@@ -32212,7 +32211,7 @@ class Reward(core.BunqModel):
     @classmethod
     def get(cls, reward_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type reward_id: int
         :type custom_headers: dict[str, str]|None
@@ -32834,7 +32833,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         [DEPRECATED - use /share-invite-monetary-account-response] Get the
         details of a specific share inquiry.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_monetary_account_inquiry_id: int
@@ -33181,7 +33180,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         """
         Return the details of a specific share a user was invited to.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type share_invite_monetary_account_response_id: int
         :type custom_headers: dict[str, str]|None
@@ -33791,7 +33790,7 @@ class TabItemShop(core.BunqModel):
         """
         Get a specific TabItem from a given Tab.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type monetary_account_id: int
         :type cash_register_id: int
@@ -34549,7 +34548,7 @@ class UserCredentialPasswordIp(core.BunqModel):
     @classmethod
     def get(cls, user_credential_password_ip_id, custom_headers=None):
         """
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type user_credential_password_ip_id: int
         :type custom_headers: dict[str, str]|None
@@ -34840,7 +34839,7 @@ class WhitelistSdd(core.BunqModel):
         """
         Get a specific SDD whitelist entry.
         
-        :type api_context: context.ApiContext
+        :type api_context: api_context.ApiContext
         :type user_id: int
         :type whitelist_sdd_id: int
         :type custom_headers: dict[str, str]|None

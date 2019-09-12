@@ -9,8 +9,8 @@ def initialize_converter():
     import datetime
     import inspect
 
-    from bunq.sdk import client
-    from bunq.sdk import context
+    from bunq.sdk.http import client
+    from bunq.sdk.context import api_context
     from bunq.sdk.model import core
     from bunq.sdk.json import adapters
     from bunq.sdk.json import converter
@@ -23,11 +23,11 @@ def initialize_converter():
         adapters.SessionServerAdapter
     )
     converter.register_adapter(
-        context.InstallationContext,
+        api_context.InstallationContext,
         adapters.InstallationContextAdapter
     )
     converter.register_adapter(
-        context.ApiEnvironmentType,
+        api_context.ApiEnvironmentType,
         adapters.ApiEnvironmentTypeAdapter
     )
     converter.register_adapter(float, adapters.FloatAdapter)
