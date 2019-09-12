@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-from bunq.sdk.http import client
 from bunq.sdk.exception import exception
-from bunq.sdk.security import security
+from bunq.sdk.http.api_client import ApiClient
+from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
 from bunq.sdk.model import core
 from bunq.sdk.model.generated import object_
+from bunq.sdk.security import security
 
 
 class BillingContractSubscription(core.BunqModel):
@@ -88,7 +89,7 @@ class BillingContractSubscription(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -291,7 +292,7 @@ class CustomerLimit(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -451,12 +452,12 @@ class InvoiceExportPdfContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), invoice_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -590,7 +591,7 @@ class Invoice(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -614,7 +615,7 @@ class Invoice(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      invoice_id)
@@ -910,7 +911,7 @@ class InvoiceByUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -932,7 +933,7 @@ class InvoiceByUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), invoice_by_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -1162,12 +1163,12 @@ class AttachmentConversationContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), chat_conversation_id, attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -1217,14 +1218,14 @@ class AttachmentMonetaryAccountContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -1271,12 +1272,12 @@ class AttachmentPublicContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(attachment_public_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -1325,14 +1326,14 @@ class AttachmentTabContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -1380,12 +1381,12 @@ class AttachmentUserContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -1433,12 +1434,12 @@ class TabAttachmentTabContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(tab_uuid, attachment_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -1496,7 +1497,7 @@ class AttachmentMonetaryAccount(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -1592,7 +1593,7 @@ class AttachmentPublic(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
@@ -1617,7 +1618,7 @@ class AttachmentPublic(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(attachment_public_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -1735,7 +1736,7 @@ class AttachmentTab(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -1762,7 +1763,7 @@ class AttachmentTab(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      attachment_tab_id)
@@ -1876,7 +1877,7 @@ class TabAttachmentTab(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(tab_uuid, tab_attachment_tab_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -1990,7 +1991,7 @@ class AttachmentUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), attachment_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -2122,7 +2123,7 @@ class Avatar(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -2144,7 +2145,7 @@ class Avatar(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(avatar_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -2227,7 +2228,7 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      bank_switch_service_netherlands_incoming_payment_id)
@@ -2678,7 +2679,7 @@ class Payment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -2705,7 +2706,7 @@ class Payment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_id)
@@ -2735,7 +2736,7 @@ class Payment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -3148,7 +3149,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), bunq_me_fundraiser_profile_user_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -3172,7 +3173,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -3330,7 +3331,7 @@ class BunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      bunq_me_fundraiser_result_id)
@@ -3602,7 +3603,7 @@ class BunqMeTabResultResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      bunq_me_tab_result_response_id)
@@ -3738,7 +3739,7 @@ class BunqMeTab(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -3766,7 +3767,7 @@ class BunqMeTab(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -3801,7 +3802,7 @@ class BunqMeTab(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -3825,7 +3826,7 @@ class BunqMeTab(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      bunq_me_tab_id)
@@ -4211,7 +4212,7 @@ class CardBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -4423,7 +4424,7 @@ class CardDebit(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
@@ -4733,7 +4734,7 @@ class CardGeneratedCvc2(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), card_id)
@@ -4760,7 +4761,7 @@ class CardGeneratedCvc2(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), card_id, card_generated_cvc2_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -4784,7 +4785,7 @@ class CardGeneratedCvc2(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_TYPE: type_
@@ -4820,7 +4821,7 @@ class CardGeneratedCvc2(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -4961,7 +4962,7 @@ class CardName(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -5079,7 +5080,7 @@ class CardReplace(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         request_bytes = security.encrypt(cls._get_api_context(), request_bytes, custom_headers)
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), card_id)
@@ -5366,7 +5367,7 @@ class Card(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_PIN_CODE: pin_code,
@@ -5409,7 +5410,7 @@ class Card(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), card_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -5435,7 +5436,7 @@ class Card(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -5743,14 +5744,14 @@ class CashRegisterQrCodeContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id, qr_code_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -5853,7 +5854,7 @@ class CashRegisterQrCode(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -5887,7 +5888,7 @@ class CashRegisterQrCode(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -5924,7 +5925,7 @@ class CashRegisterQrCode(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, cash_register_qr_code_id)
@@ -5954,7 +5955,7 @@ class CashRegisterQrCode(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id)
@@ -6198,7 +6199,7 @@ class CashRegister(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -6225,7 +6226,7 @@ class CashRegister(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id)
@@ -6272,7 +6273,7 @@ class CashRegister(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_NAME: name,
@@ -6314,7 +6315,7 @@ class CashRegister(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -6487,7 +6488,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, tab_uuid)
@@ -6517,7 +6518,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id)
@@ -6864,7 +6865,7 @@ class TabUsageSingle(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -6915,7 +6916,7 @@ class TabUsageSingle(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status,
@@ -6954,14 +6955,14 @@ class TabUsageSingle(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id, tab_usage_single_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -6982,7 +6983,7 @@ class TabUsageSingle(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, tab_usage_single_uuid)
@@ -7012,7 +7013,7 @@ class TabUsageSingle(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id)
@@ -7637,7 +7638,7 @@ class TabUsageMultiple(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -7692,7 +7693,7 @@ class TabUsageMultiple(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status,
@@ -7731,14 +7732,14 @@ class TabUsageMultiple(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id, tab_usage_multiple_uuid)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -7759,7 +7760,7 @@ class TabUsageMultiple(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, tab_usage_multiple_uuid)
@@ -7789,7 +7790,7 @@ class TabUsageMultiple(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id)
@@ -8063,7 +8064,7 @@ class CertificatePinned(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -8087,12 +8088,12 @@ class CertificatePinned(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), certificate_pinned_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -8113,7 +8114,7 @@ class CertificatePinned(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -8137,7 +8138,7 @@ class CertificatePinned(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), certificate_pinned_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -8245,7 +8246,7 @@ class ConfirmationOfFunds(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -8384,7 +8385,7 @@ class DeviceServer(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -8408,7 +8409,7 @@ class DeviceServer(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_server_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -8433,7 +8434,7 @@ class DeviceServer(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -8561,7 +8562,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(device_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -8587,7 +8588,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -8760,7 +8761,7 @@ class DraftPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -8796,7 +8797,7 @@ class DraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status,
@@ -8835,7 +8836,7 @@ class DraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -8861,7 +8862,7 @@ class DraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      draft_payment_id)
@@ -9043,7 +9044,7 @@ class PaymentBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -9070,7 +9071,7 @@ class PaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
 
@@ -9105,7 +9106,7 @@ class PaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_batch_id)
@@ -9134,7 +9135,7 @@ class PaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -9202,12 +9203,12 @@ class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), draft_share_invite_api_key_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -9323,7 +9324,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -9348,7 +9349,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), draft_share_invite_api_key_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -9380,7 +9381,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status,
@@ -9414,7 +9415,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -9547,12 +9548,12 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -9666,7 +9667,7 @@ class DraftShareInviteBank(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -9691,7 +9692,7 @@ class DraftShareInviteBank(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), draft_share_invite_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -9723,7 +9724,7 @@ class DraftShareInviteBank(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status,
@@ -9757,7 +9758,7 @@ class DraftShareInviteBank(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -9923,7 +9924,7 @@ class Event(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), event_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -9958,7 +9959,7 @@ class Event(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -10108,7 +10109,7 @@ class FeatureAnnouncement(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), feature_announcement_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -10269,7 +10270,7 @@ class IdealMerchantTransaction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -10294,7 +10295,7 @@ class IdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      ideal_merchant_transaction_id)
@@ -10321,7 +10322,7 @@ class IdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -10568,7 +10569,7 @@ class SchedulePayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -10592,14 +10593,14 @@ class SchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -10617,7 +10618,7 @@ class SchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_id)
@@ -10644,7 +10645,7 @@ class SchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -10672,7 +10673,7 @@ class SchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_PAYMENT: payment,
@@ -10811,7 +10812,7 @@ class Schedule(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_id)
@@ -10844,7 +10845,7 @@ class Schedule(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -10996,7 +10997,7 @@ class SchedulePaymentBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -11025,7 +11026,7 @@ class SchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_PAYMENTS: payments,
@@ -11058,14 +11059,14 @@ class SchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @property
@@ -11178,7 +11179,7 @@ class ScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_id, schedule_instance_id)
@@ -11206,7 +11207,7 @@ class ScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATE: state
@@ -11242,7 +11243,7 @@ class ScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_id)
@@ -11487,7 +11488,7 @@ class MasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      master_card_action_id)
@@ -11514,7 +11515,7 @@ class MasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -11973,7 +11974,7 @@ class RequestInquiryBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -12002,7 +12003,7 @@ class RequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -12037,7 +12038,7 @@ class RequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_batch_id)
@@ -12066,7 +12067,7 @@ class RequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -12441,7 +12442,7 @@ class RequestInquiry(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -12471,7 +12472,7 @@ class RequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -12508,7 +12509,7 @@ class RequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -12534,7 +12535,7 @@ class RequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_id)
@@ -13040,7 +13041,7 @@ class RequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_AMOUNT_RESPONDED: amount_responded,
@@ -13080,7 +13081,7 @@ class RequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -13106,7 +13107,7 @@ class RequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_response_id)
@@ -13497,7 +13498,7 @@ class TabResultResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      tab_result_response_id)
@@ -13526,7 +13527,7 @@ class TabResultResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -13791,7 +13792,7 @@ class RewardRecipient(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), reward_recipient_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -13815,7 +13816,7 @@ class RewardRecipient(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -13983,7 +13984,7 @@ class RewardSender(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), reward_sender_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -14007,7 +14008,7 @@ class RewardSender(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -14338,7 +14339,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -14366,7 +14367,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      share_invite_bank_inquiry_id)
@@ -14408,7 +14409,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_SHARE_DETAIL: share_detail,
@@ -14451,7 +14452,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -14703,7 +14704,7 @@ class ShareInviteBankResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), share_invite_bank_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -14732,7 +14733,7 @@ class ShareInviteBankResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -14766,7 +14767,7 @@ class ShareInviteBankResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -15015,7 +15016,7 @@ class SofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      sofort_merchant_transaction_id)
@@ -15042,7 +15043,7 @@ class SofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -15220,7 +15221,7 @@ class TabResultInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, tab_uuid, tab_result_inquiry_id)
@@ -15251,7 +15252,7 @@ class TabResultInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id, tab_uuid)
@@ -15394,7 +15395,7 @@ class TransferwiseTransfer(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), transferwise_quote_id,
                                                      transferwise_transfer_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -15791,12 +15792,12 @@ class ExportAnnualOverviewContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -15885,7 +15886,7 @@ class ExportAnnualOverview(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -15910,7 +15911,7 @@ class ExportAnnualOverview(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), export_annual_overview_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -15931,12 +15932,12 @@ class ExportAnnualOverview(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), export_annual_overview_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -15957,7 +15958,7 @@ class ExportAnnualOverview(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -16066,14 +16067,14 @@ class CustomerStatementExportContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         customer_statement_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -16121,14 +16122,14 @@ class ExportRibContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         export_rib_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -16195,7 +16196,7 @@ class ExportRib(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -16222,7 +16223,7 @@ class ExportRib(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      export_rib_id)
@@ -16246,14 +16247,14 @@ class ExportRib(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        export_rib_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -16275,7 +16276,7 @@ class ExportRib(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -16361,14 +16362,14 @@ class ExportStatementPaymentContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         event_id, statement_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -16435,7 +16436,7 @@ class ExportStatementPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -16462,7 +16463,7 @@ class ExportStatementPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id), event_id,
                                                      export_statement_payment_id)
@@ -16646,7 +16647,7 @@ class CustomerStatementExport(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -16671,7 +16672,7 @@ class CustomerStatementExport(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      customer_statement_export_id)
@@ -16698,7 +16699,7 @@ class CustomerStatementExport(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -16721,14 +16722,14 @@ class CustomerStatementExport(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        customer_statement_export_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @property
@@ -16894,7 +16895,7 @@ class InstallationServerPublicKey(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(installation_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -17173,7 +17174,7 @@ class MonetaryAccountBank(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -17198,7 +17199,7 @@ class MonetaryAccountBank(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_bank_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -17258,7 +17259,7 @@ class MonetaryAccountBank(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description,
@@ -17300,7 +17301,7 @@ class MonetaryAccountBank(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -17888,7 +17889,7 @@ class MonetaryAccountJoint(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -17911,7 +17912,7 @@ class MonetaryAccountJoint(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_joint_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -17969,7 +17970,7 @@ class MonetaryAccountJoint(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description,
@@ -18009,7 +18010,7 @@ class MonetaryAccountJoint(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -18533,7 +18534,7 @@ class MonetaryAccountSavings(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -18558,7 +18559,7 @@ class MonetaryAccountSavings(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_savings_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -18623,7 +18624,7 @@ class MonetaryAccountSavings(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description,
@@ -18666,7 +18667,7 @@ class MonetaryAccountSavings(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -18994,7 +18995,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -19021,7 +19022,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -19681,7 +19682,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -19711,7 +19712,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -19747,7 +19748,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id,
@@ -19755,7 +19756,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -19779,7 +19780,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         switch_service_payment_id)
@@ -19808,7 +19809,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      switch_service_payment_id,
@@ -19969,7 +19970,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -19998,7 +19999,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -20033,7 +20034,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        switch_service_payment_id,
@@ -20041,7 +20042,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -20065,7 +20066,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         switch_service_payment_id)
@@ -20092,7 +20093,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      switch_service_payment_id,
@@ -20259,7 +20260,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -20288,7 +20289,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -20323,7 +20324,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id,
@@ -20331,7 +20332,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -20354,7 +20355,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         bunqme_fundraiser_result_id)
@@ -20381,7 +20382,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      bunqme_fundraiser_result_id,
@@ -20542,7 +20543,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -20571,7 +20572,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -20606,7 +20607,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        bunqme_fundraiser_result_id,
@@ -20614,7 +20615,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -20637,7 +20638,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         bunqme_fundraiser_result_id)
@@ -20664,7 +20665,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      bunqme_fundraiser_result_id,
@@ -20830,7 +20831,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -20859,7 +20860,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -20892,14 +20893,14 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        draft_payment_id, note_attachment_draft_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -20922,7 +20923,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         draft_payment_id)
@@ -20948,7 +20949,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      draft_payment_id, note_attachment_draft_payment_id)
@@ -21108,7 +21109,7 @@ class NoteTextDraftPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -21137,7 +21138,7 @@ class NoteTextDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -21170,14 +21171,14 @@ class NoteTextDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        draft_payment_id, note_text_draft_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -21200,7 +21201,7 @@ class NoteTextDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         draft_payment_id)
@@ -21226,7 +21227,7 @@ class NoteTextDraftPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      draft_payment_id, note_text_draft_payment_id)
@@ -21392,7 +21393,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -21421,7 +21422,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -21456,7 +21457,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id,
@@ -21464,7 +21465,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -21487,7 +21488,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         ideal_merchant_transaction_id)
@@ -21514,7 +21515,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      ideal_merchant_transaction_id,
@@ -21675,7 +21676,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -21704,7 +21705,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -21739,7 +21740,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        ideal_merchant_transaction_id,
@@ -21747,7 +21748,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -21770,7 +21771,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         ideal_merchant_transaction_id)
@@ -21797,7 +21798,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      ideal_merchant_transaction_id,
@@ -21964,7 +21965,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -21993,7 +21994,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -22027,14 +22028,14 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        mastercard_action_id, note_attachment_master_card_action_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -22057,7 +22058,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         mastercard_action_id)
@@ -22084,7 +22085,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      mastercard_action_id, note_attachment_master_card_action_id)
@@ -22244,7 +22245,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -22273,7 +22274,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -22307,14 +22308,14 @@ class NoteTextMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        mastercard_action_id, note_text_master_card_action_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -22337,7 +22338,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         mastercard_action_id)
@@ -22363,7 +22364,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      mastercard_action_id, note_text_master_card_action_id)
@@ -22528,7 +22529,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -22557,7 +22558,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -22590,14 +22591,14 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_batch_id, note_attachment_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -22620,7 +22621,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         payment_batch_id)
@@ -22646,7 +22647,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_batch_id, note_attachment_payment_batch_id)
@@ -22806,7 +22807,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -22835,7 +22836,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -22868,14 +22869,14 @@ class NoteTextPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_batch_id, note_text_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -22898,7 +22899,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         payment_batch_id)
@@ -22924,7 +22925,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_batch_id, note_text_payment_batch_id)
@@ -23089,7 +23090,7 @@ class NoteAttachmentPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -23118,7 +23119,7 @@ class NoteAttachmentPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -23151,14 +23152,14 @@ class NoteAttachmentPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_id, note_attachment_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -23181,7 +23182,7 @@ class NoteAttachmentPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         payment_id)
@@ -23207,7 +23208,7 @@ class NoteAttachmentPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_id, note_attachment_payment_id)
@@ -23367,7 +23368,7 @@ class NoteTextPayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -23395,7 +23396,7 @@ class NoteTextPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -23428,14 +23429,14 @@ class NoteTextPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        payment_id, note_text_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -23458,7 +23459,7 @@ class NoteTextPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         payment_id)
@@ -23484,7 +23485,7 @@ class NoteTextPayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      payment_id, note_text_payment_id)
@@ -23650,7 +23651,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -23679,7 +23680,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -23714,7 +23715,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id,
@@ -23722,7 +23723,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -23745,7 +23746,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         request_inquiry_batch_id)
@@ -23772,7 +23773,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_batch_id, note_attachment_request_inquiry_batch_id)
@@ -23932,7 +23933,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -23961,7 +23962,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -23995,14 +23996,14 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_batch_id, note_text_request_inquiry_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -24025,7 +24026,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         request_inquiry_batch_id)
@@ -24052,7 +24053,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_batch_id, note_text_request_inquiry_batch_id)
@@ -24217,7 +24218,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -24246,7 +24247,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -24280,14 +24281,14 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_id, note_attachment_request_inquiry_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -24310,7 +24311,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         request_inquiry_id)
@@ -24336,7 +24337,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_id, note_attachment_request_inquiry_id)
@@ -24496,7 +24497,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -24525,7 +24526,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -24558,14 +24559,14 @@ class NoteTextRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        request_inquiry_id, note_text_request_inquiry_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -24588,7 +24589,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         request_inquiry_id)
@@ -24614,7 +24615,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_inquiry_id, note_text_request_inquiry_id)
@@ -24780,7 +24781,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -24809,7 +24810,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -24843,14 +24844,14 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        request_response_id, note_attachment_request_response_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -24873,7 +24874,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         request_response_id)
@@ -24900,7 +24901,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_response_id, note_attachment_request_response_id)
@@ -25060,7 +25061,7 @@ class NoteTextRequestResponse(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -25089,7 +25090,7 @@ class NoteTextRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -25122,14 +25123,14 @@ class NoteTextRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        request_response_id, note_text_request_response_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -25152,7 +25153,7 @@ class NoteTextRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         request_response_id)
@@ -25178,7 +25179,7 @@ class NoteTextRequestResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      request_response_id, note_text_request_response_id)
@@ -25345,7 +25346,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -25375,7 +25376,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -25411,7 +25412,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_id, schedule_instance_id,
@@ -25419,7 +25420,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -25443,7 +25444,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_id, schedule_instance_id)
@@ -25471,7 +25472,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_id, schedule_instance_id,
@@ -25633,7 +25634,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -25663,7 +25664,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -25699,7 +25700,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_id, schedule_instance_id,
@@ -25707,7 +25708,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -25731,7 +25732,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_id, schedule_instance_id)
@@ -25759,7 +25760,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_id, schedule_instance_id, note_text_schedule_instance_id)
@@ -25925,7 +25926,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -25954,7 +25955,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -25989,7 +25990,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id,
@@ -25997,7 +25998,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -26020,7 +26021,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_payment_batch_id)
@@ -26047,7 +26048,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_batch_id,
@@ -26208,7 +26209,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -26237,7 +26238,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -26271,14 +26272,14 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_batch_id, note_text_schedule_payment_batch_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -26301,7 +26302,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_payment_batch_id)
@@ -26328,7 +26329,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_batch_id, note_text_schedule_payment_batch_id)
@@ -26494,7 +26495,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -26523,7 +26524,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -26557,14 +26558,14 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id, note_attachment_schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -26587,7 +26588,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_payment_id)
@@ -26614,7 +26615,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_id, note_attachment_schedule_payment_id)
@@ -26774,7 +26775,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -26803,7 +26804,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -26836,14 +26837,14 @@ class NoteTextSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        schedule_payment_id, note_text_schedule_payment_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -26866,7 +26867,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         schedule_payment_id)
@@ -26892,7 +26893,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      schedule_payment_id, note_text_schedule_payment_id)
@@ -27058,7 +27059,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -27087,7 +27088,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -27122,7 +27123,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id,
@@ -27130,7 +27131,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -27153,7 +27154,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         sofort_merchant_transaction_id)
@@ -27180,7 +27181,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      sofort_merchant_transaction_id,
@@ -27341,7 +27342,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -27370,7 +27371,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -27405,7 +27406,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        sofort_merchant_transaction_id,
@@ -27413,7 +27414,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -27436,7 +27437,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         sofort_merchant_transaction_id)
@@ -27463,7 +27464,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      sofort_merchant_transaction_id,
@@ -27631,7 +27632,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -27661,7 +27662,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description
@@ -27697,7 +27698,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        whitelist_id, whitelist_result_id,
@@ -27705,7 +27706,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -27729,7 +27730,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         whitelist_id, whitelist_result_id)
@@ -27757,7 +27758,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      whitelist_id, whitelist_result_id,
@@ -27919,7 +27920,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -27949,7 +27950,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_CONTENT: content
@@ -27984,14 +27985,14 @@ class NoteTextWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        whitelist_id, whitelist_result_id, note_text_whitelist_result_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -28015,7 +28016,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         whitelist_id, whitelist_result_id)
@@ -28043,7 +28044,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      whitelist_id, whitelist_result_id, note_text_whitelist_result_id)
@@ -28179,7 +28180,7 @@ class NotificationFilterPushUser(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -28204,7 +28205,7 @@ class NotificationFilterPushUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -28294,7 +28295,7 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -28321,7 +28322,7 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -28411,7 +28412,7 @@ class NotificationFilterUrlUser(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -28436,7 +28437,7 @@ class NotificationFilterUrlUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -28544,7 +28545,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -28569,7 +28570,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -29664,7 +29665,7 @@ class UserPerson(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -29766,7 +29767,7 @@ class UserPerson(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_FIRST_NAME: first_name,
@@ -30405,7 +30406,7 @@ class UserCompany(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -30473,7 +30474,7 @@ class UserCompany(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_NAME: name,
@@ -31134,7 +31135,7 @@ class UserPaymentServiceProvider(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(user_payment_service_provider_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -31361,7 +31362,7 @@ class OauthCallbackUrl(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), oauth_client_id, oauth_callback_url_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -31390,7 +31391,7 @@ class OauthCallbackUrl(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), oauth_client_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -31415,7 +31416,7 @@ class OauthCallbackUrl(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_URL: url
@@ -31448,7 +31449,7 @@ class OauthCallbackUrl(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), oauth_client_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -31470,12 +31471,12 @@ class OauthCallbackUrl(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), oauth_client_id, oauth_callback_url_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @property
@@ -31565,7 +31566,7 @@ class OauthClient(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), oauth_client_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -31594,7 +31595,7 @@ class OauthClient(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -31619,7 +31620,7 @@ class OauthClient(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -31651,7 +31652,7 @@ class OauthClient(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -31822,7 +31823,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(payment_service_provider_credential_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -31861,7 +31862,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -32024,7 +32025,7 @@ class PermittedIp(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), credential_password_ip_id,
                                                      permitted_ip_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -32059,7 +32060,7 @@ class PermittedIp(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), credential_password_ip_id)
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -32085,7 +32086,7 @@ class PermittedIp(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), credential_password_ip_id)
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -32111,7 +32112,7 @@ class PermittedIp(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status
@@ -32222,7 +32223,7 @@ class Reward(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), reward_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -32246,7 +32247,7 @@ class Reward(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -32393,7 +32394,7 @@ class SandboxUser(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -32465,7 +32466,7 @@ class ScheduleUser(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -32513,12 +32514,12 @@ class Session(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(session_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -32571,14 +32572,14 @@ class ShareInviteBankAmountUsed(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        share_invite_bank_inquiry_id, share_invite_bank_amount_used_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -32629,7 +32630,7 @@ class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        share_invite_monetary_account_inquiry_id,
@@ -32637,7 +32638,7 @@ class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -32817,7 +32818,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id))
@@ -32845,7 +32846,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      share_invite_monetary_account_inquiry_id)
@@ -32887,7 +32888,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_SHARE_DETAIL: share_detail,
@@ -32930,7 +32931,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id))
         response_raw = api_client.get(endpoint_url, params, custom_headers)
@@ -33191,7 +33192,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      share_invite_monetary_account_response_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
@@ -33224,7 +33225,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_STATUS: status,
@@ -33260,7 +33261,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -33481,7 +33482,7 @@ class TabItemShopBatch(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -33656,7 +33657,7 @@ class TabItemShop(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
@@ -33703,7 +33704,7 @@ class TabItemShop(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_DESCRIPTION: description,
@@ -33744,14 +33745,14 @@ class TabItemShop(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(),
                                                        cls._determine_monetary_account_id(monetary_account_id),
                                                        cash_register_id, tab_uuid, tab_item_shop_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -33775,7 +33776,7 @@ class TabItemShop(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id, tab_uuid)
@@ -33804,7 +33805,7 @@ class TabItemShop(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
                                                      cls._determine_monetary_account_id(monetary_account_id),
                                                      cash_register_id, tab_uuid, tab_item_shop_id)
@@ -33941,14 +33942,14 @@ class TabQrCodeContent(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
                                                         cls._determine_monetary_account_id(monetary_account_id),
                                                         cash_register_id, tab_uuid)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
-            client.BunqResponse(response_raw.body_bytes, response_raw.headers)
+            BunqResponse(response_raw.body_bytes, response_raw.headers)
         )
 
     def is_all_field_none(self):
@@ -34099,7 +34100,7 @@ class TokenQrRequestIdeal(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -34407,7 +34408,7 @@ class TokenQrRequestSofort(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -34469,7 +34470,7 @@ class UserCompanyName(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -34559,7 +34560,7 @@ class UserCredentialPasswordIp(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), user_credential_password_ip_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -34583,7 +34584,7 @@ class UserCredentialPasswordIp(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -34718,7 +34719,7 @@ class UserLegalName(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -34850,7 +34851,7 @@ class WhitelistSdd(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), whitelist_sdd_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
@@ -34889,7 +34890,7 @@ class WhitelistSdd(core.BunqModel):
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         request_bytes = request_map_string.encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
@@ -34918,7 +34919,7 @@ class WhitelistSdd(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
 
         request_map = {
             cls.FIELD_MONETARY_ACCOUNT_PAYING_ID: monetary_account_paying_id,
@@ -34948,12 +34949,12 @@ class WhitelistSdd(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), whitelist_sdd_id)
         response_raw = api_client.delete(endpoint_url, custom_headers)
 
         return BunqResponseNone.cast_from_bunq_response(
-            client.BunqResponse(None, response_raw.headers)
+            BunqResponse(None, response_raw.headers)
         )
 
     @classmethod
@@ -34975,7 +34976,7 @@ class WhitelistSdd(core.BunqModel):
         if custom_headers is None:
             custom_headers = {}
 
-        api_client = client.ApiClient(cls._get_api_context())
+        api_client = ApiClient(cls._get_api_context())
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
@@ -35111,7 +35112,7 @@ class WhitelistSdd(core.BunqModel):
         return converter.json_to_class(WhitelistSdd, json_str)
 
 
-class BunqResponseBillingContractSubscriptionList(client.BunqResponse):
+class BunqResponseBillingContractSubscriptionList(BunqResponse):
     @property
     def value(self):
         """
@@ -35121,7 +35122,7 @@ class BunqResponseBillingContractSubscriptionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCustomerLimitList(client.BunqResponse):
+class BunqResponseCustomerLimitList(BunqResponse):
     @property
     def value(self):
         """
@@ -35131,7 +35132,7 @@ class BunqResponseCustomerLimitList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBytes(client.BunqResponse):
+class BunqResponseBytes(BunqResponse):
     @property
     def value(self):
         """
@@ -35141,7 +35142,7 @@ class BunqResponseBytes(client.BunqResponse):
         return super().value
 
 
-class BunqResponseInvoiceList(client.BunqResponse):
+class BunqResponseInvoiceList(BunqResponse):
     @property
     def value(self):
         """
@@ -35151,7 +35152,7 @@ class BunqResponseInvoiceList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseInvoice(client.BunqResponse):
+class BunqResponseInvoice(BunqResponse):
     @property
     def value(self):
         """
@@ -35161,7 +35162,7 @@ class BunqResponseInvoice(client.BunqResponse):
         return super().value
 
 
-class BunqResponseInvoiceByUserList(client.BunqResponse):
+class BunqResponseInvoiceByUserList(BunqResponse):
     @property
     def value(self):
         """
@@ -35171,7 +35172,7 @@ class BunqResponseInvoiceByUserList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseInvoiceByUser(client.BunqResponse):
+class BunqResponseInvoiceByUser(BunqResponse):
     @property
     def value(self):
         """
@@ -35181,7 +35182,7 @@ class BunqResponseInvoiceByUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseInt(client.BunqResponse):
+class BunqResponseInt(BunqResponse):
     @property
     def value(self):
         """
@@ -35191,7 +35192,7 @@ class BunqResponseInt(client.BunqResponse):
         return super().value
 
 
-class BunqResponseStr(client.BunqResponse):
+class BunqResponseStr(BunqResponse):
     @property
     def value(self):
         """
@@ -35201,7 +35202,7 @@ class BunqResponseStr(client.BunqResponse):
         return super().value
 
 
-class BunqResponseAttachmentPublic(client.BunqResponse):
+class BunqResponseAttachmentPublic(BunqResponse):
     @property
     def value(self):
         """
@@ -35211,7 +35212,7 @@ class BunqResponseAttachmentPublic(client.BunqResponse):
         return super().value
 
 
-class BunqResponseAttachmentTab(client.BunqResponse):
+class BunqResponseAttachmentTab(BunqResponse):
     @property
     def value(self):
         """
@@ -35221,7 +35222,7 @@ class BunqResponseAttachmentTab(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabAttachmentTab(client.BunqResponse):
+class BunqResponseTabAttachmentTab(BunqResponse):
     @property
     def value(self):
         """
@@ -35231,7 +35232,7 @@ class BunqResponseTabAttachmentTab(client.BunqResponse):
         return super().value
 
 
-class BunqResponseAttachmentUser(client.BunqResponse):
+class BunqResponseAttachmentUser(BunqResponse):
     @property
     def value(self):
         """
@@ -35241,7 +35242,7 @@ class BunqResponseAttachmentUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseAvatar(client.BunqResponse):
+class BunqResponseAvatar(BunqResponse):
     @property
     def value(self):
         """
@@ -35251,7 +35252,7 @@ class BunqResponseAvatar(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBankSwitchServiceNetherlandsIncomingPayment(client.BunqResponse):
+class BunqResponseBankSwitchServiceNetherlandsIncomingPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -35261,7 +35262,7 @@ class BunqResponseBankSwitchServiceNetherlandsIncomingPayment(client.BunqRespons
         return super().value
 
 
-class BunqResponsePayment(client.BunqResponse):
+class BunqResponsePayment(BunqResponse):
     @property
     def value(self):
         """
@@ -35271,7 +35272,7 @@ class BunqResponsePayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePaymentList(client.BunqResponse):
+class BunqResponsePaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -35281,7 +35282,7 @@ class BunqResponsePaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBunqMeFundraiserProfileUser(client.BunqResponse):
+class BunqResponseBunqMeFundraiserProfileUser(BunqResponse):
     @property
     def value(self):
         """
@@ -35291,7 +35292,7 @@ class BunqResponseBunqMeFundraiserProfileUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBunqMeFundraiserProfileUserList(client.BunqResponse):
+class BunqResponseBunqMeFundraiserProfileUserList(BunqResponse):
     @property
     def value(self):
         """
@@ -35301,7 +35302,7 @@ class BunqResponseBunqMeFundraiserProfileUserList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBunqMeFundraiserResult(client.BunqResponse):
+class BunqResponseBunqMeFundraiserResult(BunqResponse):
     @property
     def value(self):
         """
@@ -35311,7 +35312,7 @@ class BunqResponseBunqMeFundraiserResult(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBunqMeTabResultResponse(client.BunqResponse):
+class BunqResponseBunqMeTabResultResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -35321,7 +35322,7 @@ class BunqResponseBunqMeTabResultResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBunqMeTabList(client.BunqResponse):
+class BunqResponseBunqMeTabList(BunqResponse):
     @property
     def value(self):
         """
@@ -35331,7 +35332,7 @@ class BunqResponseBunqMeTabList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseBunqMeTab(client.BunqResponse):
+class BunqResponseBunqMeTab(BunqResponse):
     @property
     def value(self):
         """
@@ -35341,7 +35342,7 @@ class BunqResponseBunqMeTab(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCardBatch(client.BunqResponse):
+class BunqResponseCardBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -35351,7 +35352,7 @@ class BunqResponseCardBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCardDebit(client.BunqResponse):
+class BunqResponseCardDebit(BunqResponse):
     @property
     def value(self):
         """
@@ -35361,7 +35362,7 @@ class BunqResponseCardDebit(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCardGeneratedCvc2(client.BunqResponse):
+class BunqResponseCardGeneratedCvc2(BunqResponse):
     @property
     def value(self):
         """
@@ -35371,7 +35372,7 @@ class BunqResponseCardGeneratedCvc2(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCardGeneratedCvc2List(client.BunqResponse):
+class BunqResponseCardGeneratedCvc2List(BunqResponse):
     @property
     def value(self):
         """
@@ -35381,7 +35382,7 @@ class BunqResponseCardGeneratedCvc2List(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCardNameList(client.BunqResponse):
+class BunqResponseCardNameList(BunqResponse):
     @property
     def value(self):
         """
@@ -35391,7 +35392,7 @@ class BunqResponseCardNameList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCard(client.BunqResponse):
+class BunqResponseCard(BunqResponse):
     @property
     def value(self):
         """
@@ -35401,7 +35402,7 @@ class BunqResponseCard(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCardList(client.BunqResponse):
+class BunqResponseCardList(BunqResponse):
     @property
     def value(self):
         """
@@ -35411,7 +35412,7 @@ class BunqResponseCardList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCashRegisterQrCode(client.BunqResponse):
+class BunqResponseCashRegisterQrCode(BunqResponse):
     @property
     def value(self):
         """
@@ -35421,7 +35422,7 @@ class BunqResponseCashRegisterQrCode(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCashRegisterQrCodeList(client.BunqResponse):
+class BunqResponseCashRegisterQrCodeList(BunqResponse):
     @property
     def value(self):
         """
@@ -35431,7 +35432,7 @@ class BunqResponseCashRegisterQrCodeList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCashRegister(client.BunqResponse):
+class BunqResponseCashRegister(BunqResponse):
     @property
     def value(self):
         """
@@ -35441,7 +35442,7 @@ class BunqResponseCashRegister(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCashRegisterList(client.BunqResponse):
+class BunqResponseCashRegisterList(BunqResponse):
     @property
     def value(self):
         """
@@ -35451,7 +35452,7 @@ class BunqResponseCashRegisterList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTab(client.BunqResponse):
+class BunqResponseTab(BunqResponse):
     @property
     def value(self):
         """
@@ -35461,7 +35462,7 @@ class BunqResponseTab(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabList(client.BunqResponse):
+class BunqResponseTabList(BunqResponse):
     @property
     def value(self):
         """
@@ -35471,7 +35472,7 @@ class BunqResponseTabList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNone(client.BunqResponse):
+class BunqResponseNone(BunqResponse):
     @property
     def value(self):
         """
@@ -35481,7 +35482,7 @@ class BunqResponseNone(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabUsageSingle(client.BunqResponse):
+class BunqResponseTabUsageSingle(BunqResponse):
     @property
     def value(self):
         """
@@ -35491,7 +35492,7 @@ class BunqResponseTabUsageSingle(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabUsageSingleList(client.BunqResponse):
+class BunqResponseTabUsageSingleList(BunqResponse):
     @property
     def value(self):
         """
@@ -35501,7 +35502,7 @@ class BunqResponseTabUsageSingleList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabUsageMultiple(client.BunqResponse):
+class BunqResponseTabUsageMultiple(BunqResponse):
     @property
     def value(self):
         """
@@ -35511,7 +35512,7 @@ class BunqResponseTabUsageMultiple(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabUsageMultipleList(client.BunqResponse):
+class BunqResponseTabUsageMultipleList(BunqResponse):
     @property
     def value(self):
         """
@@ -35521,7 +35522,7 @@ class BunqResponseTabUsageMultipleList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCertificatePinnedList(client.BunqResponse):
+class BunqResponseCertificatePinnedList(BunqResponse):
     @property
     def value(self):
         """
@@ -35531,7 +35532,7 @@ class BunqResponseCertificatePinnedList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCertificatePinned(client.BunqResponse):
+class BunqResponseCertificatePinned(BunqResponse):
     @property
     def value(self):
         """
@@ -35541,7 +35542,7 @@ class BunqResponseCertificatePinned(client.BunqResponse):
         return super().value
 
 
-class BunqResponseConfirmationOfFunds(client.BunqResponse):
+class BunqResponseConfirmationOfFunds(BunqResponse):
     @property
     def value(self):
         """
@@ -35551,7 +35552,7 @@ class BunqResponseConfirmationOfFunds(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDeviceServer(client.BunqResponse):
+class BunqResponseDeviceServer(BunqResponse):
     @property
     def value(self):
         """
@@ -35561,7 +35562,7 @@ class BunqResponseDeviceServer(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDeviceServerList(client.BunqResponse):
+class BunqResponseDeviceServerList(BunqResponse):
     @property
     def value(self):
         """
@@ -35571,7 +35572,7 @@ class BunqResponseDeviceServerList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDevice(client.BunqResponse):
+class BunqResponseDevice(BunqResponse):
     @property
     def value(self):
         """
@@ -35581,7 +35582,7 @@ class BunqResponseDevice(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDeviceList(client.BunqResponse):
+class BunqResponseDeviceList(BunqResponse):
     @property
     def value(self):
         """
@@ -35591,7 +35592,7 @@ class BunqResponseDeviceList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDraftPaymentList(client.BunqResponse):
+class BunqResponseDraftPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -35601,7 +35602,7 @@ class BunqResponseDraftPaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDraftPayment(client.BunqResponse):
+class BunqResponseDraftPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -35611,7 +35612,7 @@ class BunqResponseDraftPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePaymentBatch(client.BunqResponse):
+class BunqResponsePaymentBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -35621,7 +35622,7 @@ class BunqResponsePaymentBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePaymentBatchList(client.BunqResponse):
+class BunqResponsePaymentBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -35631,7 +35632,7 @@ class BunqResponsePaymentBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDraftShareInviteApiKey(client.BunqResponse):
+class BunqResponseDraftShareInviteApiKey(BunqResponse):
     @property
     def value(self):
         """
@@ -35641,7 +35642,7 @@ class BunqResponseDraftShareInviteApiKey(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDraftShareInviteApiKeyList(client.BunqResponse):
+class BunqResponseDraftShareInviteApiKeyList(BunqResponse):
     @property
     def value(self):
         """
@@ -35651,7 +35652,7 @@ class BunqResponseDraftShareInviteApiKeyList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDraftShareInviteBank(client.BunqResponse):
+class BunqResponseDraftShareInviteBank(BunqResponse):
     @property
     def value(self):
         """
@@ -35661,7 +35662,7 @@ class BunqResponseDraftShareInviteBank(client.BunqResponse):
         return super().value
 
 
-class BunqResponseDraftShareInviteBankList(client.BunqResponse):
+class BunqResponseDraftShareInviteBankList(BunqResponse):
     @property
     def value(self):
         """
@@ -35671,7 +35672,7 @@ class BunqResponseDraftShareInviteBankList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseEvent(client.BunqResponse):
+class BunqResponseEvent(BunqResponse):
     @property
     def value(self):
         """
@@ -35681,7 +35682,7 @@ class BunqResponseEvent(client.BunqResponse):
         return super().value
 
 
-class BunqResponseEventList(client.BunqResponse):
+class BunqResponseEventList(BunqResponse):
     @property
     def value(self):
         """
@@ -35691,7 +35692,7 @@ class BunqResponseEventList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseFeatureAnnouncement(client.BunqResponse):
+class BunqResponseFeatureAnnouncement(BunqResponse):
     @property
     def value(self):
         """
@@ -35701,7 +35702,7 @@ class BunqResponseFeatureAnnouncement(client.BunqResponse):
         return super().value
 
 
-class BunqResponseIdealMerchantTransaction(client.BunqResponse):
+class BunqResponseIdealMerchantTransaction(BunqResponse):
     @property
     def value(self):
         """
@@ -35711,7 +35712,7 @@ class BunqResponseIdealMerchantTransaction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseIdealMerchantTransactionList(client.BunqResponse):
+class BunqResponseIdealMerchantTransactionList(BunqResponse):
     @property
     def value(self):
         """
@@ -35721,7 +35722,7 @@ class BunqResponseIdealMerchantTransactionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseSchedulePayment(client.BunqResponse):
+class BunqResponseSchedulePayment(BunqResponse):
     @property
     def value(self):
         """
@@ -35731,7 +35732,7 @@ class BunqResponseSchedulePayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseSchedulePaymentList(client.BunqResponse):
+class BunqResponseSchedulePaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -35741,7 +35742,7 @@ class BunqResponseSchedulePaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseSchedule(client.BunqResponse):
+class BunqResponseSchedule(BunqResponse):
     @property
     def value(self):
         """
@@ -35751,7 +35752,7 @@ class BunqResponseSchedule(client.BunqResponse):
         return super().value
 
 
-class BunqResponseScheduleList(client.BunqResponse):
+class BunqResponseScheduleList(BunqResponse):
     @property
     def value(self):
         """
@@ -35761,7 +35762,7 @@ class BunqResponseScheduleList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseScheduleInstance(client.BunqResponse):
+class BunqResponseScheduleInstance(BunqResponse):
     @property
     def value(self):
         """
@@ -35771,7 +35772,7 @@ class BunqResponseScheduleInstance(client.BunqResponse):
         return super().value
 
 
-class BunqResponseScheduleInstanceList(client.BunqResponse):
+class BunqResponseScheduleInstanceList(BunqResponse):
     @property
     def value(self):
         """
@@ -35781,7 +35782,7 @@ class BunqResponseScheduleInstanceList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMasterCardAction(client.BunqResponse):
+class BunqResponseMasterCardAction(BunqResponse):
     @property
     def value(self):
         """
@@ -35791,7 +35792,7 @@ class BunqResponseMasterCardAction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMasterCardActionList(client.BunqResponse):
+class BunqResponseMasterCardActionList(BunqResponse):
     @property
     def value(self):
         """
@@ -35801,7 +35802,7 @@ class BunqResponseMasterCardActionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRequestInquiryBatch(client.BunqResponse):
+class BunqResponseRequestInquiryBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -35811,7 +35812,7 @@ class BunqResponseRequestInquiryBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRequestInquiryBatchList(client.BunqResponse):
+class BunqResponseRequestInquiryBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -35821,7 +35822,7 @@ class BunqResponseRequestInquiryBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRequestInquiry(client.BunqResponse):
+class BunqResponseRequestInquiry(BunqResponse):
     @property
     def value(self):
         """
@@ -35831,7 +35832,7 @@ class BunqResponseRequestInquiry(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRequestInquiryList(client.BunqResponse):
+class BunqResponseRequestInquiryList(BunqResponse):
     @property
     def value(self):
         """
@@ -35841,7 +35842,7 @@ class BunqResponseRequestInquiryList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRequestResponse(client.BunqResponse):
+class BunqResponseRequestResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -35851,7 +35852,7 @@ class BunqResponseRequestResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRequestResponseList(client.BunqResponse):
+class BunqResponseRequestResponseList(BunqResponse):
     @property
     def value(self):
         """
@@ -35861,7 +35862,7 @@ class BunqResponseRequestResponseList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabResultResponse(client.BunqResponse):
+class BunqResponseTabResultResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -35871,7 +35872,7 @@ class BunqResponseTabResultResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabResultResponseList(client.BunqResponse):
+class BunqResponseTabResultResponseList(BunqResponse):
     @property
     def value(self):
         """
@@ -35881,7 +35882,7 @@ class BunqResponseTabResultResponseList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRewardRecipient(client.BunqResponse):
+class BunqResponseRewardRecipient(BunqResponse):
     @property
     def value(self):
         """
@@ -35891,7 +35892,7 @@ class BunqResponseRewardRecipient(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRewardRecipientList(client.BunqResponse):
+class BunqResponseRewardRecipientList(BunqResponse):
     @property
     def value(self):
         """
@@ -35901,7 +35902,7 @@ class BunqResponseRewardRecipientList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRewardSender(client.BunqResponse):
+class BunqResponseRewardSender(BunqResponse):
     @property
     def value(self):
         """
@@ -35911,7 +35912,7 @@ class BunqResponseRewardSender(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRewardSenderList(client.BunqResponse):
+class BunqResponseRewardSenderList(BunqResponse):
     @property
     def value(self):
         """
@@ -35921,7 +35922,7 @@ class BunqResponseRewardSenderList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteBankInquiry(client.BunqResponse):
+class BunqResponseShareInviteBankInquiry(BunqResponse):
     @property
     def value(self):
         """
@@ -35931,7 +35932,7 @@ class BunqResponseShareInviteBankInquiry(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteBankInquiryList(client.BunqResponse):
+class BunqResponseShareInviteBankInquiryList(BunqResponse):
     @property
     def value(self):
         """
@@ -35941,7 +35942,7 @@ class BunqResponseShareInviteBankInquiryList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteBankResponse(client.BunqResponse):
+class BunqResponseShareInviteBankResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -35951,7 +35952,7 @@ class BunqResponseShareInviteBankResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteBankResponseList(client.BunqResponse):
+class BunqResponseShareInviteBankResponseList(BunqResponse):
     @property
     def value(self):
         """
@@ -35961,7 +35962,7 @@ class BunqResponseShareInviteBankResponseList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseSofortMerchantTransaction(client.BunqResponse):
+class BunqResponseSofortMerchantTransaction(BunqResponse):
     @property
     def value(self):
         """
@@ -35971,7 +35972,7 @@ class BunqResponseSofortMerchantTransaction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseSofortMerchantTransactionList(client.BunqResponse):
+class BunqResponseSofortMerchantTransactionList(BunqResponse):
     @property
     def value(self):
         """
@@ -35981,7 +35982,7 @@ class BunqResponseSofortMerchantTransactionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabResultInquiry(client.BunqResponse):
+class BunqResponseTabResultInquiry(BunqResponse):
     @property
     def value(self):
         """
@@ -35991,7 +35992,7 @@ class BunqResponseTabResultInquiry(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabResultInquiryList(client.BunqResponse):
+class BunqResponseTabResultInquiryList(BunqResponse):
     @property
     def value(self):
         """
@@ -36001,7 +36002,7 @@ class BunqResponseTabResultInquiryList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTransferwiseTransfer(client.BunqResponse):
+class BunqResponseTransferwiseTransfer(BunqResponse):
     @property
     def value(self):
         """
@@ -36011,7 +36012,7 @@ class BunqResponseTransferwiseTransfer(client.BunqResponse):
         return super().value
 
 
-class BunqResponseExportAnnualOverview(client.BunqResponse):
+class BunqResponseExportAnnualOverview(BunqResponse):
     @property
     def value(self):
         """
@@ -36021,7 +36022,7 @@ class BunqResponseExportAnnualOverview(client.BunqResponse):
         return super().value
 
 
-class BunqResponseExportAnnualOverviewList(client.BunqResponse):
+class BunqResponseExportAnnualOverviewList(BunqResponse):
     @property
     def value(self):
         """
@@ -36031,7 +36032,7 @@ class BunqResponseExportAnnualOverviewList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseExportRib(client.BunqResponse):
+class BunqResponseExportRib(BunqResponse):
     @property
     def value(self):
         """
@@ -36041,7 +36042,7 @@ class BunqResponseExportRib(client.BunqResponse):
         return super().value
 
 
-class BunqResponseExportRibList(client.BunqResponse):
+class BunqResponseExportRibList(BunqResponse):
     @property
     def value(self):
         """
@@ -36051,7 +36052,7 @@ class BunqResponseExportRibList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseExportStatementPayment(client.BunqResponse):
+class BunqResponseExportStatementPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36061,7 +36062,7 @@ class BunqResponseExportStatementPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCustomerStatementExport(client.BunqResponse):
+class BunqResponseCustomerStatementExport(BunqResponse):
     @property
     def value(self):
         """
@@ -36071,7 +36072,7 @@ class BunqResponseCustomerStatementExport(client.BunqResponse):
         return super().value
 
 
-class BunqResponseCustomerStatementExportList(client.BunqResponse):
+class BunqResponseCustomerStatementExportList(BunqResponse):
     @property
     def value(self):
         """
@@ -36081,7 +36082,7 @@ class BunqResponseCustomerStatementExportList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseInstallationServerPublicKeyList(client.BunqResponse):
+class BunqResponseInstallationServerPublicKeyList(BunqResponse):
     @property
     def value(self):
         """
@@ -36091,7 +36092,7 @@ class BunqResponseInstallationServerPublicKeyList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountBank(client.BunqResponse):
+class BunqResponseMonetaryAccountBank(BunqResponse):
     @property
     def value(self):
         """
@@ -36101,7 +36102,7 @@ class BunqResponseMonetaryAccountBank(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountBankList(client.BunqResponse):
+class BunqResponseMonetaryAccountBankList(BunqResponse):
     @property
     def value(self):
         """
@@ -36111,7 +36112,7 @@ class BunqResponseMonetaryAccountBankList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountJoint(client.BunqResponse):
+class BunqResponseMonetaryAccountJoint(BunqResponse):
     @property
     def value(self):
         """
@@ -36121,7 +36122,7 @@ class BunqResponseMonetaryAccountJoint(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountJointList(client.BunqResponse):
+class BunqResponseMonetaryAccountJointList(BunqResponse):
     @property
     def value(self):
         """
@@ -36131,7 +36132,7 @@ class BunqResponseMonetaryAccountJointList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountSavings(client.BunqResponse):
+class BunqResponseMonetaryAccountSavings(BunqResponse):
     @property
     def value(self):
         """
@@ -36141,7 +36142,7 @@ class BunqResponseMonetaryAccountSavings(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountSavingsList(client.BunqResponse):
+class BunqResponseMonetaryAccountSavingsList(BunqResponse):
     @property
     def value(self):
         """
@@ -36151,7 +36152,7 @@ class BunqResponseMonetaryAccountSavingsList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccount(client.BunqResponse):
+class BunqResponseMonetaryAccount(BunqResponse):
     @property
     def value(self):
         """
@@ -36161,7 +36162,7 @@ class BunqResponseMonetaryAccount(client.BunqResponse):
         return super().value
 
 
-class BunqResponseMonetaryAccountList(client.BunqResponse):
+class BunqResponseMonetaryAccountList(BunqResponse):
     @property
     def value(self):
         """
@@ -36171,7 +36172,7 @@ class BunqResponseMonetaryAccountList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList(client.BunqResponse):
+class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36181,7 +36182,7 @@ class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPaymentList(
         return super().value
 
 
-class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(client.BunqResponse):
+class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36191,7 +36192,7 @@ class BunqResponseNoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(clie
         return super().value
 
 
-class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList(client.BunqResponse):
+class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36201,7 +36202,7 @@ class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPaymentList(client
         return super().value
 
 
-class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPayment(client.BunqResponse):
+class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36211,7 +36212,7 @@ class BunqResponseNoteTextBankSwitchServiceNetherlandsIncomingPayment(client.Bun
         return super().value
 
 
-class BunqResponseNoteAttachmentBunqMeFundraiserResultList(client.BunqResponse):
+class BunqResponseNoteAttachmentBunqMeFundraiserResultList(BunqResponse):
     @property
     def value(self):
         """
@@ -36221,7 +36222,7 @@ class BunqResponseNoteAttachmentBunqMeFundraiserResultList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentBunqMeFundraiserResult(client.BunqResponse):
+class BunqResponseNoteAttachmentBunqMeFundraiserResult(BunqResponse):
     @property
     def value(self):
         """
@@ -36231,7 +36232,7 @@ class BunqResponseNoteAttachmentBunqMeFundraiserResult(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextBunqMeFundraiserResultList(client.BunqResponse):
+class BunqResponseNoteTextBunqMeFundraiserResultList(BunqResponse):
     @property
     def value(self):
         """
@@ -36241,7 +36242,7 @@ class BunqResponseNoteTextBunqMeFundraiserResultList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextBunqMeFundraiserResult(client.BunqResponse):
+class BunqResponseNoteTextBunqMeFundraiserResult(BunqResponse):
     @property
     def value(self):
         """
@@ -36251,7 +36252,7 @@ class BunqResponseNoteTextBunqMeFundraiserResult(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentDraftPaymentList(client.BunqResponse):
+class BunqResponseNoteAttachmentDraftPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36261,7 +36262,7 @@ class BunqResponseNoteAttachmentDraftPaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentDraftPayment(client.BunqResponse):
+class BunqResponseNoteAttachmentDraftPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36271,7 +36272,7 @@ class BunqResponseNoteAttachmentDraftPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextDraftPaymentList(client.BunqResponse):
+class BunqResponseNoteTextDraftPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36281,7 +36282,7 @@ class BunqResponseNoteTextDraftPaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextDraftPayment(client.BunqResponse):
+class BunqResponseNoteTextDraftPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36291,7 +36292,7 @@ class BunqResponseNoteTextDraftPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentIdealMerchantTransactionList(client.BunqResponse):
+class BunqResponseNoteAttachmentIdealMerchantTransactionList(BunqResponse):
     @property
     def value(self):
         """
@@ -36301,7 +36302,7 @@ class BunqResponseNoteAttachmentIdealMerchantTransactionList(client.BunqResponse
         return super().value
 
 
-class BunqResponseNoteAttachmentIdealMerchantTransaction(client.BunqResponse):
+class BunqResponseNoteAttachmentIdealMerchantTransaction(BunqResponse):
     @property
     def value(self):
         """
@@ -36311,7 +36312,7 @@ class BunqResponseNoteAttachmentIdealMerchantTransaction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextIdealMerchantTransactionList(client.BunqResponse):
+class BunqResponseNoteTextIdealMerchantTransactionList(BunqResponse):
     @property
     def value(self):
         """
@@ -36321,7 +36322,7 @@ class BunqResponseNoteTextIdealMerchantTransactionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextIdealMerchantTransaction(client.BunqResponse):
+class BunqResponseNoteTextIdealMerchantTransaction(BunqResponse):
     @property
     def value(self):
         """
@@ -36331,7 +36332,7 @@ class BunqResponseNoteTextIdealMerchantTransaction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentMasterCardActionList(client.BunqResponse):
+class BunqResponseNoteAttachmentMasterCardActionList(BunqResponse):
     @property
     def value(self):
         """
@@ -36341,7 +36342,7 @@ class BunqResponseNoteAttachmentMasterCardActionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentMasterCardAction(client.BunqResponse):
+class BunqResponseNoteAttachmentMasterCardAction(BunqResponse):
     @property
     def value(self):
         """
@@ -36351,7 +36352,7 @@ class BunqResponseNoteAttachmentMasterCardAction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextMasterCardActionList(client.BunqResponse):
+class BunqResponseNoteTextMasterCardActionList(BunqResponse):
     @property
     def value(self):
         """
@@ -36361,7 +36362,7 @@ class BunqResponseNoteTextMasterCardActionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextMasterCardAction(client.BunqResponse):
+class BunqResponseNoteTextMasterCardAction(BunqResponse):
     @property
     def value(self):
         """
@@ -36371,7 +36372,7 @@ class BunqResponseNoteTextMasterCardAction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentPaymentBatchList(client.BunqResponse):
+class BunqResponseNoteAttachmentPaymentBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -36381,7 +36382,7 @@ class BunqResponseNoteAttachmentPaymentBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentPaymentBatch(client.BunqResponse):
+class BunqResponseNoteAttachmentPaymentBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -36391,7 +36392,7 @@ class BunqResponseNoteAttachmentPaymentBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextPaymentBatchList(client.BunqResponse):
+class BunqResponseNoteTextPaymentBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -36401,7 +36402,7 @@ class BunqResponseNoteTextPaymentBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextPaymentBatch(client.BunqResponse):
+class BunqResponseNoteTextPaymentBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -36411,7 +36412,7 @@ class BunqResponseNoteTextPaymentBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentPaymentList(client.BunqResponse):
+class BunqResponseNoteAttachmentPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36421,7 +36422,7 @@ class BunqResponseNoteAttachmentPaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentPayment(client.BunqResponse):
+class BunqResponseNoteAttachmentPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36431,7 +36432,7 @@ class BunqResponseNoteAttachmentPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextPaymentList(client.BunqResponse):
+class BunqResponseNoteTextPaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36441,7 +36442,7 @@ class BunqResponseNoteTextPaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextPayment(client.BunqResponse):
+class BunqResponseNoteTextPayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36451,7 +36452,7 @@ class BunqResponseNoteTextPayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentRequestInquiryBatchList(client.BunqResponse):
+class BunqResponseNoteAttachmentRequestInquiryBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -36461,7 +36462,7 @@ class BunqResponseNoteAttachmentRequestInquiryBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentRequestInquiryBatch(client.BunqResponse):
+class BunqResponseNoteAttachmentRequestInquiryBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -36471,7 +36472,7 @@ class BunqResponseNoteAttachmentRequestInquiryBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextRequestInquiryBatchList(client.BunqResponse):
+class BunqResponseNoteTextRequestInquiryBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -36481,7 +36482,7 @@ class BunqResponseNoteTextRequestInquiryBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextRequestInquiryBatch(client.BunqResponse):
+class BunqResponseNoteTextRequestInquiryBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -36491,7 +36492,7 @@ class BunqResponseNoteTextRequestInquiryBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentRequestInquiryList(client.BunqResponse):
+class BunqResponseNoteAttachmentRequestInquiryList(BunqResponse):
     @property
     def value(self):
         """
@@ -36501,7 +36502,7 @@ class BunqResponseNoteAttachmentRequestInquiryList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentRequestInquiry(client.BunqResponse):
+class BunqResponseNoteAttachmentRequestInquiry(BunqResponse):
     @property
     def value(self):
         """
@@ -36511,7 +36512,7 @@ class BunqResponseNoteAttachmentRequestInquiry(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextRequestInquiryList(client.BunqResponse):
+class BunqResponseNoteTextRequestInquiryList(BunqResponse):
     @property
     def value(self):
         """
@@ -36521,7 +36522,7 @@ class BunqResponseNoteTextRequestInquiryList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextRequestInquiry(client.BunqResponse):
+class BunqResponseNoteTextRequestInquiry(BunqResponse):
     @property
     def value(self):
         """
@@ -36531,7 +36532,7 @@ class BunqResponseNoteTextRequestInquiry(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentRequestResponseList(client.BunqResponse):
+class BunqResponseNoteAttachmentRequestResponseList(BunqResponse):
     @property
     def value(self):
         """
@@ -36541,7 +36542,7 @@ class BunqResponseNoteAttachmentRequestResponseList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentRequestResponse(client.BunqResponse):
+class BunqResponseNoteAttachmentRequestResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -36551,7 +36552,7 @@ class BunqResponseNoteAttachmentRequestResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextRequestResponseList(client.BunqResponse):
+class BunqResponseNoteTextRequestResponseList(BunqResponse):
     @property
     def value(self):
         """
@@ -36561,7 +36562,7 @@ class BunqResponseNoteTextRequestResponseList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextRequestResponse(client.BunqResponse):
+class BunqResponseNoteTextRequestResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -36571,7 +36572,7 @@ class BunqResponseNoteTextRequestResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentScheduleInstanceList(client.BunqResponse):
+class BunqResponseNoteAttachmentScheduleInstanceList(BunqResponse):
     @property
     def value(self):
         """
@@ -36581,7 +36582,7 @@ class BunqResponseNoteAttachmentScheduleInstanceList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentScheduleInstance(client.BunqResponse):
+class BunqResponseNoteAttachmentScheduleInstance(BunqResponse):
     @property
     def value(self):
         """
@@ -36591,7 +36592,7 @@ class BunqResponseNoteAttachmentScheduleInstance(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextScheduleInstanceList(client.BunqResponse):
+class BunqResponseNoteTextScheduleInstanceList(BunqResponse):
     @property
     def value(self):
         """
@@ -36601,7 +36602,7 @@ class BunqResponseNoteTextScheduleInstanceList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextScheduleInstance(client.BunqResponse):
+class BunqResponseNoteTextScheduleInstance(BunqResponse):
     @property
     def value(self):
         """
@@ -36611,7 +36612,7 @@ class BunqResponseNoteTextScheduleInstance(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentSchedulePaymentBatchList(client.BunqResponse):
+class BunqResponseNoteAttachmentSchedulePaymentBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -36621,7 +36622,7 @@ class BunqResponseNoteAttachmentSchedulePaymentBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentSchedulePaymentBatch(client.BunqResponse):
+class BunqResponseNoteAttachmentSchedulePaymentBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -36631,7 +36632,7 @@ class BunqResponseNoteAttachmentSchedulePaymentBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextSchedulePaymentBatchList(client.BunqResponse):
+class BunqResponseNoteTextSchedulePaymentBatchList(BunqResponse):
     @property
     def value(self):
         """
@@ -36641,7 +36642,7 @@ class BunqResponseNoteTextSchedulePaymentBatchList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextSchedulePaymentBatch(client.BunqResponse):
+class BunqResponseNoteTextSchedulePaymentBatch(BunqResponse):
     @property
     def value(self):
         """
@@ -36651,7 +36652,7 @@ class BunqResponseNoteTextSchedulePaymentBatch(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentSchedulePaymentList(client.BunqResponse):
+class BunqResponseNoteAttachmentSchedulePaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36661,7 +36662,7 @@ class BunqResponseNoteAttachmentSchedulePaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentSchedulePayment(client.BunqResponse):
+class BunqResponseNoteAttachmentSchedulePayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36671,7 +36672,7 @@ class BunqResponseNoteAttachmentSchedulePayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextSchedulePaymentList(client.BunqResponse):
+class BunqResponseNoteTextSchedulePaymentList(BunqResponse):
     @property
     def value(self):
         """
@@ -36681,7 +36682,7 @@ class BunqResponseNoteTextSchedulePaymentList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextSchedulePayment(client.BunqResponse):
+class BunqResponseNoteTextSchedulePayment(BunqResponse):
     @property
     def value(self):
         """
@@ -36691,7 +36692,7 @@ class BunqResponseNoteTextSchedulePayment(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentSofortMerchantTransactionList(client.BunqResponse):
+class BunqResponseNoteAttachmentSofortMerchantTransactionList(BunqResponse):
     @property
     def value(self):
         """
@@ -36701,7 +36702,7 @@ class BunqResponseNoteAttachmentSofortMerchantTransactionList(client.BunqRespons
         return super().value
 
 
-class BunqResponseNoteAttachmentSofortMerchantTransaction(client.BunqResponse):
+class BunqResponseNoteAttachmentSofortMerchantTransaction(BunqResponse):
     @property
     def value(self):
         """
@@ -36711,7 +36712,7 @@ class BunqResponseNoteAttachmentSofortMerchantTransaction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextSofortMerchantTransactionList(client.BunqResponse):
+class BunqResponseNoteTextSofortMerchantTransactionList(BunqResponse):
     @property
     def value(self):
         """
@@ -36721,7 +36722,7 @@ class BunqResponseNoteTextSofortMerchantTransactionList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextSofortMerchantTransaction(client.BunqResponse):
+class BunqResponseNoteTextSofortMerchantTransaction(BunqResponse):
     @property
     def value(self):
         """
@@ -36731,7 +36732,7 @@ class BunqResponseNoteTextSofortMerchantTransaction(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentWhitelistResultList(client.BunqResponse):
+class BunqResponseNoteAttachmentWhitelistResultList(BunqResponse):
     @property
     def value(self):
         """
@@ -36741,7 +36742,7 @@ class BunqResponseNoteAttachmentWhitelistResultList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteAttachmentWhitelistResult(client.BunqResponse):
+class BunqResponseNoteAttachmentWhitelistResult(BunqResponse):
     @property
     def value(self):
         """
@@ -36751,7 +36752,7 @@ class BunqResponseNoteAttachmentWhitelistResult(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextWhitelistResultList(client.BunqResponse):
+class BunqResponseNoteTextWhitelistResultList(BunqResponse):
     @property
     def value(self):
         """
@@ -36761,7 +36762,7 @@ class BunqResponseNoteTextWhitelistResultList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNoteTextWhitelistResult(client.BunqResponse):
+class BunqResponseNoteTextWhitelistResult(BunqResponse):
     @property
     def value(self):
         """
@@ -36771,7 +36772,7 @@ class BunqResponseNoteTextWhitelistResult(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNotificationFilterPushUser(client.BunqResponse):
+class BunqResponseNotificationFilterPushUser(BunqResponse):
     @property
     def value(self):
         """
@@ -36781,7 +36782,7 @@ class BunqResponseNotificationFilterPushUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNotificationFilterPushUserList(client.BunqResponse):
+class BunqResponseNotificationFilterPushUserList(BunqResponse):
     @property
     def value(self):
         """
@@ -36791,7 +36792,7 @@ class BunqResponseNotificationFilterPushUserList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNotificationFilterUrlMonetaryAccountList(client.BunqResponse):
+class BunqResponseNotificationFilterUrlMonetaryAccountList(BunqResponse):
     @property
     def value(self):
         """
@@ -36801,7 +36802,7 @@ class BunqResponseNotificationFilterUrlMonetaryAccountList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseNotificationFilterUrlUserList(client.BunqResponse):
+class BunqResponseNotificationFilterUrlUserList(BunqResponse):
     @property
     def value(self):
         """
@@ -36811,7 +36812,7 @@ class BunqResponseNotificationFilterUrlUserList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUser(client.BunqResponse):
+class BunqResponseUser(BunqResponse):
     @property
     def value(self):
         """
@@ -36821,7 +36822,7 @@ class BunqResponseUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserList(client.BunqResponse):
+class BunqResponseUserList(BunqResponse):
     @property
     def value(self):
         """
@@ -36831,7 +36832,7 @@ class BunqResponseUserList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserPerson(client.BunqResponse):
+class BunqResponseUserPerson(BunqResponse):
     @property
     def value(self):
         """
@@ -36841,7 +36842,7 @@ class BunqResponseUserPerson(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserCompany(client.BunqResponse):
+class BunqResponseUserCompany(BunqResponse):
     @property
     def value(self):
         """
@@ -36851,7 +36852,7 @@ class BunqResponseUserCompany(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserPaymentServiceProvider(client.BunqResponse):
+class BunqResponseUserPaymentServiceProvider(BunqResponse):
     @property
     def value(self):
         """
@@ -36861,7 +36862,7 @@ class BunqResponseUserPaymentServiceProvider(client.BunqResponse):
         return super().value
 
 
-class BunqResponseOauthCallbackUrl(client.BunqResponse):
+class BunqResponseOauthCallbackUrl(BunqResponse):
     @property
     def value(self):
         """
@@ -36871,7 +36872,7 @@ class BunqResponseOauthCallbackUrl(client.BunqResponse):
         return super().value
 
 
-class BunqResponseOauthCallbackUrlList(client.BunqResponse):
+class BunqResponseOauthCallbackUrlList(BunqResponse):
     @property
     def value(self):
         """
@@ -36881,7 +36882,7 @@ class BunqResponseOauthCallbackUrlList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseOauthClient(client.BunqResponse):
+class BunqResponseOauthClient(BunqResponse):
     @property
     def value(self):
         """
@@ -36891,7 +36892,7 @@ class BunqResponseOauthClient(client.BunqResponse):
         return super().value
 
 
-class BunqResponseOauthClientList(client.BunqResponse):
+class BunqResponseOauthClientList(BunqResponse):
     @property
     def value(self):
         """
@@ -36901,7 +36902,7 @@ class BunqResponseOauthClientList(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePaymentServiceProviderCredential(client.BunqResponse):
+class BunqResponsePaymentServiceProviderCredential(BunqResponse):
     @property
     def value(self):
         """
@@ -36911,7 +36912,7 @@ class BunqResponsePaymentServiceProviderCredential(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePermittedIp(client.BunqResponse):
+class BunqResponsePermittedIp(BunqResponse):
     @property
     def value(self):
         """
@@ -36921,7 +36922,7 @@ class BunqResponsePermittedIp(client.BunqResponse):
         return super().value
 
 
-class BunqResponsePermittedIpList(client.BunqResponse):
+class BunqResponsePermittedIpList(BunqResponse):
     @property
     def value(self):
         """
@@ -36931,7 +36932,7 @@ class BunqResponsePermittedIpList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseReward(client.BunqResponse):
+class BunqResponseReward(BunqResponse):
     @property
     def value(self):
         """
@@ -36941,7 +36942,7 @@ class BunqResponseReward(client.BunqResponse):
         return super().value
 
 
-class BunqResponseRewardList(client.BunqResponse):
+class BunqResponseRewardList(BunqResponse):
     @property
     def value(self):
         """
@@ -36951,7 +36952,7 @@ class BunqResponseRewardList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseSandboxUser(client.BunqResponse):
+class BunqResponseSandboxUser(BunqResponse):
     @property
     def value(self):
         """
@@ -36961,7 +36962,7 @@ class BunqResponseSandboxUser(client.BunqResponse):
         return super().value
 
 
-class BunqResponseScheduleUserList(client.BunqResponse):
+class BunqResponseScheduleUserList(BunqResponse):
     @property
     def value(self):
         """
@@ -36971,7 +36972,7 @@ class BunqResponseScheduleUserList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteMonetaryAccountInquiry(client.BunqResponse):
+class BunqResponseShareInviteMonetaryAccountInquiry(BunqResponse):
     @property
     def value(self):
         """
@@ -36981,7 +36982,7 @@ class BunqResponseShareInviteMonetaryAccountInquiry(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteMonetaryAccountInquiryList(client.BunqResponse):
+class BunqResponseShareInviteMonetaryAccountInquiryList(BunqResponse):
     @property
     def value(self):
         """
@@ -36991,7 +36992,7 @@ class BunqResponseShareInviteMonetaryAccountInquiryList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteMonetaryAccountResponse(client.BunqResponse):
+class BunqResponseShareInviteMonetaryAccountResponse(BunqResponse):
     @property
     def value(self):
         """
@@ -37001,7 +37002,7 @@ class BunqResponseShareInviteMonetaryAccountResponse(client.BunqResponse):
         return super().value
 
 
-class BunqResponseShareInviteMonetaryAccountResponseList(client.BunqResponse):
+class BunqResponseShareInviteMonetaryAccountResponseList(BunqResponse):
     @property
     def value(self):
         """
@@ -37011,7 +37012,7 @@ class BunqResponseShareInviteMonetaryAccountResponseList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabItemShopList(client.BunqResponse):
+class BunqResponseTabItemShopList(BunqResponse):
     @property
     def value(self):
         """
@@ -37021,7 +37022,7 @@ class BunqResponseTabItemShopList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTabItemShop(client.BunqResponse):
+class BunqResponseTabItemShop(BunqResponse):
     @property
     def value(self):
         """
@@ -37031,7 +37032,7 @@ class BunqResponseTabItemShop(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTokenQrRequestIdeal(client.BunqResponse):
+class BunqResponseTokenQrRequestIdeal(BunqResponse):
     @property
     def value(self):
         """
@@ -37041,7 +37042,7 @@ class BunqResponseTokenQrRequestIdeal(client.BunqResponse):
         return super().value
 
 
-class BunqResponseTokenQrRequestSofort(client.BunqResponse):
+class BunqResponseTokenQrRequestSofort(BunqResponse):
     @property
     def value(self):
         """
@@ -37051,7 +37052,7 @@ class BunqResponseTokenQrRequestSofort(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserCompanyNameList(client.BunqResponse):
+class BunqResponseUserCompanyNameList(BunqResponse):
     @property
     def value(self):
         """
@@ -37061,7 +37062,7 @@ class BunqResponseUserCompanyNameList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserCredentialPasswordIp(client.BunqResponse):
+class BunqResponseUserCredentialPasswordIp(BunqResponse):
     @property
     def value(self):
         """
@@ -37071,7 +37072,7 @@ class BunqResponseUserCredentialPasswordIp(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserCredentialPasswordIpList(client.BunqResponse):
+class BunqResponseUserCredentialPasswordIpList(BunqResponse):
     @property
     def value(self):
         """
@@ -37081,7 +37082,7 @@ class BunqResponseUserCredentialPasswordIpList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseUserLegalNameList(client.BunqResponse):
+class BunqResponseUserLegalNameList(BunqResponse):
     @property
     def value(self):
         """
@@ -37091,7 +37092,7 @@ class BunqResponseUserLegalNameList(client.BunqResponse):
         return super().value
 
 
-class BunqResponseWhitelistSdd(client.BunqResponse):
+class BunqResponseWhitelistSdd(BunqResponse):
     @property
     def value(self):
         """
@@ -37101,7 +37102,7 @@ class BunqResponseWhitelistSdd(client.BunqResponse):
         return super().value
 
 
-class BunqResponseWhitelistSddList(client.BunqResponse):
+class BunqResponseWhitelistSddList(BunqResponse):
     @property
     def value(self):
         """

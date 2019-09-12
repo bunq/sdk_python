@@ -1,3 +1,4 @@
+from bunq.sdk.http.pagination import Pagination
 from bunq.sdk.json import converter
 
 
@@ -9,7 +10,7 @@ def initialize_converter():
     import datetime
     import inspect
 
-    from bunq.sdk.http import client
+    from bunq.sdk.http import api_client
     from bunq.sdk.context import api_context
     from bunq.sdk.model import core
     from bunq.sdk.json import adapters
@@ -38,7 +39,7 @@ def initialize_converter():
     )
     converter.register_adapter(object_.ShareDetail, adapters.ShareDetailAdapter)
     converter.register_adapter(datetime.datetime, adapters.DateTimeAdapter)
-    converter.register_adapter(client.Pagination, adapters.PaginationAdapter)
+    converter.register_adapter(Pagination, adapters.PaginationAdapter)
 
     def register_anchor_adapter(class_to_regsiter):
         if issubclass(class_to_regsiter, core.AnchoredObjectInterface):

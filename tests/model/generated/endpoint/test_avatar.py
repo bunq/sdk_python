@@ -1,4 +1,4 @@
-from bunq.sdk.http.client import ApiClient
+from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.model.generated.endpoint import AttachmentPublic
 from bunq.sdk.model.generated.endpoint import AttachmentPublicContent
 from bunq.sdk.model.generated.endpoint import Avatar

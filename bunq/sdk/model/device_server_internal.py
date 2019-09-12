@@ -1,8 +1,8 @@
-from bunq.sdk.model.generated.endpoint import DeviceServer
-from bunq.sdk.model.generated.endpoint import BunqResponseInt
-from bunq.sdk.http import client
-from bunq.sdk.json import converter
 from bunq.sdk.exception.exception import BunqException
+from bunq.sdk.http.api_client import ApiClient
+from bunq.sdk.json import converter
+from bunq.sdk.model.generated.endpoint import BunqResponseInt
+from bunq.sdk.model.generated.endpoint import DeviceServer
 
 
 class DeviceServerInternal(DeviceServer):
@@ -49,7 +49,7 @@ class DeviceServerInternal(DeviceServer):
             cls.FIELD_PERMITTED_IPS: permitted_ips
         }
 
-        api_client = client.ApiClient(api_context)
+        api_client = ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes,

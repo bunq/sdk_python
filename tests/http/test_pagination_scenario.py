@@ -1,4 +1,4 @@
-from bunq.sdk.http import client
+from bunq.sdk.http import api_client
 from bunq.sdk.context.api_context import BunqContext
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated import endpoint
@@ -26,7 +26,7 @@ class TestPaginationScenario(BunqSdkTestCase):
     def test_api_scenario_payment_listing_with_pagination(self):
         self._ensure_enough_payments()
         payments_expected = self._payments_required()
-        pagination = client.Pagination()
+        pagination = api_client.Pagination()
         pagination.count = self._PAYMENT_LISTING_PAGE_SIZE
 
         response_latest = self._list_payments(pagination.url_params_count_only)
@@ -69,7 +69,7 @@ class TestPaginationScenario(BunqSdkTestCase):
         :rtype: list[endpoint.Payment]
         """
 
-        pagination = client.Pagination()
+        pagination = api_client.Pagination()
         pagination.count = self._PAYMENT_REQUIRED_COUNT_MINIMUM
 
         return self._list_payments(pagination.url_params_count_only).value

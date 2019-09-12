@@ -1,7 +1,8 @@
 import datetime
 import urllib.parse as urlparse
 
-from bunq.sdk.http import client
+from bunq import Pagination
+from bunq.sdk.http import api_client
 from bunq.sdk.context import api_context
 from bunq.sdk.security import security
 from bunq.sdk.exception.exception import BunqException
@@ -560,13 +561,13 @@ class PaginationAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, pagination_response):
         """
-        :type target_class: client.Pagination|type
+        :type target_class: Pagination|type
         :type pagination_response: dict
 
         :rtype: client.Pagination
         """
 
-        pagination = client.Pagination()
+        pagination = Pagination()
         pagination.__dict__.update(
             cls.parse_pagination_dict(pagination_response)
         )
@@ -588,21 +589,21 @@ class PaginationAdapter(converter.JsonAdapter):
             cls._FIELD_OLDER_ID,
             response_obj,
             cls._FIELD_OLDER_URL,
-            client.Pagination.PARAM_OLDER_ID
+            Pagination.PARAM_OLDER_ID
         )
         cls.update_dict_id_field_from_response_field(
             pagination_dict,
             cls._FIELD_NEWER_ID,
             response_obj,
             cls._FIELD_NEWER_URL,
-            client.Pagination.PARAM_NEWER_ID
+            Pagination.PARAM_NEWER_ID
         )
         cls.update_dict_id_field_from_response_field(
             pagination_dict,
             cls._FIELD_FUTURE_ID,
             response_obj,
             cls._FIELD_FUTURE_URL,
-            client.Pagination.PARAM_NEWER_ID
+            Pagination.PARAM_NEWER_ID
         )
 
         return pagination_dict
@@ -630,13 +631,13 @@ class PaginationAdapter(converter.JsonAdapter):
 
             if cls._FIELD_COUNT in parameters and cls._FIELD_COUNT not in dict_:
                 dict_[cls._FIELD_COUNT] = int(
-                    parameters[client.Pagination.PARAM_COUNT][cls._INDEX_FIRST]
+                    parameters[Pagination.PARAM_COUNT][cls._INDEX_FIRST]
                 )
 
     @classmethod
     def serialize(cls, pagination):
         """
-        :type pagination: client.Pagination
+        :type pagination: Pagination
 
         :raise: NotImplementedError
         """

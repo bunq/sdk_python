@@ -3,10 +3,10 @@ from urllib.parse import urlencode
 
 import requests
 
-from bunq.sdk.exception import exception
-from bunq.sdk.security import security
 from bunq.sdk.exception.exception_factory import ExceptionFactory
+from bunq.sdk.http.bunq_response_raw import BunqResponseRaw
 from bunq.sdk.json import converter
+from bunq.sdk.security import security
 
 
 class ApiClient(object):
@@ -50,13 +50,13 @@ class ApiClient(object):
 
     # Default header values
     _USER_AGENT_BUNQ = 'bunq-sdk-python/1.10.16'
-    _GEOLOCATION_ZERO = '0 0 0 0 NL'
-    _LANGUAGE_EN_US = 'en_US'
-    _REGION_NL_NL = 'nl_NL'
-    _CACHE_CONTROL_NONE = 'no-cache'
+    GEOLOCATION_ZERO = '0 0 0 0 NL'
+    LANGUAGE_EN_US = 'en_US'
+    REGION_NL_NL = 'nl_NL'
+    CACHE_CONTROL_NONE = 'no-cache'
 
     # Request method names
-    _METHOD_POST = 'POST'
+    METHOD_POST = 'POST'
     _METHOD_PUT = 'PUT'
     _METHOD_GET = 'GET'
     _METHOD_DELETE = 'DELETE'
@@ -65,7 +65,7 @@ class ApiClient(object):
     _DELIMITER_URL_QUERY = '?'
 
     # Status code for successful execution
-    _STATUS_CODE_OK = 200
+    STATUS_CODE_OK = 200
 
     # Fields for fetching errors
     _FIELD_ERROR = 'Error'
@@ -90,7 +90,7 @@ class ApiClient(object):
         """
 
         return self._request(
-            self._METHOD_POST,
+            self.METHOD_POST,
             uri_relative,
             request_bytes,
             {},
@@ -109,11 +109,10 @@ class ApiClient(object):
         :return: BunqResponseRaw
         """
 
-        uri_relative_with_params = self._append_params_to_uri(uri_relative,
-                                                              params)
+        uri_relative_with_params = self._append_params_to_uri(uri_relative, params)
         if uri_relative not in self._URIS_NOT_REQUIRING_ACTIVE_SESSION:
             if self._api_context.ensure_session_active():
-                from bunq.sdk.context.api_context import BunqContext
+                from bunq.sdk.context.bunq_context import BunqContext
 
                 BunqContext.update_api_context(self._api_context)
 
@@ -192,10 +191,10 @@ class ApiClient(object):
         return {
             cls.HEADER_USER_AGENT: cls._USER_AGENT_BUNQ,
             cls.HEADER_REQUEST_ID: cls._generate_random_request_id(),
-            cls.HEADER_GEOLOCATION: cls._GEOLOCATION_ZERO,
-            cls.HEADER_LANGUAGE: cls._LANGUAGE_EN_US,
-            cls.HEADER_REGION: cls._REGION_NL_NL,
-            cls.HEADER_CACHE_CONTROL: cls._CACHE_CONTROL_NONE,
+            cls.HEADER_GEOLOCATION: cls.GEOLOCATION_ZERO,
+            cls.HEADER_LANGUAGE: cls.LANGUAGE_EN_US,
+            cls.HEADER_REGION: cls.REGION_NL_NL,
+            cls.HEADER_CACHE_CONTROL: cls.CACHE_CONTROL_NONE,
         }
 
     @staticmethod
@@ -223,7 +222,7 @@ class ApiClient(object):
         :raise ApiException: When the response is not successful.
         """
 
-        if response.status_code != self._STATUS_CODE_OK:
+        if response.status_code != self.STATUS_CODE_OK:
             raise ExceptionFactory.create_exception_for_response(
                 response.status_code,
                 self._fetch_all_error_message(response),
@@ -337,204 +336,3 @@ class ApiClient(object):
             {},
             custom_headers
         )
-
-
-class BunqResponseRaw(object):
-    """
-    :type _body_bytes: bytes
-    :type _headers: dict[str, str]
-    """
-
-    def __init__(self, body_bytes, headers):
-        """
-        :type body_bytes: bytes
-        :type headers: dict[str, str]
-        """
-
-        self._body_bytes = body_bytes
-        self._headers = headers
-
-    @property
-    def body_bytes(self):
-        """
-        :rtype: bytes
-        """
-
-        return self._body_bytes
-
-    @property
-    def headers(self):
-        """
-        :rtype: dict[str, str]
-        """
-
-        return self._headers
-
-
-class BunqResponse(object):
-    """
-    :type _value: T
-    :type _headers: dict[str, str]
-    :type _pagination: Pagination|None
-    """
-
-    def __init__(self, value, headers, pagination=None):
-        """
-        :type value: T
-        :type headers: dict[str, str]
-        :type pagination Pagination|None
-        """
-
-        self._value = value
-        self._headers = headers
-        self._pagination = pagination
-
-    @property
-    def value(self):
-        """
-        :rtype: T
-        """
-
-        return self._value
-
-    @property
-    def headers(self):
-        """
-        :rtype: dict[str, str]
-        """
-
-        return self._headers
-
-    @property
-    def pagination(self):
-        """
-        :rtype: Pagination
-        """
-
-        return self._pagination
-
-    @classmethod
-    def cast_from_bunq_response(cls, bunq_response):
-        """
-        :type bunq_response: BunqResponse
-        """
-
-        return cls(
-            bunq_response.value,
-            bunq_response.headers,
-            bunq_response.pagination
-        )
-
-
-class Pagination(object):
-    """
-    :type older_id: int|None
-    :type newer_id: int|None
-    :type future_id: int|None
-    :type count: int|None
-    """
-
-    # Error constants
-    _ERROR_NO_PREVIOUS_PAGE = 'Could not generate previous page URL params: ' \
-                              'there is no previous page.'
-    _ERROR_NO_NEXT_PAGE = 'Could not generate next page URL params: ' \
-                          'there is no next page.'
-
-    # URL Param constants
-    PARAM_OLDER_ID = 'older_id'
-    PARAM_NEWER_ID = 'newer_id'
-    PARAM_COUNT = 'count'
-
-    def __init__(self):
-        self.older_id = None
-        self.newer_id = None
-        self.future_id = None
-        self.count = None
-
-    @property
-    def url_params_previous_page(self):
-        """
-        :rtype: dict[str, str]
-        """
-
-        self.assert_has_previous_page()
-
-        params = {self.PARAM_OLDER_ID: str(self.older_id)}
-        self._add_count_to_params_if_needed(params)
-
-        return params
-
-    def assert_has_previous_page(self):
-        """
-        :raise: exception.BunqException
-        """
-
-        if not self.has_previous_page():
-            raise exception.BunqException(self._ERROR_NO_PREVIOUS_PAGE)
-
-    def has_previous_page(self):
-        """
-        :rtype: bool
-        """
-
-        return self.older_id is not None
-
-    @property
-    def url_params_count_only(self):
-        """
-        :rtype: dict[str, str]
-        """
-
-        params = {}
-        self._add_count_to_params_if_needed(params)
-
-        return params
-
-    def _add_count_to_params_if_needed(self, params):
-        """
-        :type params: dict[str, str]
-
-        :rtype: None
-        """
-
-        if self.count is not None:
-            params[self.PARAM_COUNT] = str(self.count)
-
-    def has_next_page_assured(self):
-        """
-        :rtype: bool
-        """
-
-        return self.newer_id is not None
-
-    @property
-    def url_params_next_page(self):
-        """
-        :rtype: dict[str, str]
-        """
-
-        self.assert_has_next_page()
-
-        params = {self.PARAM_NEWER_ID: str(self._next_id)}
-        self._add_count_to_params_if_needed(params)
-
-        return params
-
-    def assert_has_next_page(self):
-        """
-        :raise: exception.BunqException
-        """
-
-        if self._next_id is None:
-            raise exception.BunqException(self._ERROR_NO_NEXT_PAGE)
-
-    @property
-    def _next_id(self):
-        """
-        :rtype: int
-        """
-
-        if self.has_next_page_assured():
-            return self.newer_id
-
-        return self.future_id

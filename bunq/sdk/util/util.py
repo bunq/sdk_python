@@ -3,7 +3,7 @@ import socket
 
 import requests
 
-from bunq.sdk.http.client import ApiClient
+from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.context.api_context import ApiContext, ApiEnvironmentType
 from bunq.sdk.exception.exception import BunqException
 from bunq.sdk.model.generated import endpoint
@@ -41,15 +41,15 @@ def __generate_new_sandbox_user():
 
     headers = {
         ApiClient.HEADER_REQUEST_ID: __UNIQUE_REQUEST_ID,
-        ApiClient.HEADER_CACHE_CONTROL: ApiClient._CACHE_CONTROL_NONE,
-        ApiClient.HEADER_GEOLOCATION: ApiClient._GEOLOCATION_ZERO,
-        ApiClient.HEADER_LANGUAGE: ApiClient._LANGUAGE_EN_US,
-        ApiClient.HEADER_REGION: ApiClient._REGION_NL_NL,
+        ApiClient.HEADER_CACHE_CONTROL: ApiClient.CACHE_CONTROL_NONE,
+        ApiClient.HEADER_GEOLOCATION: ApiClient.GEOLOCATION_ZERO,
+        ApiClient.HEADER_LANGUAGE: ApiClient.LANGUAGE_EN_US,
+        ApiClient.HEADER_REGION: ApiClient.REGION_NL_NL,
     }
 
-    response = requests.request(ApiClient._METHOD_POST, url, headers=headers)
+    response = requests.request(ApiClient.METHOD_POST, url, headers=headers)
 
-    if response.status_code is ApiClient._STATUS_CODE_OK:
+    if response.status_code is ApiClient.STATUS_CODE_OK:
         response_json = json.loads(response.text)
         return endpoint.SandboxUser.from_json(
             json.dumps(response_json[__FIELD_RESPONSE][__INDEX_FIRST][

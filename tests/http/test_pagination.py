@@ -1,4 +1,4 @@
-from bunq.sdk.http import client
+from bunq.sdk.http import api_client
 from bunq.sdk.exception import exception
 from tests.bunq_test import BunqSdkTestCase
 
@@ -17,7 +17,7 @@ class TestPagination(BunqSdkTestCase):
     def test_get_url_params_count_only(self):
         pagination = self._create_pagination_with_all_properties_set()
         url_params_count_only_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            api_client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
         }
 
         self.assertEqual(url_params_count_only_expected,
@@ -28,7 +28,7 @@ class TestPagination(BunqSdkTestCase):
         :rtype: Pagination
         """
 
-        pagination = client.Pagination()
+        pagination = api_client.Pagination()
         pagination.older_id = self._PAGINATION_OLDER_ID_CUSTOM
         pagination.newer_id = self._PAGINATION_NEWER_ID_CUSTOM
         pagination.future_id = self._PAGINATION_FUTURE_ID_CUSTOM
@@ -39,8 +39,8 @@ class TestPagination(BunqSdkTestCase):
     def test_get_url_params_previous_page(self):
         pagination = self._create_pagination_with_all_properties_set()
         url_params_previous_page_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
-            client.Pagination.PARAM_OLDER_ID:
+            api_client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            api_client.Pagination.PARAM_OLDER_ID:
                 str(self._PAGINATION_OLDER_ID_CUSTOM),
         }
 
@@ -52,7 +52,7 @@ class TestPagination(BunqSdkTestCase):
         pagination = self._create_pagination_with_all_properties_set()
         pagination.count = None
         url_params_previous_page_expected = {
-            client.Pagination.PARAM_OLDER_ID:
+            api_client.Pagination.PARAM_OLDER_ID:
                 str(self._PAGINATION_OLDER_ID_CUSTOM),
         }
 
@@ -63,8 +63,8 @@ class TestPagination(BunqSdkTestCase):
     def test_get_url_params_next_page_newer(self):
         pagination = self._create_pagination_with_all_properties_set()
         url_params_next_page_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
-            client.Pagination.PARAM_NEWER_ID:
+            api_client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            api_client.Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_NEWER_ID_CUSTOM),
         }
 
@@ -76,7 +76,7 @@ class TestPagination(BunqSdkTestCase):
         pagination = self._create_pagination_with_all_properties_set()
         pagination.count = None
         url_params_next_page_expected = {
-            client.Pagination.PARAM_NEWER_ID:
+            api_client.Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_NEWER_ID_CUSTOM),
         }
 
@@ -88,8 +88,8 @@ class TestPagination(BunqSdkTestCase):
         pagination = self._create_pagination_with_all_properties_set()
         pagination.newer_id = None
         url_params_next_page_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
-            client.Pagination.PARAM_NEWER_ID:
+            api_client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            api_client.Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_FUTURE_ID_CUSTOM),
         }
 
@@ -102,7 +102,7 @@ class TestPagination(BunqSdkTestCase):
         pagination.newer_id = None
         pagination.count = None
         url_params_next_page_expected = {
-            client.Pagination.PARAM_NEWER_ID:
+            api_client.Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_FUTURE_ID_CUSTOM),
         }
 
