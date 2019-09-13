@@ -1,14 +1,14 @@
-# -*- coding: utf-8 -*-
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
-from bunq.sdk.model import core
+from bunq.sdk.model.core.anchored_object_interface import AnchoredObjectInterface
 from bunq.sdk.model.generated import object_
 from bunq.sdk.security import security
+from bunq.sdk.model.core.bunq_model import BunqModel
 
 
-class BillingContractSubscription(core.BunqModel):
+class BillingContractSubscription(BunqModel):
     """
     Show the subscription billing contract for the authenticated user.
     
@@ -225,7 +225,7 @@ class BillingContractSubscription(core.BunqModel):
         return converter.json_to_class(BillingContractSubscription, json_str)
 
 
-class CustomerLimit(core.BunqModel):
+class CustomerLimit(BunqModel):
     """
     Show the limits for the authenticated user.
     
@@ -428,7 +428,7 @@ class CustomerLimit(core.BunqModel):
         return converter.json_to_class(CustomerLimit, json_str)
 
 
-class InvoiceExportPdfContent(core.BunqModel):
+class InvoiceExportPdfContent(BunqModel):
     """
     Get a PDF export of an invoice.
     """
@@ -478,7 +478,7 @@ class InvoiceExportPdfContent(core.BunqModel):
         return converter.json_to_class(InvoiceExportPdfContent, json_str)
 
 
-class Invoice(core.BunqModel):
+class Invoice(BunqModel):
     """
     Used to view a bunq invoice.
     
@@ -830,7 +830,7 @@ class Invoice(core.BunqModel):
         return converter.json_to_class(Invoice, json_str)
 
 
-class InvoiceByUser(core.BunqModel):
+class InvoiceByUser(BunqModel):
     """
     Used to list bunq invoices by user.
     
@@ -1135,7 +1135,7 @@ class InvoiceByUser(core.BunqModel):
         return converter.json_to_class(InvoiceByUser, json_str)
 
 
-class AttachmentConversationContent(core.BunqModel):
+class AttachmentConversationContent(BunqModel):
     """
     Fetch the raw content of an attachment with given ID. The raw content is the
     base64 of a file, without any JSON wrapping.
@@ -1189,7 +1189,7 @@ class AttachmentConversationContent(core.BunqModel):
         return converter.json_to_class(AttachmentConversationContent, json_str)
 
 
-class AttachmentMonetaryAccountContent(core.BunqModel):
+class AttachmentMonetaryAccountContent(BunqModel):
     """
     Fetch the raw content of a monetary account attachment with given ID. The
     raw content is the binary representation of a file, without any JSON
@@ -1246,7 +1246,7 @@ class AttachmentMonetaryAccountContent(core.BunqModel):
         return converter.json_to_class(AttachmentMonetaryAccountContent, json_str)
 
 
-class AttachmentPublicContent(core.BunqModel):
+class AttachmentPublicContent(BunqModel):
     """
     Fetch the raw content of a public attachment with given ID. The raw content
     is the binary representation of a file, without any JSON wrapping.
@@ -1298,7 +1298,7 @@ class AttachmentPublicContent(core.BunqModel):
         return converter.json_to_class(AttachmentPublicContent, json_str)
 
 
-class AttachmentTabContent(core.BunqModel):
+class AttachmentTabContent(BunqModel):
     """
     Fetch the raw content of a tab attachment with given ID. The raw content is
     the binary representation of a file, without any JSON wrapping.
@@ -1354,7 +1354,7 @@ class AttachmentTabContent(core.BunqModel):
         return converter.json_to_class(AttachmentTabContent, json_str)
 
 
-class AttachmentUserContent(core.BunqModel):
+class AttachmentUserContent(BunqModel):
     """
     Fetch the raw content of a user attachment with given ID. The raw content is
     the binary representation of a file, without any JSON wrapping.
@@ -1407,7 +1407,7 @@ class AttachmentUserContent(core.BunqModel):
         return converter.json_to_class(AttachmentUserContent, json_str)
 
 
-class TabAttachmentTabContent(core.BunqModel):
+class TabAttachmentTabContent(BunqModel):
     """
     Fetch the raw content of a tab attachment with given ID. The raw content is
     the binary representation of a file, without any JSON wrapping.
@@ -1460,7 +1460,7 @@ class TabAttachmentTabContent(core.BunqModel):
         return converter.json_to_class(TabAttachmentTabContent, json_str)
 
 
-class AttachmentMonetaryAccount(core.BunqModel):
+class AttachmentMonetaryAccount(BunqModel):
     """
     This call is used to upload an attachment that can be referenced to in
     payment requests and payments sent from a specific monetary account.
@@ -1546,7 +1546,7 @@ class AttachmentMonetaryAccount(core.BunqModel):
         return converter.json_to_class(AttachmentMonetaryAccount, json_str)
 
 
-class AttachmentPublic(core.BunqModel):
+class AttachmentPublic(BunqModel):
     """
     This call is used to upload an attachment that can be referenced to as an
     avatar (through the Avatar endpoint) or in a tab sent. Attachments supported
@@ -1688,7 +1688,7 @@ class AttachmentPublic(core.BunqModel):
         return converter.json_to_class(AttachmentPublic, json_str)
 
 
-class AttachmentTab(core.BunqModel):
+class AttachmentTab(BunqModel):
     """
     This call is used to upload an attachment that will be accessible only
     through tabs. This can be used for example to upload special promotions or
@@ -1835,7 +1835,7 @@ class AttachmentTab(core.BunqModel):
         return converter.json_to_class(AttachmentTab, json_str)
 
 
-class TabAttachmentTab(core.BunqModel):
+class TabAttachmentTab(BunqModel):
     """
     This call is used to view an attachment that is linked to a tab.
     
@@ -1947,7 +1947,7 @@ class TabAttachmentTab(core.BunqModel):
         return converter.json_to_class(TabAttachmentTab, json_str)
 
 
-class AttachmentUser(core.BunqModel):
+class AttachmentUser(BunqModel):
     """
     This call is used to upload an attachment that is accessible only by a
     specific user. This can be used for example to upload passport scans or
@@ -2061,7 +2061,7 @@ class AttachmentUser(core.BunqModel):
         return converter.json_to_class(AttachmentUser, json_str)
 
 
-class Avatar(core.BunqModel):
+class Avatar(BunqModel):
     """
     Avatars are public images used to represent you or your company. Avatars are
     used to represent users, monetary accounts and cash registers. Avatars
@@ -2193,7 +2193,7 @@ class Avatar(core.BunqModel):
         return converter.json_to_class(Avatar, json_str)
 
 
-class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
+class BankSwitchServiceNetherlandsIncomingPayment(BunqModel):
     """
     An incoming payment made towards an account of an external bank and
     redirected to a bunq account via switch service.
@@ -2278,7 +2278,7 @@ class BankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         return converter.json_to_class(BankSwitchServiceNetherlandsIncomingPayment, json_str)
 
 
-class BankSwitchServiceNetherlandsIncoming(core.BunqModel):
+class BankSwitchServiceNetherlandsIncoming(BunqModel):
     """
     Endpoint for using the Equens Bank Switch Service.
     
@@ -2470,7 +2470,7 @@ class BankSwitchServiceNetherlandsIncoming(core.BunqModel):
         return converter.json_to_class(BankSwitchServiceNetherlandsIncoming, json_str)
 
 
-class Payment(core.BunqModel):
+class Payment(BunqModel):
     """
     Using Payment, you can send payments to bunq and non-bunq users from your
     bunq MonetaryAccounts. This can be done using bunq Aliases or IBAN Aliases.
@@ -3038,7 +3038,7 @@ class Payment(core.BunqModel):
         return converter.json_to_class(Payment, json_str)
 
 
-class BunqMeFundraiserProfileUser(core.BunqModel):
+class BunqMeFundraiserProfileUser(BunqModel):
     """
     bunq.me public profile of the user.
     
@@ -3287,7 +3287,7 @@ class BunqMeFundraiserProfileUser(core.BunqModel):
         return converter.json_to_class(BunqMeFundraiserProfileUser, json_str)
 
 
-class BunqMeFundraiserResult(core.BunqModel):
+class BunqMeFundraiserResult(BunqModel):
     """
     bunq.me fundraiser result containing all payments.
     
@@ -3414,7 +3414,7 @@ class BunqMeFundraiserResult(core.BunqModel):
         return converter.json_to_class(BunqMeFundraiserResult, json_str)
 
 
-class BunqMeFundraiserProfile(core.BunqModel):
+class BunqMeFundraiserProfile(BunqModel):
     """
     bunq.me public profile of the user.
     
@@ -3570,7 +3570,7 @@ class BunqMeFundraiserProfile(core.BunqModel):
         return converter.json_to_class(BunqMeFundraiserProfile, json_str)
 
 
-class BunqMeTabResultResponse(core.BunqModel):
+class BunqMeTabResultResponse(BunqModel):
     """
     Used to view bunq.me TabResultResponse objects belonging to a tab. A
     TabResultResponse is an object that holds details on a tab which has been
@@ -3642,7 +3642,7 @@ class BunqMeTabResultResponse(core.BunqModel):
         return converter.json_to_class(BunqMeTabResultResponse, json_str)
 
 
-class BunqMeTab(core.BunqModel):
+class BunqMeTab(BunqModel):
     """
     bunq.me tabs allows you to create a payment request and share the link
     through e-mail, chat, etc. Multiple persons are able to respond to the
@@ -3953,7 +3953,7 @@ class BunqMeTab(core.BunqModel):
         return converter.json_to_class(BunqMeTab, json_str)
 
 
-class BunqMeTabEntry(core.BunqModel):
+class BunqMeTabEntry(BunqModel):
     """
     bunq.me tabs allows you to create a payment request and share the link
     through e-mail, chat, etc. Multiple persons are able to respond to the
@@ -4106,7 +4106,7 @@ class BunqMeTabEntry(core.BunqModel):
         return converter.json_to_class(BunqMeTabEntry, json_str)
 
 
-class BunqMeTabResultInquiry(core.BunqModel):
+class BunqMeTabResultInquiry(BunqModel):
     """
     Used to view bunq.me TabResultInquiry objects belonging to a tab. A
     TabResultInquiry is an object that holds details on both the tab and a
@@ -4162,7 +4162,7 @@ class BunqMeTabResultInquiry(core.BunqModel):
         return converter.json_to_class(BunqMeTabResultInquiry, json_str)
 
 
-class CardBatch(core.BunqModel):
+class CardBatch(BunqModel):
     """
     Used to update multiple cards in a batch.
     
@@ -4250,7 +4250,7 @@ class CardBatch(core.BunqModel):
         return converter.json_to_class(CardBatch, json_str)
 
 
-class CardDebit(core.BunqModel):
+class CardDebit(BunqModel):
     """
     With bunq it is possible to order debit cards that can then be connected
     with each one of the monetary accounts the user has access to (including
@@ -4661,7 +4661,7 @@ class CardDebit(core.BunqModel):
         return converter.json_to_class(CardDebit, json_str)
 
 
-class CardGeneratedCvc2(core.BunqModel):
+class CardGeneratedCvc2(BunqModel):
     """
     Endpoint for generating and retrieving a new CVC2 code.
     
@@ -4924,7 +4924,7 @@ class CardGeneratedCvc2(core.BunqModel):
         return converter.json_to_class(CardGeneratedCvc2, json_str)
 
 
-class CardName(core.BunqModel):
+class CardName(BunqModel):
     """
     Endpoint for getting all the accepted card names for a user. As bunq do not
     allow total freedom in choosing the name that is going to be printed on the
@@ -4999,7 +4999,7 @@ class CardName(core.BunqModel):
         return converter.json_to_class(CardName, json_str)
 
 
-class CardReplace(core.BunqModel):
+class CardReplace(BunqModel):
     """
     It is possible to order a card replacement with the bunq API.<br/><br/>You
     can order up to one free card replacement per year. Additional replacement
@@ -5119,7 +5119,7 @@ class CardReplace(core.BunqModel):
         return converter.json_to_class(CardReplace, json_str)
 
 
-class Card(core.BunqModel):
+class Card(BunqModel):
     """
     Endpoint for retrieving details for the cards the user has access to.
     
@@ -5715,7 +5715,7 @@ class Card(core.BunqModel):
         return converter.json_to_class(Card, json_str)
 
 
-class CashRegisterQrCodeContent(core.BunqModel):
+class CashRegisterQrCodeContent(BunqModel):
     """
     Show the raw contents of a QR code. First you need to created a QR code
     using ../cash-register/{id}/qr-code.
@@ -5772,7 +5772,7 @@ class CashRegisterQrCodeContent(core.BunqModel):
         return converter.json_to_class(CashRegisterQrCodeContent, json_str)
 
 
-class CashRegisterQrCode(core.BunqModel):
+class CashRegisterQrCode(BunqModel):
     """
     Once your CashRegister has been activated you can create a QR code for it.
     The visibility of a tab can be modified to be linked to this QR code. If a
@@ -6049,7 +6049,7 @@ class CashRegisterQrCode(core.BunqModel):
         return converter.json_to_class(CashRegisterQrCode, json_str)
 
 
-class CashRegister(core.BunqModel):
+class CashRegister(BunqModel):
     """
     CashRegisters are virtual points of sale. They have a specific name and
     avatar, and optionally, a location.<br/>With a CashRegister you can create a
@@ -6441,7 +6441,7 @@ class CashRegister(core.BunqModel):
         return converter.json_to_class(CashRegister, json_str)
 
 
-class Tab(core.BunqModel, core.AnchoredObjectInterface):
+class Tab(BunqModel, AnchoredObjectInterface):
     """
     Once your CashRegister has been activated you can use it to create Tabs. A
     Tab is a template for a payment. In contrast to requests a Tab is not
@@ -6546,7 +6546,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -6582,7 +6582,7 @@ class Tab(core.BunqModel, core.AnchoredObjectInterface):
         return converter.json_to_class(Tab, json_str)
 
 
-class TabUsageSingle(core.BunqModel):
+class TabUsageSingle(BunqModel):
     """
     TabUsageSingle is a Tab that can be paid once. The TabUsageSingle is created
     with the status OPEN. Optionally you can add TabItems to the tab using
@@ -7250,7 +7250,7 @@ class TabUsageSingle(core.BunqModel):
         return converter.json_to_class(TabUsageSingle, json_str)
 
 
-class TabItem(core.BunqModel):
+class TabItem(BunqModel):
     """
     Used to get items on a tab.
     
@@ -7375,7 +7375,7 @@ class TabItem(core.BunqModel):
         return converter.json_to_class(TabItem, json_str)
 
 
-class TabUsageMultiple(core.BunqModel):
+class TabUsageMultiple(BunqModel):
     """
     TabUsageMultiple is a Tab that can be paid by multiple users. Just like the
     TabUsageSingle it is created with the status OPEN, the visibility can be
@@ -8005,7 +8005,7 @@ class TabUsageMultiple(core.BunqModel):
         return converter.json_to_class(TabUsageMultiple, json_str)
 
 
-class CertificatePinned(core.BunqModel):
+class CertificatePinned(BunqModel):
     """
     This endpoint allow you to pin the certificate chains to your account. These
     certificate chains are used for SSL validation whenever a callback is
@@ -8186,7 +8186,7 @@ class CertificatePinned(core.BunqModel):
         return converter.json_to_class(CertificatePinned, json_str)
 
 
-class ConfirmationOfFunds(core.BunqModel):
+class ConfirmationOfFunds(BunqModel):
     """
     Used to confirm availability of funds on an account.
     
@@ -8284,7 +8284,7 @@ class ConfirmationOfFunds(core.BunqModel):
         return converter.json_to_class(ConfirmationOfFunds, json_str)
 
 
-class DeviceServer(core.BunqModel):
+class DeviceServer(BunqModel):
     """
     After having created an Installation you can now create a DeviceServer. A
     DeviceServer is needed to do a login call with session-server.
@@ -8526,7 +8526,7 @@ class DeviceServer(core.BunqModel):
         return converter.json_to_class(DeviceServer, json_str)
 
 
-class Device(core.BunqModel, core.AnchoredObjectInterface):
+class Device(BunqModel, AnchoredObjectInterface):
     """
     Used to get a Device or a listing of Devices. Creating a DeviceServer should
     happen via /device-server
@@ -8606,7 +8606,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -8636,7 +8636,7 @@ class Device(core.BunqModel, core.AnchoredObjectInterface):
         return converter.json_to_class(Device, json_str)
 
 
-class DraftPayment(core.BunqModel):
+class DraftPayment(BunqModel):
     """
     A DraftPayment is like a regular Payment, but it needs to be accepted by the
     sending party before the actual Payment is done.
@@ -8989,7 +8989,7 @@ class DraftPayment(core.BunqModel):
         return converter.json_to_class(DraftPayment, json_str)
 
 
-class PaymentBatch(core.BunqModel):
+class PaymentBatch(BunqModel):
     """
     Create a payment batch, or show the payment batches of a monetary account.
     
@@ -9173,7 +9173,7 @@ class PaymentBatch(core.BunqModel):
         return converter.json_to_class(PaymentBatch, json_str)
 
 
-class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
+class DraftShareInviteApiKeyQrCodeContent(BunqModel):
     """
     This call returns the raw content of the QR code that links to this draft
     share invite. When a bunq user scans this QR code with the bunq app the
@@ -9229,7 +9229,7 @@ class DraftShareInviteApiKeyQrCodeContent(core.BunqModel):
         return converter.json_to_class(DraftShareInviteApiKeyQrCodeContent, json_str)
 
 
-class DraftShareInviteApiKey(core.BunqModel):
+class DraftShareInviteApiKey(BunqModel):
     """
     Used to create a draft share invite for a user with another bunq user. The
     user that accepts the invite can share his MAs with the user that created
@@ -9518,7 +9518,7 @@ class DraftShareInviteApiKey(core.BunqModel):
         return converter.json_to_class(DraftShareInviteApiKey, json_str)
 
 
-class DraftShareInviteBankQrCodeContent(core.BunqModel):
+class DraftShareInviteBankQrCodeContent(BunqModel):
     """
     This call returns the raw content of the QR code that links to this draft
     share invite. When a bunq user scans this QR code with the bunq app the
@@ -9574,7 +9574,7 @@ class DraftShareInviteBankQrCodeContent(core.BunqModel):
         return converter.json_to_class(DraftShareInviteBankQrCodeContent, json_str)
 
 
-class DraftShareInviteBank(core.BunqModel):
+class DraftShareInviteBank(BunqModel):
     """
     Used to create a draft share invite for a monetary account with another bunq
     user, as in the 'Connect' feature in the bunq app. The user that accepts the
@@ -9861,7 +9861,7 @@ class DraftShareInviteBank(core.BunqModel):
         return converter.json_to_class(DraftShareInviteBank, json_str)
 
 
-class Event(core.BunqModel):
+class Event(BunqModel):
     """
     Used to view events. Events are automatically created and contain
     information about everything that happens to your bunq account. In the bunq
@@ -10073,7 +10073,7 @@ class Event(core.BunqModel):
         return converter.json_to_class(Event, json_str)
 
 
-class FeatureAnnouncement(core.BunqModel):
+class FeatureAnnouncement(BunqModel):
     """
     view for updating the feature display.
     
@@ -10168,7 +10168,7 @@ class FeatureAnnouncement(core.BunqModel):
         return converter.json_to_class(FeatureAnnouncement, json_str)
 
 
-class IdealMerchantTransaction(core.BunqModel):
+class IdealMerchantTransaction(BunqModel):
     """
     View for requesting iDEAL transactions and polling their status.
     
@@ -10503,7 +10503,7 @@ class IdealMerchantTransaction(core.BunqModel):
         return converter.json_to_class(IdealMerchantTransaction, json_str)
 
 
-class SchedulePayment(core.BunqModel):
+class SchedulePayment(BunqModel):
     """
     Endpoint for schedule payments.
     
@@ -10732,7 +10732,7 @@ class SchedulePayment(core.BunqModel):
         return converter.json_to_class(SchedulePayment, json_str)
 
 
-class Schedule(core.BunqModel):
+class Schedule(BunqModel):
     """
     view for reading the scheduled definitions.
     
@@ -10938,7 +10938,7 @@ class Schedule(core.BunqModel):
         return converter.json_to_class(Schedule, json_str)
 
 
-class SchedulePaymentBatch(core.BunqModel):
+class SchedulePaymentBatch(BunqModel):
     """
     Endpoint for schedule payment batches.
     
@@ -11109,7 +11109,7 @@ class SchedulePaymentBatch(core.BunqModel):
         return converter.json_to_class(SchedulePaymentBatch, json_str)
 
 
-class ScheduleInstance(core.BunqModel):
+class ScheduleInstance(BunqModel):
     """
     view for reading, updating and listing the scheduled instance.
     
@@ -11348,7 +11348,7 @@ class ScheduleInstance(core.BunqModel):
         return converter.json_to_class(ScheduleInstance, json_str)
 
 
-class MasterCardAction(core.BunqModel):
+class MasterCardAction(BunqModel):
     """
     MasterCard transaction view.
     
@@ -11872,7 +11872,7 @@ class MasterCardAction(core.BunqModel):
         return converter.json_to_class(MasterCardAction, json_str)
 
 
-class RequestInquiryBatch(core.BunqModel):
+class RequestInquiryBatch(BunqModel):
     """
     Create a batch of requests for payment, or show the request batches of a
     monetary account.
@@ -12127,7 +12127,7 @@ class RequestInquiryBatch(core.BunqModel):
         return converter.json_to_class(RequestInquiryBatch, json_str)
 
 
-class RequestInquiry(core.BunqModel):
+class RequestInquiry(BunqModel):
     """
     RequestInquiry, aka 'RFP' (Request for Payment), is one of the innovative
     features that bunq offers. To request payment from another bunq account a
@@ -12849,7 +12849,7 @@ class RequestInquiry(core.BunqModel):
         return converter.json_to_class(RequestInquiry, json_str)
 
 
-class RequestResponse(core.BunqModel):
+class RequestResponse(BunqModel):
     """
     A RequestResponse is what a user on the other side of a RequestInquiry gets
     when he is sent one. So a RequestInquiry is the initiator and visible for
@@ -13454,7 +13454,7 @@ class RequestResponse(core.BunqModel):
         return converter.json_to_class(RequestResponse, json_str)
 
 
-class TabResultResponse(core.BunqModel):
+class TabResultResponse(BunqModel):
     """
     Used to view TabResultResponse objects belonging to a tab. A
     TabResultResponse is an object that holds details on a tab which has been
@@ -13587,7 +13587,7 @@ class TabResultResponse(core.BunqModel):
         return converter.json_to_class(TabResultResponse, json_str)
 
 
-class WhitelistResult(core.BunqModel):
+class WhitelistResult(BunqModel):
     """
     Whitelist an SDD so that when one comes in, it is automatically accepted.
     
@@ -13715,7 +13715,7 @@ class WhitelistResult(core.BunqModel):
         return converter.json_to_class(WhitelistResult, json_str)
 
 
-class Whitelist(core.BunqModel):
+class Whitelist(BunqModel):
     """
     Whitelist a Request so that when one comes in, it is automatically accepted.
     """
@@ -13738,7 +13738,7 @@ class Whitelist(core.BunqModel):
         return converter.json_to_class(Whitelist, json_str)
 
 
-class RewardRecipient(core.BunqModel):
+class RewardRecipient(BunqModel):
     """
     Used to view Rewards.
     
@@ -13930,7 +13930,7 @@ class RewardRecipient(core.BunqModel):
         return converter.json_to_class(RewardRecipient, json_str)
 
 
-class RewardSender(core.BunqModel):
+class RewardSender(BunqModel):
     """
     Used to view Rewards.
     
@@ -14122,7 +14122,7 @@ class RewardSender(core.BunqModel):
         return converter.json_to_class(RewardSender, json_str)
 
 
-class ShareInviteBankInquiryBatch(core.BunqModel):
+class ShareInviteBankInquiryBatch(BunqModel):
     """
     Used to share a monetary account with another bunq user, as in the 'Connect'
     feature in the bunq app. Allow the creation of share inquiries that, in the
@@ -14180,7 +14180,7 @@ class ShareInviteBankInquiryBatch(core.BunqModel):
         return converter.json_to_class(ShareInviteBankInquiryBatch, json_str)
 
 
-class ShareInviteBankInquiry(core.BunqModel):
+class ShareInviteBankInquiry(BunqModel):
     """
     [DEPRECATED - use /share-invite-monetary-account-inquiry] Used to share a
     monetary account with another bunq user, as in the 'Connect' feature in the
@@ -14611,7 +14611,7 @@ class ShareInviteBankInquiry(core.BunqModel):
         return converter.json_to_class(ShareInviteBankInquiry, json_str)
 
 
-class ShareInviteBankResponse(core.BunqModel):
+class ShareInviteBankResponse(BunqModel):
     """
     Used to view or respond to shares a user was invited to. See
     'share-invite-bank-inquiry' for more information about the inquiring
@@ -14936,7 +14936,7 @@ class ShareInviteBankResponse(core.BunqModel):
         return converter.json_to_class(ShareInviteBankResponse, json_str)
 
 
-class SofortMerchantTransaction(core.BunqModel):
+class SofortMerchantTransaction(BunqModel):
     """
     View for requesting Sofort transactions and polling their status.
     
@@ -15180,7 +15180,7 @@ class SofortMerchantTransaction(core.BunqModel):
         return converter.json_to_class(SofortMerchantTransaction, json_str)
 
 
-class TabResultInquiry(core.BunqModel):
+class TabResultInquiry(BunqModel):
     """
     Used to view TabResultInquiry objects belonging to a tab. A TabResultInquiry
     is an object that holds details on both the tab and a single payment made
@@ -15302,7 +15302,7 @@ class TabResultInquiry(core.BunqModel):
         return converter.json_to_class(TabResultInquiry, json_str)
 
 
-class TransferwiseTransfer(core.BunqModel):
+class TransferwiseTransfer(BunqModel):
     """
     Used to create Transferwise payments.
     
@@ -15565,7 +15565,7 @@ class TransferwiseTransfer(core.BunqModel):
         return converter.json_to_class(TransferwiseTransfer, json_str)
 
 
-class TransferwiseQuote(core.BunqModel):
+class TransferwiseQuote(BunqModel):
     """
     Used to get quotes from Transferwise. These can be used to initiate
     payments.
@@ -15764,7 +15764,7 @@ class TransferwiseQuote(core.BunqModel):
         return converter.json_to_class(TransferwiseQuote, json_str)
 
 
-class ExportAnnualOverviewContent(core.BunqModel):
+class ExportAnnualOverviewContent(BunqModel):
     """
     Fetch the raw content of an annual overview. The annual overview is always
     in PDF format. Doc won't display the response of a request to get the
@@ -15818,7 +15818,7 @@ class ExportAnnualOverviewContent(core.BunqModel):
         return converter.json_to_class(ExportAnnualOverviewContent, json_str)
 
 
-class ExportAnnualOverview(core.BunqModel):
+class ExportAnnualOverview(BunqModel):
     """
     Used to create new and read existing annual overviews of all the user's
     monetary accounts. Once created, annual overviews can be downloaded in PDF
@@ -16039,7 +16039,7 @@ class ExportAnnualOverview(core.BunqModel):
         return converter.json_to_class(ExportAnnualOverview, json_str)
 
 
-class CustomerStatementExportContent(core.BunqModel):
+class CustomerStatementExportContent(BunqModel):
     """
     Fetch the raw content of a statement export. The returned file format could
     be MT940, CSV or PDF depending on the statement format specified during the
@@ -16095,7 +16095,7 @@ class CustomerStatementExportContent(core.BunqModel):
         return converter.json_to_class(CustomerStatementExportContent, json_str)
 
 
-class ExportRibContent(core.BunqModel):
+class ExportRibContent(BunqModel):
     """
     Fetch the raw content of an RIB. The RIB is always in PDF format.
     """
@@ -16150,7 +16150,7 @@ class ExportRibContent(core.BunqModel):
         return converter.json_to_class(ExportRibContent, json_str)
 
 
-class ExportRib(core.BunqModel):
+class ExportRib(BunqModel):
     """
     Used to create new and read existing RIBs of a monetary account
     
@@ -16336,7 +16336,7 @@ class ExportRib(core.BunqModel):
         return converter.json_to_class(ExportRib, json_str)
 
 
-class ExportStatementPaymentContent(core.BunqModel):
+class ExportStatementPaymentContent(BunqModel):
     """
     Fetch the raw content of a payment statement export.
     """
@@ -16390,7 +16390,7 @@ class ExportStatementPaymentContent(core.BunqModel):
         return converter.json_to_class(ExportStatementPaymentContent, json_str)
 
 
-class ExportStatementPayment(core.BunqModel):
+class ExportStatementPayment(BunqModel):
     """
     Used to create a statement export of a single payment.
     
@@ -16535,7 +16535,7 @@ class ExportStatementPayment(core.BunqModel):
         return converter.json_to_class(ExportStatementPayment, json_str)
 
 
-class CustomerStatementExport(core.BunqModel):
+class CustomerStatementExport(BunqModel):
     """
     Used to create new and read existing statement exports. Statement exports
     can be created in either CSV, MT940 or PDF file format.
@@ -16860,7 +16860,7 @@ class CustomerStatementExport(core.BunqModel):
         return converter.json_to_class(CustomerStatementExport, json_str)
 
 
-class InstallationServerPublicKey(core.BunqModel):
+class InstallationServerPublicKey(BunqModel):
     """
     Using /installation/_/server-public-key you can request the ServerPublicKey
     again. This is done by referring to the id of the Installation.
@@ -16932,7 +16932,7 @@ class InstallationServerPublicKey(core.BunqModel):
         return converter.json_to_class(InstallationServerPublicKey, json_str)
 
 
-class MonetaryAccountBank(core.BunqModel):
+class MonetaryAccountBank(BunqModel):
     """
     With MonetaryAccountBank you can create a new bank account, retrieve
     information regarding your existing MonetaryAccountBanks and update specific
@@ -17547,7 +17547,7 @@ class MonetaryAccountBank(core.BunqModel):
         return converter.json_to_class(MonetaryAccountBank, json_str)
 
 
-class MonetaryAccountProfile(core.BunqModel):
+class MonetaryAccountProfile(BunqModel):
     """
     Used to update and read up monetary account profiles, to keep the balance
     between specific thresholds.
@@ -17622,7 +17622,7 @@ class MonetaryAccountProfile(core.BunqModel):
         return converter.json_to_class(MonetaryAccountProfile, json_str)
 
 
-class MonetaryAccountJoint(core.BunqModel):
+class MonetaryAccountJoint(BunqModel):
     """
     The endpoint for joint monetary accounts.
     
@@ -18267,7 +18267,7 @@ class MonetaryAccountJoint(core.BunqModel):
         return converter.json_to_class(MonetaryAccountJoint, json_str)
 
 
-class MonetaryAccountSavings(core.BunqModel):
+class MonetaryAccountSavings(BunqModel):
     """
     With MonetaryAccountSavings you can create a new savings account.
     
@@ -18946,7 +18946,7 @@ class MonetaryAccountSavings(core.BunqModel):
         return converter.json_to_class(MonetaryAccountSavings, json_str)
 
 
-class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
+class MonetaryAccount(BunqModel, AnchoredObjectInterface):
     """
     Used to show the MonetaryAccounts that you can access. Currently the only
     MonetaryAccount type is MonetaryAccountBank. See also:
@@ -19064,7 +19064,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -19112,7 +19112,7 @@ class MonetaryAccount(core.BunqModel, core.AnchoredObjectInterface):
         return converter.json_to_class(MonetaryAccount, json_str)
 
 
-class MonetaryAccountLight(core.BunqModel):
+class MonetaryAccountLight(BunqModel):
     """
     With MonetaryAccountLight is a monetary account for bunq light users.
     Through this endpoint you can retrieve information regarding your existing
@@ -19599,7 +19599,7 @@ class MonetaryAccountLight(core.BunqModel):
         return converter.json_to_class(MonetaryAccountLight, json_str)
 
 
-class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
+class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -19904,7 +19904,7 @@ class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         return converter.json_to_class(NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment, json_str)
 
 
-class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
+class NoteTextBankSwitchServiceNetherlandsIncomingPayment(BunqModel):
     """
     Used to manage text notes.
     
@@ -20177,7 +20177,7 @@ class NoteTextBankSwitchServiceNetherlandsIncomingPayment(core.BunqModel):
         return converter.json_to_class(NoteTextBankSwitchServiceNetherlandsIncomingPayment, json_str)
 
 
-class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
+class NoteAttachmentBunqMeFundraiserResult(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -20477,7 +20477,7 @@ class NoteAttachmentBunqMeFundraiserResult(core.BunqModel):
         return converter.json_to_class(NoteAttachmentBunqMeFundraiserResult, json_str)
 
 
-class NoteTextBunqMeFundraiserResult(core.BunqModel):
+class NoteTextBunqMeFundraiserResult(BunqModel):
     """
     Used to manage text notes.
     
@@ -20749,7 +20749,7 @@ class NoteTextBunqMeFundraiserResult(core.BunqModel):
         return converter.json_to_class(NoteTextBunqMeFundraiserResult, json_str)
 
 
-class NoteAttachmentDraftPayment(core.BunqModel):
+class NoteAttachmentDraftPayment(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -21043,7 +21043,7 @@ class NoteAttachmentDraftPayment(core.BunqModel):
         return converter.json_to_class(NoteAttachmentDraftPayment, json_str)
 
 
-class NoteTextDraftPayment(core.BunqModel):
+class NoteTextDraftPayment(BunqModel):
     """
     Used to manage text notes.
     
@@ -21310,7 +21310,7 @@ class NoteTextDraftPayment(core.BunqModel):
         return converter.json_to_class(NoteTextDraftPayment, json_str)
 
 
-class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
+class NoteAttachmentIdealMerchantTransaction(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -21610,7 +21610,7 @@ class NoteAttachmentIdealMerchantTransaction(core.BunqModel):
         return converter.json_to_class(NoteAttachmentIdealMerchantTransaction, json_str)
 
 
-class NoteTextIdealMerchantTransaction(core.BunqModel):
+class NoteTextIdealMerchantTransaction(BunqModel):
     """
     Used to manage text notes.
     
@@ -21882,7 +21882,7 @@ class NoteTextIdealMerchantTransaction(core.BunqModel):
         return converter.json_to_class(NoteTextIdealMerchantTransaction, json_str)
 
 
-class NoteAttachmentMasterCardAction(core.BunqModel):
+class NoteAttachmentMasterCardAction(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -22179,7 +22179,7 @@ class NoteAttachmentMasterCardAction(core.BunqModel):
         return converter.json_to_class(NoteAttachmentMasterCardAction, json_str)
 
 
-class NoteTextMasterCardAction(core.BunqModel):
+class NoteTextMasterCardAction(BunqModel):
     """
     Used to manage text notes.
     
@@ -22447,7 +22447,7 @@ class NoteTextMasterCardAction(core.BunqModel):
         return converter.json_to_class(NoteTextMasterCardAction, json_str)
 
 
-class NoteAttachmentPaymentBatch(core.BunqModel):
+class NoteAttachmentPaymentBatch(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -22741,7 +22741,7 @@ class NoteAttachmentPaymentBatch(core.BunqModel):
         return converter.json_to_class(NoteAttachmentPaymentBatch, json_str)
 
 
-class NoteTextPaymentBatch(core.BunqModel):
+class NoteTextPaymentBatch(BunqModel):
     """
     Used to manage text notes.
     
@@ -23008,7 +23008,7 @@ class NoteTextPaymentBatch(core.BunqModel):
         return converter.json_to_class(NoteTextPaymentBatch, json_str)
 
 
-class NoteAttachmentPayment(core.BunqModel):
+class NoteAttachmentPayment(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -23302,7 +23302,7 @@ class NoteAttachmentPayment(core.BunqModel):
         return converter.json_to_class(NoteAttachmentPayment, json_str)
 
 
-class NoteTextPayment(core.BunqModel):
+class NoteTextPayment(BunqModel):
     """
     Used to manage text notes.
     
@@ -23568,7 +23568,7 @@ class NoteTextPayment(core.BunqModel):
         return converter.json_to_class(NoteTextPayment, json_str)
 
 
-class NoteAttachmentRequestInquiryBatch(core.BunqModel):
+class NoteAttachmentRequestInquiryBatch(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -23867,7 +23867,7 @@ class NoteAttachmentRequestInquiryBatch(core.BunqModel):
         return converter.json_to_class(NoteAttachmentRequestInquiryBatch, json_str)
 
 
-class NoteTextRequestInquiryBatch(core.BunqModel):
+class NoteTextRequestInquiryBatch(BunqModel):
     """
     Used to manage text notes.
     
@@ -24136,7 +24136,7 @@ class NoteTextRequestInquiryBatch(core.BunqModel):
         return converter.json_to_class(NoteTextRequestInquiryBatch, json_str)
 
 
-class NoteAttachmentRequestInquiry(core.BunqModel):
+class NoteAttachmentRequestInquiry(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -24431,7 +24431,7 @@ class NoteAttachmentRequestInquiry(core.BunqModel):
         return converter.json_to_class(NoteAttachmentRequestInquiry, json_str)
 
 
-class NoteTextRequestInquiry(core.BunqModel):
+class NoteTextRequestInquiry(BunqModel):
     """
     Used to manage text notes.
     
@@ -24698,7 +24698,7 @@ class NoteTextRequestInquiry(core.BunqModel):
         return converter.json_to_class(NoteTextRequestInquiry, json_str)
 
 
-class NoteAttachmentRequestResponse(core.BunqModel):
+class NoteAttachmentRequestResponse(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -24995,7 +24995,7 @@ class NoteAttachmentRequestResponse(core.BunqModel):
         return converter.json_to_class(NoteAttachmentRequestResponse, json_str)
 
 
-class NoteTextRequestResponse(core.BunqModel):
+class NoteTextRequestResponse(BunqModel):
     """
     Used to manage text notes.
     
@@ -25262,7 +25262,7 @@ class NoteTextRequestResponse(core.BunqModel):
         return converter.json_to_class(NoteTextRequestResponse, json_str)
 
 
-class NoteAttachmentScheduleInstance(core.BunqModel):
+class NoteAttachmentScheduleInstance(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -25567,7 +25567,7 @@ class NoteAttachmentScheduleInstance(core.BunqModel):
         return converter.json_to_class(NoteAttachmentScheduleInstance, json_str)
 
 
-class NoteTextScheduleInstance(core.BunqModel):
+class NoteTextScheduleInstance(BunqModel):
     """
     Used to manage text notes.
     
@@ -25843,7 +25843,7 @@ class NoteTextScheduleInstance(core.BunqModel):
         return converter.json_to_class(NoteTextScheduleInstance, json_str)
 
 
-class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
+class NoteAttachmentSchedulePaymentBatch(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -26143,7 +26143,7 @@ class NoteAttachmentSchedulePaymentBatch(core.BunqModel):
         return converter.json_to_class(NoteAttachmentSchedulePaymentBatch, json_str)
 
 
-class NoteTextSchedulePaymentBatch(core.BunqModel):
+class NoteTextSchedulePaymentBatch(BunqModel):
     """
     Used to manage text notes.
     
@@ -26412,7 +26412,7 @@ class NoteTextSchedulePaymentBatch(core.BunqModel):
         return converter.json_to_class(NoteTextSchedulePaymentBatch, json_str)
 
 
-class NoteAttachmentSchedulePayment(core.BunqModel):
+class NoteAttachmentSchedulePayment(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -26709,7 +26709,7 @@ class NoteAttachmentSchedulePayment(core.BunqModel):
         return converter.json_to_class(NoteAttachmentSchedulePayment, json_str)
 
 
-class NoteTextSchedulePayment(core.BunqModel):
+class NoteTextSchedulePayment(BunqModel):
     """
     Used to manage text notes.
     
@@ -26976,7 +26976,7 @@ class NoteTextSchedulePayment(core.BunqModel):
         return converter.json_to_class(NoteTextSchedulePayment, json_str)
 
 
-class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
+class NoteAttachmentSofortMerchantTransaction(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -27276,7 +27276,7 @@ class NoteAttachmentSofortMerchantTransaction(core.BunqModel):
         return converter.json_to_class(NoteAttachmentSofortMerchantTransaction, json_str)
 
 
-class NoteTextSofortMerchantTransaction(core.BunqModel):
+class NoteTextSofortMerchantTransaction(BunqModel):
     """
     Used to manage text notes.
     
@@ -27548,7 +27548,7 @@ class NoteTextSofortMerchantTransaction(core.BunqModel):
         return converter.json_to_class(NoteTextSofortMerchantTransaction, json_str)
 
 
-class NoteAttachmentWhitelistResult(core.BunqModel):
+class NoteAttachmentWhitelistResult(BunqModel):
     """
     Used to manage attachment notes.
     
@@ -27853,7 +27853,7 @@ class NoteAttachmentWhitelistResult(core.BunqModel):
         return converter.json_to_class(NoteAttachmentWhitelistResult, json_str)
 
 
-class NoteTextWhitelistResult(core.BunqModel):
+class NoteTextWhitelistResult(BunqModel):
     """
     Used to manage text notes.
     
@@ -28127,7 +28127,7 @@ class NoteTextWhitelistResult(core.BunqModel):
         return converter.json_to_class(NoteTextWhitelistResult, json_str)
 
 
-class NotificationFilterPushUser(core.BunqModel):
+class NotificationFilterPushUser(BunqModel):
     """
     Manage the push notification filters for a user.
     
@@ -28242,7 +28242,7 @@ class NotificationFilterPushUser(core.BunqModel):
         return converter.json_to_class(NotificationFilterPushUser, json_str)
 
 
-class NotificationFilterUrlMonetaryAccount(core.BunqModel):
+class NotificationFilterUrlMonetaryAccount(BunqModel):
     """
     Manage the url notification filters for a user.
     
@@ -28360,7 +28360,7 @@ class NotificationFilterUrlMonetaryAccount(core.BunqModel):
         return converter.json_to_class(NotificationFilterUrlMonetaryAccount, json_str)
 
 
-class NotificationFilterUrlUser(core.BunqModel):
+class NotificationFilterUrlUser(BunqModel):
     """
     Manage the url notification filters for a user.
     
@@ -28474,7 +28474,7 @@ class NotificationFilterUrlUser(core.BunqModel):
         return converter.json_to_class(NotificationFilterUrlUser, json_str)
 
 
-class ChatMessage(core.BunqModel):
+class ChatMessage(BunqModel):
     """
     Endpoint for retrieving the messages that are part of a conversation.
     """
@@ -28497,7 +28497,7 @@ class ChatMessage(core.BunqModel):
         return converter.json_to_class(ChatMessage, json_str)
 
 
-class User(core.BunqModel, core.AnchoredObjectInterface):
+class User(BunqModel, AnchoredObjectInterface):
     """
     Using this call you can retrieve information of the user you are logged in
     as. This includes your user id, which is referred to in endpoints.
@@ -28620,7 +28620,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -28674,7 +28674,7 @@ class User(core.BunqModel, core.AnchoredObjectInterface):
         return converter.json_to_class(User, json_str)
 
 
-class UserLight(core.BunqModel):
+class UserLight(BunqModel):
     """
     Show the authenticated user, if it is a light user.
     
@@ -29343,7 +29343,7 @@ class UserLight(core.BunqModel):
         return converter.json_to_class(UserLight, json_str)
 
 
-class UserPerson(core.BunqModel):
+class UserPerson(BunqModel):
     """
     With UserPerson you can retrieve information regarding the authenticated
     UserPerson and update specific fields.<br/><br/>Notification filters can be
@@ -30168,7 +30168,7 @@ class UserPerson(core.BunqModel):
         return converter.json_to_class(UserPerson, json_str)
 
 
-class UserCompany(core.BunqModel):
+class UserCompany(BunqModel):
     """
     With UserCompany you can retrieve information regarding the authenticated
     UserCompany and update specific fields.<br/><br/>Notification filters can be
@@ -30853,7 +30853,7 @@ class UserCompany(core.BunqModel):
         return converter.json_to_class(UserCompany, json_str)
 
 
-class Customer(core.BunqModel):
+class Customer(BunqModel):
     """
     Used to view a customer.
     
@@ -30967,7 +30967,7 @@ class Customer(core.BunqModel):
         return converter.json_to_class(Customer, json_str)
 
 
-class UserApiKey(core.BunqModel):
+class UserApiKey(BunqModel):
     """
     Used to view OAuth request detais in events.
     
@@ -31062,7 +31062,7 @@ class UserApiKey(core.BunqModel):
         return converter.json_to_class(UserApiKey, json_str)
 
 
-class UserPaymentServiceProvider(core.BunqModel):
+class UserPaymentServiceProvider(BunqModel):
     """
     Used to view UserPaymentServiceProvider for session creation.
     
@@ -31315,7 +31315,7 @@ class UserPaymentServiceProvider(core.BunqModel):
         return converter.json_to_class(UserPaymentServiceProvider, json_str)
 
 
-class OauthCallbackUrl(core.BunqModel):
+class OauthCallbackUrl(BunqModel):
     """
     Used for managing OAuth Client Callback URLs.
     
@@ -31508,7 +31508,7 @@ class OauthCallbackUrl(core.BunqModel):
         return converter.json_to_class(OauthCallbackUrl, json_str)
 
 
-class OauthClient(core.BunqModel):
+class OauthClient(BunqModel):
     """
     Used for managing OAuth Clients.
     
@@ -31733,7 +31733,7 @@ class OauthClient(core.BunqModel):
         return converter.json_to_class(OauthClient, json_str)
 
 
-class PaymentServiceProviderCredential(core.BunqModel):
+class PaymentServiceProviderCredential(BunqModel):
     """
     Register a Payment Service Provider and provide credentials
     
@@ -31966,7 +31966,7 @@ class PaymentServiceProviderCredential(core.BunqModel):
         return converter.json_to_class(PaymentServiceProviderCredential, json_str)
 
 
-class PermittedIp(core.BunqModel):
+class PermittedIp(BunqModel):
     """
     Manage the IPs which may be used for a credential of a user for server
     authentication.
@@ -32169,7 +32169,7 @@ class PermittedIp(core.BunqModel):
         return converter.json_to_class(PermittedIp, json_str)
 
 
-class Reward(core.BunqModel):
+class Reward(BunqModel):
     """
     Used to view Rewards.
     
@@ -32361,7 +32361,7 @@ class Reward(core.BunqModel):
         return converter.json_to_class(Reward, json_str)
 
 
-class SandboxUser(core.BunqModel):
+class SandboxUser(BunqModel):
     """
     Used to create a sandbox user.
     
@@ -32432,7 +32432,7 @@ class SandboxUser(core.BunqModel):
         return converter.json_to_class(SandboxUser, json_str)
 
 
-class ScheduleUser(core.BunqModel):
+class ScheduleUser(BunqModel):
     """
     view for reading the scheduled definitions.
     """
@@ -32492,7 +32492,7 @@ class ScheduleUser(core.BunqModel):
         return converter.json_to_class(ScheduleUser, json_str)
 
 
-class Session(core.BunqModel):
+class Session(BunqModel):
     """
     Endpoint for operations over the current session.
     """
@@ -32540,7 +32540,7 @@ class Session(core.BunqModel):
         return converter.json_to_class(Session, json_str)
 
 
-class ShareInviteBankAmountUsed(core.BunqModel):
+class ShareInviteBankAmountUsed(BunqModel):
     """
     [DEPRECATED - use /share-invite-monetary-account-inquiry/ID/amount-used]
     When you have connected your monetary account bank to a user, and given this
@@ -32600,7 +32600,7 @@ class ShareInviteBankAmountUsed(core.BunqModel):
         return converter.json_to_class(ShareInviteBankAmountUsed, json_str)
 
 
-class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
+class ShareInviteMonetaryAccountAmountUsed(BunqModel):
     """
     When you have connected your monetary account to a user, and given this user
     a (for example) daily budget of 10 EUR. If this users has used his entire
@@ -32659,7 +32659,7 @@ class ShareInviteMonetaryAccountAmountUsed(core.BunqModel):
         return converter.json_to_class(ShareInviteMonetaryAccountAmountUsed, json_str)
 
 
-class ShareInviteMonetaryAccountInquiry(core.BunqModel):
+class ShareInviteMonetaryAccountInquiry(BunqModel):
     """
     [DEPRECATED - use /share-invite-monetary-account-response] Used to share a
     monetary account with another bunq user, as in the 'Connect' feature in the
@@ -33090,7 +33090,7 @@ class ShareInviteMonetaryAccountInquiry(core.BunqModel):
         return converter.json_to_class(ShareInviteMonetaryAccountInquiry, json_str)
 
 
-class ShareInviteMonetaryAccountResponse(core.BunqModel):
+class ShareInviteMonetaryAccountResponse(BunqModel):
     """
     Used to view or respond to shares a user was invited to. See
     'share-invite-bank-inquiry' for more information about the inquiring
@@ -33430,7 +33430,7 @@ class ShareInviteMonetaryAccountResponse(core.BunqModel):
         return converter.json_to_class(ShareInviteMonetaryAccountResponse, json_str)
 
 
-class TabItemShopBatch(core.BunqModel):
+class TabItemShopBatch(BunqModel):
     """
     Create a batch of tab items.
     
@@ -33522,7 +33522,7 @@ class TabItemShopBatch(core.BunqModel):
         return converter.json_to_class(TabItemShopBatch, json_str)
 
 
-class TabItemShop(core.BunqModel):
+class TabItemShop(BunqModel):
     """
     After you’ve created a Tab using /tab-usage-single or /tab-usage-multiple
     you can add items and attachments using tab-item. You can only add or modify
@@ -33910,7 +33910,7 @@ class TabItemShop(core.BunqModel):
         return converter.json_to_class(TabItemShop, json_str)
 
 
-class TabQrCodeContent(core.BunqModel):
+class TabQrCodeContent(BunqModel):
     """
     This call returns the raw content of the QR code that links to this Tab.
     When a bunq user scans this QR code with the bunq app the Tab will be shown
@@ -33970,7 +33970,7 @@ class TabQrCodeContent(core.BunqModel):
         return converter.json_to_class(TabQrCodeContent, json_str)
 
 
-class TokenQrRequestIdeal(core.BunqModel):
+class TokenQrRequestIdeal(BunqModel):
     """
     Using this call you create a request for payment from an external token
     provided with an ideal transaction. Make sure your iDEAL payments are
@@ -34358,7 +34358,7 @@ class TokenQrRequestIdeal(core.BunqModel):
         return converter.json_to_class(TokenQrRequestIdeal, json_str)
 
 
-class TokenQrRequestSofort(core.BunqModel):
+class TokenQrRequestSofort(BunqModel):
     """
     Using this call you can create a SOFORT Request assigned to your User by
     providing the Token of the request.
@@ -34435,7 +34435,7 @@ class TokenQrRequestSofort(core.BunqModel):
         return converter.json_to_class(TokenQrRequestSofort, json_str)
 
 
-class UserCompanyName(core.BunqModel):
+class UserCompanyName(BunqModel):
     """
     Endpoint for getting all the known (trade) names for a user company. This is
     needed for updating the user name, as we only accept legal or trade names.
@@ -34507,7 +34507,7 @@ class UserCompanyName(core.BunqModel):
         return converter.json_to_class(UserCompanyName, json_str)
 
 
-class UserCredentialPasswordIp(core.BunqModel):
+class UserCredentialPasswordIp(BunqModel):
     """
     Create a credential of a user for server authentication, or delete the
     credential of a user for server authentication.
@@ -34687,7 +34687,7 @@ class UserCredentialPasswordIp(core.BunqModel):
         return converter.json_to_class(UserCredentialPasswordIp, json_str)
 
 
-class UserLegalName(core.BunqModel):
+class UserLegalName(BunqModel):
     """
     Endpoint for getting available legal names that can be used by the user.
     
@@ -34756,7 +34756,7 @@ class UserLegalName(core.BunqModel):
         return converter.json_to_class(UserLegalName, json_str)
 
 
-class WhitelistSdd(core.BunqModel):
+class WhitelistSdd(BunqModel):
     """
     Whitelist an SDD so that when one comes in, it is automatically accepted.
     

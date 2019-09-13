@@ -1,5 +1,6 @@
 from bunq.sdk.http.pagination import Pagination
 from bunq.sdk.json import converter
+from bunq.sdk.model.core.anchored_object_interface import AnchoredObjectInterface
 
 
 def initialize_converter():
@@ -12,15 +13,16 @@ def initialize_converter():
 
     from bunq.sdk.http import api_client
     from bunq.sdk.context import api_context
-    from bunq.sdk.model import core
     from bunq.sdk.json import adapters
     from bunq.sdk.json import converter
     from bunq.sdk.model.generated import object_
     from bunq.sdk.model.generated import endpoint
+    from bunq.sdk.model.core.installation import Installation
+    from bunq.sdk.model.core.session_server import SessionServer
 
-    converter.register_adapter(core.Installation, adapters.InstallationAdapter)
+    converter.register_adapter(Installation, adapters.InstallationAdapter)
     converter.register_adapter(
-        core.SessionServer,
+        SessionServer,
         adapters.SessionServerAdapter
     )
     converter.register_adapter(
@@ -41,10 +43,10 @@ def initialize_converter():
     converter.register_adapter(datetime.datetime, adapters.DateTimeAdapter)
     converter.register_adapter(Pagination, adapters.PaginationAdapter)
 
-    def register_anchor_adapter(class_to_regsiter):
-        if issubclass(class_to_regsiter, core.AnchoredObjectInterface):
+    def register_anchor_adapter(class_to_register):
+        if issubclass(class_to_register, AnchoredObjectInterface):
             converter.register_adapter(
-                class_to_regsiter,
+                class_to_register,
                 adapters.AnchoredObjectModelAdapter
             )
 

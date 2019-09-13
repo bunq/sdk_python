@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+from bunq import AnchoredObjectInterface
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
-from bunq.sdk.model import core
+from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.model.generated import endpoint
 
 
-class Amount(core.BunqModel):
+class Amount(BunqModel):
     """
     :param _value: The amount formatted to two decimal places.
     :type _value: str
@@ -64,14 +65,14 @@ class Amount(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Amount
         """
 
         return converter.json_to_class(Amount, json_str)
 
 
-class InvoiceItemGroup(core.BunqModel):
+class InvoiceItemGroup(BunqModel):
     """
     :param _type_: The type of the invoice item group.
     :type _type_: str
@@ -187,14 +188,14 @@ class InvoiceItemGroup(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: InvoiceItemGroup
         """
 
         return converter.json_to_class(InvoiceItemGroup, json_str)
 
 
-class InvoiceItem(core.BunqModel):
+class InvoiceItem(BunqModel):
     """
     :param _billing_date: The billing date of the item.
     :type _billing_date: str
@@ -336,14 +337,14 @@ class InvoiceItem(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: InvoiceItem
         """
 
         return converter.json_to_class(InvoiceItem, json_str)
 
 
-class LabelMonetaryAccount(core.BunqModel):
+class LabelMonetaryAccount(BunqModel):
     """
     :param _iban: The IBAN of the monetary account.
     :type _iban: str
@@ -517,14 +518,14 @@ class LabelMonetaryAccount(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: LabelMonetaryAccount
         """
 
         return converter.json_to_class(LabelMonetaryAccount, json_str)
 
 
-class Avatar(core.BunqModel):
+class Avatar(BunqModel):
     """
     :param _uuid: The public UUID of the avatar.
     :type _uuid: str
@@ -591,14 +592,14 @@ class Avatar(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Avatar
         """
 
         return converter.json_to_class(Avatar, json_str)
 
 
-class Image(core.BunqModel):
+class Image(BunqModel):
     """
     :param _attachment_public_uuid: The public UUID of the public attachment
     containing the image.
@@ -671,14 +672,14 @@ class Image(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Image
         """
 
         return converter.json_to_class(Image, json_str)
 
 
-class LabelUser(core.BunqModel):
+class LabelUser(BunqModel):
     """
     :param _uuid: The public UUID of the label-user.
     :type _uuid: str
@@ -783,14 +784,14 @@ class LabelUser(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: LabelUser
         """
 
         return converter.json_to_class(LabelUser, json_str)
 
 
-class Pointer(core.BunqModel):
+class Pointer(BunqModel):
     """
     :param _type_: The alias type, can be: EMAIL|PHONE_NUMBER|IBAN.
     :type _type_: str
@@ -866,14 +867,14 @@ class Pointer(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Pointer
         """
 
         return converter.json_to_class(Pointer, json_str)
 
 
-class Address(core.BunqModel):
+class Address(BunqModel):
     """
     :param _street: The street.
     :type _street: str
@@ -1057,14 +1058,14 @@ class Address(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Address
         """
 
         return converter.json_to_class(Address, json_str)
 
 
-class RequestInquiryReference(core.BunqModel):
+class RequestInquiryReference(BunqModel):
     """
     :param _type_: The type of request inquiry. Can be RequestInquiry or
     RequestInquiryBatch.
@@ -1109,14 +1110,14 @@ class RequestInquiryReference(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: RequestInquiryReference
         """
 
         return converter.json_to_class(RequestInquiryReference, json_str)
 
 
-class Attachment(core.BunqModel):
+class Attachment(BunqModel):
     """
     :param _description: The description of the attachment.
     :type _description: str
@@ -1160,14 +1161,14 @@ class Attachment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Attachment
         """
 
         return converter.json_to_class(Attachment, json_str)
 
 
-class AttachmentMonetaryAccountPayment(core.BunqModel):
+class AttachmentMonetaryAccountPayment(BunqModel):
     """
     :param _id_: The id of the attached Attachment.
     :type _id_: int
@@ -1221,14 +1222,14 @@ class AttachmentMonetaryAccountPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: AttachmentMonetaryAccountPayment
         """
 
         return converter.json_to_class(AttachmentMonetaryAccountPayment, json_str)
 
 
-class Geolocation(core.BunqModel):
+class Geolocation(BunqModel):
     """
     :param _latitude: The latitude for a geolocation restriction.
     :type _latitude: float
@@ -1321,14 +1322,14 @@ class Geolocation(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Geolocation
         """
 
         return converter.json_to_class(Geolocation, json_str)
 
 
-class AttachmentPublic(core.BunqModel):
+class AttachmentPublic(BunqModel):
     """
     :param _uuid: The uuid of the attachment.
     :type _uuid: str
@@ -1386,14 +1387,14 @@ class AttachmentPublic(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: AttachmentPublic
         """
 
         return converter.json_to_class(AttachmentPublic, json_str)
 
 
-class BunqMeMerchantAvailable(core.BunqModel):
+class BunqMeMerchantAvailable(BunqModel):
     """
     :param _merchant_type: A merchant type supported by bunq.me.
     :type _merchant_type: str
@@ -1437,14 +1438,14 @@ class BunqMeMerchantAvailable(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: BunqMeMerchantAvailable
         """
 
         return converter.json_to_class(BunqMeMerchantAvailable, json_str)
 
 
-class BunqId(core.BunqModel):
+class BunqId(BunqModel):
     """
     :param _id_: An integer ID of an object. Unique per object type.
     :type _id_: int
@@ -1483,14 +1484,14 @@ class BunqId(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: BunqId
         """
 
         return converter.json_to_class(BunqId, json_str)
 
 
-class CardBatchEntry(core.BunqModel):
+class CardBatchEntry(BunqModel):
     """
     :param _id_: The ID of the card that needs to be updated.
     :type _id_: int
@@ -1570,14 +1571,14 @@ class CardBatchEntry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CardBatchEntry
         """
 
         return converter.json_to_class(CardBatchEntry, json_str)
 
 
-class CardCountryPermission(core.BunqModel):
+class CardCountryPermission(BunqModel):
     """
     :param _country: The country to allow transactions in (e.g. NL, DE).
     :type _country: str
@@ -1648,14 +1649,14 @@ class CardCountryPermission(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CardCountryPermission
         """
 
         return converter.json_to_class(CardCountryPermission, json_str)
 
 
-class CardPinAssignment(core.BunqModel):
+class CardPinAssignment(BunqModel):
     """
     :param _type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
     :type _type_: str
@@ -1720,14 +1721,14 @@ class CardPinAssignment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CardPinAssignment
         """
 
         return converter.json_to_class(CardPinAssignment, json_str)
 
 
-class CardVirtualPrimaryAccountNumber(core.BunqModel):
+class CardVirtualPrimaryAccountNumber(BunqModel):
     """
     :param _id_: The ID for this Virtual PAN.
     :type _id_: int
@@ -1850,14 +1851,14 @@ class CardVirtualPrimaryAccountNumber(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CardVirtualPrimaryAccountNumber
         """
 
         return converter.json_to_class(CardVirtualPrimaryAccountNumber, json_str)
 
 
-class CardPrimaryAccountNumber(core.BunqModel):
+class CardPrimaryAccountNumber(BunqModel):
     """
     :param _id_: The ID for this Virtual PAN.
     :type _id_: int
@@ -1980,14 +1981,14 @@ class CardPrimaryAccountNumber(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CardPrimaryAccountNumber
         """
 
         return converter.json_to_class(CardPrimaryAccountNumber, json_str)
 
 
-class CardMagStripePermission(core.BunqModel):
+class CardMagStripePermission(BunqModel):
     """
     :param _expiry_time: Expiry time of this rule.
     :type _expiry_time: str
@@ -2026,14 +2027,14 @@ class CardMagStripePermission(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CardMagStripePermission
         """
 
         return converter.json_to_class(CardMagStripePermission, json_str)
 
 
-class NotificationFilter(core.BunqModel):
+class NotificationFilter(BunqModel):
     """
     :param _notification_delivery_method: The delivery method via which
     notifications that match this notification filter will be delivered.
@@ -2128,14 +2129,14 @@ class NotificationFilter(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: NotificationFilter
         """
 
         return converter.json_to_class(NotificationFilter, json_str)
 
 
-class TabTextWaitingScreen(core.BunqModel):
+class TabTextWaitingScreen(BunqModel):
     """
     :param _language: Language of tab text
     :type _language: str
@@ -2192,14 +2193,14 @@ class TabTextWaitingScreen(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: TabTextWaitingScreen
         """
 
         return converter.json_to_class(TabTextWaitingScreen, json_str)
 
 
-class TabVisibility(core.BunqModel):
+class TabVisibility(BunqModel):
     """
     :param _cash_register_qr_code: When true the tab will be linked to the
     ACTIVE cash registers QR code.
@@ -2283,14 +2284,14 @@ class TabVisibility(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: TabVisibility
         """
 
         return converter.json_to_class(TabVisibility, json_str)
 
 
-class AttachmentTab(core.BunqModel):
+class AttachmentTab(BunqModel):
     """
     :param _id_: The id of the attachment.
     :type _id_: int
@@ -2348,14 +2349,14 @@ class AttachmentTab(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: AttachmentTab
         """
 
         return converter.json_to_class(AttachmentTab, json_str)
 
 
-class Certificate(core.BunqModel):
+class Certificate(BunqModel):
     """
     :param _certificate: A single certificate in the chain in .PEM format.
     :type _certificate: str
@@ -2394,14 +2395,14 @@ class Certificate(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Certificate
         """
 
         return converter.json_to_class(Certificate, json_str)
 
 
-class DraftPaymentResponse(core.BunqModel):
+class DraftPaymentResponse(BunqModel):
     """
     :param _status: The status with which was responded.
     :type _status: str
@@ -2445,14 +2446,14 @@ class DraftPaymentResponse(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: DraftPaymentResponse
         """
 
         return converter.json_to_class(DraftPaymentResponse, json_str)
 
 
-class DraftPaymentEntry(core.BunqModel):
+class DraftPaymentEntry(BunqModel):
     """
     :param _amount: The amount of the payment.
     :type _amount: Amount
@@ -2617,18 +2618,18 @@ class DraftPaymentEntry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: DraftPaymentEntry
         """
 
         return converter.json_to_class(DraftPaymentEntry, json_str)
 
 
-class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
+class DraftPaymentAnchorObject(BunqModel, AnchoredObjectInterface):
     """
-    :param _Payment: 
+    :param _Payment:
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
+    :param _PaymentBatch:
     :type _PaymentBatch: endpoint.PaymentBatch
     """
 
@@ -2656,7 +2657,7 @@ class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -2685,14 +2686,14 @@ class DraftPaymentAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: DraftPaymentAnchorObject
         """
 
         return converter.json_to_class(DraftPaymentAnchorObject, json_str)
 
 
-class DraftShareInviteEntry(core.BunqModel):
+class DraftShareInviteEntry(BunqModel):
     """
     :param _share_detail: The share details. Only one of these objects is
     returned.
@@ -2769,14 +2770,14 @@ class DraftShareInviteEntry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: DraftShareInviteEntry
         """
 
         return converter.json_to_class(DraftShareInviteEntry, json_str)
 
 
-class ShareDetail(core.BunqModel):
+class ShareDetail(BunqModel):
     """
     :param _payment: The share details for a payment share. In the response
     'payment' is replaced by 'ShareDetailPayment'.
@@ -2858,14 +2859,14 @@ class ShareDetail(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: ShareDetail
         """
 
         return converter.json_to_class(ShareDetail, json_str)
 
 
-class ShareDetailPayment(core.BunqModel):
+class ShareDetailPayment(BunqModel):
     """
     :param _make_payments: If set to true, the invited user will be able to make
     payments from the shared account.
@@ -3005,14 +3006,14 @@ class ShareDetailPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: ShareDetailPayment
         """
 
         return converter.json_to_class(ShareDetailPayment, json_str)
 
 
-class BudgetRestriction(core.BunqModel):
+class BudgetRestriction(BunqModel):
     """
     :param _amount: The amount of the budget given to the invited user.
     :type _amount: Amount
@@ -3071,14 +3072,14 @@ class BudgetRestriction(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: BudgetRestriction
         """
 
         return converter.json_to_class(BudgetRestriction, json_str)
 
 
-class ShareDetailReadOnly(core.BunqModel):
+class ShareDetailReadOnly(BunqModel):
     """
     :param _view_balance: If set to true, the invited user will be able to view
     the account balance.
@@ -3159,14 +3160,14 @@ class ShareDetailReadOnly(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: ShareDetailReadOnly
         """
 
         return converter.json_to_class(ShareDetailReadOnly, json_str)
 
 
-class ShareDetailDraftPayment(core.BunqModel):
+class ShareDetailDraftPayment(BunqModel):
     """
     :param _make_draft_payments: If set to true, the invited user will be able
     to make draft payments from the shared account.
@@ -3267,71 +3268,71 @@ class ShareDetailDraftPayment(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: ShareDetailDraftPayment
         """
 
         return converter.json_to_class(ShareDetailDraftPayment, json_str)
 
 
-class EventObject(core.BunqModel, core.AnchoredObjectInterface):
+class EventObject(BunqModel, AnchoredObjectInterface):
     """
-    :param _BunqMeTab: 
+    :param _BunqMeTab:
     :type _BunqMeTab: endpoint.BunqMeTab
-    :param _BunqMeTabResultResponse: 
+    :param _BunqMeTabResultResponse:
     :type _BunqMeTabResultResponse: endpoint.BunqMeTabResultResponse
-    :param _BunqMeFundraiserResult: 
+    :param _BunqMeFundraiserResult:
     :type _BunqMeFundraiserResult: endpoint.BunqMeFundraiserResult
-    :param _Card: 
+    :param _Card:
     :type _Card: endpoint.Card
-    :param _CardDebit: 
+    :param _CardDebit:
     :type _CardDebit: endpoint.CardDebit
-    :param _DraftPayment: 
+    :param _DraftPayment:
     :type _DraftPayment: endpoint.DraftPayment
-    :param _FeatureAnnouncement: 
+    :param _FeatureAnnouncement:
     :type _FeatureAnnouncement: endpoint.FeatureAnnouncement
-    :param _IdealMerchantTransaction: 
+    :param _IdealMerchantTransaction:
     :type _IdealMerchantTransaction: endpoint.IdealMerchantTransaction
-    :param _Invoice: 
+    :param _Invoice:
     :type _Invoice: endpoint.Invoice
-    :param _ScheduledPayment: 
+    :param _ScheduledPayment:
     :type _ScheduledPayment: endpoint.SchedulePayment
-    :param _ScheduledPaymentBatch: 
+    :param _ScheduledPaymentBatch:
     :type _ScheduledPaymentBatch: endpoint.SchedulePaymentBatch
-    :param _ScheduledInstance: 
+    :param _ScheduledInstance:
     :type _ScheduledInstance: endpoint.ScheduleInstance
-    :param _MasterCardAction: 
+    :param _MasterCardAction:
     :type _MasterCardAction: endpoint.MasterCardAction
-    :param _BankSwitchServiceNetherlandsIncomingPayment: 
+    :param _BankSwitchServiceNetherlandsIncomingPayment:
     :type _BankSwitchServiceNetherlandsIncomingPayment:
     endpoint.BankSwitchServiceNetherlandsIncomingPayment
-    :param _Payment: 
+    :param _Payment:
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
+    :param _PaymentBatch:
     :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestInquiryBatch: 
+    :param _RequestInquiryBatch:
     :type _RequestInquiryBatch: endpoint.RequestInquiryBatch
-    :param _RequestInquiry: 
+    :param _RequestInquiry:
     :type _RequestInquiry: endpoint.RequestInquiry
-    :param _RequestResponse: 
+    :param _RequestResponse:
     :type _RequestResponse: endpoint.RequestResponse
-    :param _RewardRecipient: 
+    :param _RewardRecipient:
     :type _RewardRecipient: endpoint.RewardRecipient
-    :param _RewardSender: 
+    :param _RewardSender:
     :type _RewardSender: endpoint.RewardSender
-    :param _ShareInviteBankInquiryBatch: 
+    :param _ShareInviteBankInquiryBatch:
     :type _ShareInviteBankInquiryBatch: endpoint.ShareInviteBankInquiryBatch
-    :param _ShareInviteBankInquiry: 
+    :param _ShareInviteBankInquiry:
     :type _ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
-    :param _ShareInviteBankResponse: 
+    :param _ShareInviteBankResponse:
     :type _ShareInviteBankResponse: endpoint.ShareInviteBankResponse
-    :param _SofortMerchantTransaction: 
+    :param _SofortMerchantTransaction:
     :type _SofortMerchantTransaction: endpoint.SofortMerchantTransaction
-    :param _TabResultInquiry: 
+    :param _TabResultInquiry:
     :type _TabResultInquiry: endpoint.TabResultInquiry
-    :param _TabResultResponse: 
+    :param _TabResultResponse:
     :type _TabResultResponse: endpoint.TabResultResponse
-    :param _TransferwiseTransfer: 
+    :param _TransferwiseTransfer:
     :type _TransferwiseTransfer: endpoint.TransferwiseTransfer
     """
 
@@ -3593,7 +3594,7 @@ class EventObject(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -3778,14 +3779,14 @@ class EventObject(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: EventObject
         """
 
         return converter.json_to_class(EventObject, json_str)
 
 
-class SchedulePaymentEntry(core.BunqModel):
+class SchedulePaymentEntry(BunqModel):
     """
     :param _amount: The Amount transferred by the Payment. Will be negative for
     outgoing Payments and positive for incoming Payments (relative to the
@@ -3930,18 +3931,18 @@ class SchedulePaymentEntry(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: SchedulePaymentEntry
         """
 
         return converter.json_to_class(SchedulePaymentEntry, json_str)
 
 
-class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
+class ScheduleAnchorObject(BunqModel, AnchoredObjectInterface):
     """
-    :param _Payment: 
+    :param _Payment:
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
+    :param _PaymentBatch:
     :type _PaymentBatch: endpoint.PaymentBatch
     """
 
@@ -3969,7 +3970,7 @@ class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -3998,14 +3999,14 @@ class ScheduleAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: ScheduleAnchorObject
         """
 
         return converter.json_to_class(ScheduleAnchorObject, json_str)
 
 
-class Error(core.BunqModel):
+class Error(BunqModel):
     """
     :param _error_description: The error description (in English).
     :type _error_description: str
@@ -4050,18 +4051,18 @@ class Error(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Error
         """
 
         return converter.json_to_class(Error, json_str)
 
 
-class ScheduleInstanceAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
+class ScheduleInstanceAnchorObject(BunqModel, AnchoredObjectInterface):
     """
-    :param _Payment: 
+    :param _Payment:
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
+    :param _PaymentBatch:
     :type _PaymentBatch: endpoint.PaymentBatch
     """
 
@@ -4089,7 +4090,7 @@ class ScheduleInstanceAnchorObject(core.BunqModel, core.AnchoredObjectInterface)
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -4118,14 +4119,14 @@ class ScheduleInstanceAnchorObject(core.BunqModel, core.AnchoredObjectInterface)
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: ScheduleInstanceAnchorObject
         """
 
         return converter.json_to_class(ScheduleInstanceAnchorObject, json_str)
 
 
-class LabelCard(core.BunqModel):
+class LabelCard(BunqModel):
     """
     :param _uuid: The public UUID.
     :type _uuid: str
@@ -4225,32 +4226,32 @@ class LabelCard(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: LabelCard
         """
 
         return converter.json_to_class(LabelCard, json_str)
 
 
-class RequestReferenceSplitTheBillAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
+class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchoredObjectInterface):
     """
-    :param _BillingInvoice: 
+    :param _BillingInvoice:
     :type _BillingInvoice: endpoint.Invoice
-    :param _DraftPayment: 
+    :param _DraftPayment:
     :type _DraftPayment: endpoint.DraftPayment
-    :param _MasterCardAction: 
+    :param _MasterCardAction:
     :type _MasterCardAction: endpoint.MasterCardAction
-    :param _Payment: 
+    :param _Payment:
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
+    :param _PaymentBatch:
     :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestResponse: 
+    :param _RequestResponse:
     :type _RequestResponse: endpoint.RequestResponse
-    :param _ScheduleInstance: 
+    :param _ScheduleInstance:
     :type _ScheduleInstance: endpoint.ScheduleInstance
-    :param _TabResultResponse: 
+    :param _TabResultResponse:
     :type _TabResultResponse: endpoint.TabResultResponse
-    :param _WhitelistResult: 
+    :param _WhitelistResult:
     :type _WhitelistResult: endpoint.WhitelistResult
     """
 
@@ -4341,7 +4342,7 @@ class RequestReferenceSplitTheBillAnchorObject(core.BunqModel, core.AnchoredObje
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -4412,14 +4413,14 @@ class RequestReferenceSplitTheBillAnchorObject(core.BunqModel, core.AnchoredObje
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: RequestReferenceSplitTheBillAnchorObject
         """
 
         return converter.json_to_class(RequestReferenceSplitTheBillAnchorObject, json_str)
 
 
-class WhitelistResultViewAnchoredObject(core.BunqModel):
+class WhitelistResultViewAnchoredObject(BunqModel):
     """
     :param _id_: The ID of the whitelist entry.
     :type _id_: int
@@ -4477,14 +4478,14 @@ class WhitelistResultViewAnchoredObject(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: WhitelistResultViewAnchoredObject
         """
 
         return converter.json_to_class(WhitelistResultViewAnchoredObject, json_str)
 
 
-class MonetaryAccountProfileFill(core.BunqModel):
+class MonetaryAccountProfileFill(BunqModel):
     """
     :param _status: The status of the profile.
     :type _status: str
@@ -4599,14 +4600,14 @@ class MonetaryAccountProfileFill(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: MonetaryAccountProfileFill
         """
 
         return converter.json_to_class(MonetaryAccountProfileFill, json_str)
 
 
-class Issuer(core.BunqModel):
+class Issuer(BunqModel):
     """
     :param _bic: The BIC code.
     :type _bic: str
@@ -4663,14 +4664,14 @@ class Issuer(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Issuer
         """
 
         return converter.json_to_class(Issuer, json_str)
 
 
-class MonetaryAccountProfileDrain(core.BunqModel):
+class MonetaryAccountProfileDrain(BunqModel):
     """
     :param _status: The status of the profile.
     :type _status: str
@@ -4763,14 +4764,14 @@ class MonetaryAccountProfileDrain(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: MonetaryAccountProfileDrain
         """
 
         return converter.json_to_class(MonetaryAccountProfileDrain, json_str)
 
 
-class MonetaryAccountSetting(core.BunqModel):
+class MonetaryAccountSetting(BunqModel):
     """
     :param _color: The color chosen for the MonetaryAccount.
     :type _color: str
@@ -4868,14 +4869,14 @@ class MonetaryAccountSetting(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: MonetaryAccountSetting
         """
 
         return converter.json_to_class(MonetaryAccountSetting, json_str)
 
 
-class CoOwner(core.BunqModel):
+class CoOwner(BunqModel):
     """
     :param _alias: The Alias of the co-owner.
     :type _alias: LabelUser
@@ -4928,14 +4929,14 @@ class CoOwner(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: CoOwner
         """
 
         return converter.json_to_class(CoOwner, json_str)
 
 
-class NotificationFilterPush(core.BunqModel):
+class NotificationFilterPush(BunqModel):
     """
     :param _category: The notification category that will match this
     notification filter.
@@ -4976,14 +4977,14 @@ class NotificationFilterPush(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: NotificationFilterPush
         """
 
         return converter.json_to_class(NotificationFilterPush, json_str)
 
 
-class NotificationFilterUrl(core.BunqModel):
+class NotificationFilterUrl(BunqModel):
     """
     :param _category: The notification category that will match this
     notification filter.
@@ -5042,22 +5043,22 @@ class NotificationFilterUrl(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: NotificationFilterUrl
         """
 
         return converter.json_to_class(NotificationFilterUrl, json_str)
 
 
-class NotificationUrl(core.BunqModel):
+class NotificationUrl(BunqModel):
     """
-    :param _target_url: 
+    :param _target_url:
     :type _target_url: str
-    :param _category: 
+    :param _category:
     :type _category: str
-    :param _event_type: 
+    :param _event_type:
     :type _event_type: str
-    :param _object_: 
+    :param _object_:
     :type _object_: NotificationAnchorObject
     """
 
@@ -5121,58 +5122,58 @@ class NotificationUrl(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: NotificationUrl
         """
 
         return converter.json_to_class(NotificationUrl, json_str)
 
 
-class NotificationAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
+class NotificationAnchorObject(BunqModel, AnchoredObjectInterface):
     """
-    :param _BunqMeFundraiserResult: 
+    :param _BunqMeFundraiserResult:
     :type _BunqMeFundraiserResult: endpoint.BunqMeFundraiserResult
-    :param _BunqMeTab: 
+    :param _BunqMeTab:
     :type _BunqMeTab: endpoint.BunqMeTab
-    :param _BunqMeTabResultInquiry: 
+    :param _BunqMeTabResultInquiry:
     :type _BunqMeTabResultInquiry: endpoint.BunqMeTabResultInquiry
-    :param _BunqMeTabResultResponse: 
+    :param _BunqMeTabResultResponse:
     :type _BunqMeTabResultResponse: endpoint.BunqMeTabResultResponse
-    :param _ChatMessage: 
+    :param _ChatMessage:
     :type _ChatMessage: endpoint.ChatMessage
-    :param _DraftPayment: 
+    :param _DraftPayment:
     :type _DraftPayment: endpoint.DraftPayment
-    :param _IdealMerchantTransaction: 
+    :param _IdealMerchantTransaction:
     :type _IdealMerchantTransaction: endpoint.IdealMerchantTransaction
-    :param _Invoice: 
+    :param _Invoice:
     :type _Invoice: endpoint.Invoice
-    :param _MasterCardAction: 
+    :param _MasterCardAction:
     :type _MasterCardAction: endpoint.MasterCardAction
-    :param _MonetaryAccount: 
+    :param _MonetaryAccount:
     :type _MonetaryAccount: endpoint.MonetaryAccount
-    :param _Payment: 
+    :param _Payment:
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch: 
+    :param _PaymentBatch:
     :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestInquiry: 
+    :param _RequestInquiry:
     :type _RequestInquiry: endpoint.RequestInquiry
-    :param _RequestInquiryBatch: 
+    :param _RequestInquiryBatch:
     :type _RequestInquiryBatch: endpoint.RequestInquiryBatch
-    :param _RequestResponse: 
+    :param _RequestResponse:
     :type _RequestResponse: endpoint.RequestResponse
-    :param _ShareInviteBankInquiry: 
+    :param _ShareInviteBankInquiry:
     :type _ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
-    :param _ShareInviteBankResponse: 
+    :param _ShareInviteBankResponse:
     :type _ShareInviteBankResponse: endpoint.ShareInviteBankResponse
-    :param _ScheduledPayment: 
+    :param _ScheduledPayment:
     :type _ScheduledPayment: endpoint.SchedulePayment
-    :param _ScheduledInstance: 
+    :param _ScheduledInstance:
     :type _ScheduledInstance: endpoint.ScheduleInstance
-    :param _TabResultInquiry: 
+    :param _TabResultInquiry:
     :type _TabResultInquiry: endpoint.TabResultInquiry
-    :param _TabResultResponse: 
+    :param _TabResultResponse:
     :type _TabResultResponse: endpoint.TabResultResponse
-    :param _User: 
+    :param _User:
     :type _User: endpoint.User
     """
 
@@ -5380,7 +5381,7 @@ class NotificationAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -5529,14 +5530,14 @@ class NotificationAnchorObject(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: NotificationAnchorObject
         """
 
         return converter.json_to_class(NotificationAnchorObject, json_str)
 
 
-class TaxResident(core.BunqModel):
+class TaxResident(BunqModel):
     """
     :param _country: The country of the tax number.
     :type _country: str
@@ -5613,14 +5614,14 @@ class TaxResident(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: TaxResident
         """
 
         return converter.json_to_class(TaxResident, json_str)
 
 
-class Ubo(core.BunqModel):
+class Ubo(BunqModel):
     """
     :param _name: The name of the ultimate beneficiary owner.
     :type _name: str
@@ -5697,20 +5698,20 @@ class Ubo(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: Ubo
         """
 
         return converter.json_to_class(Ubo, json_str)
 
 
-class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
+class UserApiKeyAnchoredUser(BunqModel, AnchoredObjectInterface):
     """
-    :param _UserPerson: 
+    :param _UserPerson:
     :type _UserPerson: endpoint.UserPerson
-    :param _UserCompany: 
+    :param _UserCompany:
     :type _UserCompany: endpoint.UserCompany
-    :param _UserPaymentServiceProvider: 
+    :param _UserPaymentServiceProvider:
     :type _UserPaymentServiceProvider: endpoint.UserPaymentServiceProvider
     """
 
@@ -5747,7 +5748,7 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
 
     def get_referenced_object(self):
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         :raise: BunqException
         """
 
@@ -5782,14 +5783,14 @@ class UserApiKeyAnchoredUser(core.BunqModel, core.AnchoredObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: UserApiKeyAnchoredUser
         """
 
         return converter.json_to_class(UserApiKeyAnchoredUser, json_str)
 
 
-class OauthCallbackUrl(core.BunqModel):
+class OauthCallbackUrl(BunqModel):
     """
     :param _id_: The id of the callback URL.
     :type _id_: int
@@ -5861,14 +5862,14 @@ class OauthCallbackUrl(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: OauthCallbackUrl
         """
 
         return converter.json_to_class(OauthCallbackUrl, json_str)
 
 
-class PermittedDevice(core.BunqModel):
+class PermittedDevice(BunqModel):
     """
     :param _description: The description of the device that may use the
     credential.
@@ -5913,14 +5914,14 @@ class PermittedDevice(core.BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-        
+
         :rtype: PermittedDevice
         """
 
         return converter.json_to_class(PermittedDevice, json_str)
 
 
-class MonetaryAccountReference(core.BunqModel):
+class MonetaryAccountReference(BunqModel):
     """
     :type pointer: Pointer
     :type label_monetary_account: LabelMonetaryAccount
@@ -5943,6 +5944,13 @@ class MonetaryAccountReference(core.BunqModel):
         self.label_monetary_account = None
 
         raise TypeError(self._ERROR_COULD_NOT_INSTANTIATE)
+
+    @staticmethod
+    def from_json(json_str):
+        pass
+
+    def is_all_field_none(self):
+        pass
 
     @classmethod
     def create_from_pointer(cls, pointer):

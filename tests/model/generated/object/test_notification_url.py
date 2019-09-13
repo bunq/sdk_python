@@ -1,8 +1,6 @@
 import json
 import os
 
-from bunq.sdk.json.converter import json_to_class
-from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 from tests import bunq_test
@@ -119,7 +117,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     @classmethod
     def is_model_reference(cls, referenced_model, class_name):
         """
-        :type referenced_model: core.BunqModel
+        :type referenced_model: BunqModel
         :type class_name: str
 
         :rtype: bool

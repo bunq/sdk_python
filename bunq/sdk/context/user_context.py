@@ -1,5 +1,4 @@
 from bunq.sdk.exception.bunq_exception import BunqException
-from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 
 
@@ -25,7 +24,7 @@ class UserContext(object):
     @staticmethod
     def __get_user_object():
         """
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         """
 
         return endpoint.User.list().value[0].get_referenced_object()

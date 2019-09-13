@@ -1,12 +1,14 @@
 import datetime
 import urllib.parse as urlparse
 
-from bunq import Pagination
+from bunq import Pagination, AnchoredObjectInterface
 from bunq.sdk.context import api_context
 from bunq.sdk.exception.bunq_exception import BunqException
+from bunq.sdk.model.core.id import Id
+from bunq.sdk.model.core.public_key_server import PublicKeyServer
+from bunq.sdk.model.core.session_token import SessionToken
 from bunq.sdk.security import security
 from bunq.sdk.json import converter
-from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
@@ -24,7 +26,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, cls_target, obj_raw):
         """
-        :type cls_target: core.BunqModel
+        :type cls_target: BunqModel
         :type obj_raw: int|str|bool|float|list|dict|None
 
         :rtype: T
@@ -34,7 +36,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
         if isinstance(
                 model_,
-                core.AnchoredObjectInterface
+                AnchoredObjectInterface
         ) and model_.is_all_field_none():
             for field in model_.__dict__:
                 object_class = cls._get_object_class(field)
@@ -55,7 +57,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
     def _get_object_class(cls, class_name):
         """
         :type class_name: str
-        :rtype: core.BunqModel
+        :rtype: BunqModel
         """
 
         class_name = class_name.lstrip(cls.__STRING_FORMAT_UNDERSCORE)
@@ -95,25 +97,25 @@ class InstallationAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, array):
         """
-        :type target_class: core.Installation|type
+        :type target_class: Installation|type
         :type array: list
 
-        :rtype: core.Installation
+        :rtype: Installation
         """
 
         installation = target_class.__new__(target_class)
         server_public_key_wrapped = array[cls._INDEX_SERVER_PUBLIC_KEY]
         installation.__dict__ = {
             cls._ATTRIBUTE_ID: converter.deserialize(
-                core.Id,
+                Id,
                 array[cls._INDEX_ID][cls._FIELD_ID]
             ),
             cls._ATTRIBUTE_TOKEN: converter.deserialize(
-                core.SessionToken,
+                SessionToken,
                 array[cls._INDEX_TOKEN][cls._FIELD_TOKEN]
             ),
             cls._ATTRIBUTE_SERVER_PUBLIC_KEY: converter.deserialize(
-                core.PublicKeyServer,
+                PublicKeyServer,
                 server_public_key_wrapped[cls._FIELD_SERVER_PUBLIC_KEY]
             ),
         }
@@ -123,7 +125,7 @@ class InstallationAdapter(converter.JsonAdapter):
     @classmethod
     def serialize(cls, installation):
         """
-        :type installation: core.Installation
+        :type installation: Installation
 
         :rtype: list
         """
@@ -171,20 +173,20 @@ class SessionServerAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, array):
         """
-        :type target_class: core.SessionServer|type
+        :type target_class: SessionServer|type
         :type array: list
 
-        :rtype: core.SessionServer
+        :rtype: SessionServer
         """
 
         session_server = target_class.__new__(target_class)
         session_server.__dict__ = {
             cls._ATTRIBUTE_ID: converter.deserialize(
-                core.Id,
+                Id,
                 array[cls._INDEX_ID][cls._FIELD_ID]
             ),
             cls._ATTRIBUTE_TOKEN: converter.deserialize(
-                core.SessionToken,
+                SessionToken,
                 array[cls._INDEX_TOKEN][cls._FIELD_TOKEN]
             ),
             cls._ATTRIBUTE_USER_COMPANY: None,
@@ -219,7 +221,7 @@ class SessionServerAdapter(converter.JsonAdapter):
     @classmethod
     def serialize(cls, session_server):
         """
-        :type session_server: core.SessionServer
+        :type session_server: SessionServer
 
         :rtype: list
         """

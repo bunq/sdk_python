@@ -2,11 +2,10 @@ import os
 import time
 import unittest
 
-from bunq.sdk.context import api_context
 from bunq.sdk.context.bunq_context import BunqContext
 from bunq.sdk.exception.bunq_exception import BunqException
-from bunq.sdk.util import util
 from bunq.sdk.http.api_client import ApiClient
+from bunq.sdk.util import util
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
@@ -101,7 +100,7 @@ class BunqSdkTestCase(unittest.TestCase):
     @classmethod
     def _get_api_context(cls):
         """
-        :rtype: api_context.ApiContext
+        :rtype: ApiContext
         """
 
         return util.automatic_sandbox_install()

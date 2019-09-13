@@ -7,7 +7,6 @@ from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
-from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.security import security
 
@@ -72,7 +71,8 @@ class ApiContext(object):
         """
 
         private_key_client = security.generate_rsa_private_key()
-        installation = core.Installation.create(
+        from bunq.sdk.model.core.installation import Installation
+        installation = Installation.create(
             self,
             security.public_key_to_string(private_key_client.publickey())
         ).value
@@ -96,7 +96,7 @@ class ApiContext(object):
         :rtype: None
         """
 
-        from bunq.sdk.model.device_server_internal import DeviceServerInternal
+        from bunq.sdk.model.core.device_server_internal import DeviceServerInternal
 
         DeviceServerInternal.create(
             device_description,
@@ -110,7 +110,8 @@ class ApiContext(object):
         :rtype: None
         """
 
-        session_server = core.SessionServer.create(self).value
+        from bunq.sdk.model.core.session_server import SessionServer
+        session_server = SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
         user_id = session_server.get_referenced_user().id_
@@ -120,7 +121,7 @@ class ApiContext(object):
     @classmethod
     def _get_expiry_timestamp(cls, session_server):
         """
-        :type session_server: core.SessionServer
+        :type session_server: SessionServer
 
         :rtype: datetime.datetime
         """
@@ -133,7 +134,7 @@ class ApiContext(object):
     @classmethod
     def _get_session_timeout_seconds(cls, session_server):
         """
-        :type session_server: core.SessionServer
+        :type session_server: SessionServer
 
         :rtype: int
         """
