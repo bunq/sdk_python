@@ -25,7 +25,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
 
     # Model json paths constants.
-    BASE_PATH_JSON_MODEL = '../../../assets/NotficationUrlJsons'
+    BASE_PATH_JSON_MODEL = '../../../assets/NotificationUrlJsons'
     JSON_PATH_MUTATION_MODEL = BASE_PATH_JSON_MODEL + '/Mutation.json'
     JSON_PATH_BUNQ_ME_TAB_MODEL = BASE_PATH_JSON_MODEL + '/BunqMeTab.json'
     JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL = \
