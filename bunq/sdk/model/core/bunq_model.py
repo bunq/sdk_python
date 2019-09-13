@@ -1,5 +1,4 @@
 from bunq import Pagination
-from bunq.sdk.context.bunq_context import BunqContext
 from bunq.sdk.http import api_client
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
@@ -144,6 +143,7 @@ class BunqModel(object):
         :rtype: api_context.ApiContext
         """
 
+        from bunq.sdk.context.bunq_context import BunqContext
         return BunqContext.api_context()
 
     @classmethod
@@ -152,6 +152,7 @@ class BunqModel(object):
         :rtype: int
         """
 
+        from bunq.sdk.context.bunq_context import BunqContext
         return BunqContext.user_context().user_id
 
     @classmethod
@@ -163,6 +164,7 @@ class BunqModel(object):
         """
 
         if monetary_account_id is None:
+            from bunq.sdk.context.bunq_context import BunqContext
             return BunqContext.user_context().primary_monetary_account.id_
 
         return monetary_account_id
