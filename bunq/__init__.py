@@ -13,41 +13,51 @@ def initialize_converter():
 
     from bunq.sdk.http import api_client
     from bunq.sdk.context import api_context
-    from bunq.sdk.json import adapters
     from bunq.sdk.json import converter
     from bunq.sdk.model.generated import object_
     from bunq.sdk.model.generated import endpoint
     from bunq.sdk.model.core.installation import Installation
     from bunq.sdk.model.core.session_server import SessionServer
+    from bunq.sdk.json.installation_adapter import InstallationAdapter
+    from bunq.sdk.json.session_server_adapter import SessionServerAdapter
+    from bunq.sdk.json.installation_context_adapter import InstallationContextAdapter
+    from bunq.sdk.json.api_environment_type_adapter import ApiEnvironmentTypeAdapter
+    from bunq.sdk.json.float_adapter import FloatAdapter
+    from bunq.sdk.json.geolocation_adapter import GeolocationAdapter
+    from bunq.sdk.json.monetary_account_reference_adapter import MonetaryAccountReferenceAdapter
+    from bunq.sdk.json.share_detail_adapter import ShareDetailAdapter
+    from bunq.sdk.json.date_time_adapter import DateTimeAdapter
+    from bunq.sdk.json.pagination_adapter import PaginationAdapter
 
-    converter.register_adapter(Installation, adapters.InstallationAdapter)
+    converter.register_adapter(Installation, InstallationAdapter)
     converter.register_adapter(
         SessionServer,
-        adapters.SessionServerAdapter
+        SessionServerAdapter
     )
     converter.register_adapter(
         api_context.InstallationContext,
-        adapters.InstallationContextAdapter
+        InstallationContextAdapter
     )
     converter.register_adapter(
         api_context.ApiEnvironmentType,
-        adapters.ApiEnvironmentTypeAdapter
+        ApiEnvironmentTypeAdapter
     )
-    converter.register_adapter(float, adapters.FloatAdapter)
-    converter.register_adapter(object_.Geolocation, adapters.GeolocationAdapter)
+    converter.register_adapter(float, FloatAdapter)
+    converter.register_adapter(object_.Geolocation, GeolocationAdapter)
     converter.register_adapter(
         object_.MonetaryAccountReference,
-        adapters.MonetaryAccountReferenceAdapter
+        MonetaryAccountReferenceAdapter
     )
-    converter.register_adapter(object_.ShareDetail, adapters.ShareDetailAdapter)
-    converter.register_adapter(datetime.datetime, adapters.DateTimeAdapter)
-    converter.register_adapter(Pagination, adapters.PaginationAdapter)
+    converter.register_adapter(object_.ShareDetail, ShareDetailAdapter)
+    converter.register_adapter(datetime.datetime, DateTimeAdapter)
+    converter.register_adapter(Pagination, PaginationAdapter)
 
     def register_anchor_adapter(class_to_register):
         if issubclass(class_to_register, AnchoredObjectInterface):
+            from bunq.sdk.json.anchored_object_model_adapter import AnchoredObjectModelAdapter
             converter.register_adapter(
                 class_to_register,
-                adapters.AnchoredObjectModelAdapter
+                AnchoredObjectModelAdapter
             )
 
     def get_class(class_string_to_get):
