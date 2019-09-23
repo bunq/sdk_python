@@ -1,6 +1,8 @@
+from bunq.sdk.context.api_environment_type import ApiEnvironmentType
+from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.http.pagination import Pagination
 from bunq.sdk.json import converter
-from bunq.sdk.model.core.anchored_object_interface import AnchoredObjectInterface
+from bunq.sdk.model.core.anchor_object_interface import AnchorObjectInterface
 
 
 def initialize_converter():
@@ -28,6 +30,7 @@ def initialize_converter():
     from bunq.sdk.json.share_detail_adapter import ShareDetailAdapter
     from bunq.sdk.json.date_time_adapter import DateTimeAdapter
     from bunq.sdk.json.pagination_adapter import PaginationAdapter
+    from bunq.sdk.json.anchor_object_adapter import AnchorObjectAdapter
 
     converter.register_adapter(Installation, InstallationAdapter)
     converter.register_adapter(
@@ -35,11 +38,11 @@ def initialize_converter():
         SessionServerAdapter
     )
     converter.register_adapter(
-        api_context.InstallationContext,
+        InstallationContext,
         InstallationContextAdapter
     )
     converter.register_adapter(
-        api_context.ApiEnvironmentType,
+        ApiEnvironmentType,
         ApiEnvironmentTypeAdapter
     )
     converter.register_adapter(float, FloatAdapter)
@@ -53,11 +56,10 @@ def initialize_converter():
     converter.register_adapter(Pagination, PaginationAdapter)
 
     def register_anchor_adapter(class_to_register):
-        if issubclass(class_to_register, AnchoredObjectInterface):
-            from bunq.sdk.json.anchored_object_model_adapter import AnchoredObjectModelAdapter
+        if issubclass(class_to_register, AnchorObjectInterface):
             converter.register_adapter(
                 class_to_register,
-                AnchoredObjectModelAdapter
+                AnchorObjectAdapter
             )
 
     def get_class(class_string_to_get):

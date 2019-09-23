@@ -73,10 +73,10 @@ class SessionServerAdapter(converter.JsonAdapter):
                 )
         elif cls._FIELD_USER_API_KEY in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_API_KEY] = \
-            converter.deserialize(
-                endpoint.UserApiKey,
-                user_dict_wrapped[cls._FIELD_USER_API_KEY]
-            )
+                converter.deserialize(
+                    endpoint.UserApiKey,
+                    user_dict_wrapped[cls._FIELD_USER_API_KEY]
+                )
         else:
             raise BunqException(cls._ERROR_COULD_NOT_DETERMINE_USER)
 

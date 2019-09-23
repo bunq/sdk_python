@@ -1,5 +1,4 @@
 from bunq import Pagination
-from bunq.sdk.http import api_client
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
 
@@ -35,9 +34,9 @@ class BunqModel(object):
     @classmethod
     def _from_json_array_nested(cls, response_raw):
         """
-        :type response_raw: api_client.BunqResponseRaw
+        :type response_raw: BunqResponseRaw
 
-        :rtype: bunq.sdk.client.BunqResponse[cls]
+        :rtype: BunqResponse[cls]
         """
 
         json = response_raw.body_bytes.decode()
@@ -49,10 +48,10 @@ class BunqModel(object):
     @classmethod
     def _from_json(cls, response_raw, wrapper=None):
         """
-        :type response_raw: api_client.BunqResponseRaw
+        :type response_raw: BunqResponseRaw
         :type wrapper: str|None
 
-        :rtype: client.BunqResponse[cls]
+        :rtype: BunqResponse[cls]
         """
 
         json = response_raw.body_bytes.decode()
@@ -81,14 +80,15 @@ class BunqModel(object):
     @classmethod
     def _process_for_id(cls, response_raw):
         """
-        :type response_raw: api_client.BunqResponseRaw
+        :type response_raw: BunqResponseRaw
 
-        :rtype: client.BunqResponse[int]
+        :rtype: BunqResponse[int]
         """
+
+        from bunq.sdk.model.core.id import Id
 
         json = response_raw.body_bytes.decode()
         obj = converter.json_to_class(dict, json)
-        from bunq.sdk.model.core.id import Id
         id_ = converter.deserialize(
             Id,
             cls._unwrap_response_single(obj, cls._FIELD_ID)
@@ -99,14 +99,15 @@ class BunqModel(object):
     @classmethod
     def _process_for_uuid(cls, response_raw):
         """
-        :type response_raw: api_client.BunqResponseRaw
+        :type response_raw: BunqResponseRaw
 
-        :rtype: client.BunqResponse[str]
+        :rtype: BunqResponse[str]
         """
+
+        from bunq.sdk.model.core.uuid import Uuid
 
         json = response_raw.body_bytes.decode()
         obj = converter.json_to_class(dict, json)
-        from bunq.sdk.model.core.uuid import Uuid
         uuid = converter.deserialize(
             Uuid,
             cls._unwrap_response_single(obj, cls._FIELD_UUID)
@@ -117,10 +118,10 @@ class BunqModel(object):
     @classmethod
     def _from_json_list(cls, response_raw, wrapper=None):
         """
-        :type response_raw: api_client.BunqResponseRaw
+        :type response_raw: BunqResponseRaw
         :type wrapper: str|None
 
-        :rtype: client.BunqResponse[list[cls]]
+        :rtype: BunqResponse[list[cls]]
         """
 
         json = response_raw.body_bytes.decode()
@@ -140,10 +141,11 @@ class BunqModel(object):
     @classmethod
     def _get_api_context(cls):
         """
-        :rtype: api_context.ApiContext
+        :rtype: ApiContext
         """
 
         from bunq.sdk.context.bunq_context import BunqContext
+
         return BunqContext.api_context()
 
     @classmethod
@@ -153,6 +155,7 @@ class BunqModel(object):
         """
 
         from bunq.sdk.context.bunq_context import BunqContext
+
         return BunqContext.user_context().user_id
 
     @classmethod
@@ -163,8 +166,9 @@ class BunqModel(object):
         :rtype: int
         """
 
+        from bunq.sdk.context.bunq_context import BunqContext
+
         if monetary_account_id is None:
-            from bunq.sdk.context.bunq_context import BunqContext
             return BunqContext.user_context().primary_monetary_account.id_
 
         return monetary_account_id

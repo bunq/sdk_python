@@ -11,7 +11,7 @@ from bunq.sdk.security import security
 
 class ApiClient(object):
     """
-    :type _api_context: bunq.sdk.context.ApiContext
+    :type _api_context: ApiContext
     """
 
     # Error constants
@@ -32,7 +32,7 @@ class ApiClient(object):
     ]
 
     # HTTPS type of proxy, the only used at bunq
-    _FIELD_PROXY_HTTPS = 'https'
+    FIELD_PROXY_HTTPS = 'https'
 
     # Header constants
     HEADER_ATTACHMENT_DESCRIPTION = 'X-Bunq-Attachment-Description'
@@ -49,7 +49,7 @@ class ApiClient(object):
     HEADER_RESPONSE_ID_LOWER_CASED = 'x-bunq-client-response-id'
 
     # Default header values
-    _USER_AGENT_BUNQ = 'bunq-sdk-python/1.10.16'
+    USER_AGENT_BUNQ = 'bunq-sdk-python/1.10.16'
     GEOLOCATION_ZERO = '0 0 0 0 NL'
     LANGUAGE_EN_US = 'en_US'
     REGION_NL_NL = 'nl_NL'
@@ -57,25 +57,25 @@ class ApiClient(object):
 
     # Request method names
     METHOD_POST = 'POST'
-    _METHOD_PUT = 'PUT'
-    _METHOD_GET = 'GET'
-    _METHOD_DELETE = 'DELETE'
+    METHOD_PUT = 'PUT'
+    METHOD_GET = 'GET'
+    METHOD_DELETE = 'DELETE'
 
     # Delimiter between path and params in URL
-    _DELIMITER_URL_QUERY = '?'
+    DELIMITER_URL_QUERY = '?'
 
     # Status code for successful execution
     STATUS_CODE_OK = 200
 
     # Fields for fetching errors
-    _FIELD_ERROR = 'Error'
-    _FIELD_ERROR_DESCRIPTION = 'error_description'
+    FIELD_ERROR = 'Error'
+    FIELD_ERROR_DESCRIPTION = 'error_description'
 
     # Empty string
-    _STRING_EMPTY = ''
+    STRING_EMPTY = ''
 
     # Empty bytes
-    _BYTES_EMPTY = b''
+    BYTES_EMPTY = b''
 
     def __init__(self, api_context):
         self._api_context = api_context
@@ -97,8 +97,7 @@ class ApiClient(object):
             custom_headers
         )
 
-    def _request(self, method, uri_relative, request_bytes, params,
-                 custom_headers):
+    def _request(self, method, uri_relative, request_bytes, params, custom_headers):
         """
         :type method: str
         :type uri_relative: str
@@ -109,11 +108,11 @@ class ApiClient(object):
         :return: BunqResponseRaw
         """
 
+        from bunq.sdk.context.bunq_context import BunqContext
+
         uri_relative_with_params = self._append_params_to_uri(uri_relative, params)
         if uri_relative not in self._URIS_NOT_REQUIRING_ACTIVE_SESSION:
             if self._api_context.ensure_session_active():
-                from bunq.sdk.context.bunq_context import BunqContext
-
                 BunqContext.update_api_context(self._api_context)
 
         all_headers = self._get_all_headers(
@@ -128,7 +127,7 @@ class ApiClient(object):
             self._get_uri_full(uri_relative_with_params),
             data=request_bytes,
             headers=all_headers,
-            proxies={self._FIELD_PROXY_HTTPS: self._api_context.proxy_url},
+            proxies={self.FIELD_PROXY_HTTPS: self._api_context.proxy_url},
         )
 
         self._assert_response_success(response)
@@ -153,7 +152,7 @@ class ApiClient(object):
         """
 
         if params:
-            return uri + cls._DELIMITER_URL_QUERY + urlencode(params)
+            return uri + cls.DELIMITER_URL_QUERY + urlencode(params)
 
         return uri
 
@@ -189,7 +188,7 @@ class ApiClient(object):
         """
 
         return {
-            cls.HEADER_USER_AGENT: cls._USER_AGENT_BUNQ,
+            cls.HEADER_USER_AGENT: cls.USER_AGENT_BUNQ,
             cls.HEADER_REQUEST_ID: cls._generate_random_request_id(),
             cls.HEADER_GEOLOCATION: cls.GEOLOCATION_ZERO,
             cls.HEADER_LANGUAGE: cls.LANGUAGE_EN_US,
@@ -264,8 +263,8 @@ class ApiClient(object):
 
         error_descriptions = []
 
-        for error in error_dict[self._FIELD_ERROR]:
-            description = error[self._FIELD_ERROR_DESCRIPTION]
+        for error in error_dict[self.FIELD_ERROR]:
+            description = error[self.FIELD_ERROR_DESCRIPTION]
             error_descriptions.append(description)
 
         return error_descriptions
@@ -297,7 +296,7 @@ class ApiClient(object):
         """
 
         return self._request(
-            self._METHOD_PUT,
+            self.METHOD_PUT,
             uri_relative,
             request_bytes,
             {},
@@ -314,9 +313,9 @@ class ApiClient(object):
         """
 
         return self._request(
-            self._METHOD_GET,
+            self.METHOD_GET,
             uri_relative,
-            self._BYTES_EMPTY,
+            self.BYTES_EMPTY,
             params,
             custom_headers
         )
@@ -330,9 +329,9 @@ class ApiClient(object):
         """
 
         return self._request(
-            self._METHOD_DELETE,
+            self.METHOD_DELETE,
             uri_relative,
-            self._BYTES_EMPTY,
+            self.BYTES_EMPTY,
             {},
             custom_headers
         )

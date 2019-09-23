@@ -146,7 +146,7 @@ def _should_sign_request_header(header_name):
 
 def encrypt(api_context, request_bytes, custom_headers):
     """
-    :type api_context: bunq.sdk.context.ApiContext
+    :type api_context: ApiContext
     :type request_bytes: bytes
     :type custom_headers: dict[str, str]
 
@@ -165,7 +165,7 @@ def encrypt(api_context, request_bytes, custom_headers):
 
 def _add_header_client_encryption_key(api_context, key, custom_headers):
     """
-    :type api_context: bunq.sdk.context.ApiContext
+    :type api_context: ApiContext
     :type key: bytes
     :type custom_headers: dict[str, str]
 

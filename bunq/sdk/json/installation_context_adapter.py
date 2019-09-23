@@ -1,4 +1,3 @@
-from bunq.sdk.context import api_context
 from bunq.sdk.json import converter
 from bunq.sdk.security import security
 
@@ -20,10 +19,10 @@ class InstallationContextAdapter(converter.JsonAdapter):
     @classmethod
     def deserialize(cls, target_class, obj):
         """
-        :type target_class: api_context.InstallationContext|type
+        :type target_class: InstallationContext|type
         :type obj: dict
 
-        :rtype: context.InstallationContext
+        :rtype: InstallationContext
         """
 
         installation_context = target_class.__new__(target_class)
@@ -48,7 +47,7 @@ class InstallationContextAdapter(converter.JsonAdapter):
     @classmethod
     def serialize(cls, installation_context):
         """
-        :type installation_context: api_context.InstallationContext
+        :type installation_context: InstallationContext
 
         :rtype: dict
         """

@@ -25,7 +25,7 @@ class PaginationAdapter(converter.JsonAdapter):
         :type target_class: Pagination|type
         :type pagination_response: dict
 
-        :rtype: client.Pagination
+        :rtype: Pagination
         """
 
         pagination = Pagination()
@@ -102,7 +102,5 @@ class PaginationAdapter(converter.JsonAdapter):
 
         :raise: NotImplementedError
         """
-
-        _ = pagination
 
         raise NotImplementedError()

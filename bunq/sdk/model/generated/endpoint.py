@@ -2,10 +2,10 @@ from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
-from bunq.sdk.model.core.anchored_object_interface import AnchoredObjectInterface
+from bunq.sdk.model.core.anchor_object_interface import AnchorObjectInterface
+from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.model.generated import object_
 from bunq.sdk.security import security
-from bunq.sdk.model.core.bunq_model import BunqModel
 
 
 class BillingContractSubscription(BunqModel):
@@ -6441,7 +6441,7 @@ class CashRegister(BunqModel):
         return converter.json_to_class(CashRegister, json_str)
 
 
-class Tab(BunqModel, AnchoredObjectInterface):
+class Tab(BunqModel, AnchorObjectInterface):
     """
     Once your CashRegister has been activated you can use it to create Tabs. A
     Tab is a template for a payment. In contrast to requests a Tab is not
@@ -8526,7 +8526,7 @@ class DeviceServer(BunqModel):
         return converter.json_to_class(DeviceServer, json_str)
 
 
-class Device(BunqModel, AnchoredObjectInterface):
+class Device(BunqModel, AnchorObjectInterface):
     """
     Used to get a Device or a listing of Devices. Creating a DeviceServer should
     happen via /device-server
@@ -18946,7 +18946,7 @@ class MonetaryAccountSavings(BunqModel):
         return converter.json_to_class(MonetaryAccountSavings, json_str)
 
 
-class MonetaryAccount(BunqModel, AnchoredObjectInterface):
+class MonetaryAccount(BunqModel, AnchorObjectInterface):
     """
     Used to show the MonetaryAccounts that you can access. Currently the only
     MonetaryAccount type is MonetaryAccountBank. See also:
@@ -28497,7 +28497,7 @@ class ChatMessage(BunqModel):
         return converter.json_to_class(ChatMessage, json_str)
 
 
-class User(BunqModel, AnchoredObjectInterface):
+class User(BunqModel, AnchorObjectInterface):
     """
     Using this call you can retrieve information of the user you are logged in
     as. This includes your user id, which is referred to in endpoints.

@@ -1,12 +1,12 @@
-from bunq import AnchoredObjectInterface
+from bunq import AnchorObjectInterface
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 
 
-class AnchoredObjectModelAdapter(converter.JsonAdapter):
-    _ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object.'
+class AnchorObjectAdapter(converter.JsonAdapter):
+    __ERROR_MODEL_NOT_FOUND = '{} is not in endpoint nor object.'
 
     __STRING_FORMAT_UNDERSCORE = '_'
 
@@ -28,7 +28,7 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
 
         if isinstance(
                 model_,
-                AnchoredObjectInterface
+                AnchorObjectInterface
         ) and model_.is_all_field_none():
             for field in model_.__dict__:
                 object_class = cls._get_object_class(field)
@@ -67,4 +67,4 @@ class AnchoredObjectModelAdapter(converter.JsonAdapter):
         except AttributeError:
             pass
 
-        raise BunqException(cls._ERROR_MODEL_NOT_FOUND.format(class_name))
+        raise BunqException(cls.__ERROR_MODEL_NOT_FOUND.format(class_name))

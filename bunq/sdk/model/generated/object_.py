@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from bunq import AnchoredObjectInterface
+from bunq import AnchorObjectInterface
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.bunq_model import BunqModel
@@ -2625,7 +2625,7 @@ class DraftPaymentEntry(BunqModel):
         return converter.json_to_class(DraftPaymentEntry, json_str)
 
 
-class DraftPaymentAnchorObject(BunqModel, AnchoredObjectInterface):
+class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _Payment:
     :type _Payment: endpoint.Payment
@@ -3275,7 +3275,7 @@ class ShareDetailDraftPayment(BunqModel):
         return converter.json_to_class(ShareDetailDraftPayment, json_str)
 
 
-class EventObject(BunqModel, AnchoredObjectInterface):
+class EventObject(BunqModel, AnchorObjectInterface):
     """
     :param _BunqMeTab:
     :type _BunqMeTab: endpoint.BunqMeTab
@@ -3938,7 +3938,7 @@ class SchedulePaymentEntry(BunqModel):
         return converter.json_to_class(SchedulePaymentEntry, json_str)
 
 
-class ScheduleAnchorObject(BunqModel, AnchoredObjectInterface):
+class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _Payment:
     :type _Payment: endpoint.Payment
@@ -4058,7 +4058,7 @@ class Error(BunqModel):
         return converter.json_to_class(Error, json_str)
 
 
-class ScheduleInstanceAnchorObject(BunqModel, AnchoredObjectInterface):
+class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _Payment:
     :type _Payment: endpoint.Payment
@@ -4233,7 +4233,7 @@ class LabelCard(BunqModel):
         return converter.json_to_class(LabelCard, json_str)
 
 
-class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchoredObjectInterface):
+class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _BillingInvoice:
     :type _BillingInvoice: endpoint.Invoice
@@ -5129,7 +5129,7 @@ class NotificationUrl(BunqModel):
         return converter.json_to_class(NotificationUrl, json_str)
 
 
-class NotificationAnchorObject(BunqModel, AnchoredObjectInterface):
+class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _BunqMeFundraiserResult:
     :type _BunqMeFundraiserResult: endpoint.BunqMeFundraiserResult
@@ -5705,7 +5705,7 @@ class Ubo(BunqModel):
         return converter.json_to_class(Ubo, json_str)
 
 
-class UserApiKeyAnchoredUser(BunqModel, AnchoredObjectInterface):
+class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
     """
     :param _UserPerson:
     :type _UserPerson: endpoint.UserPerson

@@ -74,7 +74,7 @@ class SessionServer(BunqModel, ABC):
     @classmethod
     def create(cls, api_context):
         """
-        :type api_context: bunq.sdk.context.ApiContext
+        :type api_context: ApiContext
 
         :rtype: BunqResponse[SessionServer]
         """

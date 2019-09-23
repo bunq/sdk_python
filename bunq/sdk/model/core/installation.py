@@ -50,7 +50,7 @@ class Installation(BunqModel, ABC):
     @classmethod
     def create(cls, api_context, public_key_string):
         """
-        :type api_context: bunq.sdk.context.ApiContext
+        :type api_context: ApiContext
         :type public_key_string: str
 
         :rtype: BunqResponse[Installation]

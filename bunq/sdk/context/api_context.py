@@ -69,9 +69,10 @@ class ApiContext(object):
         """
         :rtype: None
         """
+        from bunq.sdk.model.core.installation import Installation
 
         private_key_client = security.generate_rsa_private_key()
-        from bunq.sdk.model.core.installation import Installation
+
         installation = Installation.create(
             self,
             security.public_key_to_string(private_key_client.publickey())
@@ -111,6 +112,7 @@ class ApiContext(object):
         """
 
         from bunq.sdk.model.core.session_server import SessionServer
+
         session_server = SessionServer.create(self).value
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)

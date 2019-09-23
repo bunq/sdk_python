@@ -26,8 +26,6 @@ class GeolocationAdapter(converter.JsonAdapter):
         :raise: NotImplementedError
         """
 
-        _ = target_class, obj
-
         raise NotImplementedError()
 
     @classmethod

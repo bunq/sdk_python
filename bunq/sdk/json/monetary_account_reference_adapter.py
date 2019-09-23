@@ -17,9 +17,7 @@ class MonetaryAccountReferenceAdapter(converter.JsonAdapter):
             obj
         )
 
-        return target_class.create_from_label_monetary_account(
-            label_monetary_account
-        )
+        return target_class.create_from_label_monetary_account(label_monetary_account)
 
     @classmethod
     def serialize(cls, monetary_account_reference):

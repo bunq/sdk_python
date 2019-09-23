@@ -4,9 +4,9 @@ import re
 import sys
 import warnings
 
-# Indentation size we use for the serialized JSON output
 from bunq.sdk.exception.bunq_exception import BunqException
 
+# Indentation size we use for the serialized JSON output
 _JSON_INDENT = 4
 
 
@@ -32,8 +32,7 @@ class JsonAdapter(object):
     _PREFIX_KEY_PROTECTED = '_'
 
     # Constants to fetch param types from the docstrings
-    _TEMPLATE_PATTERN_PARAM_TYPES = \
-        ':type (_?{}):[\s\n\r]+([\w.]+)(?:\[([\w.]+)\])?'
+    _TEMPLATE_PATTERN_PARAM_TYPES = ':type (_?{}):[\s\n\r]+([\w.]+)(?:\[([\w.]+)\])?'
     _PATTERN_PARAM_NAME_TYPED_ANY = ':type (\w+):'
     _SUBMATCH_INDEX_NAME = 1
     _SUBMATCH_INDEX_TYPE_MAIN = 2
