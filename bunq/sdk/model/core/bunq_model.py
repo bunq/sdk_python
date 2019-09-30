@@ -27,10 +27,6 @@ class BunqModel(object):
 
         return converter.class_to_json(self)
 
-    @staticmethod
-    def from_json(json_str):
-        raise NotImplementedError
-
     @classmethod
     def _from_json_array_nested(cls, response_raw):
         """

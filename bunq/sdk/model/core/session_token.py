@@ -1,9 +1,7 @@
-from abc import ABC
-
 from bunq.sdk.model.core.bunq_model import BunqModel
 
 
-class SessionToken(BunqModel, ABC):
+class SessionToken(BunqModel):
     """
     :type _id_: int
     :type _created: str

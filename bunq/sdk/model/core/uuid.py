@@ -1,9 +1,7 @@
-from abc import ABC
-
 from bunq.sdk.model.core.bunq_model import BunqModel
 
 
-class Uuid(BunqModel, ABC):
+class Uuid(BunqModel):
     """
     :type _uuid: str
     """

@@ -1,11 +1,9 @@
-from abc import ABC
-
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.bunq_model import BunqModel
 
 
-class Installation(BunqModel, ABC):
+class Installation(BunqModel):
     """
     :type _id_: Id
     :type _token: SessionToken

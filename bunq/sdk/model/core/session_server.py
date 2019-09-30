@@ -1,12 +1,10 @@
-from abc import ABC
-
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.bunq_model import BunqModel
 
 
-class SessionServer(BunqModel, ABC):
+class SessionServer(BunqModel):
     """
     :type _id_: Id
     :type _token: SessionToken

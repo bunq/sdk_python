@@ -1,9 +1,7 @@
-from abc import ABC
-
 from bunq.sdk.model.core.bunq_model import BunqModel
 
 
-class Id(BunqModel, ABC):
+class Id(BunqModel):
     """
     :type _id_: int
     """
