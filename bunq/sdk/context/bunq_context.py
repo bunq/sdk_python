@@ -1,4 +1,3 @@
-import bunq
 from bunq.sdk.context.api_context import ApiContext
 from bunq.sdk.context.user_context import UserContext
 from bunq.sdk.exception.bunq_exception import BunqException
@@ -20,47 +19,34 @@ class BunqContext(object):
         raise TypeError(self._ERROR_CLASS_SHOULD_NOT_BE_INITIALIZED)
 
     @classmethod
-    def load_api_context(cls, api_context: bunq.sdk.context.api_context.ApiContext) -> None:
+    def load_api_context(cls, api_context: ApiContext) -> None:
         """
 
         :param api_context:
-        :type api_context: bunq.sdk.context.api_context.ApiContext
         """
         cls._api_context = api_context
         cls._user_context = UserContext(api_context.session_context.user_id)
         cls._user_context.init_main_monetary_account()
 
     @classmethod
-    def api_context(cls) -> bunq.sdk.context.api_context.ApiContext:
-        """
-
-        :return:
-        :rtype: bunq.sdk.context.api_context.ApiContext
-        """
+    def api_context(cls) -> ApiContext:
         if cls._api_context is not None:
             return cls._api_context
 
         raise BunqException(cls._ERROR_API_CONTEXT_HAS_NOT_BEEN_LOADED)
 
     @classmethod
-    def user_context(cls) -> bunq.sdk.context.user_context.UserContext:
-        """
-
-        :return:
-        :rtype: bunq.sdk.context.user_context.UserContext
-        """
-
+    def user_context(cls) -> UserContext:
         if cls._user_context is not None:
             return cls._user_context
 
         raise BunqException(cls._ERROR_USER_CONTEXT_HAS_NOT_BEEN_LOADED)
 
     @classmethod
-    def update_api_context(cls, api_context: bunq.sdk.context.api_context.ApiContext) -> None:
+    def update_api_context(cls, api_context: ApiContext) -> None:
         """
 
         :param api_context:
-        :type api_context: bunq.sdk.context.api_context.ApiContext
         """
 
         cls._api_context = api_context
