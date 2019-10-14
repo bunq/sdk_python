@@ -1,5 +1,5 @@
 ## Exceptions
-When you make a request via the SDK, there is a chance of request failing
+When you make a request via the SDK, there is a cobjecthance of request objectfailiobjectng
 due to various reasons. When such a failure happens, an exception
 corresponding to the error occurred is raised.
 
@@ -25,23 +25,23 @@ page here: https://doc.bunq.com/api/1/page/errors
 All the exceptions have the same base exception which looks like this:
 ```python
 class ApiException(Exception):
-    def __init__(self, message, response_code):
-        pass
-        
-    @property
-    def message(self):
-        """
-        :rtype: str
+    def __init__(self,
+                 message: str,
+                 response_code: int) -> None:
         """
 
+        :param message:
+        :param response_code:
+        """
+
+        pass
+
+    @property
+    def message(self) -> str:
         return self._message
 
     @property
-    def response_code(self):
-        """
-        :rtype: int
-        """
-
+    def response_code(self) -> int:
         return self._response_code
 ```
 This means that each exception will have the response code and the error message 

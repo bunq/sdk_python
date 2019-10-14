@@ -1,3 +1,6 @@
+from typing import List
+
+from bunq.sdk.exception.api_exception import ApiException
 from bunq.sdk.exception.bad_request_exception import BadRequestException
 from bunq.sdk.exception.forbidden_exception import ForbiddenException
 from bunq.sdk.exception.method_not_allowed_exception import MethodNotAllowedException
@@ -28,17 +31,16 @@ class ExceptionFactory:
     @classmethod
     def create_exception_for_response(
             cls,
-            response_code,
-            messages,
-            response_id
-    ):
+            response_code: int,
+            messages: List[str],
+            response_id: str
+    ) -> ApiException:
         """
-        :type response_code: int
-        :type messages: list[str]
-        :type response_id: str
 
+        :param response_code:
+        :param messages:
+        :param response_id:
         :return: The exception according to the status code.
-        :rtype:  ApiException
         """
 
         error_message = cls._generate_message_error(
@@ -97,31 +99,30 @@ class ExceptionFactory:
         )
 
     @classmethod
-    def _generate_message_error(cls, response_code, messages, response_id):
-        """
-        :type response_code: int
-        :type messages: list[str]
-        :type response_id: str
-
-        :rtype: str
+    def _generate_message_error(cls,
+                                response_code: int,
+                                messages: List[str],
+                                response_id: str) -> str:
         """
 
-        line_response_code = cls._FORMAT_RESPONSE_CODE_LINE \
-            .format(response_code)
+        :param response_code:
+        :param messages:
+        :param response_id:
+        """
+
+        line_response_code = cls._FORMAT_RESPONSE_CODE_LINE.format(response_code)
         line_response_id = cls._FORMAT_RESPONSE_ID_LINE.format(response_id)
-        line_error_message = cls._FORMAT_ERROR_MESSAGE_LINE.format(
-            cls._GLUE_ERROR_MESSAGE_STRING_EMPTY.join(messages)
-        )
+        line_error_message = cls._FORMAT_ERROR_MESSAGE_LINE.format(cls._GLUE_ERROR_MESSAGE_STRING_EMPTY.join(messages))
 
-        return cls._glue_all_error_message(
-            [line_response_code, line_response_id, line_error_message]
-        )
+        return cls._glue_all_error_message([line_response_code, line_response_id, line_error_message])
 
     @classmethod
-    def _glue_all_error_message(cls, messages):
+    def _glue_all_error_message(cls, messages: List[str]) -> str:
         """
-        :type messages: list[str]
 
+        :param messages:
+        :type messages: List[str]
+        :return:
         :rtype: str
         """
 

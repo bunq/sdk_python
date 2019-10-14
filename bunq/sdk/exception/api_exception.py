@@ -1,9 +1,13 @@
 class ApiException(Exception):
-    def __init__(self, message, response_code, response_id):
+    def __init__(self,
+                 message: str,
+                 response_code: int,
+                 response_id: str) -> None:
         """
-        :type response_id: str
-        :type message: str
-        :type response_code: int
+
+        :param message:
+        :param response_code:
+        :param response_id:
         """
 
         self._response_id = response_id
@@ -13,25 +17,13 @@ class ApiException(Exception):
         super(ApiException, self).__init__(message)
 
     @property
-    def message(self):
-        """
-        :rtype: str
-        """
-
+    def message(self) -> str:
         return self._message
 
     @property
-    def response_code(self):
-        """
-        :rtype: int
-        """
-
+    def response_code(self) -> int:
         return self._response_code
 
     @property
-    def response_id(self):
-        """
-        :rtype: str
-        """
-
+    def response_id(self) -> str:
         return self._response_id
