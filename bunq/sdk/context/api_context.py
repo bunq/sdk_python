@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import datetime
+from typing import List, Optional
 
 from Cryptodome.PublicKey import RSA
 
@@ -7,6 +10,7 @@ from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
+from bunq.sdk.model.core.session_server import SessionServer
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.security import security
 
@@ -33,14 +37,19 @@ class ApiContext(object):
     # Default path to the file storing serialized API context
     _PATH_API_CONTEXT_DEFAULT = 'bunq.conf'
 
-    def __init__(self, environment_type, api_key, device_description,
-                 permitted_ips=None, proxy_url=None):
+    def __init__(self,
+                 environment_type: ApiEnvironmentType,
+                 api_key: str,
+                 device_description: str,
+                 permitted_ips: List[str] = None,
+                 proxy_url: List[str] = None) -> None:
         """
-        :type environment_type: ApiEnvironmentType
-        :type api_key: str
-        :type device_description: str
-        :type permitted_ips: list[str]|None
-        :type proxy_url: str|None
+
+        :param environment_type:
+        :param api_key:
+        :param device_description:
+        :param permitted_ips:
+        :param proxy_url:
         """
 
         if permitted_ips is None:
@@ -53,22 +62,20 @@ class ApiContext(object):
         self._proxy_url = proxy_url
         self._initialize(device_description, permitted_ips)
 
-    def _initialize(self, device_description, permitted_ips):
+    def _initialize(self,
+                    device_description: str,
+                    permitted_ips: List[str]) -> None:
         """
-        :type device_description: str
-        :type permitted_ips: list[str]
 
-        :rtype: None
+        :param device_description:
+        :param permitted_ips:
         """
 
         self._initialize_installation()
         self._register_device(device_description, permitted_ips)
         self._initialize_session()
 
-    def _initialize_installation(self):
-        """
-        :rtype: None
-        """
+    def _initialize_installation(self) -> None:
         from bunq.sdk.model.core.installation import Installation
 
         private_key_client = security.generate_rsa_private_key()
@@ -88,13 +95,13 @@ class ApiContext(object):
             public_key_server
         )
 
-    def _register_device(self, device_description,
-                         permitted_ips):
+    def _register_device(self,
+                         device_description: str,
+                         permitted_ips: List[str]) -> None:
         """
-        :type device_description: str
-        :type permitted_ips: list[]
 
-        :rtype: None
+        :param device_description:
+        :param permitted_ips:
         """
 
         from bunq.sdk.model.core.device_server_internal import DeviceServerInternal
@@ -106,11 +113,7 @@ class ApiContext(object):
             api_context=self
         )
 
-    def _initialize_session(self):
-        """
-        :rtype: None
-        """
-
+    def _initialize_session(self) -> None:
         from bunq.sdk.model.core.session_server import SessionServer
 
         session_server = SessionServer.create(self).value
@@ -121,11 +124,10 @@ class ApiContext(object):
         self._session_context = SessionContext(token, expiry_time, user_id)
 
     @classmethod
-    def _get_expiry_timestamp(cls, session_server):
+    def _get_expiry_timestamp(cls, session_server: SessionServer) -> datetime.datetime:
         """
-        :type session_server: SessionServer
 
-        :rtype: datetime.datetime
+        :param session_server:
         """
 
         timeout_seconds = cls._get_session_timeout_seconds(session_server)
@@ -134,11 +136,10 @@ class ApiContext(object):
         return time_now + datetime.timedelta(seconds=timeout_seconds)
 
     @classmethod
-    def _get_session_timeout_seconds(cls, session_server):
+    def _get_session_timeout_seconds(cls, session_server: SessionServer) -> int:
         """
-        :type session_server: SessionServer
 
-        :rtype: int
+        :param session_server:
         """
 
         if session_server.user_company is not None:
@@ -158,7 +159,6 @@ class ApiContext(object):
         """
         Resets the session if it has expired.
 
-        :rtype: bool
         """
 
         if not self.is_session_active():
@@ -168,11 +168,7 @@ class ApiContext(object):
 
         return False
 
-    def is_session_active(self):
-        """
-        :rtype: bool
-        """
-
+    def is_session_active(self) -> bool:
         if self.session_context is None:
             return False
 
@@ -184,62 +180,40 @@ class ApiContext(object):
 
         return time_to_expiry > time_to_expiry_minimum
 
-    def reset_session(self):
+    def reset_session(self) -> None:
         """
         Closes the current session and opens a new one.
 
-        :rtype: None
         """
 
         self._drop_session_context()
         self._initialize_session()
 
-    def _drop_session_context(self):
-        """
-        :rtype: None
-        """
-
+    def _drop_session_context(self) -> None:
         self._session_context = None
 
-    def close_session(self):
+    def close_session(self) -> None:
         """
         Closes the current session.
 
-        :rtype: None
         """
 
         self._delete_session()
         self._drop_session_context()
 
-    def _delete_session(self):
-        """
-        :rtype: None
-        """
-
+    def _delete_session(self) -> None:
         endpoint.Session.delete(self._SESSION_ID_DUMMY)
 
     @property
-    def environment_type(self):
-        """
-        :rtype: ApiEnvironmentType
-        """
-
+    def environment_type(self) -> ApiEnvironmentType:
         return self._environment_type
 
     @property
-    def api_key(self):
-        """
-        :rtype: str
-        """
-
+    def api_key(self) -> str:
         return self._api_key
 
     @property
-    def token(self):
-        """
-        :rtype: str
-        """
-
+    def token(self) -> Optional[str]:
         if self._session_context is not None:
             return self.session_context.token
         elif self._installation_context is not None:
@@ -248,34 +222,21 @@ class ApiContext(object):
             return None
 
     @property
-    def installation_context(self):
-        """
-        :rtype: InstallationContext
-        """
-
+    def installation_context(self) -> InstallationContext:
         return self._installation_context
 
     @property
-    def session_context(self):
-        """
-        :rtype: SessionContext
-        """
-
+    def session_context(self) -> SessionContext:
         return self._session_context
 
     @property
-    def proxy_url(self):
-        """
-        :rtype: str
-        """
-
+    def proxy_url(self) -> str:
         return self._proxy_url
 
-    def save(self, path=None):
+    def save(self, path: str = None) -> None:
         """
-        :type path: str
 
-        :rtype: None
+        :param path:
         """
 
         if path is None:
@@ -284,21 +245,19 @@ class ApiContext(object):
         with open(path, self._FILE_MODE_WRITE) as file_:
             file_.write(self.to_json())
 
-    def to_json(self):
+    def to_json(self) -> str:
         """
         Serializes an ApiContext to JSON string.
 
-        :rtype: str
         """
 
         return converter.class_to_json(self)
 
     @classmethod
-    def restore(cls, path=None):
+    def restore(cls, path: str = None) -> ApiContext:
         """
-        :type path: str
 
-        :rtype: ApiContext
+        :param path:
         """
 
         if path is None:
@@ -308,18 +267,21 @@ class ApiContext(object):
             return cls.from_json(file_.read())
 
     @classmethod
-    def from_json(cls, json_str):
+    def from_json(cls, json_str: str) -> ApiContext:
         """
         Creates an ApiContext instance from JSON string.
 
-        :type json_str: str
-
-        :rtype: ApiContext
+        :type json_str:
         """
 
         return converter.json_to_class(ApiContext, json_str)
 
-    def __eq__(self, other):
+    def __eq__(self, other: ApiContext) -> bool:
+        """
+
+        :param other:
+        """
+
         return (self.token == other.token and
                 self.api_key == other.api_key and
                 self.environment_type == other.environment_type)

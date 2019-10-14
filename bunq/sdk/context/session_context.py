@@ -8,10 +8,15 @@ class SessionContext(object):
     :type _user_id: int
     """
 
-    def __init__(self, token, expiry_time, user_id):
+    def __init__(self,
+                 token: str,
+                 expiry_time: datetime.datetime,
+                 user_id: int) -> None:
         """
-        :type token: str
-        :type expiry_time: datetime.datetime
+
+        :param token:
+        :param expiry_time:
+        :param user_id:
         """
 
         self._token = token
@@ -19,21 +24,13 @@ class SessionContext(object):
         self._user_id = user_id
 
     @property
-    def token(self):
-        """
-        :rtype: str
-        """
-
+    def token(self) -> str:
         return self._token
 
     @property
-    def expiry_time(self):
-        """
-        :rtype: datetime.datetime
-        """
-
+    def expiry_time(self) -> datetime.datetime:
         return self._expiry_time
 
     @property
-    def user_id(self):
+    def user_id(self) -> int:
         return self._user_id

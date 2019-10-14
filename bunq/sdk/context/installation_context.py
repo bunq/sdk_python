@@ -1,4 +1,5 @@
 from Cryptodome.PublicKey import RSA
+from Cryptodome.PublicKey.RSA import RsaKey
 
 
 class InstallationContext(object):
@@ -8,11 +9,15 @@ class InstallationContext(object):
     :type _public_key_server: RSA.RsaKey
     """
 
-    def __init__(self, token, private_key_client, public_key_server):
+    def __init__(self,
+                 token: str,
+                 private_key_client: RsaKey,
+                 public_key_server: RsaKey) -> None:
         """
-        :type token: str
-        :type private_key_client: RSA.RsaKey
-        :type public_key_server: RSA.RsaKey
+
+        :param token:
+        :param private_key_client:
+        :param public_key_server:
         """
 
         self._token = token
@@ -20,25 +25,13 @@ class InstallationContext(object):
         self._public_key_server = public_key_server
 
     @property
-    def token(self):
-        """
-        :rtype: str
-        """
-
+    def token(self) -> str:
         return self._token
 
     @property
-    def private_key_client(self):
-        """
-        :rtype: RSA.RsaKey
-        """
-
+    def private_key_client(self) -> RsaKey:
         return self._private_key_client
 
     @property
-    def public_key_server(self):
-        """
-        :rtype: RSA.RsaKey
-        """
-
+    def public_key_server(self) -> RsaKey:
         return self._public_key_server

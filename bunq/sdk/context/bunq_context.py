@@ -4,18 +4,14 @@ from bunq.sdk.exception.bunq_exception import BunqException
 
 
 class BunqContext(object):
-    _ERROR_CLASS_SHOULD_NOT_BE_INITIALIZED = \
-        'This class should not be instantiated'
-    _ERROR_API_CONTEXT_HAS_NOT_BEEN_LOADED = \
-        'ApiContext has not been loaded. Please load ApiContext in BunqContext'
-    _ERROR_USER_CONTEXT_HAS_NOT_BEEN_LOADED = \
-        'UserContext has not been loaded, please load this' \
-        ' by loading ApiContext.'
+    _ERROR_CLASS_SHOULD_NOT_BE_INITIALIZED = 'This class should not be instantiated'
+    _ERROR_API_CONTEXT_HAS_NOT_BEEN_LOADED = 'ApiContext has not been loaded. Please load ApiContext in BunqContext'
+    _ERROR_USER_CONTEXT_HAS_NOT_BEEN_LOADED = 'UserContext has not been loaded, please load this by loading ApiContext.'
 
     _api_context = None
     _user_context = None
 
-    def __init__(self):
+    def __init__(self) -> None:
         raise TypeError(self._ERROR_CLASS_SHOULD_NOT_BE_INITIALIZED)
 
     @classmethod
@@ -24,6 +20,7 @@ class BunqContext(object):
 
         :param api_context:
         """
+
         cls._api_context = api_context
         cls._user_context = UserContext(api_context.session_context.user_id)
         cls._user_context.init_main_monetary_account()
