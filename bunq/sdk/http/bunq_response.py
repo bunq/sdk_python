@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-# from types import ModuleType
-from typing import Dict, TypeVar
+from typing import Dict
 
 from bunq import Pagination
+from bunq.sdk.util.type_alias import T
 
 
 class BunqResponse:
@@ -12,8 +12,6 @@ class BunqResponse:
     :type _headers: dict[str, str]
     :type _pagination: Pagination|None
     """
-
-    T = TypeVar('T')
 
     def __init__(self,
                  value: T,

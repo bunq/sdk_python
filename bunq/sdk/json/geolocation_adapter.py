@@ -1,3 +1,5 @@
+from typing import Type
+
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated import object_
 
@@ -10,15 +12,11 @@ class GeolocationAdapter(converter.JsonAdapter):
     _FIELD_RADIUS = 'radius'
 
     @classmethod
-    def can_deserialize(cls):
-        """
-        :rtype: bool
-        """
-
+    def can_deserialize(cls) -> bool:
         return False
 
     @classmethod
-    def deserialize(cls, target_class, obj):
+    def deserialize(cls, target_class: Type[float], obj: object) -> object:
         """
         :type target_class: float|type
         :type obj: dict

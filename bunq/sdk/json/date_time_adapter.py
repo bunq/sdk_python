@@ -1,4 +1,5 @@
 import datetime
+from typing import Type
 
 from bunq.sdk.json import converter
 
@@ -8,24 +9,22 @@ class DateTimeAdapter(converter.JsonAdapter):
     _FORMAT_TIMESTAMP = '%Y-%m-%d %H:%M:%S.%f'
 
     @classmethod
-    def deserialize(cls, target_class, string):
-        """
-        :type target_class: datetime.datetime|type
-        :type string: str
-
-        :rtype: datetime.datetime
+    def deserialize(cls,
+                    target_class: Type[datetime.datetime],
+                    string: str) -> datetime.datetime:
         """
 
+        :param target_class: 
+        :param string: 
+        """
+        
         return target_class.strptime(string, cls._FORMAT_TIMESTAMP)
 
     @classmethod
-    def serialize(cls, timestamp):
+    def serialize(cls, timestamp: datetime.datetime) -> str:
         """
-        :type timestamp: datetime.datetime
 
-        :rtype: dict
+        :param timestamp:
         """
 
         return timestamp.strftime(cls._FORMAT_TIMESTAMP)
-
-

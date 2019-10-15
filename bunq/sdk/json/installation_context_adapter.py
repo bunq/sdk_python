@@ -1,3 +1,6 @@
+from typing import Type, Dict
+
+from bunq import InstallationContext
 from bunq.sdk.json import converter
 from bunq.sdk.security import security
 
@@ -17,14 +20,9 @@ class InstallationContextAdapter(converter.JsonAdapter):
     _FIELD_PUBLIC_KEY_SERVER = 'public_key_server'
 
     @classmethod
-    def deserialize(cls, target_class, obj):
-        """
-        :type target_class: InstallationContext|type
-        :type obj: dict
-
-        :rtype: InstallationContext
-        """
-
+    def deserialize(cls,
+                    target_class: Type[InstallationContext],
+                    obj: Dict) -> InstallationContext:
         installation_context = target_class.__new__(target_class)
         private_key_client = security.rsa_key_from_string(
             obj[cls._FIELD_PRIVATE_KEY_CLIENT]
@@ -45,13 +43,7 @@ class InstallationContextAdapter(converter.JsonAdapter):
         return installation_context
 
     @classmethod
-    def serialize(cls, installation_context):
-        """
-        :type installation_context: InstallationContext
-
-        :rtype: dict
-        """
-
+    def serialize(cls, installation_context: InstallationContext) -> Dict:
         return {
             cls._FIELD_TOKEN: installation_context.token,
             cls._FIELD_PUBLIC_KEY_CLIENT: security.public_key_to_string(

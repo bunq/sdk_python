@@ -1,6 +1,9 @@
+from typing import Type, List
+
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.id import Id
+from bunq.sdk.model.core.session_server import SessionServer
 from bunq.sdk.model.core.session_token import SessionToken
 from bunq.sdk.model.generated import endpoint
 
@@ -35,14 +38,9 @@ class SessionServerAdapter(converter.JsonAdapter):
     _FIELD_USER_API_KEY = 'UserApiKey'
 
     @classmethod
-    def deserialize(cls, target_class, array):
-        """
-        :type target_class: SessionServer|type
-        :type array: list
-
-        :rtype: SessionServer
-        """
-
+    def deserialize(cls,
+                    target_class: Type[SessionServer],
+                    array: List) -> SessionServer:
         session_server = target_class.__new__(target_class)
         session_server.__dict__ = {
             cls._ATTRIBUTE_ID: converter.deserialize(
@@ -83,13 +81,7 @@ class SessionServerAdapter(converter.JsonAdapter):
         return session_server
 
     @classmethod
-    def serialize(cls, session_server):
-        """
-        :type session_server: SessionServer
-
-        :rtype: list
-        """
-
+    def serialize(cls, session_server: SessionServer) -> List:
         return [
             {cls._FIELD_ID: converter.serialize(session_server.id_)},
             {cls._FIELD_TOKEN: converter.serialize(session_server.token)},

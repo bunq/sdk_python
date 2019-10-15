@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 from bunq import AnchorObjectInterface
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
+from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
+from bunq.sdk.util.type_alias import JsonValue
+from bunq.sdk.util.type_alias import T
 
 
 class AnchorObjectAdapter(converter.JsonAdapter):
@@ -16,12 +21,13 @@ class AnchorObjectAdapter(converter.JsonAdapter):
     }
 
     @classmethod
-    def deserialize(cls, cls_target, obj_raw):
+    def deserialize(cls,
+                    cls_target: Type[T],
+                    obj_raw: JsonValue) -> T:
         """
-        :type cls_target: BunqModel
-        :type obj_raw: int|str|bool|float|list|dict|None
 
-        :rtype: T
+        :param cls_target:
+        :param obj_raw:
         """
 
         model_ = super()._deserialize_default(cls_target, obj_raw)
@@ -42,14 +48,14 @@ class AnchorObjectAdapter(converter.JsonAdapter):
         return model_
 
     @classmethod
-    def can_serialize(cls):
+    def can_serialize(cls) -> bool:
         return False
 
     @classmethod
-    def _get_object_class(cls, class_name):
+    def _get_object_class(cls, class_name: str) -> BunqModel:
         """
-        :type class_name: str
-        :rtype: BunqModel
+
+        :param class_name:
         """
 
         class_name = class_name.lstrip(cls.__STRING_FORMAT_UNDERSCORE)

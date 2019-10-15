@@ -1,4 +1,5 @@
 import urllib.parse as urlparse
+from typing import Type, Dict
 
 from bunq import Pagination
 from bunq.sdk.json import converter
@@ -20,14 +21,9 @@ class PaginationAdapter(converter.JsonAdapter):
     _INDEX_FIRST = 0
 
     @classmethod
-    def deserialize(cls, target_class, pagination_response):
-        """
-        :type target_class: Pagination|type
-        :type pagination_response: dict
-
-        :rtype: Pagination
-        """
-
+    def deserialize(cls,
+                    target_class: Type[Pagination],
+                    pagination_response: Dict) -> Pagination:
         pagination = Pagination()
         pagination.__dict__.update(
             cls.parse_pagination_dict(pagination_response)
@@ -36,13 +32,7 @@ class PaginationAdapter(converter.JsonAdapter):
         return pagination
 
     @classmethod
-    def parse_pagination_dict(cls, response_obj):
-        """
-        :type response_obj: dict
-
-        :rtype: dict
-        """
-
+    def parse_pagination_dict(cls, response_obj: Dict) -> Dict:
         pagination_dict = {}
 
         cls.update_dict_id_field_from_response_field(
@@ -70,17 +60,11 @@ class PaginationAdapter(converter.JsonAdapter):
         return pagination_dict
 
     @classmethod
-    def update_dict_id_field_from_response_field(cls, dict_, dict_id_field,
-                                                 response_obj, response_field,
-                                                 response_param):
-        """
-        :type dict_: dict
-        :type dict_id_field: str
-        :type response_obj: dict
-        :type response_field: str
-        :type response_param: str
-        """
-
+    def update_dict_id_field_from_response_field(cls, dict_: Dict,
+                                                 dict_id_field: str,
+                                                 response_obj: Dict,
+                                                 response_field: str,
+                                                 response_param: str) -> None:
         url = response_obj[response_field]
 
         if url is not None:
@@ -96,11 +80,5 @@ class PaginationAdapter(converter.JsonAdapter):
                 )
 
     @classmethod
-    def serialize(cls, pagination):
-        """
-        :type pagination: Pagination
-
-        :raise: NotImplementedError
-        """
-
+    def serialize(cls, pagination: Pagination) -> None:
         raise NotImplementedError()

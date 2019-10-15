@@ -1,5 +1,8 @@
+from typing import Dict, Type, Optional
+
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated import object_
+from bunq.sdk.model.generated.object_ import ShareDetail
 
 
 class ShareDetailAdapter(converter.JsonAdapter):
@@ -14,7 +17,9 @@ class ShareDetailAdapter(converter.JsonAdapter):
     _FIELD_DRAFT_PAYMENT = 'ShareDetailDraftPayment'
 
     @classmethod
-    def deserialize(cls, target_class, obj):
+    def deserialize(cls,
+                    target_class: Type[ShareDetail],
+                    obj: Dict) -> ShareDetail:
         """
         :type target_class: object_.ShareDetail|type
         :type obj: dict
@@ -41,24 +46,11 @@ class ShareDetailAdapter(converter.JsonAdapter):
         return share_detail
 
     @staticmethod
-    def _get_field_or_none(field, obj):
-        """
-        :type field: str
-        :type obj: dict
-
-        :return: dict|None
-        """
-
+    def _get_field_or_none(field: str, obj: Dict) -> Optional[Dict]:
         return obj[field] if field in obj else None
 
     @classmethod
-    def serialize(cls, share_detail):
-        """
-        :type share_detail: object_.ShareDetail
-
-        :rtype: dict
-        """
-
+    def serialize(cls, share_detail: ShareDetail) -> Dict:
         return {
             cls._FIELD_PAYMENT: converter.serialize(
                 share_detail._payment_field_for_request),
@@ -68,4 +60,3 @@ class ShareDetailAdapter(converter.JsonAdapter):
                 share_detail._draft_payment
             ),
         }
-

@@ -1,5 +1,8 @@
+from typing import Type, List
+
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.id import Id
+from bunq.sdk.model.core.installation import Installation
 from bunq.sdk.model.core.public_key_server import PublicKeyServer
 from bunq.sdk.model.core.session_token import SessionToken
 
@@ -21,14 +24,9 @@ class InstallationAdapter(converter.JsonAdapter):
     _FIELD_SERVER_PUBLIC_KEY = 'ServerPublicKey'
 
     @classmethod
-    def deserialize(cls, target_class, array):
-        """
-        :type target_class: Installation|type
-        :type array: list
-
-        :rtype: Installation
-        """
-
+    def deserialize(cls,
+                    target_class: Type[Installation],
+                    array: List) -> Installation:
         installation = target_class.__new__(target_class)
         server_public_key_wrapped = array[cls._INDEX_SERVER_PUBLIC_KEY]
         installation.__dict__ = {
@@ -49,19 +47,9 @@ class InstallationAdapter(converter.JsonAdapter):
         return installation
 
     @classmethod
-    def serialize(cls, installation):
-        """
-        :type installation: Installation
-
-        :rtype: list
-        """
-
+    def serialize(cls, installation: Installation) -> List:
         return [
             {cls._FIELD_ID: converter.serialize(installation.id_)},
             {cls._FIELD_TOKEN: converter.serialize(installation.token)},
-            {
-                cls._FIELD_SERVER_PUBLIC_KEY: converter.serialize(
-                    installation.server_public_key
-                ),
-            },
+            {cls._FIELD_SERVER_PUBLIC_KEY: converter.serialize(installation.server_public_key), },
         ]
