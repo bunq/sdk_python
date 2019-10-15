@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import typing
 from typing import List, Optional
 
 from Cryptodome.PublicKey import RSA
@@ -10,9 +11,11 @@ from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
-from bunq.sdk.model.core.session_server import SessionServer
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.security import security
+
+if typing.TYPE_CHECKING:
+    from bunq.sdk.model.core.session_server import SessionServer
 
 
 class ApiContext(object):
@@ -124,7 +127,8 @@ class ApiContext(object):
         self._session_context = SessionContext(token, expiry_time, user_id)
 
     @classmethod
-    def _get_expiry_timestamp(cls, session_server: SessionServer) -> datetime.datetime:
+    def _get_expiry_timestamp(cls,
+                              session_server: SessionServer) -> datetime.datetime:
         """
 
         :param session_server:
@@ -254,7 +258,7 @@ class ApiContext(object):
         return converter.class_to_json(self)
 
     @classmethod
-    def restore(cls, path: str = None) -> ApiContext:
+    def restore(cls, path: str = None) -> 'ApiContext':
         """
 
         :param path:
@@ -267,7 +271,7 @@ class ApiContext(object):
             return cls.from_json(file_.read())
 
     @classmethod
-    def from_json(cls, json_str: str) -> ApiContext:
+    def from_json(cls, json_str: str) -> 'ApiContext':
         """
         Creates an ApiContext instance from JSON string.
 
@@ -276,7 +280,7 @@ class ApiContext(object):
 
         return converter.json_to_class(ApiContext, json_str)
 
-    def __eq__(self, other: ApiContext) -> bool:
+    def __eq__(self, other: 'ApiContext') -> bool:
         """
 
         :param other:
