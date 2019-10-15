@@ -10,7 +10,7 @@ from bunq.sdk.exception.bunq_exception import BunqException
 _JSON_INDENT = 4
 
 
-class JsonAdapter(object):
+class JsonAdapter:
     # Error constants
     _ERROR_COULD_NOT_FIND_CLASS = 'Could not find class: {}'
 
@@ -538,7 +538,7 @@ class JsonAdapter(object):
         return obj_serialized
 
 
-class ValueTypes(object):
+class ValueTypes:
     """
     :type _main: type|None
     :type _sub: type|None
@@ -570,7 +570,7 @@ class ValueTypes(object):
         return self._sub
 
 
-class ValueSpecs(object):
+class ValueSpecs:
     """
     :type _name: str|None
     :type _types: ValueTypes|None

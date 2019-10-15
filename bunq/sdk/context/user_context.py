@@ -4,7 +4,7 @@ from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated.endpoint import UserPerson, UserCompany, UserApiKey, MonetaryAccountBank
 
 
-class UserContext(object):
+class UserContext:
     _ERROR_UNEXPECTED_USER_INSTANCE = '"{}" is unexpected user instance.'
     _ERROR_NO_ACTIVE_MONETARY_ACCOUNT_FOUND = 'No active monetary account found.'
     _STATUS_ACTIVE = 'ACTIVE'

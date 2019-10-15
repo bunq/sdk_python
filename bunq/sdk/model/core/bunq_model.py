@@ -3,7 +3,7 @@ from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.json import converter
 
 
-class BunqModel(object):
+class BunqModel:
     # Field constants
     _FIELD_RESPONSE = 'Response'
     _FIELD_PAGINATION = 'Pagination'

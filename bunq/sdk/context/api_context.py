@@ -18,7 +18,7 @@ if typing.TYPE_CHECKING:
     from bunq.sdk.model.core.session_server import SessionServer
 
 
-class ApiContext(object):
+class ApiContext:
     """
     :type _environment_type: ApiEnvironmentType
     :type _api_key: str

@@ -1,7 +1,7 @@
 import datetime
 
 
-class SessionContext(object):
+class SessionContext:
     """
     :type _token: str
     :type _expiry_time: datetime.datetime

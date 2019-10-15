@@ -2,7 +2,7 @@ from Cryptodome.PublicKey import RSA
 from Cryptodome.PublicKey.RSA import RsaKey
 
 
-class InstallationContext(object):
+class InstallationContext:
     """
     :type _token: str
     :type _private_key_client: RSA.RsaKey
