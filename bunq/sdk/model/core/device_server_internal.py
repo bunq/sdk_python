@@ -1,3 +1,6 @@
+from typing import List, Dict
+
+from bunq.sdk.context.api_context import ApiContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
@@ -6,12 +9,15 @@ from bunq.sdk.model.generated.endpoint import DeviceServer
 
 
 class DeviceServerInternal(DeviceServer):
-    _ERROR_API_CONTEXT_IS_NULL = 'ApiContext should not be None,' \
-                                 ' use the generated class instead.'
+    _ERROR_API_CONTEXT_IS_NULL = 'ApiContext should not be None, use the generated class instead.'
 
     @classmethod
-    def create(cls, description, secret, permitted_ips=None,
-               custom_headers=None, api_context=None):
+    def create(cls,
+               api_context: ApiContext,
+               description: str,
+               secret: str,
+               permitted_ips: List[str] = None,
+               custom_headers: Dict[str, str] = None) -> BunqResponseInt: # TODO: The generated bass class needs to be updated?
         """
         Create a new DeviceServer providing the installation token in the header
         and signing the request with the private part of the key you used to
@@ -32,7 +38,7 @@ class DeviceServerInternal(DeviceServer):
         be able to do calls from. These will be linked to the API key.
         :type permitted_ips: list[str]
         :type custom_headers: dict[str, str]|None
-        :type api_context: context.ApiContext
+        :type api_context: ApiContext
 
         :rtype: BunqResponseInt
         """

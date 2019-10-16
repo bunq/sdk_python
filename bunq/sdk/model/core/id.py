@@ -6,18 +6,14 @@ class Id(BunqModel):
     :type _id_: int
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._id_ = None
 
     @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
+    def id_(self) -> int:
         return self._id_
 
-    def is_all_field_none(self):
+    def is_all_field_none(self) -> bool:
         if self.id_ is not None:
             return False
 

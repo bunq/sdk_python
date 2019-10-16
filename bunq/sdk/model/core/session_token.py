@@ -9,45 +9,29 @@ class SessionToken(BunqModel):
     :type _token: str
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._id_ = None
         self._created = None
         self._updated = None
         self._token = None
 
     @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
+    def id_(self) -> int:
         return self._id_
 
     @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
+    def created(self) -> str:
         return self._created
 
     @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
+    def updated(self) -> str:
         return self._updated
 
     @property
-    def token(self):
-        """
-        :rtype: str
-        """
-
+    def token(self) -> str:
         return self._token
 
-    def is_all_field_none(self):
+    def is_all_field_none(self) -> bool:
         if self.id_ is not None:
             return False
 
