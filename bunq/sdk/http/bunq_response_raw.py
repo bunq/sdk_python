@@ -10,12 +10,6 @@ class BunqResponseRaw:
     def __init__(self,
                  body_bytes: bytes,
                  headers: Dict[str, str]) -> None:
-        """
-
-        :param body_bytes:
-        :param headers:
-        """
-
         self._body_bytes = body_bytes
         self._headers = headers
 

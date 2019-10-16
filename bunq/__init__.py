@@ -1,15 +1,14 @@
+from typing import Type, Any
+
 from bunq.sdk.context.api_environment_type import ApiEnvironmentType
 from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.http.pagination import Pagination
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.anchor_object_interface import AnchorObjectInterface
+from bunq.sdk.util.type_alias import T
 
 
-def initialize_converter():
-    """
-    :rtype: None
-    """
-
+def initialize_converter() -> None:
     import datetime
     import inspect
 
@@ -33,36 +32,21 @@ def initialize_converter():
     from bunq.sdk.json.anchor_object_adapter import AnchorObjectAdapter
 
     converter.register_adapter(Installation, InstallationAdapter)
-    converter.register_adapter(
-        SessionServer,
-        SessionServerAdapter
-    )
-    converter.register_adapter(
-        InstallationContext,
-        InstallationContextAdapter
-    )
-    converter.register_adapter(
-        ApiEnvironmentType,
-        ApiEnvironmentTypeAdapter
-    )
+    converter.register_adapter(SessionServer, SessionServerAdapter)
+    converter.register_adapter(InstallationContext, InstallationContextAdapter)
+    converter.register_adapter(ApiEnvironmentType, ApiEnvironmentTypeAdapter)
     converter.register_adapter(float, FloatAdapter)
     converter.register_adapter(object_.Geolocation, GeolocationAdapter)
-    converter.register_adapter(
-        object_.MonetaryAccountReference,
-        MonetaryAccountReferenceAdapter
-    )
+    converter.register_adapter(object_.MonetaryAccountReference, MonetaryAccountReferenceAdapter)
     converter.register_adapter(object_.ShareDetail, ShareDetailAdapter)
     converter.register_adapter(datetime.datetime, DateTimeAdapter)
     converter.register_adapter(Pagination, PaginationAdapter)
 
-    def register_anchor_adapter(class_to_register):
+    def register_anchor_adapter(class_to_register: Type[Any]) -> None:
         if issubclass(class_to_register, AnchorObjectInterface):
-            converter.register_adapter(
-                class_to_register,
-                AnchorObjectAdapter
-            )
+            converter.register_adapter(class_to_register, AnchorObjectAdapter)
 
-    def get_class(class_string_to_get):
+    def get_class(class_string_to_get: str) -> Type[Any]:
         if hasattr(object_, class_string_to_get):
             return getattr(object_, class_string_to_get)
 

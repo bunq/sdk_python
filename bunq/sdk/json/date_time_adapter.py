@@ -12,19 +12,8 @@ class DateTimeAdapter(converter.JsonAdapter):
     def deserialize(cls,
                     target_class: Type[datetime.datetime],
                     string: str) -> datetime.datetime:
-        """
-
-        :param target_class: 
-        :param string: 
-        """
-        
         return target_class.strptime(string, cls._FORMAT_TIMESTAMP)
 
     @classmethod
     def serialize(cls, timestamp: datetime.datetime) -> str:
-        """
-
-        :param timestamp:
-        """
-
         return timestamp.strftime(cls._FORMAT_TIMESTAMP)

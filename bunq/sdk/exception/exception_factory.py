@@ -37,9 +37,6 @@ class ExceptionFactory:
     ) -> ApiException:
         """
 
-        :param response_code:
-        :param messages:
-        :param response_id:
         :return: The exception according to the status code.
         """
 
@@ -103,13 +100,6 @@ class ExceptionFactory:
                                 response_code: int,
                                 messages: List[str],
                                 response_id: str) -> str:
-        """
-
-        :param response_code:
-        :param messages:
-        :param response_id:
-        """
-
         line_response_code = cls._FORMAT_RESPONSE_CODE_LINE.format(response_code)
         line_response_id = cls._FORMAT_RESPONSE_ID_LINE.format(response_id)
         line_error_message = cls._FORMAT_ERROR_MESSAGE_LINE.format(cls._GLUE_ERROR_MESSAGE_STRING_EMPTY.join(messages))
@@ -118,12 +108,4 @@ class ExceptionFactory:
 
     @classmethod
     def _glue_all_error_message(cls, messages: List[str]) -> str:
-        """
-
-        :param messages:
-        :type messages: List[str]
-        :return:
-        :rtype: str
-        """
-
         return cls._GLUE_ERROR_MESSAGE_NEW_LINE.join(messages)

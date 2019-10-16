@@ -46,15 +46,6 @@ class ApiContext:
                  device_description: str,
                  permitted_ips: List[str] = None,
                  proxy_url: List[str] = None) -> None:
-        """
-
-        :param environment_type:
-        :param api_key:
-        :param device_description:
-        :param permitted_ips:
-        :param proxy_url:
-        """
-
         if permitted_ips is None:
             permitted_ips = []
 
@@ -68,12 +59,6 @@ class ApiContext:
     def _initialize(self,
                     device_description: str,
                     permitted_ips: List[str]) -> None:
-        """
-
-        :param device_description:
-        :param permitted_ips:
-        """
-
         self._initialize_installation()
         self._register_device(device_description, permitted_ips)
         self._initialize_session()
@@ -101,12 +86,6 @@ class ApiContext:
     def _register_device(self,
                          device_description: str,
                          permitted_ips: List[str]) -> None:
-        """
-
-        :param device_description:
-        :param permitted_ips:
-        """
-
         from bunq.sdk.model.core.device_server_internal import DeviceServerInternal
 
         DeviceServerInternal.create(
@@ -127,13 +106,7 @@ class ApiContext:
         self._session_context = SessionContext(token, expiry_time, user_id)
 
     @classmethod
-    def _get_expiry_timestamp(cls,
-                              session_server: SessionServer) -> datetime.datetime:
-        """
-
-        :param session_server:
-        """
-
+    def _get_expiry_timestamp(cls, session_server: SessionServer) -> datetime.datetime:
         timeout_seconds = cls._get_session_timeout_seconds(session_server)
         time_now = datetime.datetime.now()
 
@@ -141,11 +114,6 @@ class ApiContext:
 
     @classmethod
     def _get_session_timeout_seconds(cls, session_server: SessionServer) -> int:
-        """
-
-        :param session_server:
-        """
-
         if session_server.user_company is not None:
             return session_server.user_company.session_timeout
         elif session_server.user_person is not None:
@@ -238,11 +206,6 @@ class ApiContext:
         return self._proxy_url
 
     def save(self, path: str = None) -> None:
-        """
-
-        :param path:
-        """
-
         if path is None:
             path = self._PATH_API_CONTEXT_DEFAULT
 
@@ -258,12 +221,7 @@ class ApiContext:
         return converter.class_to_json(self)
 
     @classmethod
-    def restore(cls, path: str = None) -> 'ApiContext':
-        """
-
-        :param path:
-        """
-
+    def restore(cls, path: str = None) -> ApiContext:
         if path is None:
             path = cls._PATH_API_CONTEXT_DEFAULT
 
@@ -271,21 +229,15 @@ class ApiContext:
             return cls.from_json(file_.read())
 
     @classmethod
-    def from_json(cls, json_str: str) -> 'ApiContext':
+    def from_json(cls, json_str: str) -> ApiContext:
         """
         Creates an ApiContext instance from JSON string.
 
-        :type json_str:
         """
 
         return converter.json_to_class(ApiContext, json_str)
 
-    def __eq__(self, other: 'ApiContext') -> bool:
-        """
-
-        :param other:
-        """
-
+    def __eq__(self, other: ApiContext) -> bool:
         return (self.token == other.token and
                 self.api_key == other.api_key and
                 self.environment_type == other.environment_type)

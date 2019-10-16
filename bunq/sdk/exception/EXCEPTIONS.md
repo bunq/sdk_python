@@ -28,12 +28,6 @@ class ApiException(Exception):
     def __init__(self,
                  message: str,
                  response_code: int) -> None:
-        """
-
-        :param message:
-        :param response_code:
-        """
-
         pass
 
     @property

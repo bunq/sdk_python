@@ -1,7 +1,7 @@
-from typing import Type
+from typing import Type, Dict
 
 from bunq.sdk.json import converter
-from bunq.sdk.model.generated import object_
+from bunq.sdk.model.generated.object_ import Geolocation
 
 
 class GeolocationAdapter(converter.JsonAdapter):
@@ -16,10 +16,10 @@ class GeolocationAdapter(converter.JsonAdapter):
         return False
 
     @classmethod
-    def deserialize(cls, target_class: Type[float], obj: object) -> object:
+    def deserialize(cls,
+                    target_class: Type[float],
+                    obj: Dict) -> None:
         """
-        :type target_class: float|type
-        :type obj: dict
 
         :raise: NotImplementedError
         """
@@ -27,13 +27,7 @@ class GeolocationAdapter(converter.JsonAdapter):
         raise NotImplementedError()
 
     @classmethod
-    def serialize(cls, geolocation):
-        """
-        :type geolocation: object_.Geolocation
-
-        :rtype: dict
-        """
-
+    def serialize(cls, geolocation: Geolocation) -> Dict:
         obj = {}
 
         cls.add_if_not_none(obj, cls._FIELD_LATITUDE, geolocation.latitude)
@@ -44,14 +38,9 @@ class GeolocationAdapter(converter.JsonAdapter):
         return obj
 
     @classmethod
-    def add_if_not_none(cls, dict_, key, value):
-        """
-        :type dict_: dict[str, str]
-        :type key: str
-        :type value: float
-
-        :rtype: None
-        """
-
+    def add_if_not_none(cls,
+                        dict_: Dict[str, str],
+                        key: str,
+                        value: float) -> None:
         if value is not None:
             dict_[key] = str(value)

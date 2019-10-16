@@ -13,13 +13,6 @@ class InstallationContext:
                  token: str,
                  private_key_client: RsaKey,
                  public_key_server: RsaKey) -> None:
-        """
-
-        :param token:
-        :param private_key_client:
-        :param public_key_server:
-        """
-
         self._token = token
         self._private_key_client = private_key_client
         self._public_key_server = public_key_server

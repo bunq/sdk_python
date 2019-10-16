@@ -24,18 +24,9 @@ class AnchorObjectAdapter(converter.JsonAdapter):
     def deserialize(cls,
                     cls_target: Type[T],
                     obj_raw: JsonValue) -> T:
-        """
-
-        :param cls_target:
-        :param obj_raw:
-        """
-
         model_ = super()._deserialize_default(cls_target, obj_raw)
 
-        if isinstance(
-                model_,
-                AnchorObjectInterface
-        ) and model_.is_all_field_none():
+        if isinstance(model_, AnchorObjectInterface) and model_.is_all_field_none():
             for field in model_.__dict__:
                 object_class = cls._get_object_class(field)
                 contents = super()._deserialize_default(object_class, obj_raw)
@@ -53,11 +44,6 @@ class AnchorObjectAdapter(converter.JsonAdapter):
 
     @classmethod
     def _get_object_class(cls, class_name: str) -> BunqModel:
-        """
-
-        :param class_name:
-        """
-
         class_name = class_name.lstrip(cls.__STRING_FORMAT_UNDERSCORE)
 
         if class_name in cls._override_field_map:

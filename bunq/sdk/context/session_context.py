@@ -12,13 +12,6 @@ class SessionContext:
                  token: str,
                  expiry_time: datetime.datetime,
                  user_id: int) -> None:
-        """
-
-        :param token:
-        :param expiry_time:
-        :param user_id:
-        """
-
         self._token = token
         self._expiry_time = expiry_time
         self._user_id = user_id

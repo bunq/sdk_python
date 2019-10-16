@@ -16,11 +16,6 @@ class BunqContext:
 
     @classmethod
     def load_api_context(cls, api_context: ApiContext) -> None:
-        """
-
-        :param api_context:
-        """
-
         cls._api_context = api_context
         cls._user_context = UserContext(api_context.session_context.user_id)
         cls._user_context.init_main_monetary_account()
@@ -41,9 +36,4 @@ class BunqContext:
 
     @classmethod
     def update_api_context(cls, api_context: ApiContext) -> None:
-        """
-
-        :param api_context:
-        """
-
         cls._api_context = api_context

@@ -1,12 +1,12 @@
 from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, Generic
 
 from bunq import Pagination
 from bunq.sdk.util.type_alias import T
 
 
-class BunqResponse:
+class BunqResponse(Generic[T]):
     """
     :type _value: T
     :type _headers: dict[str, str]
@@ -17,13 +17,6 @@ class BunqResponse:
                  value: T,
                  headers: Dict[str, str],
                  pagination: Pagination = None) -> None:
-        """
-
-        :param value:
-        :param headers:
-        :param pagination:
-        """
-
         self._value = value
         self._headers = headers
         self._pagination = pagination
@@ -42,10 +35,6 @@ class BunqResponse:
 
     @classmethod
     def cast_from_bunq_response(cls, bunq_response: BunqResponse) -> BunqResponse:
-        """
-        :type bunq_response: BunqResponse
-        """
-
         return cls(
             bunq_response.value,
             bunq_response.headers,

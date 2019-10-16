@@ -12,11 +12,6 @@ class ApiEnvironmentType(aenum.AutoNumberEnum):
     SANDBOX = 'https://public-api.sandbox.bunq.com/v1/'
 
     def __init__(self, uri_base: str) -> None:
-        """
-
-        :type uri_base:
-        """
-
         self._uri_base = uri_base
 
     @property

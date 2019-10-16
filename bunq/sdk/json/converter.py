@@ -7,10 +7,9 @@ import sys
 import typing
 import warnings
 from types import ModuleType
-from typing import Type, Optional, Callable, Generator, Any, Dict, Match, List, Union
+from typing import Type, Optional, Callable, Generator, Any, Dict, Match, List, Union, Generic
 
 from bunq.sdk.exception.bunq_exception import BunqException
-from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.util.type_alias import T, JsonValue
 
 if typing.TYPE_CHECKING:
@@ -20,7 +19,7 @@ if typing.TYPE_CHECKING:
 _JSON_INDENT = 4
 
 
-class JsonAdapter:
+class JsonAdapter(Generic[T]):
     # Error constants
     _ERROR_COULD_NOT_FIND_CLASS = 'Could not find class: {}'
 
@@ -64,7 +63,7 @@ class JsonAdapter:
 
     @classmethod
     def register_custom_adapter(cls,
-                                target_class: Type[BunqModel],
+                                target_class: Type[T],
                                 adapter: Type[JsonAdapter]) -> None:
         class_name = target_class.__name__
 
@@ -336,12 +335,6 @@ class JsonAdapter:
 
     @classmethod
     def _is_type_primitive(cls, type_: Type[Any]) -> bool:
-        """
-        :type type_: type
-
-        :rtype: bool
-        """
-
         return type_ in {int, str, bool, float}
 
     @classmethod
@@ -388,8 +381,8 @@ class ValueTypes:
     """
 
     def __init__(self,
-                 main: Optional[Type[Any]],
-                 sub: Optional[Type[Any]]) -> None:
+                 main: Type[Any] = None,
+                 sub: Type[Any] = None) -> None:
         self._main = main
         self._sub = sub
 
@@ -409,8 +402,8 @@ class ValueSpecs:
     """
 
     def __init__(self,
-                 name: Optional[str],
-                 types: Optional[ValueTypes]) -> None:
+                 name: str = None,
+                 types: ValueTypes = None) -> None:
         self._name = name
         self._types = types
 
@@ -437,7 +430,7 @@ def create_initializer(initializer_function: Callable) -> Generator[bool, None, 
     yield is_disposed
 
 
-def register_adapter(target_class: Type[BunqModel], adapter: Type[JsonAdapter]) -> None:
+def register_adapter(target_class: Type[T], adapter: Type[JsonAdapter]) -> None:
     JsonAdapter.register_custom_adapter(target_class, adapter)
 
 

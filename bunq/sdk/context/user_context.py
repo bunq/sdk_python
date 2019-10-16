@@ -10,11 +10,6 @@ class UserContext:
     _STATUS_ACTIVE = 'ACTIVE'
 
     def __init__(self, user_id: int) -> None:
-        """
-
-        :param user_id:
-        """
-
         self._user_id = user_id
         self._user_person = None
         self._user_company = None
@@ -28,11 +23,6 @@ class UserContext:
         return endpoint.User.list().value[0].get_referenced_object()
 
     def _set_user(self, user: BunqModel) -> None:
-        """
-
-        :param user:
-        """
-
         if isinstance(user, endpoint.UserPerson):
             self._user_person = user
 

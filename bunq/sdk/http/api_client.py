@@ -86,24 +86,12 @@ class ApiClient:
     BYTES_EMPTY = b''
 
     def __init__(self, api_context: ApiContext) -> None:
-        """
-
-        :param api_context:
-        """
-
         self._api_context = api_context
 
     def post(self,
              uri_relative: str,
              request_bytes: bytes,
              custom_headers: Dict[str, str]) -> BunqResponseRaw:
-        """
-
-        :param uri_relative:
-        :param request_bytes:
-        :param custom_headers:
-        """
-
         return self._request(
             self.METHOD_POST,
             uri_relative,
@@ -118,15 +106,6 @@ class ApiClient:
                  request_bytes: bytes,
                  params: Dict[str, str],
                  custom_headers: Dict[str, str]) -> BunqResponseRaw:
-        """
-
-        :param method:
-        :param uri_relative:
-        :param request_bytes:
-        :param params:
-        :param custom_headers:
-        """
-
         from bunq.sdk.context.bunq_context import BunqContext
 
         uri_relative_with_params = self._append_params_to_uri(uri_relative, params)
@@ -165,12 +144,6 @@ class ApiClient:
     def _append_params_to_uri(cls,
                               uri: str,
                               params: Dict[str, str]) -> str:
-        """
-
-        :param uri:
-        :param params:
-        """
-
         if params:
             return uri + cls.DELIMITER_URL_QUERY + urlencode(params)
 
@@ -181,14 +154,6 @@ class ApiClient:
                          endpoint: str,
                          request_bytes: bytes,
                          custom_headers: Dict[str, str]) -> Dict[str, str]:
-        """
-
-        :param method:
-        :param endpoint:
-        :param request_bytes:
-        :param custom_headers:
-        """
-
         headers = self._get_default_headers()
         headers.update(custom_headers)
 
@@ -220,17 +185,10 @@ class ApiClient:
         return str(uuid.uuid4())
 
     def _get_uri_full(self, uri_relative: str) -> str:
-        """
-
-        :param uri_relative:
-        """
-
         return self._api_context.environment_type.uri_base + uri_relative
 
     def _assert_response_success(self, response: Response) -> None:
         """
-
-        :type response:
 
         :raise ApiException: When the response is not successful.
         """
@@ -244,20 +202,9 @@ class ApiClient:
 
     @classmethod
     def _create_bunq_response_raw(cls, response: Response) -> BunqResponseRaw:
-        """
-
-        :param response:
-        :return:
-        """
-
         return BunqResponseRaw(response.content, response.headers)
 
     def _fetch_all_error_message(self, response: Response) -> List[str]:
-        """
-
-        :param response:
-        """
-
         response_content_string = response.content.decode()
 
         try:
@@ -268,12 +215,6 @@ class ApiClient:
             return [response_content_string]
 
     def _fetch_error_descriptions(self, error_dict: Dict[str, List[Dict[str, str]]]) -> List[str]:
-        """
-
-        :param error_dict:
-        :return:
-        """
-
         error_descriptions = []
 
         for error in error_dict[self.FIELD_ERROR]:
@@ -283,11 +224,6 @@ class ApiClient:
         return error_descriptions
 
     def _fetch_response_id(self, response: Response) -> str:
-        """
-
-        :param response:
-        """
-
         headers = response.headers
 
         if self.HEADER_RESPONSE_ID_UPPER_CASED in headers:
@@ -302,13 +238,6 @@ class ApiClient:
             uri_relative: str,
             request_bytes: bytes,
             custom_headers: Dict) -> BunqResponseRaw:
-        """
-
-        :param uri_relative:
-        :param request_bytes:
-        :param custom_headers:
-        """
-
         return self._request(
             self.METHOD_PUT,
             uri_relative,
@@ -321,13 +250,6 @@ class ApiClient:
             uri_relative: str,
             params: Dict[str, str],
             custom_headers: Dict[str, str]) -> BunqResponseRaw:
-        """
-
-        :param uri_relative:
-        :param params:
-        :param custom_headers:
-        """
-
         return self._request(
             self.METHOD_GET,
             uri_relative,
@@ -339,12 +261,6 @@ class ApiClient:
     def delete(self,
                uri_relative: str,
                custom_headers: Dict[str, str]) -> BunqResponseRaw:
-        """
-
-        :param uri_relative:
-        :param custom_headers:
-        """
-
         return self._request(
             self.METHOD_DELETE,
             uri_relative,

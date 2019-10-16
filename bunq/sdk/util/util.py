@@ -1,12 +1,15 @@
+from __future__ import annotations
+
 import json
 import socket
 
 import requests
 
+from bunq.sdk.context.api_context import ApiContext, ApiEnvironmentType
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
-from bunq.sdk.context.api_context import ApiContext, ApiEnvironmentType
 from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated.endpoint import SandboxUser
 
 __UNIQUE_REQUEST_ID = "uniqueness-is-required"
 __FIELD_API_KEY = "ApiKey"
@@ -14,15 +17,10 @@ __INDEX_FIRST = 0
 __FIELD_RESPONSE = "Response"
 __ENDPOINT_SANDBOX_USER = "sandbox-user"
 
-_ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER = "Could not create new sandbox" \
-                                           " user."
+_ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER = "Could not create new sandbox user."
 
 
-def automatic_sandbox_install():
-    """
-    :rtype: ApiContext
-    """
-
+def automatic_sandbox_install() -> ApiContext:
     sandbox_user = __generate_new_sandbox_user()
 
     return ApiContext(
@@ -32,11 +30,7 @@ def automatic_sandbox_install():
     )
 
 
-def __generate_new_sandbox_user():
-    """
-    :rtype: endpoint.SandboxUser
-    """
-
+def __generate_new_sandbox_user() -> SandboxUser:
     url = ApiEnvironmentType.SANDBOX.uri_base + __ENDPOINT_SANDBOX_USER
 
     headers = {

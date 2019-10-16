@@ -3,13 +3,6 @@ class ApiException(Exception):
                  message: str,
                  response_code: int,
                  response_id: str) -> None:
-        """
-
-        :param message:
-        :param response_code:
-        :param response_id:
-        """
-
         self._response_id = response_id
         self._message = message
         self._response_code = response_code

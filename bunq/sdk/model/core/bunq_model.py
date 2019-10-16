@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import typing
 from typing import Dict, List
 
-from bunq import Pagination
-from bunq.sdk.context.api_context import ApiContext
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.http.bunq_response_raw import BunqResponseRaw
 from bunq.sdk.json import converter
+
+if typing.TYPE_CHECKING:
+    from bunq.sdk.context.api_context import ApiContext
 
 
 class BunqModel:
@@ -89,6 +91,8 @@ class BunqModel:
     def _from_json_list(cls,
                         response_raw: BunqResponseRaw,
                         wrapper: str = None) -> BunqResponse[List[BunqModel]]:
+        from bunq import Pagination
+
         json = response_raw.body_bytes.decode()
         obj = converter.json_to_class(dict, json)
         array = obj[cls._FIELD_RESPONSE]

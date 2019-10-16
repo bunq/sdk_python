@@ -38,7 +38,7 @@ class Pagination:
     def assert_has_previous_page(self) -> None:
         """
 
-        :raise: exception.BunqException
+        :raise: BunqException
         """
 
         if not self.has_previous_page():
@@ -70,10 +70,10 @@ class Pagination:
 
         return params
 
-    def assert_has_next_page(self):
+    def assert_has_next_page(self) -> None:
         """
 
-        :raise: exception.BunqException
+        :raise: BunqException
         """
 
         if self._next_id is None:

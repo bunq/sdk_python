@@ -13,11 +13,11 @@ class DeviceServerInternal(DeviceServer):
 
     @classmethod
     def create(cls,
-               api_context: ApiContext,
                description: str,
                secret: str,
                permitted_ips: List[str] = None,
-               custom_headers: Dict[str, str] = None) -> BunqResponseInt: # TODO: The generated bass class needs to be updated?
+               custom_headers: Dict[str, str] = None,
+               api_context: ApiContext = None) -> BunqResponseInt:
         """
         Create a new DeviceServer providing the installation token in the header
         and signing the request with the private part of the key you used to
