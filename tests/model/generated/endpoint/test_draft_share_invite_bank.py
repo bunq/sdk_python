@@ -1,7 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
 
-from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import DraftShareInviteBank
 from bunq.sdk.model.generated.endpoint import DraftShareInviteBankQrCodeContent
 from bunq.sdk.model.generated.object_ import DraftShareInviteEntry

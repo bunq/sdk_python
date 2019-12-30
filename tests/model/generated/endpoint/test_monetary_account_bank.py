@@ -7,7 +7,6 @@ except ImportError:
         """ Function to replace import for Python < 3.6. """
         return urandom(16).hex()
 
-from bunq.sdk.context import BunqContext
 from bunq.sdk.model.generated.endpoint import MonetaryAccountBank
 from tests.bunq_test import BunqSdkTestCase
 
