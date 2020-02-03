@@ -1,7 +1,12 @@
-from bunq.sdk.context.api_context import ApiContext
+from __future__ import annotations
+
+import typing
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated.endpoint import PaymentServiceProviderCredential, UserCredentialPasswordIp
+
+if typing.TYPE_CHECKING:
+    from bunq.sdk.context.api_context import ApiContext
 
 
 class PaymentServiceProviderCredentialInternal(PaymentServiceProviderCredential):

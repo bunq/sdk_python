@@ -12,7 +12,7 @@ from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
-from bunq.sdk.model.core.PaymentServiceProviderCredentialInternal import PaymentServiceProviderCredentialInternal
+from bunq.sdk.model.core.payment_service_provider_credential_internal import PaymentServiceProviderCredentialInternal
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp
 from bunq.sdk.security import security
