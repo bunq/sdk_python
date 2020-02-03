@@ -5,13 +5,16 @@ import typing
 from typing import List, Optional
 
 from Cryptodome.PublicKey import RSA
+from Cryptodome.PublicKey.RSA import RsaKey
 
 from bunq.sdk.context.api_environment_type import ApiEnvironmentType
 from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
+from bunq.sdk.model.core.PaymentServiceProviderCredentialInternal import PaymentServiceProviderCredentialInternal
 from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp
 from bunq.sdk.security import security
 
 if typing.TYPE_CHECKING:
@@ -21,9 +24,9 @@ if typing.TYPE_CHECKING:
 class ApiContext:
     """
     :type _environment_type: ApiEnvironmentType
-    :type _api_key: str
-    :type _session_context: SessionContext
-    :type _installation_context: InstallationContext
+    :type _api_key: str|None
+    :type _session_context: SessionContext|None
+    :type _installation_context: InstallationContext|None
     :type _proxy_url: str|None
     """
 
@@ -42,26 +45,54 @@ class ApiContext:
 
     def __init__(self,
                  environment_type: ApiEnvironmentType,
-                 api_key: str,
-                 device_description: str,
-                 permitted_ips: List[str] = None,
                  proxy_url: List[str] = None) -> None:
-        if permitted_ips is None:
-            permitted_ips = []
-
         self._environment_type = environment_type
-        self._api_key = api_key
+        self._proxy_url = proxy_url
+        self._api_key = None
         self._installation_context = None
         self._session_context = None
-        self._proxy_url = proxy_url
-        self._initialize(device_description, permitted_ips)
 
-    def _initialize(self,
-                    device_description: str,
-                    permitted_ips: List[str]) -> None:
-        self._initialize_installation()
-        self._register_device(device_description, permitted_ips)
-        self._initialize_session()
+    @classmethod
+    def create(cls,
+               environment_type: ApiEnvironmentType,
+               api_key: str,
+               description: str,
+               all_permitted_ip: List[str] = None,
+               proxy_url: List[str] = None) -> ApiContext:
+        api_context = cls(environment_type, proxy_url)
+
+        api_context._api_key = api_key
+
+        api_context._initialize_installation()
+        api_context._register_device(description, all_permitted_ip)
+        api_context._initialize_session()
+
+        return api_context
+
+    @classmethod
+    def create_for_psd2(cls,
+                        environment_type: ApiEnvironmentType,
+                        certificate: str,
+                        private_key: RsaKey,
+                        all_chain_certificate: List[str],
+                        description: str,
+                        all_permitted_ip: List[str] = None,
+                        proxy_url: List[str] = None) -> ApiContext:
+        api_context = cls(environment_type, proxy_url)
+
+        api_context._initialize_installation()
+
+        service_provider_credential = api_context._initialize_psd2_credential(
+            certificate,
+            private_key,
+            all_chain_certificate)
+
+        api_context._api_key = service_provider_credential.token_value
+
+        api_context._register_device(description, all_permitted_ip)
+        api_context._initialize_session()
+
+        return api_context
 
     def _initialize_installation(self) -> None:
         from bunq.sdk.model.core.installation import Installation
@@ -82,6 +113,25 @@ class ApiContext:
             private_key_client,
             public_key_server
         )
+
+    def _initialize_psd2_credential(self,
+                                    certificate: str,
+                                    private_key: RsaKey,
+                                    all_chain_certificate: List[str], ) -> UserCredentialPasswordIp:
+        session_token = self.installation_context.token
+        client_key_pair = self.installation_context.private_key_client
+
+        string_to_sign = security.public_key_to_string(client_key_pair.publickey()) + session_token
+        encoded_signature = security.generate_signature(string_to_sign, private_key)
+
+        payment_response_provider = PaymentServiceProviderCredentialInternal.create_with_api_context(
+            certificate,
+            security.get_certificate_chain_string(all_chain_certificate),
+            encoded_signature,
+            self
+        )
+
+        return payment_response_provider
 
     def _register_device(self,
                          device_description: str,
