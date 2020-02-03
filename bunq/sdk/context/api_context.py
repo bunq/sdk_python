@@ -73,7 +73,7 @@ class ApiContext:
     def create_for_psd2(cls,
                         environment_type: ApiEnvironmentType,
                         certificate: str,
-                        private_key: RsaKey,
+                        private_key: str,
                         all_chain_certificate: List[str],
                         description: str,
                         all_permitted_ip: List[str] = None,
@@ -116,13 +116,13 @@ class ApiContext:
 
     def _initialize_psd2_credential(self,
                                     certificate: str,
-                                    private_key: RsaKey,
+                                    private_key: str,
                                     all_chain_certificate: List[str], ) -> UserCredentialPasswordIp:
         session_token = self.installation_context.token
         client_key_pair = self.installation_context.private_key_client
 
         string_to_sign = security.public_key_to_string(client_key_pair.publickey()) + session_token
-        encoded_signature = security.generate_signature(string_to_sign, private_key)
+        encoded_signature = security.generate_signature(string_to_sign, security.rsa_key_from_string(private_key))
 
         payment_response_provider = PaymentServiceProviderCredentialInternal.create_with_api_context(
             certificate,
