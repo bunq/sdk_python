@@ -1,8 +1,6 @@
 import json
 import os
 
-from bunq.sdk.json.converter import json_to_class
-from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 from tests import bunq_test
@@ -27,7 +25,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
 
     # Model json paths constants.
-    BASE_PATH_JSON_MODEL = '../../../assets/NotficationUrlJsons'
+    BASE_PATH_JSON_MODEL = '../../../assets/NotificationUrlJsons'
     JSON_PATH_MUTATION_MODEL = BASE_PATH_JSON_MODEL + '/Mutation.json'
     JSON_PATH_BUNQ_ME_TAB_MODEL = BASE_PATH_JSON_MODEL + '/BunqMeTab.json'
     JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL = \
@@ -119,7 +117,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     @classmethod
     def is_model_reference(cls, referenced_model, class_name):
         """
-        :type referenced_model: core.BunqModel
+        :type referenced_model: BunqModel
         :type class_name: str
 
         :rtype: bool

@@ -1,12 +1,14 @@
-from bunq.sdk.exception import BadRequestException
-from bunq.sdk.exception import UnauthorizedException
-from bunq.sdk.exception import ForbiddenException
-from bunq.sdk.exception import NotFoundException
-from bunq.sdk.exception import MethodNotAllowedException
-from bunq.sdk.exception import TooManyRequestsException
-from bunq.sdk.exception import PleaseContactBunqException
-from bunq.sdk.exception import UnknownApiErrorException
-from bunq.sdk.exception import ApiException
+from typing import List
+
+from bunq.sdk.exception.api_exception import ApiException
+from bunq.sdk.exception.bad_request_exception import BadRequestException
+from bunq.sdk.exception.forbidden_exception import ForbiddenException
+from bunq.sdk.exception.method_not_allowed_exception import MethodNotAllowedException
+from bunq.sdk.exception.not_found_exception import NotFoundException
+from bunq.sdk.exception.please_contact_bunq_exception import PleaseContactBunqException
+from bunq.sdk.exception.too_many_requests_exception import TooManyRequestsException
+from bunq.sdk.exception.unauthorized_exception import UnauthorizedException
+from bunq.sdk.exception.unknown_api_error_exception import UnknownApiErrorException
 
 
 class ExceptionFactory:
@@ -29,17 +31,13 @@ class ExceptionFactory:
     @classmethod
     def create_exception_for_response(
             cls,
-            response_code,
-            messages,
-            response_id
-    ):
+            response_code: int,
+            messages: List[str],
+            response_id: str
+    ) -> ApiException:
         """
-        :type response_code: int
-        :type messages: list[str]
-        :type response_id: str
 
         :return: The exception according to the status code.
-        :rtype:  ApiException
         """
 
         error_message = cls._generate_message_error(
@@ -98,32 +96,16 @@ class ExceptionFactory:
         )
 
     @classmethod
-    def _generate_message_error(cls, response_code, messages, response_id):
-        """
-        :type response_code: int
-        :type messages: list[str]
-        :type response_id: str
-
-        :rtype: str
-        """
-
-        line_response_code = cls._FORMAT_RESPONSE_CODE_LINE \
-            .format(response_code)
+    def _generate_message_error(cls,
+                                response_code: int,
+                                messages: List[str],
+                                response_id: str) -> str:
+        line_response_code = cls._FORMAT_RESPONSE_CODE_LINE.format(response_code)
         line_response_id = cls._FORMAT_RESPONSE_ID_LINE.format(response_id)
-        line_error_message = cls._FORMAT_ERROR_MESSAGE_LINE.format(
-            cls._GLUE_ERROR_MESSAGE_STRING_EMPTY.join(messages)
-        )
+        line_error_message = cls._FORMAT_ERROR_MESSAGE_LINE.format(cls._GLUE_ERROR_MESSAGE_STRING_EMPTY.join(messages))
 
-        return cls._glue_all_error_message(
-            [line_response_code, line_response_id, line_error_message]
-        )
+        return cls._glue_all_error_message([line_response_code, line_response_id, line_error_message])
 
     @classmethod
-    def _glue_all_error_message(cls, messages):
-        """
-        :type messages: list[str]
-
-        :rtype: str
-        """
-
+    def _glue_all_error_message(cls, messages: List[str]) -> str:
         return cls._GLUE_ERROR_MESSAGE_NEW_LINE.join(messages)

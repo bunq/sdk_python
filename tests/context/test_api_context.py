@@ -1,8 +1,8 @@
 import json
 import os
 
-from bunq.sdk.context import ApiContext
-from bunq.sdk.context import BunqContext
+from bunq.sdk.context.api_context import ApiContext
+from bunq.sdk.context.bunq_context import BunqContext
 from bunq.sdk.json import converter
 from tests.bunq_test import BunqSdkTestCase
 
