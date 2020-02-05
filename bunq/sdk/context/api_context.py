@@ -86,11 +86,7 @@ class ApiContext:
             private_key,
             all_chain_certificate)
 
-        print(service_provider_credential.token_value)
-
         api_context._api_key = service_provider_credential.token_value
-
-        print(api_context._api_key)
 
         api_context.__register_device(description, all_permitted_ip)
         api_context.__initialize_session_for_psd2(service_provider_credential)
@@ -141,8 +137,6 @@ class ApiContext:
                           permitted_ips: List[str]) -> None:
         from bunq.sdk.model.core.device_server_internal import DeviceServerInternal
 
-        print(self.api_key)
-
         DeviceServerInternal.create(
             device_description,
             self.api_key,
@@ -160,7 +154,7 @@ class ApiContext:
 
         self._session_context = SessionContext(token, expiry_time, user_id)
 
-    def _initialize_session_for_psd2(self, user_payment_service_provider: UserPaymentServiceProvider) -> None:
+    def __initialize_session_for_psd2(self, user_payment_service_provider: UserPaymentServiceProvider) -> None:
         from bunq.sdk.model.core.session_server import SessionServer
 
         session_server = SessionServer.create(self).value
