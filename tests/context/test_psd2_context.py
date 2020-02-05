@@ -1,4 +1,5 @@
 import os
+import unittest
 
 from bunq import ApiEnvironmentType
 from bunq.sdk.context.api_context import ApiContext
@@ -8,7 +9,7 @@ from bunq.sdk.model.generated.endpoint import OauthClient
 from tests.bunq_test import BunqSdkTestCase
 
 
-class TestPsd2Context(BunqSdkTestCase):
+class TestPsd2Context(unittest.TestCase):
     """
     Tests:
         Psd2Context
@@ -26,11 +27,21 @@ class TestPsd2Context(BunqSdkTestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls._FILE_MODE_READ = ApiContext._FILE_MODE_READ
-        cls._FILE_TEST_CONFIGURATION_PATH_FULL = (cls._get_directory_test_root() + cls._FILE_TEST_CONFIGURATION)
-        cls._FILE_TEST_OAUTH_PATH_FULL = (cls._get_directory_test_root() + cls._FILE_TEST_OAUTH)
-        cls._FILE_TEST_CERTIFICATE_PATH_FULL = (cls._get_directory_test_root() + cls._FILE_TEST_CERTIFICATE)
-        cls._FILE_TEST_CERTIFICATE_CHAIN_PATH_FULL = (cls._get_directory_test_root() + cls._FILE_TEST_CERTIFICATE_CHAIN)
-        cls._FILE_TEST_PRIVATE_KEY_PATH_FULL = (cls._get_directory_test_root() + cls._FILE_TEST_PRIVATE_KEY)
+        cls._FILE_TEST_CONFIGURATION_PATH_FULL = (
+                BunqSdkTestCase._get_directory_test_root() +
+                cls._FILE_TEST_CONFIGURATION)
+        cls._FILE_TEST_OAUTH_PATH_FULL = (
+                BunqSdkTestCase._get_directory_test_root() +
+                cls._FILE_TEST_OAUTH)
+        cls._FILE_TEST_CERTIFICATE_PATH_FULL = (
+                BunqSdkTestCase._get_directory_test_root() +
+                cls._FILE_TEST_CERTIFICATE)
+        cls._FILE_TEST_CERTIFICATE_CHAIN_PATH_FULL = (
+                BunqSdkTestCase._get_directory_test_root() +
+                cls._FILE_TEST_CERTIFICATE_CHAIN)
+        cls._FILE_TEST_PRIVATE_KEY_PATH_FULL = (
+                BunqSdkTestCase._get_directory_test_root() +
+                cls._FILE_TEST_PRIVATE_KEY)
         cls.setup_test_data()
 
     @classmethod
@@ -41,7 +52,7 @@ class TestPsd2Context(BunqSdkTestCase):
             except FileNotFoundError:
                 return
 
-        api_context = ApiContext.restore(cls._get_directory_test_root() + cls._FILE_TEST_CONFIGURATION)
+        api_context = ApiContext.restore(cls._FILE_TEST_CONFIGURATION_PATH_FULL)
         BunqContext.load_api_context(api_context)
 
     def test_create_psd2_context(self) -> None:
@@ -58,7 +69,7 @@ class TestPsd2Context(BunqSdkTestCase):
             raise AssertionError
 
     def test_create_oauth_client(self) -> None:
-        if os.path.isfile(self._FILE_TEST_OAUTH):
+        if os.path.isfile(self._FILE_TEST_OAUTH_PATH_FULL):
             return
 
         try:
