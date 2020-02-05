@@ -175,7 +175,7 @@ class JsonAdapter(Generic[T]):
 
     @classmethod
     def _get_value_specs(cls,
-                         cls_in: Type[Any],
+                         cls_in: Type[T],
                          attribute_name: str) -> ValueSpecs:
         if cls_in in {dict, list}:
             return ValueSpecs(None, ValueTypes(None, None))
