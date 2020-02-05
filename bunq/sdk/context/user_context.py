@@ -14,6 +14,7 @@ class UserContext:
         self._user_person = None
         self._user_company = None
         self._user_api_key = None
+        self._user_payment_service_provider = None
         self._primary_monetary_account = None
 
         self._set_user(self.__get_user_object())
@@ -31,6 +32,9 @@ class UserContext:
 
         elif isinstance(user, endpoint.UserApiKey):
             self._user_api_key = user
+
+        elif isinstance(user, endpoint.UserPaymentServiceProvider):
+            self._user_payment_service_provider = user
 
         else:
             raise BunqException(
@@ -73,6 +77,10 @@ class UserContext:
 
     def refresh_user_context(self) -> None:
         self._set_user(self.__get_user_object())
+
+        if self._user_payment_service_provider is not None:
+            return
+
         self.init_main_monetary_account()
 
     @property

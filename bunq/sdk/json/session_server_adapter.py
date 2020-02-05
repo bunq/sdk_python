@@ -37,6 +37,10 @@ class SessionServerAdapter(converter.JsonAdapter):
     _ATTRIBUTE_USER_API_KEY = '_user_api_key'
     _FIELD_USER_API_KEY = 'UserApiKey'
 
+    # UserPaymentServiceProvider constants
+    _ATTRIBUTE_USER_PAYMENT_SERVER_PROVIDER = '_user_payment_service_provider'
+    _FIELD_USER_PAYMENT_SERVER_PROVIDER = 'UserPaymentServiceProvider'
+
     @classmethod
     def deserialize(cls,
                     target_class: Type[SessionServer],
@@ -52,7 +56,7 @@ class SessionServerAdapter(converter.JsonAdapter):
                 array[cls._INDEX_TOKEN][cls._FIELD_TOKEN]
             ),
             cls._ATTRIBUTE_USER_COMPANY: None,
-            cls._ATTRIBUTE_USER_PERSON: None,
+            cls._ATTRIBUTE_USER_PERSON: None
         }
 
         user_dict_wrapped = array[cls._INDEX_USER]
@@ -75,6 +79,12 @@ class SessionServerAdapter(converter.JsonAdapter):
                     endpoint.UserApiKey,
                     user_dict_wrapped[cls._FIELD_USER_API_KEY]
                 )
+        elif cls._FIELD_USER_PAYMENT_SERVER_PROVIDER in user_dict_wrapped:
+            session_server.__dict__[cls._ATTRIBUTE_USER_PAYMENT_SERVER_PROVIDER] = \
+                converter.deserialize(
+                    endpoint.UserPaymentServiceProvider,
+                    user_dict_wrapped[cls._FIELD_USER_PAYMENT_SERVER_PROVIDER]
+                )
         else:
             raise BunqException(cls._ERROR_COULD_NOT_DETERMINE_USER)
 
@@ -96,5 +106,9 @@ class SessionServerAdapter(converter.JsonAdapter):
             {
                 cls._FIELD_USER_API_KEY:
                     converter.serialize(session_server.user_api_key),
+            },
+            {
+                cls._FIELD_USER_PAYMENT_SERVER_PROVIDER:
+                    converter.serialize(session_server.user_payment_service_provider),
             },
         ]

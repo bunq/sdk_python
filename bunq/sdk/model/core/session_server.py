@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Optional
+
 from bunq.sdk.context.api_context import ApiContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
@@ -8,16 +10,17 @@ from bunq.sdk.json import converter
 from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.model.core.id import Id
 from bunq.sdk.model.core.session_token import SessionToken
-from bunq.sdk.model.generated.endpoint import UserPerson, UserCompany, UserApiKey
+from bunq.sdk.model.generated.endpoint import UserPerson, UserCompany, UserApiKey, UserPaymentServiceProvider
 
 
 class SessionServer(BunqModel):
     """
-    :type _id_: Id
-    :type _token: SessionToken
-    :type _user_person: bunq.sdk.model.generated.UserPerson
-    :type _user_company: bunq.sdk.model.generated.UserCompany
-    :type _user_api_key: bunq.sdk.model.generated.UserApiKey
+    :type _id_: Id|None
+    :type _token: SessionToken|None
+    :type _user_person: UserPerson|None
+    :type _user_company: UserCompany|None
+    :type _user_api_key: UserApiKey|None
+    :type _user_payment_service_provider:UserPaymentServiceProvider|None
     """
 
     # Endpoint name.
@@ -35,6 +38,7 @@ class SessionServer(BunqModel):
         self._user_person = None
         self._user_company = None
         self._user_api_key = None
+        self._user_payment_service_provider = None
 
     @property
     def id_(self) -> Id:
@@ -53,8 +57,12 @@ class SessionServer(BunqModel):
         return self._user_company
 
     @property
-    def user_api_key(self) -> UserApiKey:
+    def user_api_key(self) -> Optional[UserApiKey]:
         return self._user_api_key
+
+    @property
+    def user_payment_service_provider(self) -> UserPaymentServiceProvider:
+        return self._user_payment_service_provider
 
     @classmethod
     def create(cls, api_context: ApiContext) -> BunqResponse[SessionServer]:
@@ -81,6 +89,9 @@ class SessionServer(BunqModel):
         if self.user_company is not None:
             return False
 
+        if self.user_payment_service_provider is not None:
+            return False
+
         if self.user_api_key is not None:
             return False
 
@@ -92,6 +103,9 @@ class SessionServer(BunqModel):
 
         if self._user_company is not None:
             return self._user_company
+
+        if self._user_payment_service_provider is not None:
+            return self._user_payment_service_provider
 
         if self._user_api_key is not None:
             return self._user_api_key
