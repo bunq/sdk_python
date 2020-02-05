@@ -41,6 +41,9 @@ class UserContext:
                 self._ERROR_UNEXPECTED_USER_INSTANCE.format(user.__class__))
 
     def init_main_monetary_account(self) -> None:
+        if self._user_payment_service_provider is not None:
+            return
+
         all_monetary_account = endpoint.MonetaryAccountBank.list().value
 
         for account in all_monetary_account:
