@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import typing
+
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
 from bunq.sdk.model.generated.endpoint import PaymentServiceProviderCredential, UserCredentialPasswordIp
@@ -10,7 +12,6 @@ if typing.TYPE_CHECKING:
 
 
 class PaymentServiceProviderCredentialInternal(PaymentServiceProviderCredential):
-
     @classmethod
     def create_with_api_context(cls,
                                 client_payment_service_provider_certificate: str,
@@ -32,4 +33,7 @@ class PaymentServiceProviderCredentialInternal(PaymentServiceProviderCredential)
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes, all_custom_header)
 
-        return UserCredentialPasswordIp.from_json(response_raw.body_bytes.decode())
+        response_body = converter.json_to_class(dict, response_raw.body_bytes.decode())
+        response_body_dict = converter.deserialize(cls, response_body[cls._FIELD_RESPONSE])[0]
+
+        return UserCredentialPasswordIp.from_json(json.dumps(response_body_dict[cls._OBJECT_TYPE_GET]))
