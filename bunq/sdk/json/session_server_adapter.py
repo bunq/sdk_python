@@ -56,7 +56,7 @@ class SessionServerAdapter(converter.JsonAdapter):
                 array[cls._INDEX_TOKEN][cls._FIELD_TOKEN]
             ),
             cls._ATTRIBUTE_USER_COMPANY: None,
-            cls._ATTRIBUTE_USER_PERSON: None
+            cls._ATTRIBUTE_USER_PERSON: None,
         }
 
         user_dict_wrapped = array[cls._INDEX_USER]
