@@ -21,8 +21,8 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     _GETTER_REQUEST_RESPONSE = 'RequestResponse'
     _GETTER_SCHEDULE_PAYMENT = 'ScheduledPayment'
     _GETTER_SCHEDULE_INSTANCE = 'ScheduledInstance'
-    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteBankInquiry'
-    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
+    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteMonetaryAccountInquiry'
+    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteMonetaryAccountResponse'
 
     # Model json paths constants.
     BASE_PATH_JSON_MODEL = '../../../assets/NotificationUrlJsons'
@@ -242,13 +242,13 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     def test_share_invite_bank_inquiry(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_INQUIRY_MODEL,
-            endpoint.ShareInviteBankInquiry.__name__,
+            endpoint.ShareInviteMonetaryAccountInquiry.__name__,
             self._GETTER_SHARE_INVITE_BANK_INQUIRY
         )
 
     def test_share_invite_bank_response(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_RESPONSE_MODEL,
-            endpoint.ShareInviteBankResponse.__name__,
+            endpoint.ShareInviteMonetaryAccountResponse.__name__,
             self._GETTER_SHARE_INVITE_BANK_RESPONSE
         )

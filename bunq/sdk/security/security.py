@@ -17,8 +17,13 @@ from Cryptodome.PublicKey import RSA
 from Cryptodome.PublicKey.RSA import RsaKey
 from Cryptodome.Signature import PKCS1_v1_5
 
+from bunq.sdk.exception.bunq_exception import BunqException
+
 if typing.TYPE_CHECKING:
     from bunq.sdk.context.api_context import ApiContext
+
+# Error constants.
+_ERROR_INVALID_SIGNATURE = 'Could not validate response signature.'
 
 # Size of private RSA key to generate
 _RSA_KEY_SIZE = 2048
@@ -53,7 +58,6 @@ _HEADER_CLIENT_ENCRYPTION_IV = 'X-Bunq-Client-Encryption-Iv'
 _HEADER_CLIENT_ENCRYPTION_HMAC = 'X-Bunq-Client-Encryption-Hmac'
 _HEADER_SERVER_SIGNATURE = 'X-Bunq-Server-Signature'
 
-
 def generate_rsa_private_key() -> RsaKey:
     return RSA.generate(_RSA_KEY_SIZE)
 
@@ -75,15 +79,10 @@ def rsa_key_from_string(string: str) -> RsaKey:
 
 
 def sign_request(private_key: RsaKey,
-                 method: str,
-                 endpoint: str,
-                 body_bytes: bytes,
-                 headers: Dict[str, str]) -> str:
-    head_bytes = _generate_request_head_bytes(method, endpoint, headers)
-    bytes_to_sign = head_bytes + body_bytes
+                 body_bytes: bytes) -> str:
     signer = PKCS1_v1_5.new(private_key)
     digest = SHA256.new()
-    digest.update(bytes_to_sign)
+    digest.update(body_bytes)
     sign = signer.sign(digest)
 
     return b64encode(sign)
@@ -169,12 +168,46 @@ def validate_response(public_key_server: RsaKey,
                       status_code: int,
                       body_bytes: bytes,
                       headers: Dict[str, str]) -> None:
+    if is_valid_response_header_with_body(public_key_server, status_code, body_bytes, headers):
+        return
+    elif is_valid_response_body(public_key_server, body_bytes, headers):
+        return
+    else:
+        raise BunqException(_ERROR_INVALID_SIGNATURE)
+
+
+def is_valid_response_header_with_body(public_key_server: RsaKey,
+                      status_code: int,
+                      body_bytes: bytes,
+                      headers: Dict[str, str]) -> bool:
     head_bytes = _generate_response_head_bytes(status_code, headers)
     bytes_signed = head_bytes + body_bytes
     signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
     digest = SHA256.new()
     digest.update(bytes_signed)
     signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
+
+    try:
+        signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
+
+        return True
+    except ValueError:
+        return False
+
+
+def is_valid_response_body(public_key_server: RsaKey,
+                      body_bytes: bytes,
+                      headers: Dict[str, str]) -> bool:
+    signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
+    digest = SHA256.new()
+    digest.update(body_bytes)
+
+    try:
+        signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
+
+        return True
+    except ValueError:
+        return False
 
 
 def _generate_response_head_bytes(status_code: int,

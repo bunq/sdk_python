@@ -114,8 +114,6 @@ class ApiClient:
                 BunqContext.update_api_context(self._api_context)
 
         all_headers = self._get_all_headers(
-            method,
-            uri_relative_with_params,
             request_bytes,
             custom_headers
         )
@@ -150,8 +148,6 @@ class ApiClient:
         return uri
 
     def _get_all_headers(self,
-                         method: str,
-                         endpoint: str,
                          request_bytes: bytes,
                          custom_headers: Dict[str, str]) -> Dict[str, str]:
         headers = self._get_default_headers()
@@ -161,10 +157,7 @@ class ApiClient:
             headers[self.HEADER_AUTHENTICATION] = self._api_context.token
             headers[self.HEADER_SIGNATURE] = security.sign_request(
                 self._api_context.installation_context.private_key_client,
-                method,
-                endpoint,
-                request_bytes,
-                headers
+                request_bytes
             )
 
         return headers

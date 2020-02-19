@@ -22,6 +22,7 @@ class TestCardDebit(BunqSdkTestCase):
     _STRING_EMPTY = ''
     _PIN_CODE_ASSIGNMENT_TYPE_PRIMARY = 'PRIMARY'
     _CARD_TYPE_MAESTRO = 'MAESTRO'
+    _PRODUCT_TYPE_MAESTRO_DEBIT = 'MAESTRO_DEBIT'
 
     def test_order_debit_card(self):
         """
@@ -38,9 +39,13 @@ class TestCardDebit(BunqSdkTestCase):
             BunqContext.user_context().primary_monetary_account.id_
         )
 
-        card_debit = CardDebit.create(second_line, self.card_name_allowed,
-                                      self.alias_first, self._CARD_TYPE_MAESTRO,
-                                      [pin_code_assignment]).value
+        card_debit = CardDebit.create(second_line,
+                                      self.card_name_allowed,
+                                      self._CARD_TYPE_MAESTRO,
+                                      self.alias_first,
+                                      self._PRODUCT_TYPE_MAESTRO_DEBIT,
+                                      [pin_code_assignment]
+                                      ).value
         card = Card.get(card_debit.id_).value
 
         self.assertEqual(self.card_name_allowed, card.name_on_card)
