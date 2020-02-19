@@ -1,5 +1,5 @@
-from bunq.sdk import client
-from bunq.sdk import exception
+from bunq import Pagination
+from bunq.sdk.exception.bunq_exception import BunqException
 from tests.bunq_test import BunqSdkTestCase
 
 
@@ -17,7 +17,7 @@ class TestPagination(BunqSdkTestCase):
     def test_get_url_params_count_only(self):
         pagination = self._create_pagination_with_all_properties_set()
         url_params_count_only_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
         }
 
         self.assertEqual(url_params_count_only_expected,
@@ -28,7 +28,7 @@ class TestPagination(BunqSdkTestCase):
         :rtype: Pagination
         """
 
-        pagination = client.Pagination()
+        pagination = Pagination()
         pagination.older_id = self._PAGINATION_OLDER_ID_CUSTOM
         pagination.newer_id = self._PAGINATION_NEWER_ID_CUSTOM
         pagination.future_id = self._PAGINATION_FUTURE_ID_CUSTOM
@@ -39,8 +39,8 @@ class TestPagination(BunqSdkTestCase):
     def test_get_url_params_previous_page(self):
         pagination = self._create_pagination_with_all_properties_set()
         url_params_previous_page_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
-            client.Pagination.PARAM_OLDER_ID:
+            Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            Pagination.PARAM_OLDER_ID:
                 str(self._PAGINATION_OLDER_ID_CUSTOM),
         }
 
@@ -52,7 +52,7 @@ class TestPagination(BunqSdkTestCase):
         pagination = self._create_pagination_with_all_properties_set()
         pagination.count = None
         url_params_previous_page_expected = {
-            client.Pagination.PARAM_OLDER_ID:
+            Pagination.PARAM_OLDER_ID:
                 str(self._PAGINATION_OLDER_ID_CUSTOM),
         }
 
@@ -63,8 +63,8 @@ class TestPagination(BunqSdkTestCase):
     def test_get_url_params_next_page_newer(self):
         pagination = self._create_pagination_with_all_properties_set()
         url_params_next_page_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
-            client.Pagination.PARAM_NEWER_ID:
+            Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_NEWER_ID_CUSTOM),
         }
 
@@ -76,7 +76,7 @@ class TestPagination(BunqSdkTestCase):
         pagination = self._create_pagination_with_all_properties_set()
         pagination.count = None
         url_params_next_page_expected = {
-            client.Pagination.PARAM_NEWER_ID:
+            Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_NEWER_ID_CUSTOM),
         }
 
@@ -88,8 +88,8 @@ class TestPagination(BunqSdkTestCase):
         pagination = self._create_pagination_with_all_properties_set()
         pagination.newer_id = None
         url_params_next_page_expected = {
-            client.Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
-            client.Pagination.PARAM_NEWER_ID:
+            Pagination.PARAM_COUNT: str(self._PAGINATION_COUNT_CUSTOM),
+            Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_FUTURE_ID_CUSTOM),
         }
 
@@ -102,7 +102,7 @@ class TestPagination(BunqSdkTestCase):
         pagination.newer_id = None
         pagination.count = None
         url_params_next_page_expected = {
-            client.Pagination.PARAM_NEWER_ID:
+            Pagination.PARAM_NEWER_ID:
                 str(self._PAGINATION_FUTURE_ID_CUSTOM),
         }
 
@@ -118,7 +118,7 @@ class TestPagination(BunqSdkTestCase):
             _ = pagination.url_params_previous_page
 
         self.assertFalse(pagination.has_previous_page())
-        self.assertRaises(exception.BunqException,
+        self.assertRaises(BunqException,
                           access_url_params_previous_page)
 
     def test_get_url_params_next_page_from_pagination_with_no_next_page(self):
@@ -129,4 +129,4 @@ class TestPagination(BunqSdkTestCase):
         def access_url_params_next_page():
             _ = pagination.url_params_next_page
 
-        self.assertRaises(exception.BunqException, access_url_params_next_page)
+        self.assertRaises(BunqException, access_url_params_next_page)

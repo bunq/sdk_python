@@ -1,6 +1,6 @@
 import unittest
 
-from bunq.sdk.context import BunqContext
+from bunq.sdk.context.bunq_context import BunqContext
 from bunq.sdk.model.generated.endpoint import TabItemShop
 from bunq.sdk.model.generated.endpoint import TabUsageSingle
 from bunq.sdk.model.generated.object_ import Amount

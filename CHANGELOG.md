@@ -2,7 +2,14 @@
 
 ## [Unreleased](https://github.com/bunq/sdk_python/tree/HEAD)
 
-[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.2...HEAD)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.16...HEAD)
+
+**Implemented enhancements:**
+
+- Python SDK Refactor [\#117](https://github.com/bunq/sdk_python/pull/117) ([angelomelonas](https://github.com/angelomelonas))
+
+## [1.10.16](https://github.com/bunq/sdk_python/tree/1.10.16) (2019-06-17)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.2...1.10.16)
 
 **Closed issues:**
 

@@ -1,8 +1,6 @@
 import json
 import os
 
-from bunq.sdk.json.converter import json_to_class
-from bunq.sdk.model import core
 from bunq.sdk.model.generated import endpoint
 from bunq.sdk.model.generated import object_
 from tests import bunq_test
@@ -23,11 +21,11 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     _GETTER_REQUEST_RESPONSE = 'RequestResponse'
     _GETTER_SCHEDULE_PAYMENT = 'ScheduledPayment'
     _GETTER_SCHEDULE_INSTANCE = 'ScheduledInstance'
-    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteBankInquiry'
-    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
+    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteMonetaryAccountInquiry'
+    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteMonetaryAccountResponse'
 
     # Model json paths constants.
-    BASE_PATH_JSON_MODEL = '../../../assets/NotficationUrlJsons'
+    BASE_PATH_JSON_MODEL = '../../../assets/NotificationUrlJsons'
     JSON_PATH_MUTATION_MODEL = BASE_PATH_JSON_MODEL + '/Mutation.json'
     JSON_PATH_BUNQ_ME_TAB_MODEL = BASE_PATH_JSON_MODEL + '/BunqMeTab.json'
     JSON_PATH_CHAT_MESSAGE_ANNOUNCEMENT_MODEL = \
@@ -119,7 +117,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     @classmethod
     def is_model_reference(cls, referenced_model, class_name):
         """
-        :type referenced_model: core.BunqModel
+        :type referenced_model: BunqModel
         :type class_name: str
 
         :rtype: bool
@@ -244,13 +242,13 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     def test_share_invite_bank_inquiry(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_INQUIRY_MODEL,
-            endpoint.ShareInviteBankInquiry.__name__,
+            endpoint.ShareInviteMonetaryAccountInquiry.__name__,
             self._GETTER_SHARE_INVITE_BANK_INQUIRY
         )
 
     def test_share_invite_bank_response(self):
         self.execute_notification_url_test(
             self.JSON_PATH_SHARE_INVITE_BANK_RESPONSE_MODEL,
-            endpoint.ShareInviteBankResponse.__name__,
+            endpoint.ShareInviteMonetaryAccountResponse.__name__,
             self._GETTER_SHARE_INVITE_BANK_RESPONSE
         )

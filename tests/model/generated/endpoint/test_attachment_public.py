@@ -1,4 +1,4 @@
-from bunq.sdk.client import ApiClient
+from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.model.generated import endpoint
 from tests.bunq_test import BunqSdkTestCase
 

@@ -1,17 +1,23 @@
-from bunq.sdk.model.generated.endpoint import DeviceServer
-from bunq.sdk.model.generated.endpoint import BunqResponseInt
-from bunq.sdk import client
+from typing import List, Dict
+
+from bunq.sdk.context.api_context import ApiContext
+from bunq.sdk.exception.bunq_exception import BunqException
+from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.json import converter
-from bunq.sdk.exception import BunqException
+from bunq.sdk.model.generated.endpoint import BunqResponseInt
+from bunq.sdk.model.generated.endpoint import DeviceServer
 
 
 class DeviceServerInternal(DeviceServer):
-    _ERROR_API_CONTEXT_IS_NULL = 'ApiContext should not be None,' \
-                                 ' use the generated class instead.'
+    _ERROR_API_CONTEXT_IS_NULL = 'ApiContext should not be None, use the generated class instead.'
 
     @classmethod
-    def create(cls, description, secret, permitted_ips=None,
-               custom_headers=None, api_context=None):
+    def create(cls,
+               description: str,
+               secret: str,
+               permitted_ips: List[str] = None,
+               custom_headers: Dict[str, str] = None,
+               api_context: ApiContext = None) -> BunqResponseInt:
         """
         Create a new DeviceServer providing the installation token in the header
         and signing the request with the private part of the key you used to
@@ -32,7 +38,7 @@ class DeviceServerInternal(DeviceServer):
         be able to do calls from. These will be linked to the API key.
         :type permitted_ips: list[str]
         :type custom_headers: dict[str, str]|None
-        :type api_context: context.ApiContext
+        :type api_context: ApiContext
 
         :rtype: BunqResponseInt
         """
@@ -49,7 +55,7 @@ class DeviceServerInternal(DeviceServer):
             cls.FIELD_PERMITTED_IPS: permitted_ips
         }
 
-        api_client = client.ApiClient(api_context)
+        api_client = ApiClient(api_context)
         request_bytes = converter.class_to_json(request_map).encode()
         endpoint_url = cls._ENDPOINT_URL_CREATE
         response_raw = api_client.post(endpoint_url, request_bytes,

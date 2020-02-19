@@ -137,4 +137,4 @@ located in [test](/tests)
 
 ## Exceptions
 The SDK can raise multiple exceptions. For an overview of these exceptions please
-take a look at [EXCEPTIONS.md](./EXCEPTIONS.md)
+take a look at [EXCEPTIONS.md](./bunq/sdk/exception/EXCEPTIONS.md)
