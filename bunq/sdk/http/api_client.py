@@ -33,10 +33,12 @@ class ApiClient:
     _URL_DEVICE_SERVER = 'device-server'
     _URI_INSTALLATION = 'installation'
     _URI_SESSION_SERVER = 'session-server'
+    _URL_PAYMENT_SERVICE_PROVIDER_CREDENTIAL = 'payment-service-provider-credential'
     _URIS_NOT_REQUIRING_ACTIVE_SESSION = [
         _URI_INSTALLATION,
         _URI_SESSION_SERVER,
         _URL_DEVICE_SERVER,
+        _URL_PAYMENT_SERVICE_PROVIDER_CREDENTIAL,
     ]
 
     # HTTPS type of proxy, the only used at bunq

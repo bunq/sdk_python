@@ -11,7 +11,9 @@ from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
+from bunq.sdk.model.core.payment_service_provider_credential_internal import PaymentServiceProviderCredentialInternal
 from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp, UserPaymentServiceProvider
 from bunq.sdk.security import security
 
 if typing.TYPE_CHECKING:
@@ -21,9 +23,9 @@ if typing.TYPE_CHECKING:
 class ApiContext:
     """
     :type _environment_type: ApiEnvironmentType
-    :type _api_key: str
-    :type _session_context: SessionContext
-    :type _installation_context: InstallationContext
+    :type _api_key: str|None
+    :type _session_context: SessionContext|None
+    :type _installation_context: InstallationContext|None
     :type _proxy_url: str|None
     """
 
@@ -42,28 +44,56 @@ class ApiContext:
 
     def __init__(self,
                  environment_type: ApiEnvironmentType,
-                 api_key: str,
-                 device_description: str,
-                 permitted_ips: List[str] = None,
                  proxy_url: List[str] = None) -> None:
-        if permitted_ips is None:
-            permitted_ips = []
-
         self._environment_type = environment_type
-        self._api_key = api_key
+        self._proxy_url = proxy_url
+        self._api_key = None
         self._installation_context = None
         self._session_context = None
-        self._proxy_url = proxy_url
-        self._initialize(device_description, permitted_ips)
 
-    def _initialize(self,
-                    device_description: str,
-                    permitted_ips: List[str]) -> None:
-        self._initialize_installation()
-        self._register_device(device_description, permitted_ips)
-        self._initialize_session()
+    @classmethod
+    def create(cls,
+               environment_type: ApiEnvironmentType,
+               api_key: str,
+               description: str,
+               all_permitted_ip: List[str] = None,
+               proxy_url: List[str] = None) -> ApiContext:
+        api_context = cls(environment_type, proxy_url)
 
-    def _initialize_installation(self) -> None:
+        api_context._api_key = api_key
+
+        api_context.__initialize_installation()
+        api_context.__register_device(description, all_permitted_ip)
+        api_context.__initialize_session()
+
+        return api_context
+
+    @classmethod
+    def create_for_psd2(cls,
+                        environment_type: ApiEnvironmentType,
+                        certificate: str,
+                        private_key: str,
+                        all_chain_certificate: List[str],
+                        description: str,
+                        all_permitted_ip: List[str] = None,
+                        proxy_url: List[str] = None) -> ApiContext:
+        api_context = cls(environment_type, proxy_url)
+
+        api_context.__initialize_installation()
+
+        service_provider_credential = api_context.__initialize_psd2_credential(
+            certificate,
+            private_key,
+            all_chain_certificate)
+
+        api_context._api_key = service_provider_credential.token_value
+
+        api_context.__register_device(description, all_permitted_ip)
+        api_context.__initialize_session_for_psd2(service_provider_credential)
+
+        return api_context
+
+    def __initialize_installation(self) -> None:
         from bunq.sdk.model.core.installation import Installation
 
         private_key_client = security.generate_rsa_private_key()
@@ -83,9 +113,28 @@ class ApiContext:
             public_key_server
         )
 
-    def _register_device(self,
-                         device_description: str,
-                         permitted_ips: List[str]) -> None:
+    def __initialize_psd2_credential(self,
+                                     certificate: str,
+                                     private_key: str,
+                                     all_chain_certificate: List[str], ) -> UserCredentialPasswordIp:
+        session_token = self.installation_context.token
+        client_key_pair = self.installation_context.private_key_client
+
+        string_to_sign = security.public_key_to_string(client_key_pair.publickey()) + "\n" + session_token
+        encoded_signature = security.generate_signature(string_to_sign, security.rsa_key_from_string(private_key))
+
+        payment_response_provider = PaymentServiceProviderCredentialInternal.create_with_api_context(
+            certificate,
+            security.get_certificate_chain_string(all_chain_certificate),
+            encoded_signature,
+            self
+        )
+
+        return payment_response_provider
+
+    def __register_device(self,
+                          device_description: str,
+                          permitted_ips: List[str]) -> None:
         from bunq.sdk.model.core.device_server_internal import DeviceServerInternal
 
         DeviceServerInternal.create(
@@ -95,10 +144,21 @@ class ApiContext:
             api_context=self
         )
 
-    def _initialize_session(self) -> None:
+    def __initialize_session(self) -> None:
         from bunq.sdk.model.core.session_server import SessionServer
 
         session_server = SessionServer.create(self).value
+        token = session_server.token.token
+        expiry_time = self._get_expiry_timestamp(session_server)
+        user_id = session_server.get_referenced_user().id_
+
+        self._session_context = SessionContext(token, expiry_time, user_id)
+
+    def __initialize_session_for_psd2(self, user_payment_service_provider: UserPaymentServiceProvider) -> None:
+        from bunq.sdk.model.core.session_server import SessionServer
+
+        session_server = SessionServer.create(self).value
+
         token = session_server.token.token
         expiry_time = self._get_expiry_timestamp(session_server)
         user_id = session_server.get_referenced_user().id_
@@ -118,6 +178,8 @@ class ApiContext:
             return session_server.user_company.session_timeout
         elif session_server.user_person is not None:
             return session_server.user_person.session_timeout
+        elif session_server.user_payment_service_provider is not None:
+            return session_server.user_payment_service_provider.session_timeout
         elif session_server.user_api_key is not None:
             return session_server \
                 .user_api_key \
@@ -159,7 +221,7 @@ class ApiContext:
         """
 
         self._drop_session_context()
-        self._initialize_session()
+        self.__initialize_session()
 
     def _drop_session_context(self) -> None:
         self._session_context = None
