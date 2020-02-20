@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from bunq import AnchorObjectInterface
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
+from bunq.sdk.model.core.anchor_object_interface import AnchorObjectInterface
 from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.model.generated import endpoint
 
@@ -65,7 +65,7 @@ class Amount(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Amount
         """
 
@@ -89,7 +89,7 @@ class InvoiceItemGroup(BunqModel):
     :param _product_vat_inclusive: The unit item price including VAT.
     :type _product_vat_inclusive: Amount
     :param _item: The invoice items in the group.
-    :type _item: InvoiceItem
+    :type _item: list[InvoiceItem]
     """
 
     _type_ = None
@@ -151,7 +151,7 @@ class InvoiceItemGroup(BunqModel):
     @property
     def item(self):
         """
-        :rtype: InvoiceItem
+        :rtype: list[InvoiceItem]
         """
 
         return self._item
@@ -188,7 +188,7 @@ class InvoiceItemGroup(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: InvoiceItemGroup
         """
 
@@ -337,7 +337,7 @@ class InvoiceItem(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: InvoiceItem
         """
 
@@ -372,6 +372,8 @@ class LabelMonetaryAccount(BunqModel):
     :param _transferwise_bank_code: The bank code used for a Transferwise
     payment. May or may not be a BIC.
     :type _transferwise_bank_code: str
+    :param _merchant_category_code: The merchant category code.
+    :type _merchant_category_code: str
     """
 
     _iban = None
@@ -385,6 +387,7 @@ class LabelMonetaryAccount(BunqModel):
     _swift_account_number = None
     _transferwise_account_number = None
     _transferwise_bank_code = None
+    _merchant_category_code = None
 
     @property
     def iban(self):
@@ -474,6 +477,14 @@ class LabelMonetaryAccount(BunqModel):
 
         return self._transferwise_bank_code
 
+    @property
+    def merchant_category_code(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_category_code
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -512,13 +523,16 @@ class LabelMonetaryAccount(BunqModel):
         if self._transferwise_bank_code is not None:
             return False
 
+        if self._merchant_category_code is not None:
+            return False
+
         return True
 
     @staticmethod
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: LabelMonetaryAccount
         """
 
@@ -592,7 +606,7 @@ class Avatar(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Avatar
         """
 
@@ -672,7 +686,7 @@ class Image(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Image
         """
 
@@ -784,7 +798,7 @@ class LabelUser(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: LabelUser
         """
 
@@ -867,7 +881,7 @@ class Pointer(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Pointer
         """
 
@@ -1058,7 +1072,7 @@ class Address(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Address
         """
 
@@ -1110,7 +1124,7 @@ class RequestInquiryReference(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RequestInquiryReference
         """
 
@@ -1161,7 +1175,7 @@ class Attachment(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Attachment
         """
 
@@ -1222,7 +1236,7 @@ class AttachmentMonetaryAccountPayment(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentMonetaryAccountPayment
         """
 
@@ -1322,11 +1336,100 @@ class Geolocation(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Geolocation
         """
 
         return converter.json_to_class(Geolocation, json_str)
+
+
+class Error(BunqModel):
+    """
+    :param _error_description: The error description (in English).
+    :type _error_description: str
+    :param _error_description_translated: The error description (in the user
+    language).
+    :type _error_description_translated: str
+    """
+
+    _error_description = None
+    _error_description_translated = None
+
+    @property
+    def error_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description
+
+    @property
+    def error_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description_translated
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._error_description is not None:
+            return False
+
+        if self._error_description_translated is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Error
+        """
+
+        return converter.json_to_class(Error, json_str)
+
+
+class PaymentBatchAnchoredPayment(BunqModel):
+    """
+    :param _Payment: 
+    :type _Payment: list[endpoint.Payment]
+    """
+
+    _Payment = None
+
+    @property
+    def Payment(self):
+        """
+        :rtype: list[endpoint.Payment]
+        """
+
+        return self._Payment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._Payment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatchAnchoredPayment
+        """
+
+        return converter.json_to_class(PaymentBatchAnchoredPayment, json_str)
 
 
 class AttachmentPublic(BunqModel):
@@ -1387,7 +1490,7 @@ class AttachmentPublic(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentPublic
         """
 
@@ -1438,7 +1541,7 @@ class BunqMeMerchantAvailable(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqMeMerchantAvailable
         """
 
@@ -1484,7 +1587,7 @@ class BunqId(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BunqId
         """
 
@@ -1571,7 +1674,7 @@ class CardBatchEntry(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardBatchEntry
         """
 
@@ -1649,7 +1752,7 @@ class CardCountryPermission(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardCountryPermission
         """
 
@@ -1721,141 +1824,11 @@ class CardPinAssignment(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardPinAssignment
         """
 
         return converter.json_to_class(CardPinAssignment, json_str)
-
-
-class CardVirtualPrimaryAccountNumber(BunqModel):
-    """
-    :param _id_: The ID for this Virtual PAN.
-    :type _id_: int
-    :param _description: The description for this Virtual PAN.
-    :type _description: str
-    :param _status: The status for this Virtual PAN.
-    :type _status: str
-    :param _monetary_account_id: The ID of the monetary account to assign to
-    this Virtual PAN.
-    :type _monetary_account_id: int
-    :param _uuid: The UUID for this Virtual PAN.
-    :type _uuid: str
-    :param _four_digit: The last four digits of the Virtual PAN.
-    :type _four_digit: str
-    """
-
-    _id_ = None
-    _uuid = None
-    _description = None
-    _status = None
-    _monetary_account_id = None
-    _four_digit = None
-    _id__field_for_request = None
-    _description_field_for_request = None
-    _status_field_for_request = None
-    _monetary_account_id_field_for_request = None
-
-    def __init__(self, id_=None, description=None, status=None, monetary_account_id=None):
-        """
-        :param id_: The ID for this Virtual PAN.
-        :type id_: int
-        :param description: The description for this Virtual PAN.
-        :type description: str
-        :param status: The status for this Virtual PAN.
-        :type status: str
-        :param monetary_account_id: The ID of the monetary account to assign to this
-        Virtual PAN.
-        :type monetary_account_id: int
-        """
-
-        self._id__field_for_request = id_
-        self._description_field_for_request = description
-        self._status_field_for_request = status
-        self._monetary_account_id_field_for_request = monetary_account_id
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._uuid
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def four_digit(self):
-        """
-        :rtype: str
-        """
-
-        return self._four_digit
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._uuid is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._four_digit is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-
-        :rtype: CardVirtualPrimaryAccountNumber
-        """
-
-        return converter.json_to_class(CardVirtualPrimaryAccountNumber, json_str)
 
 
 class CardPrimaryAccountNumber(BunqModel):
@@ -1981,159 +1954,11 @@ class CardPrimaryAccountNumber(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CardPrimaryAccountNumber
         """
 
         return converter.json_to_class(CardPrimaryAccountNumber, json_str)
-
-
-class CardMagStripePermission(BunqModel):
-    """
-    :param _expiry_time: Expiry time of this rule.
-    :type _expiry_time: str
-    """
-
-    _expiry_time = None
-    _expiry_time_field_for_request = None
-
-    def __init__(self, expiry_time=None):
-        """
-        :param expiry_time: Expiry time of this rule.
-        :type expiry_time: str
-        """
-
-        self._expiry_time_field_for_request = expiry_time
-
-    @property
-    def expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_time
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._expiry_time is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-
-        :rtype: CardMagStripePermission
-        """
-
-        return converter.json_to_class(CardMagStripePermission, json_str)
-
-
-class NotificationFilter(BunqModel):
-    """
-    :param _notification_delivery_method: The delivery method via which
-    notifications that match this notification filter will be delivered.
-    Possible choices are PUSH for delivery via push notification and URL for
-    delivery via URL callback.
-    :type _notification_delivery_method: str
-    :param _notification_target: The target of notifications that match this
-    notification filter. For URL notification filters this is the URL to which
-    the callback will be made. For PUSH notifications filters this should always
-    be null.
-    :type _notification_target: str
-    :param _category: The notification category that will match this
-    notification filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
-    CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
-    MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
-    SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
-    :type _category: str
-    """
-
-    _notification_delivery_method = None
-    _notification_target = None
-    _category = None
-    _notification_delivery_method_field_for_request = None
-    _notification_target_field_for_request = None
-    _category_field_for_request = None
-
-    def __init__(self, notification_delivery_method=None, notification_target=None, category=None):
-        """
-        :param notification_delivery_method: The delivery method via which
-        notifications that match this notification filter will be delivered.
-        Possible choices are PUSH for delivery via push notification and URL for
-        delivery via URL callback.
-        :type notification_delivery_method: str
-        :param notification_target: The target of notifications that match this
-        notification filter. For URL notification filters this is the URL to which
-        the callback will be made. For PUSH notifications filters this should always
-        be null.
-        :type notification_target: str
-        :param category: The notification category that will match this notification
-        filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
-        CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
-        MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
-        SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
-        :type category: str
-        """
-
-        self._notification_delivery_method_field_for_request = notification_delivery_method
-        self._notification_target_field_for_request = notification_target
-        self._category_field_for_request = category
-
-    @property
-    def notification_delivery_method(self):
-        """
-        :rtype: str
-        """
-
-        return self._notification_delivery_method
-
-    @property
-    def notification_target(self):
-        """
-        :rtype: str
-        """
-
-        return self._notification_target
-
-    @property
-    def category(self):
-        """
-        :rtype: str
-        """
-
-        return self._category
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._notification_delivery_method is not None:
-            return False
-
-        if self._notification_target is not None:
-            return False
-
-        if self._category is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-
-        :rtype: NotificationFilter
-        """
-
-        return converter.json_to_class(NotificationFilter, json_str)
 
 
 class TabTextWaitingScreen(BunqModel):
@@ -2193,7 +2018,7 @@ class TabTextWaitingScreen(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabTextWaitingScreen
         """
 
@@ -2284,7 +2109,7 @@ class TabVisibility(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TabVisibility
         """
 
@@ -2349,7 +2174,7 @@ class AttachmentTab(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: AttachmentTab
         """
 
@@ -2395,7 +2220,7 @@ class Certificate(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Certificate
         """
 
@@ -2446,7 +2271,7 @@ class DraftPaymentResponse(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftPaymentResponse
         """
 
@@ -2618,7 +2443,7 @@ class DraftPaymentEntry(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftPaymentEntry
         """
 
@@ -2627,9 +2452,9 @@ class DraftPaymentEntry(BunqModel):
 
 class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
     """
-    :param _Payment:
+    :param _Payment: 
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch:
+    :param _PaymentBatch: 
     :type _PaymentBatch: endpoint.PaymentBatch
     """
 
@@ -2686,11 +2511,79 @@ class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftPaymentAnchorObject
         """
 
         return converter.json_to_class(DraftPaymentAnchorObject, json_str)
+
+
+class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
+    """
+    :param _Payment: 
+    :type _Payment: endpoint.Payment
+    :param _PaymentBatch: 
+    :type _PaymentBatch: endpoint.PaymentBatch
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    _Payment = None
+    _PaymentBatch = None
+
+    @property
+    def Payment(self):
+        """
+        :rtype: endpoint.Payment
+        """
+
+        return self._Payment
+
+    @property
+    def PaymentBatch(self):
+        """
+        :rtype: endpoint.PaymentBatch
+        """
+
+        return self._PaymentBatch
+
+    def get_referenced_object(self):
+        """
+        :rtype: BunqModel
+        :raise: BunqException
+        """
+
+        if self._Payment is not None:
+            return self._Payment
+
+        if self._PaymentBatch is not None:
+            return self._PaymentBatch
+
+        raise BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._Payment is not None:
+            return False
+
+        if self._PaymentBatch is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ScheduleAnchorObject
+        """
+
+        return converter.json_to_class(ScheduleAnchorObject, json_str)
 
 
 class DraftShareInviteEntry(BunqModel):
@@ -2770,7 +2663,7 @@ class DraftShareInviteEntry(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: DraftShareInviteEntry
         """
 
@@ -2859,7 +2752,7 @@ class ShareDetail(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareDetail
         """
 
@@ -3006,7 +2899,7 @@ class ShareDetailPayment(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareDetailPayment
         """
 
@@ -3072,7 +2965,7 @@ class BudgetRestriction(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: BudgetRestriction
         """
 
@@ -3160,7 +3053,7 @@ class ShareDetailReadOnly(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareDetailReadOnly
         """
 
@@ -3268,7 +3161,7 @@ class ShareDetailDraftPayment(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ShareDetailDraftPayment
         """
 
@@ -3277,63 +3170,63 @@ class ShareDetailDraftPayment(BunqModel):
 
 class EventObject(BunqModel, AnchorObjectInterface):
     """
-    :param _BunqMeTab:
+    :param _BunqMeTab: 
     :type _BunqMeTab: endpoint.BunqMeTab
-    :param _BunqMeTabResultResponse:
+    :param _BunqMeTabResultResponse: 
     :type _BunqMeTabResultResponse: endpoint.BunqMeTabResultResponse
-    :param _BunqMeFundraiserResult:
+    :param _BunqMeFundraiserResult: 
     :type _BunqMeFundraiserResult: endpoint.BunqMeFundraiserResult
-    :param _Card:
+    :param _Card: 
     :type _Card: endpoint.Card
-    :param _CardDebit:
+    :param _CardDebit: 
     :type _CardDebit: endpoint.CardDebit
-    :param _DraftPayment:
+    :param _DraftPayment: 
     :type _DraftPayment: endpoint.DraftPayment
-    :param _FeatureAnnouncement:
+    :param _FeatureAnnouncement: 
     :type _FeatureAnnouncement: endpoint.FeatureAnnouncement
-    :param _IdealMerchantTransaction:
+    :param _IdealMerchantTransaction: 
     :type _IdealMerchantTransaction: endpoint.IdealMerchantTransaction
-    :param _Invoice:
+    :param _Invoice: 
     :type _Invoice: endpoint.Invoice
-    :param _ScheduledPayment:
+    :param _ScheduledPayment: 
     :type _ScheduledPayment: endpoint.SchedulePayment
-    :param _ScheduledPaymentBatch:
+    :param _ScheduledPaymentBatch: 
     :type _ScheduledPaymentBatch: endpoint.SchedulePaymentBatch
-    :param _ScheduledInstance:
+    :param _ScheduledInstance: 
     :type _ScheduledInstance: endpoint.ScheduleInstance
-    :param _MasterCardAction:
+    :param _MasterCardAction: 
     :type _MasterCardAction: endpoint.MasterCardAction
-    :param _BankSwitchServiceNetherlandsIncomingPayment:
+    :param _BankSwitchServiceNetherlandsIncomingPayment: 
     :type _BankSwitchServiceNetherlandsIncomingPayment:
     endpoint.BankSwitchServiceNetherlandsIncomingPayment
-    :param _Payment:
+    :param _Payment: 
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch:
+    :param _PaymentBatch: 
     :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestInquiryBatch:
+    :param _RequestInquiryBatch: 
     :type _RequestInquiryBatch: endpoint.RequestInquiryBatch
-    :param _RequestInquiry:
+    :param _RequestInquiry: 
     :type _RequestInquiry: endpoint.RequestInquiry
-    :param _RequestResponse:
+    :param _RequestResponse: 
     :type _RequestResponse: endpoint.RequestResponse
-    :param _RewardRecipient:
+    :param _RewardRecipient: 
     :type _RewardRecipient: endpoint.RewardRecipient
-    :param _RewardSender:
+    :param _RewardSender: 
     :type _RewardSender: endpoint.RewardSender
-    :param _ShareInviteBankInquiryBatch:
+    :param _ShareInviteBankInquiryBatch: 
     :type _ShareInviteBankInquiryBatch: endpoint.ShareInviteBankInquiryBatch
-    :param _ShareInviteBankInquiry:
-    :type _ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
-    :param _ShareInviteBankResponse:
-    :type _ShareInviteBankResponse: endpoint.ShareInviteBankResponse
-    :param _SofortMerchantTransaction:
+    :param _ShareInviteBankInquiry: 
+    :type _ShareInviteBankInquiry: endpoint.ShareInviteMonetaryAccountInquiry
+    :param _ShareInviteBankResponse: 
+    :type _ShareInviteBankResponse: endpoint.ShareInviteMonetaryAccountResponse
+    :param _SofortMerchantTransaction: 
     :type _SofortMerchantTransaction: endpoint.SofortMerchantTransaction
-    :param _TabResultInquiry:
+    :param _TabResultInquiry: 
     :type _TabResultInquiry: endpoint.TabResultInquiry
-    :param _TabResultResponse:
+    :param _TabResultResponse: 
     :type _TabResultResponse: endpoint.TabResultResponse
-    :param _TransferwiseTransfer:
-    :type _TransferwiseTransfer: endpoint.TransferwiseTransfer
+    :param _TransferwisePayment: 
+    :type _TransferwisePayment: endpoint.TransferwiseTransfer
     """
 
     # Error constants.
@@ -3366,7 +3259,7 @@ class EventObject(BunqModel, AnchorObjectInterface):
     _SofortMerchantTransaction = None
     _TabResultInquiry = None
     _TabResultResponse = None
-    _TransferwiseTransfer = None
+    _TransferwisePayment = None
 
     @property
     def BunqMeTab(self):
@@ -3547,7 +3440,7 @@ class EventObject(BunqModel, AnchorObjectInterface):
     @property
     def ShareInviteBankInquiry(self):
         """
-        :rtype: endpoint.ShareInviteBankInquiry
+        :rtype: endpoint.ShareInviteMonetaryAccountInquiry
         """
 
         return self._ShareInviteBankInquiry
@@ -3555,7 +3448,7 @@ class EventObject(BunqModel, AnchorObjectInterface):
     @property
     def ShareInviteBankResponse(self):
         """
-        :rtype: endpoint.ShareInviteBankResponse
+        :rtype: endpoint.ShareInviteMonetaryAccountResponse
         """
 
         return self._ShareInviteBankResponse
@@ -3585,12 +3478,12 @@ class EventObject(BunqModel, AnchorObjectInterface):
         return self._TabResultResponse
 
     @property
-    def TransferwiseTransfer(self):
+    def TransferwisePayment(self):
         """
         :rtype: endpoint.TransferwiseTransfer
         """
 
-        return self._TransferwiseTransfer
+        return self._TransferwisePayment
 
     def get_referenced_object(self):
         """
@@ -3679,8 +3572,8 @@ class EventObject(BunqModel, AnchorObjectInterface):
         if self._TabResultResponse is not None:
             return self._TabResultResponse
 
-        if self._TransferwiseTransfer is not None:
-            return self._TransferwiseTransfer
+        if self._TransferwisePayment is not None:
+            return self._TransferwisePayment
 
         raise BunqException(self._ERROR_NULL_FIELDS)
 
@@ -3770,7 +3663,7 @@ class EventObject(BunqModel, AnchorObjectInterface):
         if self._TabResultResponse is not None:
             return False
 
-        if self._TransferwiseTransfer is not None:
+        if self._TransferwisePayment is not None:
             return False
 
         return True
@@ -3779,7 +3672,7 @@ class EventObject(BunqModel, AnchorObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: EventObject
         """
 
@@ -3931,138 +3824,18 @@ class SchedulePaymentEntry(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: SchedulePaymentEntry
         """
 
         return converter.json_to_class(SchedulePaymentEntry, json_str)
 
 
-class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
-    """
-    :param _Payment:
-    :type _Payment: endpoint.Payment
-    :param _PaymentBatch:
-    :type _PaymentBatch: endpoint.PaymentBatch
-    """
-
-    # Error constants.
-    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
-
-    _Payment = None
-    _PaymentBatch = None
-
-    @property
-    def Payment(self):
-        """
-        :rtype: endpoint.Payment
-        """
-
-        return self._Payment
-
-    @property
-    def PaymentBatch(self):
-        """
-        :rtype: endpoint.PaymentBatch
-        """
-
-        return self._PaymentBatch
-
-    def get_referenced_object(self):
-        """
-        :rtype: BunqModel
-        :raise: BunqException
-        """
-
-        if self._Payment is not None:
-            return self._Payment
-
-        if self._PaymentBatch is not None:
-            return self._PaymentBatch
-
-        raise BunqException(self._ERROR_NULL_FIELDS)
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._Payment is not None:
-            return False
-
-        if self._PaymentBatch is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-
-        :rtype: ScheduleAnchorObject
-        """
-
-        return converter.json_to_class(ScheduleAnchorObject, json_str)
-
-
-class Error(BunqModel):
-    """
-    :param _error_description: The error description (in English).
-    :type _error_description: str
-    :param _error_description_translated: The error description (in the user
-    language).
-    :type _error_description_translated: str
-    """
-
-    _error_description = None
-    _error_description_translated = None
-
-    @property
-    def error_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description
-
-    @property
-    def error_description_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description_translated
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._error_description is not None:
-            return False
-
-        if self._error_description_translated is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-
-        :rtype: Error
-        """
-
-        return converter.json_to_class(Error, json_str)
-
-
 class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
     """
-    :param _Payment:
+    :param _Payment: 
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch:
+    :param _PaymentBatch: 
     :type _PaymentBatch: endpoint.PaymentBatch
     """
 
@@ -4119,7 +3892,7 @@ class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: ScheduleInstanceAnchorObject
         """
 
@@ -4226,7 +3999,7 @@ class LabelCard(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: LabelCard
         """
 
@@ -4235,24 +4008,26 @@ class LabelCard(BunqModel):
 
 class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface):
     """
-    :param _BillingInvoice:
+    :param _BillingInvoice: 
     :type _BillingInvoice: endpoint.Invoice
-    :param _DraftPayment:
+    :param _DraftPayment: 
     :type _DraftPayment: endpoint.DraftPayment
-    :param _MasterCardAction:
+    :param _MasterCardAction: 
     :type _MasterCardAction: endpoint.MasterCardAction
-    :param _Payment:
+    :param _Payment: 
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch:
+    :param _PaymentBatch: 
     :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestResponse:
+    :param _RequestResponse: 
     :type _RequestResponse: endpoint.RequestResponse
-    :param _ScheduleInstance:
+    :param _ScheduleInstance: 
     :type _ScheduleInstance: endpoint.ScheduleInstance
-    :param _TabResultResponse:
+    :param _TabResultResponse: 
     :type _TabResultResponse: endpoint.TabResultResponse
-    :param _WhitelistResult:
+    :param _WhitelistResult: 
     :type _WhitelistResult: endpoint.WhitelistResult
+    :param _TransferwisePayment: 
+    :type _TransferwisePayment: endpoint.TransferwiseTransfer
     """
 
     # Error constants.
@@ -4267,6 +4042,7 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
     _ScheduleInstance = None
     _TabResultResponse = None
     _WhitelistResult = None
+    _TransferwisePayment = None
 
     @property
     def BillingInvoice(self):
@@ -4340,6 +4116,14 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
 
         return self._WhitelistResult
 
+    @property
+    def TransferwisePayment(self):
+        """
+        :rtype: endpoint.TransferwiseTransfer
+        """
+
+        return self._TransferwisePayment
+
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -4372,6 +4156,9 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
 
         if self._WhitelistResult is not None:
             return self._WhitelistResult
+
+        if self._TransferwisePayment is not None:
+            return self._TransferwisePayment
 
         raise BunqException(self._ERROR_NULL_FIELDS)
 
@@ -4407,13 +4194,16 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
         if self._WhitelistResult is not None:
             return False
 
+        if self._TransferwisePayment is not None:
+            return False
+
         return True
 
     @staticmethod
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: RequestReferenceSplitTheBillAnchorObject
         """
 
@@ -4478,7 +4268,7 @@ class WhitelistResultViewAnchoredObject(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: WhitelistResultViewAnchoredObject
         """
 
@@ -4600,7 +4390,7 @@ class MonetaryAccountProfileFill(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountProfileFill
         """
 
@@ -4664,7 +4454,7 @@ class Issuer(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Issuer
         """
 
@@ -4764,7 +4554,7 @@ class MonetaryAccountProfileDrain(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountProfileDrain
         """
 
@@ -4869,7 +4659,7 @@ class MonetaryAccountSetting(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: MonetaryAccountSetting
         """
 
@@ -4929,7 +4719,7 @@ class CoOwner(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: CoOwner
         """
 
@@ -4977,7 +4767,7 @@ class NotificationFilterPush(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationFilterPush
         """
 
@@ -4991,8 +4781,17 @@ class NotificationFilterUrl(BunqModel):
     :type _category: str
     :param _notification_target: The URL to which the callback should be made.
     :type _notification_target: str
+    :param _id_: The id of the NotificationFilterUrl.
+    :type _id_: int
+    :param _created: The timestamp of the NotificationFilterUrl's creation.
+    :type _created: str
+    :param _updated: The timestamp of the NotificationFilterUrl's last update.
+    :type _updated: str
     """
 
+    _id_ = None
+    _created = None
+    _updated = None
     _category = None
     _notification_target = None
     _category_field_for_request = None
@@ -5009,6 +4808,30 @@ class NotificationFilterUrl(BunqModel):
 
         self._category_field_for_request = category
         self._notification_target_field_for_request = notification_target
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
 
     @property
     def category(self):
@@ -5031,6 +4854,15 @@ class NotificationFilterUrl(BunqModel):
         :rtype: bool
         """
 
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
         if self._category is not None:
             return False
 
@@ -5043,7 +4875,7 @@ class NotificationFilterUrl(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationFilterUrl
         """
 
@@ -5052,13 +4884,13 @@ class NotificationFilterUrl(BunqModel):
 
 class NotificationUrl(BunqModel):
     """
-    :param _target_url:
+    :param _target_url: 
     :type _target_url: str
-    :param _category:
+    :param _category: 
     :type _category: str
-    :param _event_type:
+    :param _event_type: 
     :type _event_type: str
-    :param _object_:
+    :param _object_: 
     :type _object_: NotificationAnchorObject
     """
 
@@ -5122,7 +4954,7 @@ class NotificationUrl(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationUrl
         """
 
@@ -5131,49 +4963,49 @@ class NotificationUrl(BunqModel):
 
 class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     """
-    :param _BunqMeFundraiserResult:
+    :param _BunqMeFundraiserResult: 
     :type _BunqMeFundraiserResult: endpoint.BunqMeFundraiserResult
-    :param _BunqMeTab:
+    :param _BunqMeTab: 
     :type _BunqMeTab: endpoint.BunqMeTab
-    :param _BunqMeTabResultInquiry:
+    :param _BunqMeTabResultInquiry: 
     :type _BunqMeTabResultInquiry: endpoint.BunqMeTabResultInquiry
-    :param _BunqMeTabResultResponse:
+    :param _BunqMeTabResultResponse: 
     :type _BunqMeTabResultResponse: endpoint.BunqMeTabResultResponse
-    :param _ChatMessage:
+    :param _ChatMessage: 
     :type _ChatMessage: endpoint.ChatMessage
-    :param _DraftPayment:
+    :param _DraftPayment: 
     :type _DraftPayment: endpoint.DraftPayment
-    :param _IdealMerchantTransaction:
+    :param _IdealMerchantTransaction: 
     :type _IdealMerchantTransaction: endpoint.IdealMerchantTransaction
-    :param _Invoice:
+    :param _Invoice: 
     :type _Invoice: endpoint.Invoice
-    :param _MasterCardAction:
+    :param _MasterCardAction: 
     :type _MasterCardAction: endpoint.MasterCardAction
-    :param _MonetaryAccount:
+    :param _MonetaryAccount: 
     :type _MonetaryAccount: endpoint.MonetaryAccount
-    :param _Payment:
+    :param _Payment: 
     :type _Payment: endpoint.Payment
-    :param _PaymentBatch:
+    :param _PaymentBatch: 
     :type _PaymentBatch: endpoint.PaymentBatch
-    :param _RequestInquiry:
+    :param _RequestInquiry: 
     :type _RequestInquiry: endpoint.RequestInquiry
-    :param _RequestInquiryBatch:
+    :param _RequestInquiryBatch: 
     :type _RequestInquiryBatch: endpoint.RequestInquiryBatch
-    :param _RequestResponse:
+    :param _RequestResponse: 
     :type _RequestResponse: endpoint.RequestResponse
-    :param _ShareInviteBankInquiry:
-    :type _ShareInviteBankInquiry: endpoint.ShareInviteBankInquiry
-    :param _ShareInviteBankResponse:
-    :type _ShareInviteBankResponse: endpoint.ShareInviteBankResponse
-    :param _ScheduledPayment:
+    :param _ShareInviteBankInquiry: 
+    :type _ShareInviteBankInquiry: endpoint.ShareInviteMonetaryAccountInquiry
+    :param _ShareInviteBankResponse: 
+    :type _ShareInviteBankResponse: endpoint.ShareInviteMonetaryAccountResponse
+    :param _ScheduledPayment: 
     :type _ScheduledPayment: endpoint.SchedulePayment
-    :param _ScheduledInstance:
+    :param _ScheduledInstance: 
     :type _ScheduledInstance: endpoint.ScheduleInstance
-    :param _TabResultInquiry:
+    :param _TabResultInquiry: 
     :type _TabResultInquiry: endpoint.TabResultInquiry
-    :param _TabResultResponse:
+    :param _TabResultResponse: 
     :type _TabResultResponse: endpoint.TabResultResponse
-    :param _User:
+    :param _User: 
     :type _User: endpoint.User
     """
 
@@ -5326,7 +5158,7 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     @property
     def ShareInviteBankInquiry(self):
         """
-        :rtype: endpoint.ShareInviteBankInquiry
+        :rtype: endpoint.ShareInviteMonetaryAccountInquiry
         """
 
         return self._ShareInviteBankInquiry
@@ -5334,7 +5166,7 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     @property
     def ShareInviteBankResponse(self):
         """
-        :rtype: endpoint.ShareInviteBankResponse
+        :rtype: endpoint.ShareInviteMonetaryAccountResponse
         """
 
         return self._ShareInviteBankResponse
@@ -5530,7 +5362,7 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: NotificationAnchorObject
         """
 
@@ -5614,11 +5446,113 @@ class TaxResident(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: TaxResident
         """
 
         return converter.json_to_class(TaxResident, json_str)
+
+
+class NotificationFilter(BunqModel):
+    """
+    :param _notification_delivery_method: The delivery method via which
+    notifications that match this notification filter will be delivered.
+    Possible choices are PUSH for delivery via push notification and URL for
+    delivery via URL callback.
+    :type _notification_delivery_method: str
+    :param _notification_target: The target of notifications that match this
+    notification filter. For URL notification filters this is the URL to which
+    the callback will be made. For PUSH notifications filters this should always
+    be null.
+    :type _notification_target: str
+    :param _category: The notification category that will match this
+    notification filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
+    CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
+    MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
+    SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
+    :type _category: str
+    """
+
+    _notification_delivery_method = None
+    _notification_target = None
+    _category = None
+    _notification_delivery_method_field_for_request = None
+    _notification_target_field_for_request = None
+    _category_field_for_request = None
+
+    def __init__(self, notification_delivery_method=None, notification_target=None, category=None):
+        """
+        :param notification_delivery_method: The delivery method via which
+        notifications that match this notification filter will be delivered.
+        Possible choices are PUSH for delivery via push notification and URL for
+        delivery via URL callback.
+        :type notification_delivery_method: str
+        :param notification_target: The target of notifications that match this
+        notification filter. For URL notification filters this is the URL to which
+        the callback will be made. For PUSH notifications filters this should always
+        be null.
+        :type notification_target: str
+        :param category: The notification category that will match this notification
+        filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
+        CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
+        MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
+        SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
+        :type category: str
+        """
+
+        self._notification_delivery_method_field_for_request = notification_delivery_method
+        self._notification_target_field_for_request = notification_target
+        self._category_field_for_request = category
+
+    @property
+    def notification_delivery_method(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_delivery_method
+
+    @property
+    def notification_target(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_target
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._notification_delivery_method is not None:
+            return False
+
+        if self._notification_target is not None:
+            return False
+
+        if self._category is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilter
+        """
+
+        return converter.json_to_class(NotificationFilter, json_str)
 
 
 class Ubo(BunqModel):
@@ -5698,7 +5632,7 @@ class Ubo(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: Ubo
         """
 
@@ -5707,11 +5641,11 @@ class Ubo(BunqModel):
 
 class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
     """
-    :param _UserPerson:
+    :param _UserPerson: 
     :type _UserPerson: endpoint.UserPerson
-    :param _UserCompany:
+    :param _UserCompany: 
     :type _UserCompany: endpoint.UserCompany
-    :param _UserPaymentServiceProvider:
+    :param _UserPaymentServiceProvider: 
     :type _UserPaymentServiceProvider: endpoint.UserPaymentServiceProvider
     """
 
@@ -5783,7 +5717,7 @@ class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: UserApiKeyAnchoredUser
         """
 
@@ -5862,7 +5796,7 @@ class OauthCallbackUrl(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: OauthCallbackUrl
         """
 
@@ -5914,7 +5848,7 @@ class PermittedDevice(BunqModel):
     def from_json(json_str):
         """
         :type json_str: str
-
+        
         :rtype: PermittedDevice
         """
 
@@ -5945,13 +5879,6 @@ class MonetaryAccountReference(BunqModel):
 
         raise TypeError(self._ERROR_COULD_NOT_INSTANTIATE)
 
-    @staticmethod
-    def from_json(json_str):
-        pass
-
-    def is_all_field_none(self):
-        pass
-
     @classmethod
     def create_from_pointer(cls, pointer):
         """
@@ -5980,3 +5907,6 @@ class MonetaryAccountReference(BunqModel):
         instance.pointer._value = label_monetary_account.iban
 
         return instance
+
+    def is_all_field_none(self):
+        return False

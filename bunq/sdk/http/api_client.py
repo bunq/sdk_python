@@ -59,7 +59,7 @@ class ApiClient:
     HEADER_RESPONSE_ID_LOWER_CASED = 'x-bunq-client-response-id'
 
     # Default header values
-    USER_AGENT_BUNQ = 'bunq-sdk-python/1.10.16'
+    USER_AGENT_BUNQ = 'bunq-sdk-python/1.13.0'
     GEOLOCATION_ZERO = '0 0 0 0 NL'
     LANGUAGE_EN_US = 'en_US'
     REGION_NL_NL = 'nl_NL'
@@ -116,8 +116,6 @@ class ApiClient:
                 BunqContext.update_api_context(self._api_context)
 
         all_headers = self._get_all_headers(
-            method,
-            uri_relative_with_params,
             request_bytes,
             custom_headers
         )
@@ -152,8 +150,6 @@ class ApiClient:
         return uri
 
     def _get_all_headers(self,
-                         method: str,
-                         endpoint: str,
                          request_bytes: bytes,
                          custom_headers: Dict[str, str]) -> Dict[str, str]:
         headers = self._get_default_headers()
@@ -163,10 +159,7 @@ class ApiClient:
             headers[self.HEADER_AUTHENTICATION] = self._api_context.token
             headers[self.HEADER_SIGNATURE] = security.sign_request(
                 self._api_context.installation_context.private_key_client,
-                method,
-                endpoint,
-                request_bytes,
-                headers
+                request_bytes
             )
 
         return headers
