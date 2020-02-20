@@ -18,6 +18,8 @@ class AnchorObjectAdapter(converter.JsonAdapter):
     _override_field_map = {
         'ScheduledPayment': 'SchedulePayment',
         'ScheduledInstance': 'ScheduleInstance',
+        'ShareInviteBankInquiry': 'ShareInviteMonetaryAccountInquiry',
+        'ShareInviteBankResponse': 'ShareInviteMonetaryAccountResponse'
     }
 
     @classmethod
