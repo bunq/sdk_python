@@ -50,9 +50,9 @@ class TestNotificationFilter(BunqSdkTestCase):
         all_created_notification_filter_url_monetary_account = \
             NotificationFilterUrlMonetaryAccountInternal.create_with_list_response().value
 
-        self.assertTrue(all_created_notification_filter_push_user)
-        self.assertTrue(all_created_notification_filter_url_user)
-        self.assertTrue(all_created_notification_filter_url_monetary_account)
+        self.assertFalse(all_created_notification_filter_push_user)
+        self.assertFalse(all_created_notification_filter_url_user)
+        self.assertFalse(all_created_notification_filter_url_monetary_account)
 
         self.assertEqual(0, len(NotificationFilterPushUserInternal.list().value))
         self.assertEqual(0, len(NotificationFilterUrlUserInternal.list().value))
