@@ -6,7 +6,23 @@
 
 **Implemented enhancements:**
 
+- Python SDK PSD2 [\#123](https://github.com/bunq/sdk_python/pull/123) ([angelomelonas](https://github.com/angelomelonas))
 - Python SDK Refactor [\#117](https://github.com/bunq/sdk_python/pull/117) ([angelomelonas](https://github.com/angelomelonas))
+
+**Fixed bugs:**
+
+- Fix notification adapter and test. [\#126](https://github.com/bunq/sdk_python/pull/126) ([NickvandeGroes](https://github.com/NickvandeGroes))
+
+**Closed issues:**
+
+- Dependencies severely out of date \(and vulnerable: CVEs\) [\#121](https://github.com/bunq/sdk_python/issues/121)
+- Typo in EXCEPTIONS.md [\#110](https://github.com/bunq/sdk_python/issues/110)
+
+**Merged pull requests:**
+
+- feature/fix\_typo: fix typo. [\#129](https://github.com/bunq/sdk_python/pull/129) ([angelomelonas](https://github.com/angelomelonas))
+- Feature/dependency upgrades [\#128](https://github.com/bunq/sdk_python/pull/128) ([angelomelonas](https://github.com/angelomelonas))
+- Add internal NotificationFilters [\#127](https://github.com/bunq/sdk_python/pull/127) ([angelomelonas](https://github.com/angelomelonas))
 
 ## [1.10.16](https://github.com/bunq/sdk_python/tree/1.10.16) (2019-06-17)
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.2...1.10.16)
@@ -132,10 +148,8 @@
 
 **Merged pull requests:**
 
-- Regenerate code for release [\#74](https://github.com/bunq/sdk_python/pull/74) ([OGKevin](https://github.com/OGKevin))
 - Regenerated code to add object types. \(bunq/sdk\_python\#53\) [\#70](https://github.com/bunq/sdk_python/pull/70) ([OGKevin](https://github.com/OGKevin))
 - Bunq/sdk python\#67 add missing token qr id field [\#69](https://github.com/bunq/sdk_python/pull/69) ([OGKevin](https://github.com/OGKevin))
-- Added missing id field to mastercard action. \(bunq/sdk\_python\#54\) [\#66](https://github.com/bunq/sdk_python/pull/66) ([OGKevin](https://github.com/OGKevin))
 - Feature/bunq/sdk python\#59 add response id to request error [\#64](https://github.com/bunq/sdk_python/pull/64) ([OGKevin](https://github.com/OGKevin))
 - Configure Zappr [\#63](https://github.com/bunq/sdk_python/pull/63) ([OGKevin](https://github.com/OGKevin))
 - \(bunq/sdk\_python\#60\) improve issue and pr template [\#61](https://github.com/bunq/sdk_python/pull/61) ([OGKevin](https://github.com/OGKevin))
@@ -159,6 +173,8 @@
 
 **Merged pull requests:**
 
+- Regenerate code for release [\#74](https://github.com/bunq/sdk_python/pull/74) ([OGKevin](https://github.com/OGKevin))
+- Added missing id field to mastercard action. \(bunq/sdk\_python\#54\) [\#66](https://github.com/bunq/sdk_python/pull/66) ([OGKevin](https://github.com/OGKevin))
 - Feature/make sure headers are correctly cased bunq/sdk python\#51 [\#57](https://github.com/bunq/sdk_python/pull/57) ([OGKevin](https://github.com/OGKevin))
 - Feature/improve decoder bunq/sdk python\#42 [\#56](https://github.com/bunq/sdk_python/pull/56) ([OGKevin](https://github.com/OGKevin))
 - Renamed camelCase methods. \(bunq/sdk\_python\#45\) [\#48](https://github.com/bunq/sdk_python/pull/48) ([OGKevin](https://github.com/OGKevin))

@@ -48,14 +48,14 @@ Note:
 
 ## Execution
 
-You can run the tests via command line: 
+You can run all the tests via command line: 
 
-```
-python -m unittest discover -s tests/model/generated
-```  
+    python -m unittest discover -s tests/context && \
+    python -m unittest discover -s tests/http && \
+    python -m unittest discover -s tests/model/generated
 
 or via PyCharm, but first you must configure PyCharm by doing the following:
-* Got to preferences --> tools --> Python integrated tools and change default
+* Go to `Preferences` --> `Tools` --> `Python integrated tools` and change default
 test runner to `unittests`.
 * Configure your Python interpreter to an supported Python version. Python 3 is
 recommended.

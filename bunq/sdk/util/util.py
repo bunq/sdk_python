@@ -23,11 +23,10 @@ _ERROR_COULD_NOT_CREATE_NEW_SANDBOX_USER = "Could not create new sandbox user."
 def automatic_sandbox_install() -> ApiContext:
     sandbox_user = __generate_new_sandbox_user()
 
-    return ApiContext(
-        ApiEnvironmentType.SANDBOX,
-        sandbox_user.api_key,
-        socket.gethostname()
-    )
+    return ApiContext.create(ApiEnvironmentType.SANDBOX,
+                             sandbox_user.api_key,
+                             socket.gethostname()
+                             )
 
 
 def __generate_new_sandbox_user() -> SandboxUser:

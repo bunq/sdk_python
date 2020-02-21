@@ -21,8 +21,8 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
     _GETTER_REQUEST_RESPONSE = 'RequestResponse'
     _GETTER_SCHEDULE_PAYMENT = 'ScheduledPayment'
     _GETTER_SCHEDULE_INSTANCE = 'ScheduledInstance'
-    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteMonetaryAccountInquiry'
-    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteMonetaryAccountResponse'
+    _GETTER_SHARE_INVITE_BANK_INQUIRY = 'ShareInviteBankInquiry'
+    _GETTER_SHARE_INVITE_BANK_RESPONSE = 'ShareInviteBankResponse'
 
     # Model json paths constants.
     BASE_PATH_JSON_MODEL = '../../../assets/NotificationUrlJsons'

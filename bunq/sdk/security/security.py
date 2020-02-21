@@ -6,7 +6,7 @@ import re
 import typing
 from base64 import b64encode
 from hashlib import sha1
-from typing import Dict
+from typing import Dict, List
 
 from Cryptodome import Cipher
 from Cryptodome import Random
@@ -111,6 +111,16 @@ def _should_sign_request_header(header_name: str) -> bool:
     return False
 
 
+def generate_signature(string_to_sign: str, key_pair: RsaKey) -> str:
+    bytes_to_sign = string_to_sign.encode()
+    signer = PKCS1_v1_5.new(key_pair)
+    digest = SHA256.new()
+    digest.update(bytes_to_sign)
+    sign = signer.sign(digest)
+
+    return b64encode(sign)
+
+
 def encrypt(api_context: ApiContext,
             request_bytes: bytes,
             custom_headers: Dict[str, str]) -> bytes:
@@ -177,15 +187,14 @@ def validate_response(public_key_server: RsaKey,
 
 
 def is_valid_response_header_with_body(public_key_server: RsaKey,
-                      status_code: int,
-                      body_bytes: bytes,
-                      headers: Dict[str, str]) -> bool:
+                                       status_code: int,
+                                       body_bytes: bytes,
+                                       headers: Dict[str, str]) -> bool:
     head_bytes = _generate_response_head_bytes(status_code, headers)
     bytes_signed = head_bytes + body_bytes
     signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
     digest = SHA256.new()
     digest.update(bytes_signed)
-    signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
 
     try:
         signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
@@ -243,3 +252,7 @@ def _should_sign_response_header(header_name: str) -> bool:
         return True
 
     return False
+
+
+def get_certificate_chain_string(all_chain_certificate: List[str]):
+    return _DELIMITER_NEWLINE.join(all_chain_certificate)

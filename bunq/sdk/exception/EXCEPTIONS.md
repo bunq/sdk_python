@@ -50,11 +50,11 @@ from bunq.sdk.exception.bad_request_exception import BadRequestException
 from bunq.sdk.context.api_context import ApiEnvironmentType, ApiContext
 
 API_KEY = "Some invalid API key"
-DESCRIPTION = "This wil raise a BadRequestException"
+DESCRIPTION = "This will raise a BadRequestException"
 
 try:
     # Make a call that might raise an exception
-    ApiContext(ApiEnvironmentType.SANDBOX, API_KEY, DESCRIPTION)
+    ApiContext.create(ApiEnvironmentType.SANDBOX, API_KEY, DESCRIPTION)
 except BadRequestException as error:
     # Do something if exception is raised
     print(error.response_code)
