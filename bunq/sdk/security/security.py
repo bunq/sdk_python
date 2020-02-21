@@ -187,15 +187,14 @@ def validate_response(public_key_server: RsaKey,
 
 
 def is_valid_response_header_with_body(public_key_server: RsaKey,
-                      status_code: int,
-                      body_bytes: bytes,
-                      headers: Dict[str, str]) -> bool:
+                                       status_code: int,
+                                       body_bytes: bytes,
+                                       headers: Dict[str, str]) -> bool:
     head_bytes = _generate_response_head_bytes(status_code, headers)
     bytes_signed = head_bytes + body_bytes
     signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
     digest = SHA256.new()
     digest.update(bytes_signed)
-    signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))
 
     try:
         signer.verify(digest, base64.b64decode(headers[_HEADER_SERVER_SIGNATURE]))

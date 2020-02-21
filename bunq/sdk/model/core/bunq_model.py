@@ -3,6 +3,7 @@ from __future__ import annotations
 import typing
 from typing import Dict, List
 
+from bunq import T
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.http.bunq_response_raw import BunqResponseRaw
 from bunq.sdk.json import converter
@@ -90,7 +91,7 @@ class BunqModel:
     @classmethod
     def _from_json_list(cls,
                         response_raw: BunqResponseRaw,
-                        wrapper: str = None) -> BunqResponse[List[BunqModel]]:
+                        wrapper: str = None) -> BunqResponse[List[T]]:
         from bunq import Pagination
 
         json = response_raw.body_bytes.decode()
@@ -103,7 +104,10 @@ class BunqModel:
             item_deserialized = converter.deserialize(cls, item_unwrapped)
             array_deserialized.append(item_deserialized)
 
-        pagination = converter.deserialize(Pagination, obj[cls._FIELD_PAGINATION])
+        pagination = None
+
+        if cls._FIELD_PAGINATION in obj:
+            pagination = converter.deserialize(Pagination, obj[cls._FIELD_PAGINATION])
 
         return BunqResponse(array_deserialized, response_raw.headers, pagination)
 
