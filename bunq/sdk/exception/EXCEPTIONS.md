@@ -54,7 +54,7 @@ DESCRIPTION = "This wil raise a BadRequestException"
 
 try:
     # Make a call that might raise an exception
-    ApiContext(ApiEnvironmentType.SANDBOX, API_KEY, DESCRIPTION)
+    ApiContext.create(ApiEnvironmentType.SANDBOX, API_KEY, DESCRIPTION)
 except BadRequestException as error:
     # Do something if exception is raised
     print(error.response_code)
