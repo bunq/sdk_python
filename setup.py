@@ -70,11 +70,19 @@ setup(
     keywords='open-banking sepa bunq finance api payment',
 
     # Packages of the project. "find_packages()" lists all the project packages.
-    packages=find_packages(exclude=['contrib', 'docs', 'tests', 'examples',
-                                    'assets', '.idea', 'run.py']),
+    packages=find_packages(exclude=['contrib',
+                                    'docs',
+                                    'tests',
+                                    'examples',
+                                    'assets',
+                                    '.idea',
+                                    'run.py']),
 
     # Run-time dependencies of the project. These will be installed by pip.
-    install_requires=['aenum==2.0.8', 'chardet==3.0.4', 'pycryptodomex==3.4.6',
-                      'requests==2.18.1', 'simplejson==3.11.1',
-                      'urllib3==1.21.1'],
+    install_requires=['aenum==2.2.3',
+                      'chardet==3.0.4',
+                      'pycryptodomex==3.9.7',
+                      'requests==2.23.0',
+                      'simplejson==3.17.0',
+                      'urllib3==1.25.8'],
 )
