@@ -1,4 +1,4 @@
-from typing import Type, Any
+from typing import Type
 
 from bunq.sdk.context.api_environment_type import ApiEnvironmentType
 from bunq.sdk.context.installation_context import InstallationContext
@@ -42,11 +42,11 @@ def initialize_converter() -> None:
     converter.register_adapter(datetime.datetime, DateTimeAdapter)
     converter.register_adapter(Pagination, PaginationAdapter)
 
-    def register_anchor_adapter(class_to_register: Type[Any]) -> None:
+    def register_anchor_adapter(class_to_register: Type[T]) -> None:
         if issubclass(class_to_register, AnchorObjectInterface):
             converter.register_adapter(class_to_register, AnchorObjectAdapter)
 
-    def get_class(class_string_to_get: str) -> Type[Any]:
+    def get_class(class_string_to_get: str) -> Type[T]:
         if hasattr(object_, class_string_to_get):
             return getattr(object_, class_string_to_get)
 
