@@ -12,7 +12,7 @@ Before you dive into this brand new SDK, please consider:
 - Learning how bunq works and what objects you will work with by reading [the intro to our API](https://github.com/bunq/doc/blob/develop/README.md) 🤓
 - Checking out [our developer portal](https://developer.bunq.com/) 🙌  
 - Grabbing your Production API key from [our developer portal](https://developer.bunq.com/) or the bunq app 🗝
-- Generating a Sandbox API key using [our developer portal] or [Tinker](https://www.bunq.com/developer) 🗝
+- Generating a Sandbox API key using [our developer portal](https://developer.bunq.com/) or [Tinker](https://www.bunq.com/developer) 🗝
 - Visiting [our forum](https://together.bunq.com/t/api) where you can share your creations,
 questions and experience 🎤
 
