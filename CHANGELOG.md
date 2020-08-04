@@ -1,13 +1,13 @@
-# Change Log
+# Changelog
 
-## [Unreleased](https://github.com/bunq/sdk_python/tree/HEAD)
+## [1.13.1](https://github.com/bunq/sdk_python/tree/1.13.1) (2020-02-21)
 
-[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.16...HEAD)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.13.0...1.13.1)
 
 **Implemented enhancements:**
 
+- Add type hint. [\#89](https://github.com/bunq/sdk_python/issues/89)
 - Python SDK PSD2 [\#123](https://github.com/bunq/sdk_python/pull/123) ([angelomelonas](https://github.com/angelomelonas))
-- Python SDK Refactor [\#117](https://github.com/bunq/sdk_python/pull/117) ([angelomelonas](https://github.com/angelomelonas))
 
 **Fixed bugs:**
 
@@ -24,7 +24,16 @@
 - Feature/dependency upgrades [\#128](https://github.com/bunq/sdk_python/pull/128) ([angelomelonas](https://github.com/angelomelonas))
 - Add internal NotificationFilters [\#127](https://github.com/bunq/sdk_python/pull/127) ([angelomelonas](https://github.com/angelomelonas))
 
+## [1.13.0](https://github.com/bunq/sdk_python/tree/1.13.0) (2020-02-19)
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.16...1.13.0)
+
+**Implemented enhancements:**
+
+- Python SDK Refactor [\#117](https://github.com/bunq/sdk_python/pull/117) ([angelomelonas](https://github.com/angelomelonas))
+
 ## [1.10.16](https://github.com/bunq/sdk_python/tree/1.10.16) (2019-06-17)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.2...1.10.16)
 
 **Closed issues:**
@@ -36,6 +45,7 @@
 - Markdown fix. \(bunq/sdk\_python\#113\) [\#114](https://github.com/bunq/sdk_python/pull/114) ([kojoru](https://github.com/kojoru))
 
 ## [1.10.2](https://github.com/bunq/sdk_python/tree/1.10.2) (2019-05-22)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.1...1.10.2)
 
 **Closed issues:**
@@ -43,9 +53,11 @@
 - MonetaryAccountJoint.list not availeble [\#112](https://github.com/bunq/sdk_python/issues/112)
 
 ## [1.10.1](https://github.com/bunq/sdk_python/tree/1.10.1) (2019-03-22)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.0...1.10.1)
 
 ## [1.10.0](https://github.com/bunq/sdk_python/tree/1.10.0) (2019-03-22)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.1.0...1.10.0)
 
 **Closed issues:**
@@ -57,6 +69,7 @@
 - Edits to allow Python 3.5.3 as minimum [\#109](https://github.com/bunq/sdk_python/pull/109) ([eavanvalkenburg](https://github.com/eavanvalkenburg))
 
 ## [1.1.0](https://github.com/bunq/sdk_python/tree/1.1.0) (2018-10-05)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.0.1...1.1.0)
 
 **Closed issues:**
@@ -68,9 +81,11 @@
 - Bunq/sdk\_python\#78/remove config dep [\#106](https://github.com/bunq/sdk_python/pull/106) ([OGKevin](https://github.com/OGKevin))
 
 ## [1.0.1](https://github.com/bunq/sdk_python/tree/1.0.1) (2018-09-01)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.0.0...1.0.1)
 
 ## [1.0.0](https://github.com/bunq/sdk_python/tree/1.0.0) (2018-07-24)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.1...1.0.0)
 
 **Implemented enhancements:**
@@ -111,6 +126,7 @@
 - Optimise test framework auto topup bunq/sdk\_python\#78 [\#81](https://github.com/bunq/sdk_python/pull/81) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.13.1](https://github.com/bunq/sdk_python/tree/0.13.1) (2018-05-30)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.0...0.13.1)
 
 **Closed issues:**
@@ -128,6 +144,7 @@
 - Move to new sandbox bunq/sdk\_python\#98 [\#99](https://github.com/bunq/sdk_python/pull/99) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.13.0](https://github.com/bunq/sdk_python/tree/0.13.0) (2018-03-20)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.4...0.13.0)
 
 **Implemented enhancements:**
@@ -148,14 +165,17 @@
 
 **Merged pull requests:**
 
+- Regenerate code for release [\#74](https://github.com/bunq/sdk_python/pull/74) ([OGKevin](https://github.com/OGKevin))
 - Regenerated code to add object types. \(bunq/sdk\_python\#53\) [\#70](https://github.com/bunq/sdk_python/pull/70) ([OGKevin](https://github.com/OGKevin))
 - Bunq/sdk python\#67 add missing token qr id field [\#69](https://github.com/bunq/sdk_python/pull/69) ([OGKevin](https://github.com/OGKevin))
+- Added missing id field to mastercard action. \(bunq/sdk\_python\#54\) [\#66](https://github.com/bunq/sdk_python/pull/66) ([OGKevin](https://github.com/OGKevin))
 - Feature/bunq/sdk python\#59 add response id to request error [\#64](https://github.com/bunq/sdk_python/pull/64) ([OGKevin](https://github.com/OGKevin))
 - Configure Zappr [\#63](https://github.com/bunq/sdk_python/pull/63) ([OGKevin](https://github.com/OGKevin))
 - \(bunq/sdk\_python\#60\) improve issue and pr template [\#61](https://github.com/bunq/sdk_python/pull/61) ([OGKevin](https://github.com/OGKevin))
 - Bunq update 7  [\#76](https://github.com/bunq/sdk_python/pull/76) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.12.4](https://github.com/bunq/sdk_python/tree/0.12.4) (2017-12-21)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.3...0.12.4)
 
 **Implemented enhancements:**
@@ -173,13 +193,12 @@
 
 **Merged pull requests:**
 
-- Regenerate code for release [\#74](https://github.com/bunq/sdk_python/pull/74) ([OGKevin](https://github.com/OGKevin))
-- Added missing id field to mastercard action. \(bunq/sdk\_python\#54\) [\#66](https://github.com/bunq/sdk_python/pull/66) ([OGKevin](https://github.com/OGKevin))
 - Feature/make sure headers are correctly cased bunq/sdk python\#51 [\#57](https://github.com/bunq/sdk_python/pull/57) ([OGKevin](https://github.com/OGKevin))
 - Feature/improve decoder bunq/sdk python\#42 [\#56](https://github.com/bunq/sdk_python/pull/56) ([OGKevin](https://github.com/OGKevin))
 - Renamed camelCase methods. \(bunq/sdk\_python\#45\) [\#48](https://github.com/bunq/sdk_python/pull/48) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.12.3](https://github.com/bunq/sdk_python/tree/0.12.3) (2017-11-15)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.2...0.12.3)
 
 **Implemented enhancements:**
@@ -192,6 +211,7 @@
 - ScheduledPayment causes decode error due to Typo [\#44](https://github.com/bunq/sdk_python/issues/44)
 
 ## [0.12.2](https://github.com/bunq/sdk_python/tree/0.12.2) (2017-11-08)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.12.0...0.12.2)
 
 **Implemented enhancements:**
@@ -212,6 +232,7 @@
 - Feature/add missing cvc fields \#37 [\#38](https://github.com/bunq/sdk_python/pull/38) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.12.0](https://github.com/bunq/sdk_python/tree/0.12.0) (2017-10-11)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.11.0...0.12.0)
 
 **Implemented enhancements:**
@@ -228,6 +249,7 @@
 - Feature/exception handler [\#26](https://github.com/bunq/sdk_python/pull/26) ([OGKevin](https://github.com/OGKevin))
 
 ## [0.11.0](https://github.com/bunq/sdk_python/tree/0.11.0) (2017-09-06)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.10.0...0.11.0)
 
 **Implemented enhancements:**
@@ -237,6 +259,7 @@
 - Add pagination [\#21](https://github.com/bunq/sdk_python/pull/21) ([dnl-blkv](https://github.com/dnl-blkv))
 
 ## [0.10.0](https://github.com/bunq/sdk_python/tree/0.10.0) (2017-08-22)
+
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.9.1...0.10.0)
 
 **Implemented enhancements:**
@@ -244,10 +267,10 @@
 - Add proxy support to Python SDK [\#16](https://github.com/bunq/sdk_python/issues/16)
 - Break the SDK's dependence on the bunq.conf file [\#11](https://github.com/bunq/sdk_python/issues/11)
 - Response is missing response headers and pagination [\#9](https://github.com/bunq/sdk_python/issues/9)
-- cleanup tests \[\#18\] [\#19](https://github.com/bunq/sdk_python/pull/19) ([dnl-blkv](https://github.com/dnl-blkv))
 - Changed test class name [\#14](https://github.com/bunq/sdk_python/pull/14) ([OGKevin](https://github.com/OGKevin))
 - Load and Save an ApiContext from and to JSON Data [\#13](https://github.com/bunq/sdk_python/pull/13) ([PJUllrich](https://github.com/PJUllrich))
 - \#9 Introduce BunqResponse [\#10](https://github.com/bunq/sdk_python/pull/10) ([dnl-blkv](https://github.com/dnl-blkv))
+- Readme for tests [\#5](https://github.com/bunq/sdk_python/pull/5) ([OGKevin](https://github.com/OGKevin))
 
 **Closed issues:**
 
@@ -258,10 +281,13 @@
 - Add proxy support \[\#16\] [\#17](https://github.com/bunq/sdk_python/pull/17) ([dnl-blkv](https://github.com/dnl-blkv))
 
 ## [0.9.1](https://github.com/bunq/sdk_python/tree/0.9.1) (2017-08-07)
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/4fb168bb3e1ed40b0b8ca00c8156b384debf2e29...0.9.1)
+
 **Implemented enhancements:**
 
 - Submit this as package to PyPi [\#2](https://github.com/bunq/sdk_python/issues/2)
-- Readme for tests [\#5](https://github.com/bunq/sdk_python/pull/5) ([OGKevin](https://github.com/OGKevin))
+- cleanup tests \[\#18\] [\#19](https://github.com/bunq/sdk_python/pull/19) ([dnl-blkv](https://github.com/dnl-blkv))
 - Uploaded to PyPi [\#4](https://github.com/bunq/sdk_python/pull/4) ([OGKevin](https://github.com/OGKevin))
 - Add first series of unit-tests [\#1](https://github.com/bunq/sdk_python/pull/1) ([OGKevin](https://github.com/OGKevin))
 
@@ -271,4 +297,4 @@
 
 
 
-\* *This Change Log was automatically generated by [github_changelog_generator](https://github.com/skywinder/Github-Changelog-Generator)*
+\* *This Changelog was automatically generated by [github_changelog_generator](https://github.com/github-changelog-generator/github-changelog-generator)*
