@@ -9,9 +9,11 @@ We're very happy to introduce yet another unique product: complete banking SDKs!
 Now you can build even bigger and better apps and integrate them with your bank of the free! 🌈
 
 Before you dive into this brand new SDK, please consider:
-- Checking out our new developer’s page [https://bunq.com/en/developer](https://bunq.com/en/developer) 🙌  
-- Grabbing your production API key from the bunq app or generate a Sandbox API key using [Tinker](https://www.bunq.com/developer) 🗝
-- Visiting [together.bunq.com](https://together.bunq.com) where you can share your creations,
+- Learning how bunq works and what objects you will work with by reading [the intro to our API](https://github.com/bunq/doc/blob/develop/README.md) 🤓
+- Checking out [our developer portal](https://developer.bunq.com/) 🙌  
+- Grabbing your Production API key from [our developer portal](https://developer.bunq.com/) or the bunq app 🗝
+- Generating a Sandbox API key using [our developer portal](https://developer.bunq.com/) or [Tinker](https://www.bunq.com/developer) 🗝
+- Visiting [our forum](https://together.bunq.com/t/api) where you can share your creations,
 questions and experience 🎤
 
 Give us your feedback, create pull requests, build your very own bunq apps and most importantly:

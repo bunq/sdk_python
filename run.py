@@ -2,8 +2,7 @@
 import sys
 
 if len(sys.argv) != 2:
-    print('Invalid argument count. Usage: python3 run.py '
-          'examples/example_name.py')
+    print('Invalid argument count. Usage: python3 run.py examples/example_name.py')
 
 path = sys.argv[1]
 module_ = path.rstrip('.py').replace('/', '.')
