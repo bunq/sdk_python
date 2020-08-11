@@ -900,9 +900,9 @@ class Address(BunqModel):
     :type _postal_code: str
     :param _city: The city.
     :type _city: str
-    :param _country: The country as an ISO 3166-1 alpha-2 country code..
+    :param _country: The country as an ISO 3166-1 alpha-2 country code.
     :type _country: str
-    :param _extra: The appartment, building or other extra information for
+    :param _extra: The apartment, building or other extra information for
     addresses.
     :type _extra: str
     :param _mailbox_name: The name on the mailbox (only used for Postal
@@ -945,7 +945,7 @@ class Address(BunqModel):
         :type country: str
         :param po_box: The PO box.
         :type po_box: str
-        :param extra: The appartment, building or other extra information for
+        :param extra: The apartment, building or other extra information for
         addresses.
         :type extra: str
         :param mailbox_name: The name on the mailbox (only used for Postal
@@ -2225,6 +2225,192 @@ class Certificate(BunqModel):
         """
 
         return converter.json_to_class(Certificate, json_str)
+
+
+class Ubo(BunqModel):
+    """
+    :param _name: The name of the ultimate beneficiary owner.
+    :type _name: str
+    :param _date_of_birth: The date of birth of the ultimate beneficiary owner.
+    :type _date_of_birth: str
+    :param _nationality: The nationality of the ultimate beneficiary owner.
+    :type _nationality: str
+    """
+
+    _name = None
+    _date_of_birth = None
+    _nationality = None
+    _name_field_for_request = None
+    _date_of_birth_field_for_request = None
+    _nationality_field_for_request = None
+
+    def __init__(self, name=None, date_of_birth=None, nationality=None):
+        """
+        :param name: The name of the ultimate beneficiary owner.
+        :type name: str
+        :param date_of_birth: The date of birth of the ultimate beneficiary owner.
+        Accepts ISO8601 date formats.
+        :type date_of_birth: str
+        :param nationality: The nationality of the ultimate beneficiary owner.
+        Accepts ISO8601 date formats.
+        :type nationality: str
+        """
+
+        self._name_field_for_request = name
+        self._date_of_birth_field_for_request = date_of_birth
+        self._nationality_field_for_request = nationality
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def date_of_birth(self):
+        """
+        :rtype: str
+        """
+
+        return self._date_of_birth
+
+    @property
+    def nationality(self):
+        """
+        :rtype: str
+        """
+
+        return self._nationality
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._name is not None:
+            return False
+
+        if self._date_of_birth is not None:
+            return False
+
+        if self._nationality is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Ubo
+        """
+
+        return converter.json_to_class(Ubo, json_str)
+
+
+class NotificationFilter(BunqModel):
+    """
+    :param _notification_delivery_method: The delivery method via which
+    notifications that match this notification filter will be delivered.
+    Possible choices are PUSH for delivery via push notification and URL for
+    delivery via URL callback.
+    :type _notification_delivery_method: str
+    :param _notification_target: The target of notifications that match this
+    notification filter. For URL notification filters this is the URL to which
+    the callback will be made. For PUSH notifications filters this should always
+    be null.
+    :type _notification_target: str
+    :param _category: The notification category that will match this
+    notification filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
+    CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
+    MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
+    SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
+    :type _category: str
+    """
+
+    _notification_delivery_method = None
+    _notification_target = None
+    _category = None
+    _notification_delivery_method_field_for_request = None
+    _notification_target_field_for_request = None
+    _category_field_for_request = None
+
+    def __init__(self, notification_delivery_method=None, notification_target=None, category=None):
+        """
+        :param notification_delivery_method: The delivery method via which
+        notifications that match this notification filter will be delivered.
+        Possible choices are PUSH for delivery via push notification and URL for
+        delivery via URL callback.
+        :type notification_delivery_method: str
+        :param notification_target: The target of notifications that match this
+        notification filter. For URL notification filters this is the URL to which
+        the callback will be made. For PUSH notifications filters this should always
+        be null.
+        :type notification_target: str
+        :param category: The notification category that will match this notification
+        filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
+        CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
+        MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
+        SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
+        :type category: str
+        """
+
+        self._notification_delivery_method_field_for_request = notification_delivery_method
+        self._notification_target_field_for_request = notification_target
+        self._category_field_for_request = category
+
+    @property
+    def notification_delivery_method(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_delivery_method
+
+    @property
+    def notification_target(self):
+        """
+        :rtype: str
+        """
+
+        return self._notification_target
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._notification_delivery_method is not None:
+            return False
+
+        if self._notification_target is not None:
+            return False
+
+        if self._category is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilter
+        """
+
+        return converter.json_to_class(NotificationFilter, json_str)
 
 
 class DraftPaymentResponse(BunqModel):
@@ -5453,192 +5639,6 @@ class TaxResident(BunqModel):
         return converter.json_to_class(TaxResident, json_str)
 
 
-class NotificationFilter(BunqModel):
-    """
-    :param _notification_delivery_method: The delivery method via which
-    notifications that match this notification filter will be delivered.
-    Possible choices are PUSH for delivery via push notification and URL for
-    delivery via URL callback.
-    :type _notification_delivery_method: str
-    :param _notification_target: The target of notifications that match this
-    notification filter. For URL notification filters this is the URL to which
-    the callback will be made. For PUSH notifications filters this should always
-    be null.
-    :type _notification_target: str
-    :param _category: The notification category that will match this
-    notification filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
-    CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
-    MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
-    SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
-    :type _category: str
-    """
-
-    _notification_delivery_method = None
-    _notification_target = None
-    _category = None
-    _notification_delivery_method_field_for_request = None
-    _notification_target_field_for_request = None
-    _category_field_for_request = None
-
-    def __init__(self, notification_delivery_method=None, notification_target=None, category=None):
-        """
-        :param notification_delivery_method: The delivery method via which
-        notifications that match this notification filter will be delivered.
-        Possible choices are PUSH for delivery via push notification and URL for
-        delivery via URL callback.
-        :type notification_delivery_method: str
-        :param notification_target: The target of notifications that match this
-        notification filter. For URL notification filters this is the URL to which
-        the callback will be made. For PUSH notifications filters this should always
-        be null.
-        :type notification_target: str
-        :param category: The notification category that will match this notification
-        filter. Possible choices are BILLING, CARD_TRANSACTION_FAILED,
-        CARD_TRANSACTION_SUCCESSFUL, CHAT, DRAFT_PAYMENT, IDEAL, SOFORT,
-        MONETARY_ACCOUNT_PROFILE, MUTATION, PAYMENT, PROMOTION, REQUEST,
-        SCHEDULE_RESULT, SCHEDULE_STATUS, SHARE, SUPPORT, TAB_RESULT, USER_APPROVAL.
-        :type category: str
-        """
-
-        self._notification_delivery_method_field_for_request = notification_delivery_method
-        self._notification_target_field_for_request = notification_target
-        self._category_field_for_request = category
-
-    @property
-    def notification_delivery_method(self):
-        """
-        :rtype: str
-        """
-
-        return self._notification_delivery_method
-
-    @property
-    def notification_target(self):
-        """
-        :rtype: str
-        """
-
-        return self._notification_target
-
-    @property
-    def category(self):
-        """
-        :rtype: str
-        """
-
-        return self._category
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._notification_delivery_method is not None:
-            return False
-
-        if self._notification_target is not None:
-            return False
-
-        if self._category is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: NotificationFilter
-        """
-
-        return converter.json_to_class(NotificationFilter, json_str)
-
-
-class Ubo(BunqModel):
-    """
-    :param _name: The name of the ultimate beneficiary owner.
-    :type _name: str
-    :param _date_of_birth: The date of birth of the ultimate beneficiary owner.
-    :type _date_of_birth: str
-    :param _nationality: The nationality of the ultimate beneficiary owner.
-    :type _nationality: str
-    """
-
-    _name = None
-    _date_of_birth = None
-    _nationality = None
-    _name_field_for_request = None
-    _date_of_birth_field_for_request = None
-    _nationality_field_for_request = None
-
-    def __init__(self, name=None, date_of_birth=None, nationality=None):
-        """
-        :param name: The name of the ultimate beneficiary owner.
-        :type name: str
-        :param date_of_birth: The date of birth of the ultimate beneficiary owner.
-        Accepts ISO8601 date formats.
-        :type date_of_birth: str
-        :param nationality: The nationality of the ultimate beneficiary owner.
-        Accepts ISO8601 date formats.
-        :type nationality: str
-        """
-
-        self._name_field_for_request = name
-        self._date_of_birth_field_for_request = date_of_birth
-        self._nationality_field_for_request = nationality
-
-    @property
-    def name(self):
-        """
-        :rtype: str
-        """
-
-        return self._name
-
-    @property
-    def date_of_birth(self):
-        """
-        :rtype: str
-        """
-
-        return self._date_of_birth
-
-    @property
-    def nationality(self):
-        """
-        :rtype: str
-        """
-
-        return self._nationality
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._name is not None:
-            return False
-
-        if self._date_of_birth is not None:
-            return False
-
-        if self._nationality is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Ubo
-        """
-
-        return converter.json_to_class(Ubo, json_str)
-
-
 class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
     """
     :param _UserPerson: 
@@ -5853,6 +5853,373 @@ class PermittedDevice(BunqModel):
         """
 
         return converter.json_to_class(PermittedDevice, json_str)
+
+
+class TransferwiseRequirementField(BunqModel):
+    """
+    :param _key: The name of the required field.
+    :type _key: str
+    :param _value: The value of the required field.
+    :type _value: str
+    :param _name: The descriptive label of the field.
+    :type _name: str
+    :param _group: The field group.
+    :type _group: core.BunqModel
+    """
+
+    _name = None
+    _group = None
+    _key_field_for_request = None
+    _value_field_for_request = None
+
+    def __init__(self, key=None, value=None):
+        """
+        :param key: The name of the required field.
+        :type key: str
+        :param value: The value of the required field.
+        :type value: str
+        """
+
+        self._key_field_for_request = key
+        self._value_field_for_request = value
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def group(self):
+        """
+        :rtype: core.BunqModel
+        """
+
+        return self._group
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._name is not None:
+            return False
+
+        if self._group is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseRequirementField
+        """
+
+        return converter.json_to_class(TransferwiseRequirementField, json_str)
+
+
+class AllocationItem(BunqModel):
+    """
+    :param _alias: The Alias of the party we are allocating money for.
+    :type _alias: Pointer
+    :param _type_: The type of the AllocationItem.
+    :type _type_: str
+    :param _amount: The Amount of the AllocationItem.
+    :type _amount: Amount
+    :param _share_ratio: The share ratio of the AllocationItem.
+    :type _share_ratio: int
+    :param _membership: The membership.
+    :type _membership: endpoint.RegistryMembership
+    """
+
+    _type_ = None
+    _membership = None
+    _amount = None
+    _share_ratio = None
+    _alias_field_for_request = None
+    _type__field_for_request = None
+    _amount_field_for_request = None
+    _share_ratio_field_for_request = None
+
+    def __init__(self, alias=None, type_=None, amount=None, share_ratio=None):
+        """
+        :param alias: The Alias of the party we are allocating money for.
+        :type alias: Pointer
+        :param type_: The type of the AllocationItem.
+        :type type_: str
+        :param amount: The Amount of the AllocationItem.
+        :type amount: Amount
+        :param share_ratio: The share ratio of the AllocationItem.
+        :type share_ratio: int
+        """
+
+        self._alias_field_for_request = alias
+        self._type__field_for_request = type_
+        self._amount_field_for_request = amount
+        self._share_ratio_field_for_request = share_ratio
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def membership(self):
+        """
+        :rtype: endpoint.RegistryMembership
+        """
+
+        return self._membership
+
+    @property
+    def amount(self):
+        """
+        :rtype: Amount
+        """
+
+        return self._amount
+
+    @property
+    def share_ratio(self):
+        """
+        :rtype: int
+        """
+
+        return self._share_ratio
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._membership is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._share_ratio is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AllocationItem
+        """
+
+        return converter.json_to_class(AllocationItem, json_str)
+
+
+class RegistryEntryAttachment(BunqModel):
+    """
+    :param _id_: The id of the attachment.
+    :type _id_: int
+    :param _monetary_account_id: The id of the monetary account to which the
+    attachment belongs.
+    :type _monetary_account_id: int
+    """
+
+    _id_ = None
+    _monetary_account_id = None
+    _id__field_for_request = None
+
+    def __init__(self, id_=None):
+        """
+        :param id_: The id of the attachment we are attaching.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryEntryAttachment
+        """
+
+        return converter.json_to_class(RegistryEntryAttachment, json_str)
+
+
+class RegistryEntryReference(BunqModel):
+    """
+    :param _type_: The object type that will be linked to the RegistryEntry.
+    :type _type_: str
+    :param _id_: The ID of the object that will be used for the RegistryEntry.
+    :type _id_: int
+    """
+
+    _type__field_for_request = None
+    _id__field_for_request = None
+
+    def __init__(self, type_=None, id_=None):
+        """
+        :param type_: The object type that will be linked to the RegistryEntry.
+        :type type_: str
+        :param id_: The ID of the object that will be used for the RegistryEntry.
+        :type id_: int
+        """
+
+        self._type__field_for_request = type_
+        self._id__field_for_request = id_
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryEntryReference
+        """
+
+        return converter.json_to_class(RegistryEntryReference, json_str)
+
+
+class RegistrySettlementItem(BunqModel):
+    """
+    :param _amount: The amount of the RegistrySettlementItem.
+    :type _amount: Amount
+    :param _membership_paying: The membership of the user that has to pay.
+    :type _membership_paying: endpoint.RegistryMembership
+    :param _membership_receiving: The membership of the user that will receive
+    money.
+    :type _membership_receiving: endpoint.RegistryMembership
+    :param _paying_user_alias: The LabelMonetaryAccount of the user that has to
+    pay the request.
+    :type _paying_user_alias: MonetaryAccountReference
+    :param _receiving_user_alias: The LabelMonetaryAccount of the user that will
+    receive the amount.
+    :type _receiving_user_alias: MonetaryAccountReference
+    """
+
+    _amount = None
+    _membership_paying = None
+    _membership_receiving = None
+    _paying_user_alias = None
+    _receiving_user_alias = None
+
+    @property
+    def amount(self):
+        """
+        :rtype: Amount
+        """
+
+        return self._amount
+
+    @property
+    def membership_paying(self):
+        """
+        :rtype: endpoint.RegistryMembership
+        """
+
+        return self._membership_paying
+
+    @property
+    def membership_receiving(self):
+        """
+        :rtype: endpoint.RegistryMembership
+        """
+
+        return self._membership_receiving
+
+    @property
+    def paying_user_alias(self):
+        """
+        :rtype: MonetaryAccountReference
+        """
+
+        return self._paying_user_alias
+
+    @property
+    def receiving_user_alias(self):
+        """
+        :rtype: MonetaryAccountReference
+        """
+
+        return self._receiving_user_alias
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount is not None:
+            return False
+
+        if self._membership_paying is not None:
+            return False
+
+        if self._membership_receiving is not None:
+            return False
+
+        if self._paying_user_alias is not None:
+            return False
+
+        if self._receiving_user_alias is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistrySettlementItem
+        """
+
+        return converter.json_to_class(RegistrySettlementItem, json_str)
 
 
 class MonetaryAccountReference(BunqModel):

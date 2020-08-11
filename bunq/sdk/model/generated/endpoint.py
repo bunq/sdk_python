@@ -2192,261 +2192,6 @@ class Avatar(BunqModel):
         return converter.json_to_class(Avatar, json_str)
 
 
-class BancontactMerchantTransaction(BunqModel):
-    """
-    View for requesting Bancontact transactions and polling their status.
-    
-    :param _amount_requested: The requested amount of money to add.
-    :type _amount_requested: object_.Amount
-    :param _monetary_account_id: The id of the monetary account this bancontact
-    merchant transaction links to.
-    :type _monetary_account_id: int
-    :param _alias: The alias of the monetary account to add money to.
-    :type _alias: object_.MonetaryAccountReference
-    :param _expiration: When the transaction will expire.
-    :type _expiration: str
-    :param _url_redirect: The URL to visit complete the bancontact transaction.
-    :type _url_redirect: str
-    :param _url_deep_link: The deep link to visit complete the bancontact
-    transaction.
-    :type _url_deep_link: str
-    :param _status: The status of the transaction.
-    :type _status: str
-    :param _status_timestamp: When the status was last updated.
-    :type _status_timestamp: str
-    :param _transaction_id: The transaction ID of the bancontact transaction.
-    :type _transaction_id: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/bancontact-merchant-transaction"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/bancontact-merchant-transaction/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/bancontact-merchant-transaction"
-
-    # Field constants.
-    FIELD_AMOUNT_REQUESTED = "amount_requested"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "BancontactMerchantTransaction"
-
-    _monetary_account_id = None
-    _alias = None
-    _amount_requested = None
-    _expiration = None
-    _url_redirect = None
-    _url_deep_link = None
-    _status = None
-    _status_timestamp = None
-    _transaction_id = None
-    _amount_requested_field_for_request = None
-
-    def __init__(self, amount_requested):
-        """
-        :param amount_requested: The requested amount of money to add.
-        :type amount_requested: object_.Amount
-        """
-
-        self._amount_requested_field_for_request = amount_requested
-
-    @classmethod
-    def create(cls, amount_requested, monetary_account_id=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :param amount_requested: The requested amount of money to add.
-        :type amount_requested: object_.Amount
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_AMOUNT_REQUESTED: amount_requested
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, bancontact_merchant_transaction_id, monetary_account_id=None, custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type bancontact_merchant_transaction_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseBancontactMerchantTransaction
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(monetary_account_id),
-                                                     bancontact_merchant_transaction_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseBancontactMerchantTransaction.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseBancontactMerchantTransactionList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
-                                                        cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseBancontactMerchantTransactionList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def amount_requested(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_requested
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def url_redirect(self):
-        """
-        :rtype: str
-        """
-
-        return self._url_redirect
-
-    @property
-    def url_deep_link(self):
-        """
-        :rtype: str
-        """
-
-        return self._url_deep_link
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def status_timestamp(self):
-        """
-        :rtype: str
-        """
-
-        return self._status_timestamp
-
-    @property
-    def transaction_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._transaction_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._amount_requested is not None:
-            return False
-
-        if self._expiration is not None:
-            return False
-
-        if self._url_redirect is not None:
-            return False
-
-        if self._url_deep_link is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._status_timestamp is not None:
-            return False
-
-        if self._transaction_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BancontactMerchantTransaction
-        """
-
-        return converter.json_to_class(BancontactMerchantTransaction, json_str)
-
-
 class BankSwitchServiceNetherlandsIncomingPayment(BunqModel):
     """
     An incoming payment made towards an account of an external bank and
@@ -2543,16 +2288,16 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
     :type _counterparty_alias: object_.MonetaryAccountReference
     :param _status: The status of the switch service.
     :type _status: str
-    :param _sub_status: The sub status of the switch service.
-    :type _sub_status: str
-    :param _time_start_actual: The timestamp when the switch service actually
-    starts.
-    :type _time_start_actual: str
     :param _user_alias: The label of the user creator of this switch service.
     :type _user_alias: object_.LabelUser
+    :param _sub_status: The sub status of the switch service.
+    :type _sub_status: str
     :param _time_start_desired: The timestamp when the switch service desired to
     be start.
     :type _time_start_desired: str
+    :param _time_start_actual: The timestamp when the switch service actually
+    starts.
+    :type _time_start_actual: str
     :param _time_end: The timestamp when the switch service ends.
     :type _time_end: str
     :param _attachment: Reference to the bank transfer form for this
@@ -2564,8 +2309,6 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
     FIELD_ALIAS = "alias"
     FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
     FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_TIME_START_ACTUAL = "time_start_actual"
 
     _user_alias = None
     _alias = None
@@ -2579,10 +2322,8 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
     _alias_field_for_request = None
     _counterparty_alias_field_for_request = None
     _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _time_start_actual_field_for_request = None
 
-    def __init__(self, alias, counterparty_alias, status=None, sub_status=None, time_start_actual=None):
+    def __init__(self, alias, counterparty_alias, status=None):
         """
         :param alias: The alias of the Monetary Account this switch service is for.
         :type alias: object_.Pointer
@@ -2593,19 +2334,11 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
         (always set to REQUESTED) can be CANCELLED in PUT requests to cancel the
         switch service. Admin can set this to ACCEPTED, or REJECTED.
         :type status: str
-        :param sub_status: The substatus of the switch service. Only available in
-        UPDATE. Can be NONE or CAPTURED
-        :type sub_status: str
-        :param time_start_actual: The timestamp when the switch service actually
-        starts.
-        :type time_start_actual: str
         """
 
         self._alias_field_for_request = alias
         self._counterparty_alias_field_for_request = counterparty_alias
         self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._time_start_actual_field_for_request = time_start_actual
 
     @property
     def user_alias(self):
@@ -2796,8 +2529,6 @@ class Payment(BunqModel):
     :type _address_billing: object_.Address
     :param _geolocation: The Geolocation where the Payment was done from.
     :type _geolocation: object_.Geolocation
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
     :param _request_reference_split_the_bill: The reference to the object used
     for split the bill. Can be RequestInquiry or RequestInquiryBatch
     :type _request_reference_split_the_bill:
@@ -2848,7 +2579,6 @@ class Payment(BunqModel):
     _address_shipping = None
     _address_billing = None
     _geolocation = None
-    _allow_chat = None
     _request_reference_split_the_bill = None
     _balance_after_mutation = None
     _payment_auto_allocate_instance = None
@@ -3180,14 +2910,6 @@ class Payment(BunqModel):
         return self._geolocation
 
     @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
     def request_reference_split_the_bill(self):
         """
         :rtype: list[object_.RequestInquiryReference]
@@ -3280,9 +3002,6 @@ class Payment(BunqModel):
             return False
 
         if self._geolocation is not None:
-            return False
-
-        if self._allow_chat is not None:
             return False
 
         if self._request_reference_split_the_bill is not None:
@@ -4924,7 +4643,7 @@ class CardCredit(BunqModel):
     :type _alias: object_.Pointer
     :param _type_: The type of the card. Can is MASTERCARD.
     :type _type_: str
-    :param _product_type: The product type of the card to order.
+    :param _product_type: The product type of the card.
     :type _product_type: str
     :param _pin_code_assignment: Array of Types, PINs, account IDs assigned to
     the card.
@@ -4949,8 +4668,11 @@ class CardCredit(BunqModel):
     :param _sub_status: The sub-status of the card. Can be NONE or REPLACED.
     :type _sub_status: str
     :param _order_status: The order status of the card. Can be
-    CARD_UPDATE_REQUESTED, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
-    ACCEPTED_FOR_PRODUCTION or DELIVERED_TO_CUSTOMER.
+    NEW_CARD_REQUEST_RECEIVED, CARD_REQUEST_PENDING, SENT_FOR_PRODUCTION,
+    ACCEPTED_FOR_PRODUCTION, DELIVERED_TO_CUSTOMER, CARD_UPDATE_REQUESTED,
+    CARD_UPDATE_PENDING, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
+    VIRTUAL_DELIVERY, NEW_CARD_REQUEST_PENDING_USER_APPROVAL, SENT_FOR_DELIVERY
+    or NEW_CARD_REQUEST_CANCELLED.
     :type _order_status: str
     :param _expiry_date: Expiry date of the card.
     :type _expiry_date: str
@@ -4970,6 +4692,9 @@ class CardCredit(BunqModel):
     :param _country: The country that is domestic to the card. Defaults to
     country of residence of user.
     :type _country: str
+    :param _card_shipment_tracking_url: A tracking link provided by our shipment
+    provider.
+    :type _card_shipment_tracking_url: str
     """
 
     # Endpoint constants.
@@ -4993,6 +4718,7 @@ class CardCredit(BunqModel):
     _public_uuid = None
     _type_ = None
     _sub_type = None
+    _product_type = None
     _second_line = None
     _status = None
     _sub_status = None
@@ -5007,6 +4733,7 @@ class CardCredit(BunqModel):
     _pin_code_assignment = None
     _monetary_account_id_fallback = None
     _country = None
+    _card_shipment_tracking_url = None
     _second_line_field_for_request = None
     _name_on_card_field_for_request = None
     _alias_field_for_request = None
@@ -5157,6 +4884,14 @@ class CardCredit(BunqModel):
         return self._sub_type
 
     @property
+    def product_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._product_type
+
+    @property
     def second_line(self):
         """
         :rtype: str
@@ -5268,6 +5003,14 @@ class CardCredit(BunqModel):
 
         return self._country
 
+    @property
+    def card_shipment_tracking_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._card_shipment_tracking_url
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -5289,6 +5032,9 @@ class CardCredit(BunqModel):
             return False
 
         if self._sub_type is not None:
+            return False
+
+        if self._product_type is not None:
             return False
 
         if self._second_line is not None:
@@ -5331,6 +5077,9 @@ class CardCredit(BunqModel):
             return False
 
         if self._country is not None:
+            return False
+
+        if self._card_shipment_tracking_url is not None:
             return False
 
         return True
@@ -5382,8 +5131,12 @@ class CardDebit(BunqModel):
     :param _status: The status to set for the card. After ordering the card it
     will be DEACTIVATED.
     :type _status: str
-    :param _order_status: The order status of the card. After ordering the card
-    it will be NEW_CARD_REQUEST_RECEIVED.
+    :param _order_status: The order status of the card. Can be
+    NEW_CARD_REQUEST_RECEIVED, CARD_REQUEST_PENDING, SENT_FOR_PRODUCTION,
+    ACCEPTED_FOR_PRODUCTION, DELIVERED_TO_CUSTOMER, CARD_UPDATE_REQUESTED,
+    CARD_UPDATE_PENDING, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
+    VIRTUAL_DELIVERY, NEW_CARD_REQUEST_PENDING_USER_APPROVAL, SENT_FOR_DELIVERY
+    or NEW_CARD_REQUEST_CANCELLED.
     :type _order_status: str
     :param _expiry_date: The expiry date of the card.
     :type _expiry_date: str
@@ -5399,6 +5152,9 @@ class CardDebit(BunqModel):
     :param _country: The country that is domestic to the card. Defaults to
     country of residence of user.
     :type _country: str
+    :param _card_shipment_tracking_url: A tracking link provided by our shipment
+    provider.
+    :type _card_shipment_tracking_url: str
     """
 
     # Endpoint constants.
@@ -5434,6 +5190,7 @@ class CardDebit(BunqModel):
     _pin_code_assignment = None
     _monetary_account_id_fallback = None
     _country = None
+    _card_shipment_tracking_url = None
     _second_line_field_for_request = None
     _name_on_card_field_for_request = None
     _alias_field_for_request = None
@@ -5679,6 +5436,14 @@ class CardDebit(BunqModel):
 
         return self._country
 
+    @property
+    def card_shipment_tracking_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._card_shipment_tracking_url
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -5736,6 +5501,9 @@ class CardDebit(BunqModel):
             return False
 
         if self._country is not None:
+            return False
+
+        if self._card_shipment_tracking_url is not None:
             return False
 
         return True
@@ -6249,11 +6017,16 @@ class Card(BunqModel):
     :type _sub_type: str
     :param _second_line: The second line of text on the card
     :type _second_line: str
+    :param _user_id: ID of the user who is owner of the card.
+    :type _user_id: int
     :param _sub_status: The sub-status of the card. Can be NONE or REPLACED.
     :type _sub_status: str
     :param _order_status: The order status of the card. Can be
-    CARD_UPDATE_REQUESTED, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
-    ACCEPTED_FOR_PRODUCTION or DELIVERED_TO_CUSTOMER.
+    NEW_CARD_REQUEST_RECEIVED, CARD_REQUEST_PENDING, SENT_FOR_PRODUCTION,
+    ACCEPTED_FOR_PRODUCTION, DELIVERED_TO_CUSTOMER, CARD_UPDATE_REQUESTED,
+    CARD_UPDATE_PENDING, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
+    VIRTUAL_DELIVERY, NEW_CARD_REQUEST_PENDING_USER_APPROVAL, SENT_FOR_DELIVERY
+    or NEW_CARD_REQUEST_CANCELLED.
     :type _order_status: str
     :param _expiry_date: Expiry date of the card.
     :type _expiry_date: str
@@ -6268,6 +6041,11 @@ class Card(BunqModel):
     :param _country: The country that is domestic to the card. Defaults to
     country of residence of user.
     :type _country: str
+    :param _card_shipment_tracking_url: A tracking link provided by our shipment
+    provider.
+    :type _card_shipment_tracking_url: str
+    :param _amount_saved_zero_fx: The amount saved through ZeroFX on this card.
+    :type _amount_saved_zero_fx: object_.Amount
     """
 
     # Endpoint constants.
@@ -6297,6 +6075,7 @@ class Card(BunqModel):
     _type_ = None
     _sub_type = None
     _second_line = None
+    _user_id = None
     _status = None
     _sub_status = None
     _order_status = None
@@ -6311,6 +6090,8 @@ class Card(BunqModel):
     _pin_code_assignment = None
     _monetary_account_id_fallback = None
     _country = None
+    _card_shipment_tracking_url = None
+    _amount_saved_zero_fx = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -6552,6 +6333,14 @@ class Card(BunqModel):
         return self._second_line
 
     @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
     def status(self):
         """
         :rtype: str
@@ -6663,6 +6452,22 @@ class Card(BunqModel):
 
         return self._country
 
+    @property
+    def card_shipment_tracking_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._card_shipment_tracking_url
+
+    @property
+    def amount_saved_zero_fx(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_saved_zero_fx
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6687,6 +6492,9 @@ class Card(BunqModel):
             return False
 
         if self._second_line is not None:
+            return False
+
+        if self._user_id is not None:
             return False
 
         if self._status is not None:
@@ -6729,6 +6537,12 @@ class Card(BunqModel):
             return False
 
         if self._country is not None:
+            return False
+
+        if self._card_shipment_tracking_url is not None:
+            return False
+
+        if self._amount_saved_zero_fx is not None:
             return False
 
         return True
@@ -9185,6 +8999,1191 @@ class CertificatePinned(BunqModel):
         return converter.json_to_class(CertificatePinned, json_str)
 
 
+class Company(BunqModel):
+    """
+    Create and manage companies.
+    
+    :param _name: The company name.
+    :type _name: str
+    :param _address_main: The company's main address.
+    :type _address_main: object_.Address
+    :param _address_postal: The company's postal address.
+    :type _address_postal: object_.Address
+    :param _country: The country where the company is registered.
+    :type _country: str
+    :param _ubo: The names and birth dates of the company's ultimate beneficiary
+    owners. Minimum zero, maximum four.
+    :type _ubo: list[object_.Ubo]
+    :param _chamber_of_commerce_number: The company's chamber of commerce
+    number.
+    :type _chamber_of_commerce_number: str
+    :param _legal_form: The company's legal form.
+    :type _legal_form: str
+    :param _avatar_uuid: The public UUID of the company's avatar.
+    :type _avatar_uuid: str
+    :param _UserCompany: 
+    :type _UserCompany: UserCompany
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/company"
+    _ENDPOINT_URL_READ = "user/{}/company/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/company"
+    _ENDPOINT_URL_UPDATE = "user/{}/company/{}"
+
+    # Field constants.
+    FIELD_NAME = "name"
+    FIELD_ADDRESS_MAIN = "address_main"
+    FIELD_ADDRESS_POSTAL = "address_postal"
+    FIELD_COUNTRY = "country"
+    FIELD_UBO = "ubo"
+    FIELD_CHAMBER_OF_COMMERCE_NUMBER = "chamber_of_commerce_number"
+    FIELD_LEGAL_FORM = "legal_form"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "UserCompany"
+
+    _UserCompany = None
+    _name_field_for_request = None
+    _address_main_field_for_request = None
+    _address_postal_field_for_request = None
+    _country_field_for_request = None
+    _ubo_field_for_request = None
+    _chamber_of_commerce_number_field_for_request = None
+    _legal_form_field_for_request = None
+    _avatar_uuid_field_for_request = None
+
+    def __init__(self, name, address_main, address_postal, country, legal_form, ubo=None,
+                 chamber_of_commerce_number=None, avatar_uuid=None):
+        """
+        :param name: The company name.
+        :type name: str
+        :param address_main: The company's main address.
+        :type address_main: object_.Address
+        :param address_postal: The company's postal address.
+        :type address_postal: object_.Address
+        :param country: The country where the company is registered.
+        :type country: str
+        :param legal_form: The company's legal form.
+        :type legal_form: str
+        :param ubo: The names and birth dates of the company's ultimate beneficiary
+        owners. Minimum zero, maximum four.
+        :type ubo: list[object_.Ubo]
+        :param chamber_of_commerce_number: The company's chamber of commerce number.
+        :type chamber_of_commerce_number: str
+        :param avatar_uuid: The public UUID of the company's avatar.
+        :type avatar_uuid: str
+        """
+
+        self._name_field_for_request = name
+        self._address_main_field_for_request = address_main
+        self._address_postal_field_for_request = address_postal
+        self._country_field_for_request = country
+        self._legal_form_field_for_request = legal_form
+        self._ubo_field_for_request = ubo
+        self._chamber_of_commerce_number_field_for_request = chamber_of_commerce_number
+        self._avatar_uuid_field_for_request = avatar_uuid
+
+    @classmethod
+    def create(cls, name, address_main, address_postal, country, legal_form, ubo=None, chamber_of_commerce_number=None,
+               avatar_uuid=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param name: The company name.
+        :type name: str
+        :param address_main: The company's main address.
+        :type address_main: object_.Address
+        :param address_postal: The company's postal address.
+        :type address_postal: object_.Address
+        :param country: The country where the company is registered.
+        :type country: str
+        :param legal_form: The company's legal form.
+        :type legal_form: str
+        :param ubo: The names and birth dates of the company's ultimate
+        beneficiary owners. Minimum zero, maximum four.
+        :type ubo: list[object_.Ubo]
+        :param chamber_of_commerce_number: The company's chamber of commerce
+        number.
+        :type chamber_of_commerce_number: str
+        :param avatar_uuid: The public UUID of the company's avatar.
+        :type avatar_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_NAME: name,
+            cls.FIELD_ADDRESS_MAIN: address_main,
+            cls.FIELD_ADDRESS_POSTAL: address_postal,
+            cls.FIELD_COUNTRY: country,
+            cls.FIELD_UBO: ubo,
+            cls.FIELD_CHAMBER_OF_COMMERCE_NUMBER: chamber_of_commerce_number,
+            cls.FIELD_LEGAL_FORM: legal_form,
+            cls.FIELD_AVATAR_UUID: avatar_uuid
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, company_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type company_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCompany
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), company_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseCompany.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCompanyList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseCompanyList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, company_id, avatar_uuid=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type company_id: int
+        :param avatar_uuid: The public UUID of the company's avatar.
+        :type avatar_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_AVATAR_UUID: avatar_uuid
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), company_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @property
+    def UserCompany(self):
+        """
+        :rtype: UserCompany
+        """
+
+        return self._UserCompany
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._UserCompany is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Company
+        """
+
+        return converter.json_to_class(Company, json_str)
+
+
+class UserCompany(BunqModel):
+    """
+    With UserCompany you can retrieve information regarding the authenticated
+    UserCompany and update specific fields.<br/><br/>Notification filters can be
+    set on a UserCompany level to receive callbacks. For more information check
+    the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
+    
+    :param _name: The company name.
+    :type _name: str
+    :param _public_nick_name: The company's public nick name.
+    :type _public_nick_name: str
+    :param _avatar_uuid: The public UUID of the company's avatar.
+    :type _avatar_uuid: str
+    :param _address_main: The company's main address.
+    :type _address_main: object_.Address
+    :param _address_postal: The company's postal address.
+    :type _address_postal: object_.Address
+    :param _language: The person's preferred language. Formatted as a ISO 639-1
+    language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+    underscore.
+    :type _language: str
+    :param _region: The person's preferred region. Formatted as a ISO 639-1
+    language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+    underscore.
+    :type _region: str
+    :param _country: The country as an ISO 3166-1 alpha-2 country code.
+    :type _country: str
+    :param _ubo: The names of the company's ultimate beneficiary owners. Minimum
+    zero, maximum four.
+    :type _ubo: list[object_.Ubo]
+    :param _chamber_of_commerce_number: The company's chamber of commerce
+    number.
+    :type _chamber_of_commerce_number: str
+    :param _legal_form: The company's legal form.
+    :type _legal_form: str
+    :param _status: The user status. Can be: ACTIVE, SIGNUP, RECOVERY.
+    :type _status: str
+    :param _sub_status: The user sub-status. Can be: NONE, FACE_RESET, APPROVAL,
+    APPROVAL_DIRECTOR, APPROVAL_PARENT, APPROVAL_SUPPORT, COUNTER_IBAN, IDEAL or
+    SUBMIT.
+    :type _sub_status: str
+    :param _session_timeout: The setting for the session timeout of the company
+    in seconds.
+    :type _session_timeout: int
+    :param _daily_limit_without_confirmation_login: The amount the company can
+    pay in the session without asking for credentials.
+    :type _daily_limit_without_confirmation_login: object_.Amount
+    :param _id_: The id of the modified company.
+    :type _id_: int
+    :param _created: The timestamp of the company object's creation.
+    :type _created: str
+    :param _updated: The timestamp of the company object's last update.
+    :type _updated: str
+    :param _public_uuid: The company's public UUID.
+    :type _public_uuid: str
+    :param _display_name: The company's display name.
+    :type _display_name: str
+    :param _alias: The aliases of the account.
+    :type _alias: list[object_.Pointer]
+    :param _type_of_business_entity: The type of business entity.
+    :type _type_of_business_entity: str
+    :param _sector_of_industry: The sector of industry.
+    :type _sector_of_industry: str
+    :param _counter_bank_iban: The company's other bank account IBAN, through
+    which we verify it.
+    :type _counter_bank_iban: str
+    :param _avatar: The company's avatar.
+    :type _avatar: object_.Avatar
+    :param _version_terms_of_service: The version of the terms of service
+    accepted by the user.
+    :type _version_terms_of_service: str
+    :param _director_alias: The existing bunq alias for the company's primary
+    director.
+    :type _director_alias: object_.LabelUser
+    :param _directors: The existing bunq aliases for the company's directors.
+    :type _directors: list[object_.LabelUser]
+    :param _notification_filters: The types of notifications that will result in
+    a push notification or URL callback for this UserCompany.
+    :type _notification_filters: list[object_.NotificationFilter]
+    :param _customer: The customer profile of the company.
+    :type _customer: Customer
+    :param _customer_limit: The customer limits of the company.
+    :type _customer_limit: CustomerLimit
+    :param _billing_contract: The subscription of the company.
+    :type _billing_contract: list[BillingContractSubscription]
+    :param _deny_reason: The user deny reason.
+    :type _deny_reason: str
+    :param _relations: The relations for this user.
+    :type _relations: list[RelationUser]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user-company/{}"
+    _ENDPOINT_URL_UPDATE = "user-company/{}"
+
+    # Field constants.
+    FIELD_NAME = "name"
+    FIELD_PUBLIC_NICK_NAME = "public_nick_name"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_ADDRESS_MAIN = "address_main"
+    FIELD_ADDRESS_POSTAL = "address_postal"
+    FIELD_LANGUAGE = "language"
+    FIELD_REGION = "region"
+    FIELD_COUNTRY = "country"
+    FIELD_UBO = "ubo"
+    FIELD_CHAMBER_OF_COMMERCE_NUMBER = "chamber_of_commerce_number"
+    FIELD_LEGAL_FORM = "legal_form"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_SESSION_TIMEOUT = "session_timeout"
+    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "UserCompany"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _public_uuid = None
+    _name = None
+    _display_name = None
+    _public_nick_name = None
+    _alias = None
+    _chamber_of_commerce_number = None
+    _legal_form = None
+    _type_of_business_entity = None
+    _sector_of_industry = None
+    _counter_bank_iban = None
+    _avatar = None
+    _address_main = None
+    _address_postal = None
+    _version_terms_of_service = None
+    _director_alias = None
+    _directors = None
+    _language = None
+    _country = None
+    _region = None
+    _ubo = None
+    _status = None
+    _sub_status = None
+    _session_timeout = None
+    _daily_limit_without_confirmation_login = None
+    _notification_filters = None
+    _customer = None
+    _customer_limit = None
+    _billing_contract = None
+    _deny_reason = None
+    _relations = None
+    _name_field_for_request = None
+    _public_nick_name_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _address_main_field_for_request = None
+    _address_postal_field_for_request = None
+    _language_field_for_request = None
+    _region_field_for_request = None
+    _country_field_for_request = None
+    _ubo_field_for_request = None
+    _chamber_of_commerce_number_field_for_request = None
+    _legal_form_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _session_timeout_field_for_request = None
+    _daily_limit_without_confirmation_login_field_for_request = None
+
+    def __init__(self, address_main=None, language=None, region=None, name=None, public_nick_name=None,
+                 avatar_uuid=None, address_postal=None, country=None, ubo=None, chamber_of_commerce_number=None,
+                 legal_form=None, status=None, sub_status=None, session_timeout=None,
+                 daily_limit_without_confirmation_login=None):
+        """
+        :param address_main: The user's main address.
+        :type address_main: object_.Address
+        :param language: The person's preferred language. Formatted as a ISO 639-1
+        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+        underscore.
+        :type language: str
+        :param region: The person's preferred region. Formatted as a ISO 639-1
+        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+        underscore.
+        :type region: str
+        :param name: The company name.
+        :type name: str
+        :param public_nick_name: The company's nick name.
+        :type public_nick_name: str
+        :param avatar_uuid: The public UUID of the company's avatar.
+        :type avatar_uuid: str
+        :param address_postal: The company's postal address.
+        :type address_postal: object_.Address
+        :param country: The country where the company is registered.
+        :type country: str
+        :param ubo: The names and birth dates of the company's ultimate beneficiary
+        owners. Minimum zero, maximum four.
+        :type ubo: list[object_.Ubo]
+        :param chamber_of_commerce_number: The company's chamber of commerce number.
+        :type chamber_of_commerce_number: str
+        :param legal_form: The company's legal form.
+        :type legal_form: str
+        :param status: The user status. Can be: ACTIVE, SIGNUP, RECOVERY.
+        :type status: str
+        :param sub_status: The user sub-status. Can be: NONE, FACE_RESET, APPROVAL,
+        APPROVAL_DIRECTOR, APPROVAL_PARENT, APPROVAL_SUPPORT, COUNTER_IBAN, IDEAL or
+        SUBMIT.
+        :type sub_status: str
+        :param session_timeout: The setting for the session timeout of the company
+        in seconds.
+        :type session_timeout: int
+        :param daily_limit_without_confirmation_login: The amount the company can
+        pay in the session without asking for credentials.
+        :type daily_limit_without_confirmation_login: object_.Amount
+        """
+
+        self._address_main_field_for_request = address_main
+        self._language_field_for_request = language
+        self._region_field_for_request = region
+        self._name_field_for_request = name
+        self._public_nick_name_field_for_request = public_nick_name
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._address_postal_field_for_request = address_postal
+        self._country_field_for_request = country
+        self._ubo_field_for_request = ubo
+        self._chamber_of_commerce_number_field_for_request = chamber_of_commerce_number
+        self._legal_form_field_for_request = legal_form
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._session_timeout_field_for_request = session_timeout
+        self._daily_limit_without_confirmation_login_field_for_request = daily_limit_without_confirmation_login
+
+    @classmethod
+    def get(cls, custom_headers=None):
+        """
+        Get a specific company.
+        
+        :type api_context: ApiContext
+        :type user_company_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseUserCompany
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseUserCompany.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls, name=None, public_nick_name=None, avatar_uuid=None, address_main=None, address_postal=None,
+               language=None, region=None, country=None, ubo=None, chamber_of_commerce_number=None, legal_form=None,
+               status=None, sub_status=None, session_timeout=None, daily_limit_without_confirmation_login=None,
+               custom_headers=None):
+        """
+        Modify a specific company's data.
+        
+        :type user_company_id: int
+        :param name: The company name.
+        :type name: str
+        :param public_nick_name: The company's nick name.
+        :type public_nick_name: str
+        :param avatar_uuid: The public UUID of the company's avatar.
+        :type avatar_uuid: str
+        :param address_main: The user's main address.
+        :type address_main: object_.Address
+        :param address_postal: The company's postal address.
+        :type address_postal: object_.Address
+        :param language: The person's preferred language. Formatted as a ISO
+        639-1 language code plus a ISO 3166-1 alpha-2 country code, seperated by
+        an underscore.
+        :type language: str
+        :param region: The person's preferred region. Formatted as a ISO 639-1
+        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+        underscore.
+        :type region: str
+        :param country: The country where the company is registered.
+        :type country: str
+        :param ubo: The names and birth dates of the company's ultimate
+        beneficiary owners. Minimum zero, maximum four.
+        :type ubo: list[object_.Ubo]
+        :param chamber_of_commerce_number: The company's chamber of commerce
+        number.
+        :type chamber_of_commerce_number: str
+        :param legal_form: The company's legal form.
+        :type legal_form: str
+        :param status: The user status. Can be: ACTIVE, SIGNUP, RECOVERY.
+        :type status: str
+        :param sub_status: The user sub-status. Can be: NONE, FACE_RESET,
+        APPROVAL, APPROVAL_DIRECTOR, APPROVAL_PARENT, APPROVAL_SUPPORT,
+        COUNTER_IBAN, IDEAL or SUBMIT.
+        :type sub_status: str
+        :param session_timeout: The setting for the session timeout of the
+        company in seconds.
+        :type session_timeout: int
+        :param daily_limit_without_confirmation_login: The amount the company
+        can pay in the session without asking for credentials.
+        :type daily_limit_without_confirmation_login: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_NAME: name,
+            cls.FIELD_PUBLIC_NICK_NAME: public_nick_name,
+            cls.FIELD_AVATAR_UUID: avatar_uuid,
+            cls.FIELD_ADDRESS_MAIN: address_main,
+            cls.FIELD_ADDRESS_POSTAL: address_postal,
+            cls.FIELD_LANGUAGE: language,
+            cls.FIELD_REGION: region,
+            cls.FIELD_COUNTRY: country,
+            cls.FIELD_UBO: ubo,
+            cls.FIELD_CHAMBER_OF_COMMERCE_NUMBER: chamber_of_commerce_number,
+            cls.FIELD_LEGAL_FORM: legal_form,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_SUB_STATUS: sub_status,
+            cls.FIELD_SESSION_TIMEOUT: session_timeout,
+            cls.FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN: daily_limit_without_confirmation_login
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id())
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def display_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_name
+
+    @property
+    def public_nick_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_nick_name
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def chamber_of_commerce_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._chamber_of_commerce_number
+
+    @property
+    def legal_form(self):
+        """
+        :rtype: str
+        """
+
+        return self._legal_form
+
+    @property
+    def type_of_business_entity(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_of_business_entity
+
+    @property
+    def sector_of_industry(self):
+        """
+        :rtype: str
+        """
+
+        return self._sector_of_industry
+
+    @property
+    def counter_bank_iban(self):
+        """
+        :rtype: str
+        """
+
+        return self._counter_bank_iban
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def address_main(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_main
+
+    @property
+    def address_postal(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_postal
+
+    @property
+    def version_terms_of_service(self):
+        """
+        :rtype: str
+        """
+
+        return self._version_terms_of_service
+
+    @property
+    def director_alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._director_alias
+
+    @property
+    def directors(self):
+        """
+        :rtype: list[object_.LabelUser]
+        """
+
+        return self._directors
+
+    @property
+    def language(self):
+        """
+        :rtype: str
+        """
+
+        return self._language
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
+    def region(self):
+        """
+        :rtype: str
+        """
+
+        return self._region
+
+    @property
+    def ubo(self):
+        """
+        :rtype: list[object_.Ubo]
+        """
+
+        return self._ubo
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def session_timeout(self):
+        """
+        :rtype: int
+        """
+
+        return self._session_timeout
+
+    @property
+    def daily_limit_without_confirmation_login(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit_without_confirmation_login
+
+    @property
+    def notification_filters(self):
+        """
+        :rtype: list[object_.NotificationFilter]
+        """
+
+        return self._notification_filters
+
+    @property
+    def customer(self):
+        """
+        :rtype: Customer
+        """
+
+        return self._customer
+
+    @property
+    def customer_limit(self):
+        """
+        :rtype: CustomerLimit
+        """
+
+        return self._customer_limit
+
+    @property
+    def billing_contract(self):
+        """
+        :rtype: list[BillingContractSubscription]
+        """
+
+        return self._billing_contract
+
+    @property
+    def deny_reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._deny_reason
+
+    @property
+    def relations(self):
+        """
+        :rtype: list[RelationUser]
+        """
+
+        return self._relations
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._display_name is not None:
+            return False
+
+        if self._public_nick_name is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._chamber_of_commerce_number is not None:
+            return False
+
+        if self._legal_form is not None:
+            return False
+
+        if self._type_of_business_entity is not None:
+            return False
+
+        if self._sector_of_industry is not None:
+            return False
+
+        if self._counter_bank_iban is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._address_main is not None:
+            return False
+
+        if self._address_postal is not None:
+            return False
+
+        if self._version_terms_of_service is not None:
+            return False
+
+        if self._director_alias is not None:
+            return False
+
+        if self._directors is not None:
+            return False
+
+        if self._language is not None:
+            return False
+
+        if self._country is not None:
+            return False
+
+        if self._region is not None:
+            return False
+
+        if self._ubo is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._session_timeout is not None:
+            return False
+
+        if self._daily_limit_without_confirmation_login is not None:
+            return False
+
+        if self._notification_filters is not None:
+            return False
+
+        if self._customer is not None:
+            return False
+
+        if self._customer_limit is not None:
+            return False
+
+        if self._billing_contract is not None:
+            return False
+
+        if self._deny_reason is not None:
+            return False
+
+        if self._relations is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserCompany
+        """
+
+        return converter.json_to_class(UserCompany, json_str)
+
+
+class Customer(BunqModel):
+    """
+    Used to view a customer.
+    
+    :param _billing_account_id: The primary billing account account's id.
+    :type _billing_account_id: str
+    :param _invoice_notification_preference: The preferred notification type for
+    invoices.
+    :type _invoice_notification_preference: str
+    :param _id_: The id of the customer.
+    :type _id_: int
+    :param _created: The timestamp of the customer object's creation.
+    :type _created: str
+    :param _updated: The timestamp of the customer object's last update.
+    :type _updated: str
+    """
+
+    # Field constants.
+    FIELD_BILLING_ACCOUNT_ID = "billing_account_id"
+    FIELD_INVOICE_NOTIFICATION_PREFERENCE = "invoice_notification_preference"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _billing_account_id = None
+    _invoice_notification_preference = None
+    _billing_account_id_field_for_request = None
+    _invoice_notification_preference_field_for_request = None
+
+    def __init__(self, billing_account_id=None, invoice_notification_preference=None):
+        """
+        :param billing_account_id: The primary billing account account's id.
+        :type billing_account_id: str
+        :param invoice_notification_preference: The preferred notification type for
+        invoices
+        :type invoice_notification_preference: str
+        """
+
+        self._billing_account_id_field_for_request = billing_account_id
+        self._invoice_notification_preference_field_for_request = invoice_notification_preference
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def billing_account_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._billing_account_id
+
+    @property
+    def invoice_notification_preference(self):
+        """
+        :rtype: str
+        """
+
+        return self._invoice_notification_preference
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._billing_account_id is not None:
+            return False
+
+        if self._invoice_notification_preference is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Customer
+        """
+
+        return converter.json_to_class(Customer, json_str)
+
+
+class RelationUser(BunqModel):
+    """
+    Manage the relation user details.
+    
+    :param _user_id: The user's ID.
+    :type _user_id: str
+    :param _counter_user_id: The counter user's ID.
+    :type _counter_user_id: str
+    :param _label_user: The user's label.
+    :type _label_user: object_.LabelUser
+    :param _counter_label_user: The counter user's label.
+    :type _counter_label_user: object_.LabelUser
+    :param _relationship: The requested relation type.
+    :type _relationship: str
+    :param _status: The request's status, only for UPDATE.
+    :type _status: str
+    """
+
+    _user_id = None
+    _counter_user_id = None
+    _label_user = None
+    _counter_label_user = None
+    _relationship = None
+    _status = None
+
+    @property
+    def user_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._user_id
+
+    @property
+    def counter_user_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._counter_user_id
+
+    @property
+    def label_user(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user
+
+    @property
+    def counter_label_user(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._counter_label_user
+
+    @property
+    def relationship(self):
+        """
+        :rtype: str
+        """
+
+        return self._relationship
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._user_id is not None:
+            return False
+
+        if self._counter_user_id is not None:
+            return False
+
+        if self._label_user is not None:
+            return False
+
+        if self._counter_label_user is not None:
+            return False
+
+        if self._relationship is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RelationUser
+        """
+
+        return converter.json_to_class(RelationUser, json_str)
+
+
 class ConfirmationOfFunds(BunqModel):
     """
     Used to confirm availability of funds on an account.
@@ -10907,8 +11906,6 @@ class IdealMerchantTransaction(BunqModel):
     :param _transaction_identifier: The 'transaction ID' of the iDEAL
     transaction.
     :type _transaction_identifier: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
     """
 
     # Endpoint constants.
@@ -10936,7 +11933,6 @@ class IdealMerchantTransaction(BunqModel):
     _status = None
     _status_timestamp = None
     _transaction_identifier = None
-    _allow_chat = None
     _amount_requested_field_for_request = None
     _issuer_field_for_request = None
 
@@ -11140,14 +12136,6 @@ class IdealMerchantTransaction(BunqModel):
 
         return self._transaction_identifier
 
-    @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -11190,9 +12178,6 @@ class IdealMerchantTransaction(BunqModel):
             return False
 
         if self._transaction_identifier is not None:
-            return False
-
-        if self._allow_chat is not None:
             return False
 
         return True
@@ -11944,8 +12929,6 @@ class MasterCardAction(BunqModel):
     MasterCardAction was within the spending limits. The returned string matches
     the limit types as defined in the card endpoint.
     :type _applied_limit: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
     :param _secure_code_id: The secure code id for this mastercard action or
     null.
     :type _secure_code_id: int
@@ -11994,7 +12977,6 @@ class MasterCardAction(BunqModel):
     _reservation_expiry_time = None
     _clearing_expiry_time = None
     _applied_limit = None
-    _allow_chat = None
     _secure_code_id = None
     _wallet_provider_id = None
     _request_reference_split_the_bill = None
@@ -12283,14 +13265,6 @@ class MasterCardAction(BunqModel):
         return self._applied_limit
 
     @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
     def secure_code_id(self):
         """
         :rtype: int
@@ -12404,9 +13378,6 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._applied_limit is not None:
-            return False
-
-        if self._allow_chat is not None:
             return False
 
         if self._secure_code_id is not None:
@@ -12769,8 +13740,6 @@ class RequestInquiry(BunqModel):
     :type _address_billing: object_.Address
     :param _geolocation: The geolocation where the payment was done.
     :type _geolocation: object_.Geolocation
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
     :param _reference_split_the_bill: The reference to the object used for split
     the bill. Can be Payment, PaymentBatch, ScheduleInstance, RequestResponse
     and MasterCardAction
@@ -12828,7 +13797,6 @@ class RequestInquiry(BunqModel):
     _address_shipping = None
     _address_billing = None
     _geolocation = None
-    _allow_chat = None
     _reference_split_the_bill = None
     _amount_inquired_field_for_request = None
     _counterparty_alias_field_for_request = None
@@ -13052,7 +14020,8 @@ class RequestInquiry(BunqModel):
     @classmethod
     def list(cls, monetary_account_id=None, params=None, custom_headers=None):
         """
-        Get all payment requests for a user's monetary account.
+        Get all payment requests for a user's monetary account. bunqme_share_url
+        is always null if the counterparty is a bunq user.
         
         :type user_id: int
         :type monetary_account_id: int
@@ -13081,6 +14050,7 @@ class RequestInquiry(BunqModel):
     def get(cls, request_inquiry_id, monetary_account_id=None, custom_headers=None):
         """
         Get the details of a specific payment request, including its status.
+        bunqme_share_url is always null if the counterparty is a bunq user.
         
         :type api_context: ApiContext
         :type user_id: int
@@ -13297,14 +14267,6 @@ class RequestInquiry(BunqModel):
         return self._geolocation
 
     @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
     def reference_split_the_bill(self):
         """
         :rtype: object_.RequestReferenceSplitTheBillAnchorObject
@@ -13387,9 +14349,6 @@ class RequestInquiry(BunqModel):
             return False
 
         if self._geolocation is not None:
-            return False
-
-        if self._allow_chat is not None:
             return False
 
         if self._reference_split_the_bill is not None:
@@ -13483,8 +14442,6 @@ class RequestResponse(BunqModel):
     :param _redirect_url: The URL which the user is sent to after accepting or
     rejecting the Request.
     :type _redirect_url: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
     :param _credit_scheme_identifier: The credit scheme id provided by the
     counterparty for DIRECT_DEBIT inquiries.
     :type _credit_scheme_identifier: str
@@ -13538,7 +14495,6 @@ class RequestResponse(BunqModel):
     _redirect_url = None
     _address_billing = None
     _address_shipping = None
-    _allow_chat = None
     _credit_scheme_identifier = None
     _mandate_identifier = None
     _eligible_whitelist_id = None
@@ -13869,14 +14825,6 @@ class RequestResponse(BunqModel):
         return self._address_shipping
 
     @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
     def credit_scheme_identifier(self):
         """
         :rtype: str
@@ -13983,9 +14931,6 @@ class RequestResponse(BunqModel):
             return False
 
         if self._address_shipping is not None:
-            return False
-
-        if self._allow_chat is not None:
             return False
 
         if self._credit_scheme_identifier is not None:
@@ -14351,9 +15296,17 @@ class TransferwiseTransfer(BunqModel):
     :type _quote: TransferwiseQuote
     """
 
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-quote/{}/transferwise-transfer"
+    _ENDPOINT_URL_READ = "user/{}/transferwise-quote/{}/transferwise-transfer/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/transferwise-quote/{}/transferwise-transfer"
+
     # Field constants.
     FIELD_MONETARY_ACCOUNT_ID = "monetary_account_id"
     FIELD_RECIPIENT_ID = "recipient_id"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwisePayment"
 
     _alias = None
     _counterparty_alias = None
@@ -14382,6 +15335,89 @@ class TransferwiseTransfer(BunqModel):
 
         self._monetary_account_id_field_for_request = monetary_account_id
         self._recipient_id_field_for_request = recipient_id
+
+    @classmethod
+    def create(cls, transferwise_quote_id, monetary_account_id, recipient_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :param monetary_account_id: The id of the monetary account the payment
+        should be made from.
+        :type monetary_account_id: str
+        :param recipient_id: The id of the target account.
+        :type recipient_id: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_MONETARY_ACCOUNT_ID: monetary_account_id,
+            cls.FIELD_RECIPIENT_ID: recipient_id
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, transferwise_quote_id, transferwise_transfer_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type transferwise_transfer_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseTransfer
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), transferwise_quote_id,
+                                                     transferwise_transfer_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTransferwiseTransfer.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, transferwise_quote_id, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseTransferList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTransferwiseTransferList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
 
     @property
     def alias(self):
@@ -14575,11 +15611,18 @@ class TransferwiseQuote(BunqModel):
     :type _time_delivery_estimate: str
     """
 
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-quote"
+    _ENDPOINT_URL_READ = "user/{}/transferwise-quote/{}"
+
     # Field constants.
     FIELD_CURRENCY_SOURCE = "currency_source"
     FIELD_CURRENCY_TARGET = "currency_target"
     FIELD_AMOUNT_SOURCE = "amount_source"
     FIELD_AMOUNT_TARGET = "amount_target"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwiseQuote"
 
     _id_ = None
     _created = None
@@ -14614,6 +15657,68 @@ class TransferwiseQuote(BunqModel):
         self._currency_target_field_for_request = currency_target
         self._amount_source_field_for_request = amount_source
         self._amount_target_field_for_request = amount_target
+
+    @classmethod
+    def create(cls, currency_source, currency_target, amount_source=None, amount_target=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency_source: The source currency.
+        :type currency_source: str
+        :param currency_target: The target currency.
+        :type currency_target: str
+        :param amount_source: The source amount. Required if target amount is
+        left empty.
+        :type amount_source: object_.Amount
+        :param amount_target: The target amount. Required if source amount is
+        left empty.
+        :type amount_target: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_CURRENCY_SOURCE: currency_source,
+            cls.FIELD_CURRENCY_TARGET: currency_target,
+            cls.FIELD_AMOUNT_SOURCE: amount_source,
+            cls.FIELD_AMOUNT_TARGET: amount_target
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, transferwise_quote_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseQuote
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTransferwiseQuote.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
 
     @property
     def id_(self):
@@ -15205,6 +16310,9 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     user deletes an active share) or CANCELLATION_PENDING,
     CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
     :type _status: str
+    :param _relationship: The relationship: COMPANY_DIRECTOR, COMPANY_EMPLOYEE,
+    etc
+    :type _relationship: str
     :param _share_type: The share type, either STANDARD or MUTUAL.
     :type _share_type: str
     :param _start_date: The start date of this share.
@@ -15235,6 +16343,7 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     FIELD_DRAFT_SHARE_INVITE_BANK_ID = "draft_share_invite_bank_id"
     FIELD_SHARE_DETAIL = "share_detail"
     FIELD_STATUS = "status"
+    FIELD_RELATIONSHIP = "relationship"
     FIELD_SHARE_TYPE = "share_type"
     FIELD_START_DATE = "start_date"
     FIELD_END_DATE = "end_date"
@@ -15250,6 +16359,7 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     _draft_share_invite_bank_id = None
     _share_detail = None
     _status = None
+    _relationship = None
     _share_type = None
     _start_date = None
     _end_date = None
@@ -15258,12 +16368,13 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     _draft_share_invite_bank_id_field_for_request = None
     _share_detail_field_for_request = None
     _status_field_for_request = None
+    _relationship_field_for_request = None
     _share_type_field_for_request = None
     _start_date_field_for_request = None
     _end_date_field_for_request = None
 
     def __init__(self, counter_user_alias, share_detail=None, status=None, draft_share_invite_bank_id=None,
-                 share_type=None, start_date=None, end_date=None):
+                 relationship=None, share_type=None, start_date=None, end_date=None):
         """
         :param counter_user_alias: The pointer of the user to share with.
         :type counter_user_alias: object_.Pointer
@@ -15278,6 +16389,9 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
         :type status: str
         :param draft_share_invite_bank_id: The id of the draft share invite bank.
         :type draft_share_invite_bank_id: int
+        :param relationship: The relationship: COMPANY_DIRECTOR, COMPANY_EMPLOYEE,
+        etc
+        :type relationship: str
         :param share_type: The share type, either STANDARD or MUTUAL.
         :type share_type: str
         :param start_date: The start date of this share.
@@ -15290,13 +16404,14 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
         self._share_detail_field_for_request = share_detail
         self._status_field_for_request = status
         self._draft_share_invite_bank_id_field_for_request = draft_share_invite_bank_id
+        self._relationship_field_for_request = relationship
         self._share_type_field_for_request = share_type
         self._start_date_field_for_request = start_date
         self._end_date_field_for_request = end_date
 
     @classmethod
     def create(cls, counter_user_alias, share_detail, status, monetary_account_id=None, draft_share_invite_bank_id=None,
-               share_type=None, start_date=None, end_date=None, custom_headers=None):
+               relationship=None, share_type=None, start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-response] Create a new
         share inquiry for a monetary account, specifying the permission the
@@ -15318,6 +16433,9 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
         :param draft_share_invite_bank_id: The id of the draft share invite
         bank.
         :type draft_share_invite_bank_id: int
+        :param relationship: The relationship: COMPANY_DIRECTOR,
+        COMPANY_EMPLOYEE, etc
+        :type relationship: str
         :param share_type: The share type, either STANDARD or MUTUAL.
         :type share_type: str
         :param start_date: The start date of this share.
@@ -15337,6 +16455,7 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
             cls.FIELD_DRAFT_SHARE_INVITE_BANK_ID: draft_share_invite_bank_id,
             cls.FIELD_SHARE_DETAIL: share_detail,
             cls.FIELD_STATUS: status,
+            cls.FIELD_RELATIONSHIP: relationship,
             cls.FIELD_SHARE_TYPE: share_type,
             cls.FIELD_START_DATE: start_date,
             cls.FIELD_END_DATE: end_date
@@ -15531,6 +16650,14 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
         return self._status
 
     @property
+    def relationship(self):
+        """
+        :rtype: str
+        """
+
+        return self._relationship
+
+    @property
     def share_type(self):
         """
         :rtype: str
@@ -15591,6 +16718,9 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
         if self._status is not None:
             return False
 
+        if self._relationship is not None:
+            return False
+
         if self._share_type is not None:
             return False
 
@@ -15648,6 +16778,8 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
     :type _draft_share_invite_bank_id: int
     :param _share_detail: The share details.
     :type _share_detail: object_.ShareDetail
+    :param _relation_user: All of the relation users towards this MA.
+    :type _relation_user: RelationUser
     :param _share_type: The share type, either STANDARD or MUTUAL.
     :type _share_type: str
     :param _start_date: The start date of this share.
@@ -15680,6 +16812,7 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
     _draft_share_invite_bank_id = None
     _share_detail = None
     _status = None
+    _relation_user = None
     _share_type = None
     _start_date = None
     _end_date = None
@@ -15868,6 +17001,14 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
         return self._status
 
     @property
+    def relation_user(self):
+        """
+        :rtype: RelationUser
+        """
+
+        return self._relation_user
+
+    @property
     def share_type(self):
         """
         :rtype: str
@@ -15929,6 +17070,9 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
             return False
 
         if self._status is not None:
+            return False
+
+        if self._relation_user is not None:
             return False
 
         if self._share_type is not None:
@@ -17851,8 +18995,6 @@ class MonetaryAccountBank(BunqModel):
     :type _user_id: int
     :param _monetary_account_profile: The profile of the account.
     :type _monetary_account_profile: MonetaryAccountProfile
-    :param _auto_save_id: The id of the AutoSave.
-    :type _auto_save_id: int
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
     """
@@ -17897,7 +19039,6 @@ class MonetaryAccountBank(BunqModel):
     _monetary_account_profile = None
     _display_name = None
     _setting = None
-    _auto_save_id = None
     _all_auto_save_id = None
     _currency_field_for_request = None
     _description_field_for_request = None
@@ -18320,14 +19461,6 @@ class MonetaryAccountBank(BunqModel):
         return self._setting
 
     @property
-    def auto_save_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._auto_save_id
-
-    @property
     def all_auto_save_id(self):
         """
         :rtype: list[object_.BunqId]
@@ -18395,9 +19528,6 @@ class MonetaryAccountBank(BunqModel):
             return False
 
         if self._setting is not None:
-            return False
-
-        if self._auto_save_id is not None:
             return False
 
         if self._all_auto_save_id is not None:
@@ -18548,8 +19678,6 @@ class MonetaryAccountJoint(BunqModel):
     :type _user_id: int
     :param _monetary_account_profile: The profile of the account.
     :type _monetary_account_profile: MonetaryAccountProfile
-    :param _auto_save_id: The id of the AutoSave.
-    :type _auto_save_id: int
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
     """
@@ -18596,7 +19724,6 @@ class MonetaryAccountJoint(BunqModel):
     _user_id = None
     _monetary_account_profile = None
     _setting = None
-    _auto_save_id = None
     _all_auto_save_id = None
     _currency_field_for_request = None
     _description_field_for_request = None
@@ -19023,14 +20150,6 @@ class MonetaryAccountJoint(BunqModel):
         return self._setting
 
     @property
-    def auto_save_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._auto_save_id
-
-    @property
     def all_auto_save_id(self):
         """
         :rtype: list[object_.BunqId]
@@ -19098,9 +20217,6 @@ class MonetaryAccountJoint(BunqModel):
             return False
 
         if self._setting is not None:
-            return False
-
-        if self._auto_save_id is not None:
             return False
 
         if self._all_auto_save_id is not None:
@@ -19181,8 +20297,6 @@ class MonetaryAccountSavings(BunqModel):
     :param _savings_goal_progress: The progress in percentages for the Savings
     Goal set for this MonetaryAccountSavings.
     :type _savings_goal_progress: float
-    :param _auto_save_id: The id of the AutoSave.
-    :type _auto_save_id: int
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
     """
@@ -19230,7 +20344,6 @@ class MonetaryAccountSavings(BunqModel):
     _setting = None
     _savings_goal = None
     _savings_goal_progress = None
-    _auto_save_id = None
     _all_auto_save_id = None
     _currency_field_for_request = None
     _description_field_for_request = None
@@ -19680,14 +20793,6 @@ class MonetaryAccountSavings(BunqModel):
         return self._savings_goal_progress
 
     @property
-    def auto_save_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._auto_save_id
-
-    @property
     def all_auto_save_id(self):
         """
         :rtype: list[object_.BunqId]
@@ -19761,9 +20866,6 @@ class MonetaryAccountSavings(BunqModel):
             return False
 
         if self._savings_goal_progress is not None:
-            return False
-
-        if self._auto_save_id is not None:
             return False
 
         if self._all_auto_save_id is not None:
@@ -19996,9 +21098,6 @@ class MonetaryAccountLight(BunqModel):
     :param _balance: The current available balance Amount of the
     MonetaryAccountLight.
     :type _balance: object_.Amount
-    :param _balance_real: The current real balance Amount of the
-    MonetaryAccountLight.
-    :type _balance_real: object_.Amount
     :param _alias: The Aliases for the MonetaryAccountLight.
     :type _alias: list[object_.Pointer]
     :param _public_uuid: The MonetaryAccountLight's public UUID.
@@ -20043,7 +21142,6 @@ class MonetaryAccountLight(BunqModel):
     _description = None
     _daily_limit = None
     _balance = None
-    _balance_real = None
     _alias = None
     _public_uuid = None
     _status = None
@@ -20181,14 +21279,6 @@ class MonetaryAccountLight(BunqModel):
         """
 
         return self._balance
-
-    @property
-    def balance_real(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance_real
 
     @property
     def alias(self):
@@ -20337,9 +21427,6 @@ class MonetaryAccountLight(BunqModel):
             return False
 
         if self._balance is not None:
-            return False
-
-        if self._balance_real is not None:
             return False
 
         if self._alias is not None:
@@ -29574,6 +30661,8 @@ class UserLight(BunqModel):
     :type _notification_filters: list[object_.NotificationFilter]
     :param _deny_reason: The user deny reason.
     :type _deny_reason: str
+    :param _relations: The relations for this user.
+    :type _relations: list[RelationUser]
     """
 
     # Field constants.
@@ -29617,9 +30706,6 @@ class UserLight(BunqModel):
     _alias = None
     _social_security_number = None
     _tax_resident = None
-    _document_type = None
-    _document_number = None
-    _document_country_of_issuance = None
     _address_main = None
     _address_postal = None
     _date_of_birth = None
@@ -29637,6 +30723,7 @@ class UserLight(BunqModel):
     _daily_limit_without_confirmation_login = None
     _notification_filters = None
     _deny_reason = None
+    _relations = None
     _first_name_field_for_request = None
     _middle_name_field_for_request = None
     _last_name_field_for_request = None
@@ -29664,50 +30751,28 @@ class UserLight(BunqModel):
     _session_timeout_field_for_request = None
     _daily_limit_without_confirmation_login_field_for_request = None
 
-    def __init__(self, address_postal=None, gender=None, nationality=None, country_of_birth=None, place_of_birth=None,
-                 document_back_attachment_id=None, document_front_attachment_id=None, document_country_of_issuance=None,
-                 document_number=None, document_type=None, tax_resident=None, social_security_number=None,
-                 middle_name=None, first_name=None, daily_limit_without_confirmation_login=None, session_timeout=None,
-                 sub_status=None, status=None, region=None, language=None, date_of_birth=None, avatar_uuid=None,
-                 address_main=None, public_nick_name=None, last_name=None, legal_guardian_alias=None):
+    def __init__(self, document_back_attachment_id=None, session_timeout=None, legal_guardian_alias=None,
+                 sub_status=None, status=None, gender=None, region=None, language=None, nationality=None,
+                 country_of_birth=None, place_of_birth=None, date_of_birth=None, document_front_attachment_id=None,
+                 first_name=None, document_country_of_issuance=None, document_number=None, document_type=None,
+                 tax_resident=None, social_security_number=None, avatar_uuid=None, address_postal=None,
+                 address_main=None, public_nick_name=None, last_name=None, middle_name=None,
+                 daily_limit_without_confirmation_login=None):
         """
         :param first_name: The user's first name.
         :type first_name: str
+        :param middle_name: The user's middle name.
+        :type middle_name: str
         :param last_name: The user's last name.
         :type last_name: str
         :param public_nick_name: The user's public nick name.
         :type public_nick_name: str
         :param address_main: The user's main address.
         :type address_main: object_.Address
-        :param avatar_uuid: The public UUID of the user's avatar.
-        :type avatar_uuid: str
-        :param date_of_birth: The user's date of birth. Accepts ISO8601 date
-        formats.
-        :type date_of_birth: str
-        :param language: The user's preferred language. Formatted as a ISO 639-1
-        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-        underscore.
-        :type language: str
-        :param region: The user's preferred region. Formatted as a ISO 639-1
-        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-        underscore.
-        :type region: str
-        :param status: The user status. You are not allowed to update the status via
-        PUT.
-        :type status: str
-        :param sub_status: The user sub-status. Can be updated to SUBMIT to apply
-        for a full bunq account.
-        :type sub_status: str
-        :param session_timeout: The setting for the session timeout of the user in
-        seconds.
-        :type session_timeout: int
-        :param daily_limit_without_confirmation_login: The amount the user can pay
-        in the session without asking for credentials.
-        :type daily_limit_without_confirmation_login: object_.Amount
-        :param middle_name: The user's middle name.
-        :type middle_name: str
         :param address_postal: The user's postal address.
         :type address_postal: object_.Address
+        :param avatar_uuid: The public UUID of the user's avatar.
+        :type avatar_uuid: str
         :param social_security_number: The user's social security number.
         :type social_security_number: str
         :param tax_resident: The user's tax residence numbers for different
@@ -29728,6 +30793,9 @@ class UserLight(BunqModel):
         :param document_back_attachment_id: The reference to the uploaded
         picture/scan of the back side of the identification document.
         :type document_back_attachment_id: int
+        :param date_of_birth: The user's date of birth. Accepts ISO8601 date
+        formats.
+        :type date_of_birth: str
         :param place_of_birth: The user's place of birth.
         :type place_of_birth: str
         :param country_of_birth: The user's country of birth. Formatted as a SO
@@ -29736,27 +30804,40 @@ class UserLight(BunqModel):
         :param nationality: The user's nationality. Formatted as a SO 3166-1 alpha-2
         country code.
         :type nationality: str
+        :param language: The user's preferred language. Formatted as a ISO 639-1
+        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+        underscore.
+        :type language: str
+        :param region: The user's preferred region. Formatted as a ISO 639-1
+        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
+        underscore.
+        :type region: str
         :param gender: The user's gender. Can be: MALE, FEMALE and UNKNOWN.
         :type gender: str
+        :param status: The user status. You are not allowed to update the status via
+        PUT.
+        :type status: str
+        :param sub_status: The user sub-status. Can be updated to SUBMIT to apply
+        for a full bunq account.
+        :type sub_status: str
         :param legal_guardian_alias: The legal guardian of the user. Required for
         minors.
         :type legal_guardian_alias: object_.Pointer
+        :param session_timeout: The setting for the session timeout of the user in
+        seconds.
+        :type session_timeout: int
+        :param daily_limit_without_confirmation_login: The amount the user can pay
+        in the session without asking for credentials.
+        :type daily_limit_without_confirmation_login: object_.Amount
         """
 
         self._first_name_field_for_request = first_name
+        self._middle_name_field_for_request = middle_name
         self._last_name_field_for_request = last_name
         self._public_nick_name_field_for_request = public_nick_name
         self._address_main_field_for_request = address_main
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._date_of_birth_field_for_request = date_of_birth
-        self._language_field_for_request = language
-        self._region_field_for_request = region
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._session_timeout_field_for_request = session_timeout
-        self._daily_limit_without_confirmation_login_field_for_request = daily_limit_without_confirmation_login
-        self._middle_name_field_for_request = middle_name
         self._address_postal_field_for_request = address_postal
+        self._avatar_uuid_field_for_request = avatar_uuid
         self._social_security_number_field_for_request = social_security_number
         self._tax_resident_field_for_request = tax_resident
         self._document_type_field_for_request = document_type
@@ -29764,11 +30845,18 @@ class UserLight(BunqModel):
         self._document_country_of_issuance_field_for_request = document_country_of_issuance
         self._document_front_attachment_id_field_for_request = document_front_attachment_id
         self._document_back_attachment_id_field_for_request = document_back_attachment_id
+        self._date_of_birth_field_for_request = date_of_birth
         self._place_of_birth_field_for_request = place_of_birth
         self._country_of_birth_field_for_request = country_of_birth
         self._nationality_field_for_request = nationality
+        self._language_field_for_request = language
+        self._region_field_for_request = region
         self._gender_field_for_request = gender
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
         self._legal_guardian_alias_field_for_request = legal_guardian_alias
+        self._session_timeout_field_for_request = session_timeout
+        self._daily_limit_without_confirmation_login_field_for_request = daily_limit_without_confirmation_login
 
     @property
     def id_(self):
@@ -29873,30 +30961,6 @@ class UserLight(BunqModel):
         """
 
         return self._tax_resident
-
-    @property
-    def document_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._document_type
-
-    @property
-    def document_number(self):
-        """
-        :rtype: str
-        """
-
-        return self._document_number
-
-    @property
-    def document_country_of_issuance(self):
-        """
-        :rtype: str
-        """
-
-        return self._document_country_of_issuance
 
     @property
     def address_main(self):
@@ -30034,6 +31098,14 @@ class UserLight(BunqModel):
 
         return self._deny_reason
 
+    @property
+    def relations(self):
+        """
+        :rtype: list[RelationUser]
+        """
+
+        return self._relations
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -30076,15 +31148,6 @@ class UserLight(BunqModel):
             return False
 
         if self._tax_resident is not None:
-            return False
-
-        if self._document_type is not None:
-            return False
-
-        if self._document_number is not None:
-            return False
-
-        if self._document_country_of_issuance is not None:
             return False
 
         if self._address_main is not None:
@@ -30136,6 +31199,9 @@ class UserLight(BunqModel):
             return False
 
         if self._deny_reason is not None:
+            return False
+
+        if self._relations is not None:
             return False
 
         return True
@@ -30249,6 +31315,8 @@ class UserPerson(BunqModel):
     :param _notification_filters: The types of notifications that will result in
     a push notification or URL callback for this UserPerson.
     :type _notification_filters: list[object_.NotificationFilter]
+    :param _relations: The relations for this user.
+    :type _relations: list[RelationUser]
     """
 
     # Endpoint constants.
@@ -30298,9 +31366,6 @@ class UserPerson(BunqModel):
     _public_nick_name = None
     _alias = None
     _tax_resident = None
-    _document_type = None
-    _document_number = None
-    _document_country_of_issuance = None
     _address_main = None
     _address_postal = None
     _date_of_birth = None
@@ -30317,6 +31382,7 @@ class UserPerson(BunqModel):
     _session_timeout = None
     _daily_limit_without_confirmation_login = None
     _notification_filters = None
+    _relations = None
     _first_name_field_for_request = None
     _middle_name_field_for_request = None
     _last_name_field_for_request = None
@@ -30703,30 +31769,6 @@ class UserPerson(BunqModel):
         return self._tax_resident
 
     @property
-    def document_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._document_type
-
-    @property
-    def document_number(self):
-        """
-        :rtype: str
-        """
-
-        return self._document_number
-
-    @property
-    def document_country_of_issuance(self):
-        """
-        :rtype: str
-        """
-
-        return self._document_country_of_issuance
-
-    @property
     def address_main(self):
         """
         :rtype: object_.Address
@@ -30854,6 +31896,14 @@ class UserPerson(BunqModel):
 
         return self._notification_filters
 
+    @property
+    def relations(self):
+        """
+        :rtype: list[RelationUser]
+        """
+
+        return self._relations
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -30893,15 +31943,6 @@ class UserPerson(BunqModel):
             return False
 
         if self._tax_resident is not None:
-            return False
-
-        if self._document_type is not None:
-            return False
-
-        if self._document_number is not None:
-            return False
-
-        if self._document_country_of_issuance is not None:
             return False
 
         if self._address_main is not None:
@@ -30952,6 +31993,9 @@ class UserPerson(BunqModel):
         if self._notification_filters is not None:
             return False
 
+        if self._relations is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -30963,809 +32007,6 @@ class UserPerson(BunqModel):
         """
 
         return converter.json_to_class(UserPerson, json_str)
-
-
-class UserCompany(BunqModel):
-    """
-    With UserCompany you can retrieve information regarding the authenticated
-    UserCompany and update specific fields.<br/><br/>Notification filters can be
-    set on a UserCompany level to receive callbacks. For more information check
-    the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
-    
-    :param _name: The company name.
-    :type _name: str
-    :param _public_nick_name: The company's public nick name.
-    :type _public_nick_name: str
-    :param _avatar_uuid: The public UUID of the company's avatar.
-    :type _avatar_uuid: str
-    :param _address_main: The company's main address.
-    :type _address_main: object_.Address
-    :param _address_postal: The company's postal address.
-    :type _address_postal: object_.Address
-    :param _language: The person's preferred language. Formatted as a ISO 639-1
-    language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-    underscore.
-    :type _language: str
-    :param _region: The person's preferred region. Formatted as a ISO 639-1
-    language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-    underscore.
-    :type _region: str
-    :param _country: The country as an ISO 3166-1 alpha-2 country code..
-    :type _country: str
-    :param _ubo: The names of the company's ultimate beneficiary owners. Minimum
-    zero, maximum four.
-    :type _ubo: list[object_.Ubo]
-    :param _chamber_of_commerce_number: The company's chamber of commerce
-    number.
-    :type _chamber_of_commerce_number: str
-    :param _legal_form: The company's legal form.
-    :type _legal_form: str
-    :param _status: The user status. Can be: ACTIVE, SIGNUP, RECOVERY.
-    :type _status: str
-    :param _sub_status: The user sub-status. Can be: NONE, FACE_RESET, APPROVAL,
-    APPROVAL_DIRECTOR, APPROVAL_PARENT, APPROVAL_SUPPORT, COUNTER_IBAN, IDEAL or
-    SUBMIT.
-    :type _sub_status: str
-    :param _session_timeout: The setting for the session timeout of the company
-    in seconds.
-    :type _session_timeout: int
-    :param _daily_limit_without_confirmation_login: The amount the company can
-    pay in the session without asking for credentials.
-    :type _daily_limit_without_confirmation_login: object_.Amount
-    :param _id_: The id of the modified company.
-    :type _id_: int
-    :param _created: The timestamp of the company object's creation.
-    :type _created: str
-    :param _updated: The timestamp of the company object's last update.
-    :type _updated: str
-    :param _public_uuid: The company's public UUID.
-    :type _public_uuid: str
-    :param _display_name: The company's display name.
-    :type _display_name: str
-    :param _alias: The aliases of the account.
-    :type _alias: list[object_.Pointer]
-    :param _type_of_business_entity: The type of business entity.
-    :type _type_of_business_entity: str
-    :param _sector_of_industry: The sector of industry.
-    :type _sector_of_industry: str
-    :param _counter_bank_iban: The company's other bank account IBAN, through
-    which we verify it.
-    :type _counter_bank_iban: str
-    :param _avatar: The company's avatar.
-    :type _avatar: object_.Avatar
-    :param _version_terms_of_service: The version of the terms of service
-    accepted by the user.
-    :type _version_terms_of_service: str
-    :param _director_alias: The existing bunq user alias for the company's
-    director.
-    :type _director_alias: object_.LabelUser
-    :param _notification_filters: The types of notifications that will result in
-    a push notification or URL callback for this UserCompany.
-    :type _notification_filters: list[object_.NotificationFilter]
-    :param _customer: The customer profile of the company.
-    :type _customer: Customer
-    :param _customer_limit: The customer limits of the company.
-    :type _customer_limit: CustomerLimit
-    :param _billing_contract: The subscription of the company.
-    :type _billing_contract: list[BillingContractSubscription]
-    :param _deny_reason: The user deny reason.
-    :type _deny_reason: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user-company/{}"
-    _ENDPOINT_URL_UPDATE = "user-company/{}"
-
-    # Field constants.
-    FIELD_NAME = "name"
-    FIELD_PUBLIC_NICK_NAME = "public_nick_name"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_ADDRESS_MAIN = "address_main"
-    FIELD_ADDRESS_POSTAL = "address_postal"
-    FIELD_LANGUAGE = "language"
-    FIELD_REGION = "region"
-    FIELD_COUNTRY = "country"
-    FIELD_UBO = "ubo"
-    FIELD_CHAMBER_OF_COMMERCE_NUMBER = "chamber_of_commerce_number"
-    FIELD_LEGAL_FORM = "legal_form"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_SESSION_TIMEOUT = "session_timeout"
-    FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "UserCompany"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _public_uuid = None
-    _name = None
-    _display_name = None
-    _public_nick_name = None
-    _alias = None
-    _chamber_of_commerce_number = None
-    _legal_form = None
-    _type_of_business_entity = None
-    _sector_of_industry = None
-    _counter_bank_iban = None
-    _avatar = None
-    _address_main = None
-    _address_postal = None
-    _version_terms_of_service = None
-    _director_alias = None
-    _language = None
-    _country = None
-    _region = None
-    _ubo = None
-    _status = None
-    _sub_status = None
-    _session_timeout = None
-    _daily_limit_without_confirmation_login = None
-    _notification_filters = None
-    _customer = None
-    _customer_limit = None
-    _billing_contract = None
-    _deny_reason = None
-    _name_field_for_request = None
-    _public_nick_name_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _address_main_field_for_request = None
-    _address_postal_field_for_request = None
-    _language_field_for_request = None
-    _region_field_for_request = None
-    _country_field_for_request = None
-    _ubo_field_for_request = None
-    _chamber_of_commerce_number_field_for_request = None
-    _legal_form_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _session_timeout_field_for_request = None
-    _daily_limit_without_confirmation_login_field_for_request = None
-
-    def __init__(self, address_main=None, language=None, region=None, name=None, public_nick_name=None,
-                 avatar_uuid=None, address_postal=None, country=None, ubo=None, chamber_of_commerce_number=None,
-                 legal_form=None, status=None, sub_status=None, session_timeout=None,
-                 daily_limit_without_confirmation_login=None):
-        """
-        :param address_main: The user's main address.
-        :type address_main: object_.Address
-        :param language: The person's preferred language. Formatted as a ISO 639-1
-        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-        underscore.
-        :type language: str
-        :param region: The person's preferred region. Formatted as a ISO 639-1
-        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-        underscore.
-        :type region: str
-        :param name: The company name.
-        :type name: str
-        :param public_nick_name: The company's nick name.
-        :type public_nick_name: str
-        :param avatar_uuid: The public UUID of the company's avatar.
-        :type avatar_uuid: str
-        :param address_postal: The company's postal address.
-        :type address_postal: object_.Address
-        :param country: The country where the company is registered.
-        :type country: str
-        :param ubo: The names and birth dates of the company's ultimate beneficiary
-        owners. Minimum zero, maximum four.
-        :type ubo: list[object_.Ubo]
-        :param chamber_of_commerce_number: The company's chamber of commerce number.
-        :type chamber_of_commerce_number: str
-        :param legal_form: The company's legal form.
-        :type legal_form: str
-        :param status: The user status. Can be: ACTIVE, SIGNUP, RECOVERY.
-        :type status: str
-        :param sub_status: The user sub-status. Can be: NONE, FACE_RESET, APPROVAL,
-        APPROVAL_DIRECTOR, APPROVAL_PARENT, APPROVAL_SUPPORT, COUNTER_IBAN, IDEAL or
-        SUBMIT.
-        :type sub_status: str
-        :param session_timeout: The setting for the session timeout of the company
-        in seconds.
-        :type session_timeout: int
-        :param daily_limit_without_confirmation_login: The amount the company can
-        pay in the session without asking for credentials.
-        :type daily_limit_without_confirmation_login: object_.Amount
-        """
-
-        self._address_main_field_for_request = address_main
-        self._language_field_for_request = language
-        self._region_field_for_request = region
-        self._name_field_for_request = name
-        self._public_nick_name_field_for_request = public_nick_name
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._address_postal_field_for_request = address_postal
-        self._country_field_for_request = country
-        self._ubo_field_for_request = ubo
-        self._chamber_of_commerce_number_field_for_request = chamber_of_commerce_number
-        self._legal_form_field_for_request = legal_form
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._session_timeout_field_for_request = session_timeout
-        self._daily_limit_without_confirmation_login_field_for_request = daily_limit_without_confirmation_login
-
-    @classmethod
-    def get(cls, custom_headers=None):
-        """
-        Get a specific company.
-        
-        :type api_context: ApiContext
-        :type user_company_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseUserCompany
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseUserCompany.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls, name=None, public_nick_name=None, avatar_uuid=None, address_main=None, address_postal=None,
-               language=None, region=None, country=None, ubo=None, chamber_of_commerce_number=None, legal_form=None,
-               status=None, sub_status=None, session_timeout=None, daily_limit_without_confirmation_login=None,
-               custom_headers=None):
-        """
-        Modify a specific company's data.
-        
-        :type user_company_id: int
-        :param name: The company name.
-        :type name: str
-        :param public_nick_name: The company's nick name.
-        :type public_nick_name: str
-        :param avatar_uuid: The public UUID of the company's avatar.
-        :type avatar_uuid: str
-        :param address_main: The user's main address.
-        :type address_main: object_.Address
-        :param address_postal: The company's postal address.
-        :type address_postal: object_.Address
-        :param language: The person's preferred language. Formatted as a ISO
-        639-1 language code plus a ISO 3166-1 alpha-2 country code, seperated by
-        an underscore.
-        :type language: str
-        :param region: The person's preferred region. Formatted as a ISO 639-1
-        language code plus a ISO 3166-1 alpha-2 country code, seperated by an
-        underscore.
-        :type region: str
-        :param country: The country where the company is registered.
-        :type country: str
-        :param ubo: The names and birth dates of the company's ultimate
-        beneficiary owners. Minimum zero, maximum four.
-        :type ubo: list[object_.Ubo]
-        :param chamber_of_commerce_number: The company's chamber of commerce
-        number.
-        :type chamber_of_commerce_number: str
-        :param legal_form: The company's legal form.
-        :type legal_form: str
-        :param status: The user status. Can be: ACTIVE, SIGNUP, RECOVERY.
-        :type status: str
-        :param sub_status: The user sub-status. Can be: NONE, FACE_RESET,
-        APPROVAL, APPROVAL_DIRECTOR, APPROVAL_PARENT, APPROVAL_SUPPORT,
-        COUNTER_IBAN, IDEAL or SUBMIT.
-        :type sub_status: str
-        :param session_timeout: The setting for the session timeout of the
-        company in seconds.
-        :type session_timeout: int
-        :param daily_limit_without_confirmation_login: The amount the company
-        can pay in the session without asking for credentials.
-        :type daily_limit_without_confirmation_login: object_.Amount
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-            cls.FIELD_NAME: name,
-            cls.FIELD_PUBLIC_NICK_NAME: public_nick_name,
-            cls.FIELD_AVATAR_UUID: avatar_uuid,
-            cls.FIELD_ADDRESS_MAIN: address_main,
-            cls.FIELD_ADDRESS_POSTAL: address_postal,
-            cls.FIELD_LANGUAGE: language,
-            cls.FIELD_REGION: region,
-            cls.FIELD_COUNTRY: country,
-            cls.FIELD_UBO: ubo,
-            cls.FIELD_CHAMBER_OF_COMMERCE_NUMBER: chamber_of_commerce_number,
-            cls.FIELD_LEGAL_FORM: legal_form,
-            cls.FIELD_STATUS: status,
-            cls.FIELD_SUB_STATUS: sub_status,
-            cls.FIELD_SESSION_TIMEOUT: session_timeout,
-            cls.FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN: daily_limit_without_confirmation_login
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id())
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def name(self):
-        """
-        :rtype: str
-        """
-
-        return self._name
-
-    @property
-    def display_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._display_name
-
-    @property
-    def public_nick_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_nick_name
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def chamber_of_commerce_number(self):
-        """
-        :rtype: str
-        """
-
-        return self._chamber_of_commerce_number
-
-    @property
-    def legal_form(self):
-        """
-        :rtype: str
-        """
-
-        return self._legal_form
-
-    @property
-    def type_of_business_entity(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_of_business_entity
-
-    @property
-    def sector_of_industry(self):
-        """
-        :rtype: str
-        """
-
-        return self._sector_of_industry
-
-    @property
-    def counter_bank_iban(self):
-        """
-        :rtype: str
-        """
-
-        return self._counter_bank_iban
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def address_main(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_main
-
-    @property
-    def address_postal(self):
-        """
-        :rtype: object_.Address
-        """
-
-        return self._address_postal
-
-    @property
-    def version_terms_of_service(self):
-        """
-        :rtype: str
-        """
-
-        return self._version_terms_of_service
-
-    @property
-    def director_alias(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._director_alias
-
-    @property
-    def language(self):
-        """
-        :rtype: str
-        """
-
-        return self._language
-
-    @property
-    def country(self):
-        """
-        :rtype: str
-        """
-
-        return self._country
-
-    @property
-    def region(self):
-        """
-        :rtype: str
-        """
-
-        return self._region
-
-    @property
-    def ubo(self):
-        """
-        :rtype: list[object_.Ubo]
-        """
-
-        return self._ubo
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def session_timeout(self):
-        """
-        :rtype: int
-        """
-
-        return self._session_timeout
-
-    @property
-    def daily_limit_without_confirmation_login(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit_without_confirmation_login
-
-    @property
-    def notification_filters(self):
-        """
-        :rtype: list[object_.NotificationFilter]
-        """
-
-        return self._notification_filters
-
-    @property
-    def customer(self):
-        """
-        :rtype: Customer
-        """
-
-        return self._customer
-
-    @property
-    def customer_limit(self):
-        """
-        :rtype: CustomerLimit
-        """
-
-        return self._customer_limit
-
-    @property
-    def billing_contract(self):
-        """
-        :rtype: list[BillingContractSubscription]
-        """
-
-        return self._billing_contract
-
-    @property
-    def deny_reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._deny_reason
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._name is not None:
-            return False
-
-        if self._display_name is not None:
-            return False
-
-        if self._public_nick_name is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._chamber_of_commerce_number is not None:
-            return False
-
-        if self._legal_form is not None:
-            return False
-
-        if self._type_of_business_entity is not None:
-            return False
-
-        if self._sector_of_industry is not None:
-            return False
-
-        if self._counter_bank_iban is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._address_main is not None:
-            return False
-
-        if self._address_postal is not None:
-            return False
-
-        if self._version_terms_of_service is not None:
-            return False
-
-        if self._director_alias is not None:
-            return False
-
-        if self._language is not None:
-            return False
-
-        if self._country is not None:
-            return False
-
-        if self._region is not None:
-            return False
-
-        if self._ubo is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._session_timeout is not None:
-            return False
-
-        if self._daily_limit_without_confirmation_login is not None:
-            return False
-
-        if self._notification_filters is not None:
-            return False
-
-        if self._customer is not None:
-            return False
-
-        if self._customer_limit is not None:
-            return False
-
-        if self._billing_contract is not None:
-            return False
-
-        if self._deny_reason is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: UserCompany
-        """
-
-        return converter.json_to_class(UserCompany, json_str)
-
-
-class Customer(BunqModel):
-    """
-    Used to view a customer.
-    
-    :param _billing_account_id: The primary billing account account's id.
-    :type _billing_account_id: str
-    :param _invoice_notification_preference: The preferred notification type for
-    invoices.
-    :type _invoice_notification_preference: str
-    :param _id_: The id of the customer.
-    :type _id_: int
-    :param _created: The timestamp of the customer object's creation.
-    :type _created: str
-    :param _updated: The timestamp of the customer object's last update.
-    :type _updated: str
-    """
-
-    # Field constants.
-    FIELD_BILLING_ACCOUNT_ID = "billing_account_id"
-    FIELD_INVOICE_NOTIFICATION_PREFERENCE = "invoice_notification_preference"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _billing_account_id = None
-    _invoice_notification_preference = None
-    _billing_account_id_field_for_request = None
-    _invoice_notification_preference_field_for_request = None
-
-    def __init__(self, billing_account_id=None, invoice_notification_preference=None):
-        """
-        :param billing_account_id: The primary billing account account's id.
-        :type billing_account_id: str
-        :param invoice_notification_preference: The preferred notification type for
-        invoices
-        :type invoice_notification_preference: str
-        """
-
-        self._billing_account_id_field_for_request = billing_account_id
-        self._invoice_notification_preference_field_for_request = invoice_notification_preference
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def billing_account_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._billing_account_id
-
-    @property
-    def invoice_notification_preference(self):
-        """
-        :rtype: str
-        """
-
-        return self._invoice_notification_preference
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._billing_account_id is not None:
-            return False
-
-        if self._invoice_notification_preference is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Customer
-        """
-
-        return converter.json_to_class(Customer, json_str)
 
 
 class UserApiKey(BunqModel):
@@ -34026,6 +34267,148 @@ class Reward(BunqModel):
         return converter.json_to_class(Reward, json_str)
 
 
+class SandboxUserCompany(BunqModel):
+    """
+    Used to create a sandbox userCompany.
+    
+    :param _api_key: The API key of the newly created sandbox userCompany.
+    :type _api_key: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "sandbox-user-company"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "ApiKey"
+
+    _api_key = None
+
+    @classmethod
+    def create(cls, custom_headers=None):
+        """
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseSandboxUserCompany
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseSandboxUserCompany.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
+        )
+
+    @property
+    def api_key(self):
+        """
+        :rtype: str
+        """
+
+        return self._api_key
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._api_key is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SandboxUserCompany
+        """
+
+        return converter.json_to_class(SandboxUserCompany, json_str)
+
+
+class SandboxUserPerson(BunqModel):
+    """
+    Used to create a sandbox userPerson.
+    
+    :param _api_key: The API key of the newly created sandbox userPerson.
+    :type _api_key: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "sandbox-user-person"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "ApiKey"
+
+    _api_key = None
+
+    @classmethod
+    def create(cls, custom_headers=None):
+        """
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseSandboxUserPerson
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseSandboxUserPerson.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
+        )
+
+    @property
+    def api_key(self):
+        """
+        :rtype: str
+        """
+
+        return self._api_key
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._api_key is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: SandboxUserPerson
+        """
+
+        return converter.json_to_class(SandboxUserPerson, json_str)
+
+
 class SandboxUser(BunqModel):
     """
     Used to create a sandbox user.
@@ -34866,8 +35249,6 @@ class TokenQrRequestIdeal(BunqModel):
     :type _type_: str
     :param _sub_type: The subtype of the RequestResponse. Can be only be NONE.
     :type _sub_type: str
-    :param _allow_chat: Whether or not chat messages are allowed.
-    :type _allow_chat: bool
     :param _eligible_whitelist_id: The whitelist id for this action or null.
     :type _eligible_whitelist_id: int
     """
@@ -34900,7 +35281,6 @@ class TokenQrRequestIdeal(BunqModel):
     _redirect_url = None
     _type_ = None
     _sub_type = None
-    _allow_chat = None
     _eligible_whitelist_id = None
     _token_field_for_request = None
 
@@ -35096,14 +35476,6 @@ class TokenQrRequestIdeal(BunqModel):
         return self._sub_type
 
     @property
-    def allow_chat(self):
-        """
-        :rtype: bool
-        """
-
-        return self._allow_chat
-
-    @property
     def eligible_whitelist_id(self):
         """
         :rtype: int
@@ -35171,9 +35543,6 @@ class TokenQrRequestIdeal(BunqModel):
             return False
 
         if self._sub_type is not None:
-            return False
-
-        if self._allow_chat is not None:
             return False
 
         if self._eligible_whitelist_id is not None:
@@ -35269,6 +35638,1088 @@ class TokenQrRequestSofort(BunqModel):
         return converter.json_to_class(TokenQrRequestSofort, json_str)
 
 
+class TransferwiseAccountQuote(BunqModel):
+    """
+    Used to manage recipient accounts with Transferwise.
+    
+    :param _country: The country of the account.
+    :type _country: str
+    :param _name_account_holder: The name of the account holder.
+    :type _name_account_holder: str
+    :param _type_: The chosen recipient account type. The possible options are
+    provided dynamically in the response endpoint.
+    :type _type_: str
+    :param _detail: The fields which were specified as "required" and have since
+    been filled by the user. Always provide the full list.
+    :type _detail: list[object_.TransferwiseRequirementField]
+    :param _account_id: Transferwise's id of the account.
+    :type _account_id: str
+    :param _currency: The currency the account.
+    :type _currency: str
+    :param _account_number: The account number.
+    :type _account_number: str
+    :param _bank_code: The bank code.
+    :type _bank_code: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-quote/{}/transferwise-recipient"
+    _ENDPOINT_URL_READ = "user/{}/transferwise-quote/{}/transferwise-recipient/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/transferwise-quote/{}/transferwise-recipient"
+    _ENDPOINT_URL_DELETE = "user/{}/transferwise-quote/{}/transferwise-recipient/{}"
+
+    # Field constants.
+    FIELD_COUNTRY = "country"
+    FIELD_NAME_ACCOUNT_HOLDER = "name_account_holder"
+    FIELD_TYPE = "type"
+    FIELD_DETAIL = "detail"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwiseRecipient"
+
+    _account_id = None
+    _currency = None
+    _country = None
+    _name_account_holder = None
+    _account_number = None
+    _bank_code = None
+    _country_field_for_request = None
+    _name_account_holder_field_for_request = None
+    _type__field_for_request = None
+    _detail_field_for_request = None
+
+    def __init__(self, name_account_holder, type_, country=None, detail=None):
+        """
+        :param name_account_holder: The name of the account holder.
+        :type name_account_holder: str
+        :param type_: The chosen recipient account type. The possible options are
+        provided dynamically in the response endpoint.
+        :type type_: str
+        :param country: The country of the receiving account.
+        :type country: str
+        :param detail: The fields which were specified as "required" and have since
+        been filled by the user. Always provide the full list.
+        :type detail: list[object_.TransferwiseRequirementField]
+        """
+
+        self._name_account_holder_field_for_request = name_account_holder
+        self._type__field_for_request = type_
+        self._country_field_for_request = country
+        self._detail_field_for_request = detail
+
+    @classmethod
+    def create(cls, transferwise_quote_id, name_account_holder, type_, country=None, detail=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :param name_account_holder: The name of the account holder.
+        :type name_account_holder: str
+        :param type_: The chosen recipient account type. The possible options
+        are provided dynamically in the response endpoint.
+        :type type_: str
+        :param country: The country of the receiving account.
+        :type country: str
+        :param detail: The fields which were specified as "required" and have
+        since been filled by the user. Always provide the full list.
+        :type detail: list[object_.TransferwiseRequirementField]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_COUNTRY: country,
+            cls.FIELD_NAME_ACCOUNT_HOLDER: name_account_holder,
+            cls.FIELD_TYPE: type_,
+            cls.FIELD_DETAIL: detail
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, transferwise_quote_id, transferwise_account_quote_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type transferwise_account_quote_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseAccountQuote
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), transferwise_quote_id,
+                                                     transferwise_account_quote_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTransferwiseAccountQuote.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, transferwise_quote_id, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseAccountQuoteList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTransferwiseAccountQuoteList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def delete(cls, transferwise_quote_id, transferwise_account_quote_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type transferwise_account_quote_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), transferwise_quote_id,
+                                                       transferwise_account_quote_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def account_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._account_id
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
+    def name_account_holder(self):
+        """
+        :rtype: str
+        """
+
+        return self._name_account_holder
+
+    @property
+    def account_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._account_number
+
+    @property
+    def bank_code(self):
+        """
+        :rtype: str
+        """
+
+        return self._bank_code
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._account_id is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._country is not None:
+            return False
+
+        if self._name_account_holder is not None:
+            return False
+
+        if self._account_number is not None:
+            return False
+
+        if self._bank_code is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseAccountQuote
+        """
+
+        return converter.json_to_class(TransferwiseAccountQuote, json_str)
+
+
+class TransferwiseAccountRequirement(BunqModel):
+    """
+    Used to determine the recipient account requirements for Transferwise
+    transfers.
+    
+    :param _country: The country of the receiving account.
+    :type _country: str
+    :param _name_account_holder: The name of the account holder.
+    :type _name_account_holder: str
+    :param _type_: A possible recipient account type.
+    :type _type_: str
+    :param _detail: The fields which were specified as "required" and have since
+    been filled by the user. Always provide the full list.
+    :type _detail: list[object_.TransferwiseRequirementField]
+    :param _label: The label of the possible recipient account type to show to
+    the user.
+    :type _label: str
+    :param _fields: The fields which the user needs to fill.
+    :type _fields: list[object_.TransferwiseRequirementField]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-quote/{}/transferwise-recipient-requirement"
+    _ENDPOINT_URL_LISTING = "user/{}/transferwise-quote/{}/transferwise-recipient-requirement"
+
+    # Field constants.
+    FIELD_COUNTRY = "country"
+    FIELD_NAME_ACCOUNT_HOLDER = "name_account_holder"
+    FIELD_TYPE = "type"
+    FIELD_DETAIL = "detail"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwiseRequirement"
+
+    _type_ = None
+    _label = None
+    _fields = None
+    _country_field_for_request = None
+    _name_account_holder_field_for_request = None
+    _type__field_for_request = None
+    _detail_field_for_request = None
+
+    def __init__(self, name_account_holder, type_, country=None, detail=None):
+        """
+        :param name_account_holder: The name of the account holder.
+        :type name_account_holder: str
+        :param type_: The chosen recipient account type. The possible options are
+        provided dynamically in the response endpoint.
+        :type type_: str
+        :param country: The country of the receiving account.
+        :type country: str
+        :param detail: The fields which were specified as "required" and have since
+        been filled by the user. Always provide the full list.
+        :type detail: list[object_.TransferwiseRequirementField]
+        """
+
+        self._name_account_holder_field_for_request = name_account_holder
+        self._type__field_for_request = type_
+        self._country_field_for_request = country
+        self._detail_field_for_request = detail
+
+    @classmethod
+    def create(cls, transferwise_quote_id, name_account_holder, type_, country=None, detail=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :param name_account_holder: The name of the account holder.
+        :type name_account_holder: str
+        :param type_: The chosen recipient account type. The possible options
+        are provided dynamically in the response endpoint.
+        :type type_: str
+        :param country: The country of the receiving account.
+        :type country: str
+        :param detail: The fields which were specified as "required" and have
+        since been filled by the user. Always provide the full list.
+        :type detail: list[object_.TransferwiseRequirementField]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_COUNTRY: country,
+            cls.FIELD_NAME_ACCOUNT_HOLDER: name_account_holder,
+            cls.FIELD_TYPE: type_,
+            cls.FIELD_DETAIL: detail
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, transferwise_quote_id, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseAccountRequirementList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTransferwiseAccountRequirementList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def label(self):
+        """
+        :rtype: str
+        """
+
+        return self._label
+
+    @property
+    def fields(self):
+        """
+        :rtype: list[object_.TransferwiseRequirementField]
+        """
+
+        return self._fields
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._label is not None:
+            return False
+
+        if self._fields is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseAccountRequirement
+        """
+
+        return converter.json_to_class(TransferwiseAccountRequirement, json_str)
+
+
+class TransferwiseCurrency(BunqModel):
+    """
+    Used to get a list of supported currencies for Transferwise.
+    
+    :param _currency: The currency code.
+    :type _currency: str
+    :param _name: The currency name.
+    :type _name: str
+    :param _country: The country code associated with the currency.
+    :type _country: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/transferwise-currency"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwiseCurrency"
+
+    _currency = None
+    _name = None
+    _country = None
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseCurrencyList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTransferwiseCurrencyList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._currency is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._country is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseCurrency
+        """
+
+        return converter.json_to_class(TransferwiseCurrency, json_str)
+
+
+class TransferwiseQuoteTemporary(BunqModel):
+    """
+    Used to get temporary quotes from Transferwise. These cannot be used to
+    initiate payments
+    
+    :param _currency_source: The source currency.
+    :type _currency_source: str
+    :param _currency_target: The target currency.
+    :type _currency_target: str
+    :param _amount_source: The source amount.
+    :type _amount_source: object_.Amount
+    :param _amount_target: The target amount.
+    :type _amount_target: object_.Amount
+    :param _id_: The id of the quote.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _time_expiry: The expiration timestamp of the quote. Will always be
+    null for temporary quotes.
+    :type _time_expiry: str
+    :param _quote_id: The quote id Transferwise needs. Will always be null for
+    temporary quotes.
+    :type _quote_id: str
+    :param _rate: The rate.
+    :type _rate: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-quote-temporary"
+    _ENDPOINT_URL_READ = "user/{}/transferwise-quote-temporary/{}"
+
+    # Field constants.
+    FIELD_CURRENCY_SOURCE = "currency_source"
+    FIELD_CURRENCY_TARGET = "currency_target"
+    FIELD_AMOUNT_SOURCE = "amount_source"
+    FIELD_AMOUNT_TARGET = "amount_target"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwiseQuote"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _time_expiry = None
+    _quote_id = None
+    _amount_source = None
+    _amount_target = None
+    _rate = None
+    _currency_source_field_for_request = None
+    _currency_target_field_for_request = None
+    _amount_source_field_for_request = None
+    _amount_target_field_for_request = None
+
+    def __init__(self, currency_source, currency_target, amount_source=None, amount_target=None):
+        """
+        :param currency_source: The source currency.
+        :type currency_source: str
+        :param currency_target: The target currency.
+        :type currency_target: str
+        :param amount_source: The source amount. Required if target amount is left
+        empty.
+        :type amount_source: object_.Amount
+        :param amount_target: The target amount. Required if source amount is left
+        empty.
+        :type amount_target: object_.Amount
+        """
+
+        self._currency_source_field_for_request = currency_source
+        self._currency_target_field_for_request = currency_target
+        self._amount_source_field_for_request = amount_source
+        self._amount_target_field_for_request = amount_target
+
+    @classmethod
+    def create(cls, currency_source, currency_target, amount_source=None, amount_target=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency_source: The source currency.
+        :type currency_source: str
+        :param currency_target: The target currency.
+        :type currency_target: str
+        :param amount_source: The source amount. Required if target amount is
+        left empty.
+        :type amount_source: object_.Amount
+        :param amount_target: The target amount. Required if source amount is
+        left empty.
+        :type amount_target: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_CURRENCY_SOURCE: currency_source,
+            cls.FIELD_CURRENCY_TARGET: currency_target,
+            cls.FIELD_AMOUNT_SOURCE: amount_source,
+            cls.FIELD_AMOUNT_TARGET: amount_target
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, transferwise_quote_temporary_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type transferwise_quote_temporary_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseQuoteTemporary
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), transferwise_quote_temporary_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTransferwiseQuoteTemporary.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def time_expiry(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_expiry
+
+    @property
+    def quote_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._quote_id
+
+    @property
+    def amount_source(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_source
+
+    @property
+    def amount_target(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_target
+
+    @property
+    def rate(self):
+        """
+        :rtype: str
+        """
+
+        return self._rate
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._time_expiry is not None:
+            return False
+
+        if self._quote_id is not None:
+            return False
+
+        if self._amount_source is not None:
+            return False
+
+        if self._amount_target is not None:
+            return False
+
+        if self._rate is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseQuoteTemporary
+        """
+
+        return converter.json_to_class(TransferwiseQuoteTemporary, json_str)
+
+
+class TransferwiseTransferRequirement(BunqModel):
+    """
+    Used to determine the account requirements for Transferwise transfers.
+    
+    :param _recipient_id: The id of the target account.
+    :type _recipient_id: str
+    :param _detail: The fields which were specified as "required" and have since
+    been filled by the user. Always provide the full list.
+    :type _detail: list[object_.TransferwiseRequirementField]
+    :param _type_: A possible transfer type.
+    :type _type_: str
+    :param _label: The label of the possible transfer type to show to the user.
+    :type _label: str
+    :param _fields: The fields which the user needs to fill.
+    :type _fields: list[object_.TransferwiseRequirementField]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-quote/{}/transferwise-transfer-requirement"
+
+    # Field constants.
+    FIELD_RECIPIENT_ID = "recipient_id"
+    FIELD_DETAIL = "detail"
+
+    _type_ = None
+    _label = None
+    _fields = None
+    _recipient_id_field_for_request = None
+    _detail_field_for_request = None
+
+    def __init__(self, recipient_id, detail=None):
+        """
+        :param recipient_id: The id of the target account.
+        :type recipient_id: str
+        :param detail: The fields which were specified as "required" and have since
+        been filled by the user. Always provide the full list.
+        :type detail: list[object_.TransferwiseRequirementField]
+        """
+
+        self._recipient_id_field_for_request = recipient_id
+        self._detail_field_for_request = detail
+
+    @classmethod
+    def create(cls, transferwise_quote_id, recipient_id, detail=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type transferwise_quote_id: int
+        :param recipient_id: The id of the target account.
+        :type recipient_id: str
+        :param detail: The fields which were specified as "required" and have
+        since been filled by the user. Always provide the full list.
+        :type detail: list[object_.TransferwiseRequirementField]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_RECIPIENT_ID: recipient_id,
+            cls.FIELD_DETAIL: detail
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), transferwise_quote_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def label(self):
+        """
+        :rtype: str
+        """
+
+        return self._label
+
+    @property
+    def fields(self):
+        """
+        :rtype: list[object_.TransferwiseRequirementField]
+        """
+
+        return self._fields
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._label is not None:
+            return False
+
+        if self._fields is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseTransferRequirement
+        """
+
+        return converter.json_to_class(TransferwiseTransferRequirement, json_str)
+
+
+class TransferwiseUser(BunqModel):
+    """
+    Used to manage Transferwise users.
+    
+    :param _oauth_code: The OAuth code returned by Transferwise we should be
+    using to gain access to the user's Transferwise account.
+    :type _oauth_code: str
+    :param _id_: The id of the TransferwiseUser.
+    :type _id_: int
+    :param _created: The timestamp of the TransferwiseUser's creation.
+    :type _created: str
+    :param _updated: The timestamp of the TransferwiseUser's last update.
+    :type _updated: str
+    :param _name: The name the user is registered with at TransferWise.
+    :type _name: str
+    :param _email: The email the user is registered with at TransferWise.
+    :type _email: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/transferwise-user"
+    _ENDPOINT_URL_LISTING = "user/{}/transferwise-user"
+
+    # Field constants.
+    FIELD_OAUTH_CODE = "oauth_code"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TransferwiseUser"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _name = None
+    _email = None
+    _oauth_code_field_for_request = None
+
+    def __init__(self, oauth_code=None):
+        """
+        :param oauth_code: The OAuth code returned by Transferwise we should be
+        using to gain access to the user's Transferwise account.
+        :type oauth_code: str
+        """
+
+        self._oauth_code_field_for_request = oauth_code
+
+    @classmethod
+    def create(cls, oauth_code=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param oauth_code: The OAuth code returned by Transferwise we should be
+        using to gain access to the user's Transferwise account.
+        :type oauth_code: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_OAUTH_CODE: oauth_code
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTransferwiseUserList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTransferwiseUserList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def email(self):
+        """
+        :rtype: str
+        """
+
+        return self._email
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._email is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseUser
+        """
+
+        return converter.json_to_class(TransferwiseUser, json_str)
+
+
 class TreeProgress(BunqModel):
     """
     See how many trees this user has planted.
@@ -35278,6 +36729,8 @@ class TreeProgress(BunqModel):
     :type _number_of_tree: float
     :param _progress_tree_next: The progress towards the next tree.
     :type _progress_tree_next: float
+    :param _label_user: The label of the user the progress belongs to.
+    :type _label_user: core.BunqModel
     """
 
     # Endpoint constants.
@@ -35288,6 +36741,7 @@ class TreeProgress(BunqModel):
 
     _number_of_tree = None
     _progress_tree_next = None
+    _label_user = None
 
     @classmethod
     def list(cls, params=None, custom_headers=None):
@@ -35329,6 +36783,14 @@ class TreeProgress(BunqModel):
 
         return self._progress_tree_next
 
+    @property
+    def label_user(self):
+        """
+        :rtype: core.BunqModel
+        """
+
+        return self._label_user
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -35338,6 +36800,9 @@ class TreeProgress(BunqModel):
             return False
 
         if self._progress_tree_next is not None:
+            return False
+
+        if self._label_user is not None:
             return False
 
         return True
@@ -36115,6 +37580,1465 @@ class MasterCardActionGreenAggregation(BunqModel):
         return converter.json_to_class(MasterCardActionGreenAggregation, json_str)
 
 
+class RegistryEntry(BunqModel):
+    """
+    Used to manage Slice group payment.
+    
+    :param _alias_owner: The Alias of the party we are allocating money for.
+    :type _alias_owner: object_.Pointer
+    :param _amount: The Amount of the RegistryEntry.
+    :type _amount: object_.Amount
+    :param _object_reference: The object linked to the RegistryEntry.
+    :type _object_reference: object_.RegistryEntryReference
+    :param _description: A description about the RegistryEntry.
+    :type _description: str
+    :param _allocations: An array of AllocationItems.
+    :type _allocations: list[object_.AllocationItem]
+    :param _attachment: The attachments attached to the payment.
+    :type _attachment: list[object_.RegistryEntryAttachment]
+    :param _id_: The id of the RegistryEntry.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountBank's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountBank's last update.
+    :type _updated: str
+    :param _registry_id: The id of the Registry.
+    :type _registry_id: int
+    :param _status: The status of the RegistryEntry.
+    :type _status: str
+    :param _type_: The RegistryEntry type. AUTO if created by Auto Slice, MANUAL
+    for manually added entries.
+    :type _type_: str
+    :param _alias: The LabelUser with the public information of the party of
+    this RegistryEntry.
+    :type _alias: object_.LabelUser
+    :param _counterparty_alias: The LabelUser with the public information of the
+    counter party of this RegistryEntry.
+    :type _counterparty_alias: object_.LabelUser
+    :param _user_alias_created: The LabelUser with the public information of the
+    User that created the RegistryEntry.
+    :type _user_alias_created: object_.LabelUser
+    :param _membership_created: The membership of the creator.
+    :type _membership_created: RegistryMembership
+    :param _membership_owned: The membership of the owner.
+    :type _membership_owned: RegistryMembership
+    :param _object_: The object that is connected to this RegistryEntry.
+    :type _object_: core.BunqModel
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/registry/{}/registry-entry"
+    _ENDPOINT_URL_UPDATE = "user/{}/registry/{}/registry-entry/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/registry/{}/registry-entry"
+    _ENDPOINT_URL_READ = "user/{}/registry/{}/registry-entry/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/registry/{}/registry-entry/{}"
+
+    # Field constants.
+    FIELD_ALIAS_OWNER = "alias_owner"
+    FIELD_AMOUNT = "amount"
+    FIELD_OBJECT_REFERENCE = "object_reference"
+    FIELD_DESCRIPTION = "description"
+    FIELD_ALLOCATIONS = "allocations"
+    FIELD_ATTACHMENT = "attachment"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "RegistryEntry"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _registry_id = None
+    _status = None
+    _amount = None
+    _description = None
+    _type_ = None
+    _alias = None
+    _counterparty_alias = None
+    _user_alias_created = None
+    _membership_created = None
+    _membership_owned = None
+    _allocations = None
+    _object_ = None
+    _attachment = None
+    _alias_owner_field_for_request = None
+    _amount_field_for_request = None
+    _object_reference_field_for_request = None
+    _description_field_for_request = None
+    _allocations_field_for_request = None
+    _attachment_field_for_request = None
+
+    def __init__(self, amount, allocations=None, alias_owner=None, object_reference=None, description=None,
+                 attachment=None):
+        """
+        :param amount: The Amount of the RegistryEntry.
+        :type amount: object_.Amount
+        :param allocations: An array of AllocationItems.
+        :type allocations: list[object_.AllocationItem]
+        :param alias_owner: The Alias of the party we are allocating money for.
+        :type alias_owner: object_.Pointer
+        :param object_reference: The object linked to the RegistryEntry.
+        :type object_reference: object_.RegistryEntryReference
+        :param description: A description about the RegistryEntry.
+        :type description: str
+        :param attachment: The attachments attached to the payment.
+        :type attachment: list[object_.RegistryEntryAttachment]
+        """
+
+        self._amount_field_for_request = amount
+        self._allocations_field_for_request = allocations
+        self._alias_owner_field_for_request = alias_owner
+        self._object_reference_field_for_request = object_reference
+        self._description_field_for_request = description
+        self._attachment_field_for_request = attachment
+
+    @classmethod
+    def create(cls, registry_id, amount, allocations, alias_owner=None, object_reference=None, description=None,
+               attachment=None, custom_headers=None):
+        """
+        Create a new Slice group payment.
+        
+        :type user_id: int
+        :type registry_id: int
+        :param amount: The Amount of the RegistryEntry.
+        :type amount: object_.Amount
+        :param allocations: An array of AllocationItems.
+        :type allocations: list[object_.AllocationItem]
+        :param alias_owner: The Alias of the party we are allocating money for.
+        :type alias_owner: object_.Pointer
+        :param object_reference: The object linked to the RegistryEntry.
+        :type object_reference: object_.RegistryEntryReference
+        :param description: A description about the RegistryEntry.
+        :type description: str
+        :param attachment: The attachments attached to the payment.
+        :type attachment: list[object_.RegistryEntryAttachment]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_ALIAS_OWNER: alias_owner,
+            cls.FIELD_AMOUNT: amount,
+            cls.FIELD_OBJECT_REFERENCE: object_reference,
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_ALLOCATIONS: allocations,
+            cls.FIELD_ATTACHMENT: attachment
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, registry_id, registry_entry_id, description=None, allocations=None, attachment=None,
+               custom_headers=None):
+        """
+        Update a specific Slice group payment.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type registry_entry_id: int
+        :param description: A description about the RegistryEntry.
+        :type description: str
+        :param allocations: An array of AllocationItems.
+        :type allocations: list[object_.AllocationItem]
+        :param attachment: The attachments attached to the payment.
+        :type attachment: list[object_.RegistryEntryAttachment]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_ALLOCATIONS: allocations,
+            cls.FIELD_ATTACHMENT: attachment
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), registry_id, registry_entry_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, registry_id, params=None, custom_headers=None):
+        """
+        Get a listing of all Slice group payments.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistryEntryList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRegistryEntryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, registry_id, registry_entry_id, custom_headers=None):
+        """
+        Get a specific Slice group payment.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type registry_id: int
+        :type registry_entry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistryEntry
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), registry_id, registry_entry_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRegistryEntry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def delete(cls, registry_id, registry_entry_id, custom_headers=None):
+        """
+        Delete a specific Slice group payment.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type registry_entry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), registry_id, registry_entry_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def registry_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._registry_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def user_alias_created(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_created
+
+    @property
+    def membership_created(self):
+        """
+        :rtype: RegistryMembership
+        """
+
+        return self._membership_created
+
+    @property
+    def membership_owned(self):
+        """
+        :rtype: RegistryMembership
+        """
+
+        return self._membership_owned
+
+    @property
+    def allocations(self):
+        """
+        :rtype: list[object_.AllocationItem]
+        """
+
+        return self._allocations
+
+    @property
+    def object_(self):
+        """
+        :rtype: core.BunqModel
+        """
+
+        return self._object_
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.RegistryEntryAttachment]
+        """
+
+        return self._attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._registry_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._user_alias_created is not None:
+            return False
+
+        if self._membership_created is not None:
+            return False
+
+        if self._membership_owned is not None:
+            return False
+
+        if self._allocations is not None:
+            return False
+
+        if self._object_ is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryEntry
+        """
+
+        return converter.json_to_class(RegistryEntry, json_str)
+
+
+class RegistryMembership(BunqModel):
+    """
+    View for RegistryMembership.
+    
+    :param _alias: The LabelMonetaryAccount of the user who belongs to this
+    RegistryMembership.
+    :type _alias: object_.MonetaryAccountReference
+    :param _status: The status of the RegistryMembership.
+    :type _status: str
+    :param _balance: The balance of this RegistryMembership.
+    :type _balance: object_.Amount
+    :param _total_amount_spent: The total amount spent of this
+    RegistryMembership.
+    :type _total_amount_spent: object_.Amount
+    """
+
+    # Field constants.
+    FIELD_ALIAS = "alias"
+    FIELD_STATUS = "status"
+
+    _alias = None
+    _balance = None
+    _total_amount_spent = None
+    _status = None
+    _alias_field_for_request = None
+    _status_field_for_request = None
+
+    def __init__(self, alias=None, status=None):
+        """
+        :param alias: The Alias of the party we are inviting to the Registry.
+        :type alias: object_.Pointer
+        :param status: The status of the RegistryMembership.
+        :type status: str
+        """
+
+        self._alias_field_for_request = alias
+        self._status_field_for_request = status
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def total_amount_spent(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._total_amount_spent
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._alias is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._total_amount_spent is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryMembership
+        """
+
+        return converter.json_to_class(RegistryMembership, json_str)
+
+
+class RegistrySetting(BunqModel):
+    """
+    Used to manage Slice group settings.
+    
+    :param _auto_add_card_transaction: The setting for for adding automatically
+    card transactions to the registry.
+    :type _auto_add_card_transaction: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_UPDATE = "user/{}/registry/{}/registry-setting/{}"
+    _ENDPOINT_URL_READ = "user/{}/registry/{}/registry-setting/{}"
+
+    # Field constants.
+    FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "RegistrySetting"
+
+    _auto_add_card_transaction = None
+    _auto_add_card_transaction_field_for_request = None
+
+    def __init__(self, auto_add_card_transaction=None):
+        """
+        :param auto_add_card_transaction: The setting for for adding automatically
+        card transactions to the registry.
+        :type auto_add_card_transaction: str
+        """
+
+        self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
+
+    @classmethod
+    def update(cls, registry_id, registry_setting_id, auto_add_card_transaction=None, custom_headers=None):
+        """
+        Update a specific Slice group setting.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type registry_setting_id: int
+        :param auto_add_card_transaction: The setting for for adding
+        automatically card transactions to the registry.
+        :type auto_add_card_transaction: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_AUTO_ADD_CARD_TRANSACTION: auto_add_card_transaction
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), registry_id, registry_setting_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, registry_id, registry_setting_id, custom_headers=None):
+        """
+        Get a specific Slice group setting.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type registry_id: int
+        :type registry_setting_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistrySetting
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), registry_id, registry_setting_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRegistrySetting.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def auto_add_card_transaction(self):
+        """
+        :rtype: str
+        """
+
+        return self._auto_add_card_transaction
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._auto_add_card_transaction is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistrySetting
+        """
+
+        return converter.json_to_class(RegistrySetting, json_str)
+
+
+class RegistrySettlementPending(BunqModel):
+    """
+    Used to manage pending Slice group settlements.
+    
+    :param _items: List of RegistrySettlementItems
+    :type _items: list[object_.RegistrySettlementItem]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/registry/{}/registry-settlement-pending"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "RegistrySettlementPending"
+
+    _items = None
+
+    @classmethod
+    def list(cls, registry_id, params=None, custom_headers=None):
+        """
+        Get a listing of all pending Slice group settlements.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistrySettlementPendingList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRegistrySettlementPendingList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def items(self):
+        """
+        :rtype: list[object_.RegistrySettlementItem]
+        """
+
+        return self._items
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._items is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistrySettlementPending
+        """
+
+        return converter.json_to_class(RegistrySettlementPending, json_str)
+
+
+class RegistrySettlement(BunqModel):
+    """
+    Used to settle a Slice group.
+    
+    :param _id_: The id of the RegistrySettlement.
+    :type _id_: int
+    :param _created: The timestamp of the RegistrySettlement's creation.
+    :type _created: str
+    :param _updated: The timestamp of the RegistrySettlement's last update.
+    :type _updated: str
+    :param _settlement_time: The timestamp of the Registry's settlement.
+    :type _settlement_time: str
+    :param _total_amount_spent: The total amount spent for the
+    RegistrySettlement.
+    :type _total_amount_spent: object_.Amount
+    :param _number_of_entries: The number of RegistryEntry's associated with
+    this RegistrySettlement.
+    :type _number_of_entries: int
+    :param _settled_by_alias: The membership of the user that settled the
+    Registry.
+    :type _settled_by_alias: RegistryMembership
+    :param _membership_settled: The membership of the user that has settled the
+    registry.
+    :type _membership_settled: RegistryMembership
+    :param _items: List of RegistrySettlementItems
+    :type _items: list[object_.RegistrySettlementItem]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/registry/{}/registry-settlement"
+    _ENDPOINT_URL_READ = "user/{}/registry/{}/registry-settlement/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/registry/{}/registry-settlement"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "RegistrySettlement"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _settlement_time = None
+    _total_amount_spent = None
+    _number_of_entries = None
+    _settled_by_alias = None
+    _membership_settled = None
+    _items = None
+
+    @classmethod
+    def create(cls, registry_id, custom_headers=None):
+        """
+        Create a new Slice group settlement.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, registry_id, registry_settlement_id, custom_headers=None):
+        """
+        Get a specific Slice group settlement.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type registry_id: int
+        :type registry_settlement_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistrySettlement
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), registry_id, registry_settlement_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRegistrySettlement.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, registry_id, params=None, custom_headers=None):
+        """
+        Get a listing of all Slice group settlements.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistrySettlementList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRegistrySettlementList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def settlement_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._settlement_time
+
+    @property
+    def total_amount_spent(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._total_amount_spent
+
+    @property
+    def number_of_entries(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_entries
+
+    @property
+    def settled_by_alias(self):
+        """
+        :rtype: RegistryMembership
+        """
+
+        return self._settled_by_alias
+
+    @property
+    def membership_settled(self):
+        """
+        :rtype: RegistryMembership
+        """
+
+        return self._membership_settled
+
+    @property
+    def items(self):
+        """
+        :rtype: list[object_.RegistrySettlementItem]
+        """
+
+        return self._items
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._settlement_time is not None:
+            return False
+
+        if self._total_amount_spent is not None:
+            return False
+
+        if self._number_of_entries is not None:
+            return False
+
+        if self._settled_by_alias is not None:
+            return False
+
+        if self._membership_settled is not None:
+            return False
+
+        if self._items is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistrySettlement
+        """
+
+        return converter.json_to_class(RegistrySettlement, json_str)
+
+
+class Registry(BunqModel):
+    """
+    Used to manage Slice groups.
+    
+    :param _currency: The currency for the Registry as an ISO 4217 formatted
+    currency code.
+    :type _currency: str
+    :param _title: The title of the Registry.
+    :type _title: str
+    :param _description: A description about the Registry.
+    :type _description: str
+    :param _status: The status of the Registry.
+    :type _status: str
+    :param _last_registry_entry_seen_id: The id of the last RegistryEntry that
+    the user has seen.
+    :type _last_registry_entry_seen_id: int
+    :param _previous_updated_timestamp: The previous updated timestamp that you
+    received for this Registry.
+    :type _previous_updated_timestamp: str
+    :param _memberships: List of memberships to replace the current one.
+    :type _memberships: list[RegistryMembership]
+    :param _memberships_previous: Previous list of memberships.
+    :type _memberships_previous: list[RegistryMembership]
+    :param _id_: The id of the Registry.
+    :type _id_: int
+    :param _created: The timestamp of the Registry's creation.
+    :type _created: str
+    :param _updated: The timestamp of the Registry's last update.
+    :type _updated: str
+    :param _unseen_entries_count: The number of RegistryEntries in this Registry
+    that the user has not seen.
+    :type _unseen_entries_count: int
+    :param _total_amount_spent: The total amount spent in this Registry since
+    the last settlement.
+    :type _total_amount_spent: object_.Amount
+    :param _is_previously_settled: Whether the Registry has previously been
+    settled.
+    :type _is_previously_settled: bool
+    :param _setting: The settings for this Registry.
+    :type _setting: RegistrySetting
+    :param _registry_auto_add_card_transaction_enabled_id: The ID of the
+    registry that currently has auto_add_card_transaction set to ALL.
+    :type _registry_auto_add_card_transaction_enabled_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/registry"
+    _ENDPOINT_URL_UPDATE = "user/{}/registry/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/registry"
+    _ENDPOINT_URL_READ = "user/{}/registry/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/registry/{}"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_TITLE = "title"
+    FIELD_DESCRIPTION = "description"
+    FIELD_STATUS = "status"
+    FIELD_LAST_REGISTRY_ENTRY_SEEN_ID = "last_registry_entry_seen_id"
+    FIELD_PREVIOUS_UPDATED_TIMESTAMP = "previous_updated_timestamp"
+    FIELD_MEMBERSHIPS = "memberships"
+    FIELD_MEMBERSHIPS_PREVIOUS = "memberships_previous"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "Registry"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _currency = None
+    _title = None
+    _status = None
+    _unseen_entries_count = None
+    _total_amount_spent = None
+    _is_previously_settled = None
+    _memberships = None
+    _setting = None
+    _registry_auto_add_card_transaction_enabled_id = None
+    _currency_field_for_request = None
+    _title_field_for_request = None
+    _description_field_for_request = None
+    _status_field_for_request = None
+    _last_registry_entry_seen_id_field_for_request = None
+    _previous_updated_timestamp_field_for_request = None
+    _memberships_field_for_request = None
+    _memberships_previous_field_for_request = None
+
+    def __init__(self, currency, title=None, description=None, status=None, last_registry_entry_seen_id=None,
+                 previous_updated_timestamp=None, memberships=None, memberships_previous=None):
+        """
+        :param currency: The currency for the Registry as an ISO 4217 formatted
+        currency code.
+        :type currency: str
+        :param title: The title of the Registry.
+        :type title: str
+        :param description: A description about the Registry.
+        :type description: str
+        :param status: The status of the Registry.
+        :type status: str
+        :param last_registry_entry_seen_id: The id of the last RegistryEntry that
+        the user has seen.
+        :type last_registry_entry_seen_id: int
+        :param previous_updated_timestamp: The previous updated timestamp that you
+        received for this Registry.
+        :type previous_updated_timestamp: str
+        :param memberships: New list of memberships.
+        :type memberships: list[RegistryMembership]
+        :param memberships_previous: Previous list of memberships.
+        :type memberships_previous: list[RegistryMembership]
+        """
+
+        self._currency_field_for_request = currency
+        self._title_field_for_request = title
+        self._description_field_for_request = description
+        self._status_field_for_request = status
+        self._last_registry_entry_seen_id_field_for_request = last_registry_entry_seen_id
+        self._previous_updated_timestamp_field_for_request = previous_updated_timestamp
+        self._memberships_field_for_request = memberships
+        self._memberships_previous_field_for_request = memberships_previous
+
+    @classmethod
+    def create(cls, currency, title=None, description=None, status=None, last_registry_entry_seen_id=None,
+               previous_updated_timestamp=None, memberships=None, memberships_previous=None, custom_headers=None):
+        """
+        Create a new Slice group.
+        
+        :type user_id: int
+        :param currency: The currency for the Registry as an ISO 4217 formatted
+        currency code.
+        :type currency: str
+        :param title: The title of the Registry.
+        :type title: str
+        :param description: A description about the Registry.
+        :type description: str
+        :param status: The status of the Registry.
+        :type status: str
+        :param last_registry_entry_seen_id: The id of the last RegistryEntry
+        that the user has seen.
+        :type last_registry_entry_seen_id: int
+        :param previous_updated_timestamp: The previous updated timestamp that
+        you received for this Registry.
+        :type previous_updated_timestamp: str
+        :param memberships: New list of memberships.
+        :type memberships: list[RegistryMembership]
+        :param memberships_previous: Previous list of memberships.
+        :type memberships_previous: list[RegistryMembership]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_CURRENCY: currency,
+            cls.FIELD_TITLE: title,
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_LAST_REGISTRY_ENTRY_SEEN_ID: last_registry_entry_seen_id,
+            cls.FIELD_PREVIOUS_UPDATED_TIMESTAMP: previous_updated_timestamp,
+            cls.FIELD_MEMBERSHIPS: memberships,
+            cls.FIELD_MEMBERSHIPS_PREVIOUS: memberships_previous
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, registry_id, title=None, description=None, status=None, last_registry_entry_seen_id=None,
+               previous_updated_timestamp=None, memberships=None, memberships_previous=None, custom_headers=None):
+        """
+        Update a specific Slice group.
+        
+        :type user_id: int
+        :type registry_id: int
+        :param title: The title of the Registry.
+        :type title: str
+        :param description: A description about the Registry.
+        :type description: str
+        :param status: The status of the Registry.
+        :type status: str
+        :param last_registry_entry_seen_id: The id of the last RegistryEntry
+        that the user has seen.
+        :type last_registry_entry_seen_id: int
+        :param previous_updated_timestamp: The previous updated timestamp that
+        you received for this Registry.
+        :type previous_updated_timestamp: str
+        :param memberships: New list of memberships.
+        :type memberships: list[RegistryMembership]
+        :param memberships_previous: Previous list of memberships.
+        :type memberships_previous: list[RegistryMembership]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+            cls.FIELD_TITLE: title,
+            cls.FIELD_DESCRIPTION: description,
+            cls.FIELD_STATUS: status,
+            cls.FIELD_LAST_REGISTRY_ENTRY_SEEN_ID: last_registry_entry_seen_id,
+            cls.FIELD_PREVIOUS_UPDATED_TIMESTAMP: previous_updated_timestamp,
+            cls.FIELD_MEMBERSHIPS: memberships,
+            cls.FIELD_MEMBERSHIPS_PREVIOUS: memberships_previous
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        Get a listing of all Slice groups.
+        
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistryList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseRegistryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, registry_id, custom_headers=None):
+        """
+        Get a specific Slice group.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type registry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistry
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseRegistry.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def delete(cls, registry_id, custom_headers=None):
+        """
+        Delete a specific Slice group.
+        
+        :type user_id: int
+        :type registry_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), registry_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def title(self):
+        """
+        :rtype: str
+        """
+
+        return self._title
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def unseen_entries_count(self):
+        """
+        :rtype: int
+        """
+
+        return self._unseen_entries_count
+
+    @property
+    def total_amount_spent(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._total_amount_spent
+
+    @property
+    def is_previously_settled(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_previously_settled
+
+    @property
+    def memberships(self):
+        """
+        :rtype: list[RegistryMembership]
+        """
+
+        return self._memberships
+
+    @property
+    def setting(self):
+        """
+        :rtype: RegistrySetting
+        """
+
+        return self._setting
+
+    @property
+    def registry_auto_add_card_transaction_enabled_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._registry_auto_add_card_transaction_enabled_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._title is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._unseen_entries_count is not None:
+            return False
+
+        if self._total_amount_spent is not None:
+            return False
+
+        if self._is_previously_settled is not None:
+            return False
+
+        if self._memberships is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._registry_auto_add_card_transaction_enabled_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Registry
+        """
+
+        return converter.json_to_class(Registry, json_str)
+
+
 class BunqResponseBillingContractSubscriptionList(BunqResponse):
     @property
     def value(self):
@@ -36250,26 +39174,6 @@ class BunqResponseAvatar(BunqResponse):
     def value(self):
         """
         :rtype: Avatar
-        """
-
-        return super().value
-
-
-class BunqResponseBancontactMerchantTransaction(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: BancontactMerchantTransaction
-        """
-
-        return super().value
-
-
-class BunqResponseBancontactMerchantTransactionList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[BancontactMerchantTransaction]
         """
 
         return super().value
@@ -36615,6 +39519,36 @@ class BunqResponseCertificatePinned(BunqResponse):
         return super().value
 
 
+class BunqResponseCompany(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: Company
+        """
+
+        return super().value
+
+
+class BunqResponseCompanyList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[Company]
+        """
+
+        return super().value
+
+
+class BunqResponseUserCompany(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: UserCompany
+        """
+
+        return super().value
+
+
 class BunqResponseConfirmationOfFunds(BunqResponse):
     @property
     def value(self):
@@ -36910,6 +39844,36 @@ class BunqResponseTabResultResponseList(BunqResponse):
     def value(self):
         """
         :rtype: list[TabResultResponse]
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseTransfer(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TransferwiseTransfer
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseTransferList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TransferwiseTransfer]
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseQuote(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TransferwiseQuote
         """
 
         return super().value
@@ -37885,16 +40849,6 @@ class BunqResponseUserPerson(BunqResponse):
         return super().value
 
 
-class BunqResponseUserCompany(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: UserCompany
-        """
-
-        return super().value
-
-
 class BunqResponseUserPaymentServiceProvider(BunqResponse):
     @property
     def value(self):
@@ -38055,6 +41009,26 @@ class BunqResponseRewardList(BunqResponse):
         return super().value
 
 
+class BunqResponseSandboxUserCompany(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: SandboxUserCompany
+        """
+
+        return super().value
+
+
+class BunqResponseSandboxUserPerson(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: SandboxUserPerson
+        """
+
+        return super().value
+
+
 class BunqResponseSandboxUser(BunqResponse):
     @property
     def value(self):
@@ -38110,6 +41084,66 @@ class BunqResponseTokenQrRequestSofort(BunqResponse):
     def value(self):
         """
         :rtype: TokenQrRequestSofort
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseAccountQuote(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TransferwiseAccountQuote
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseAccountQuoteList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TransferwiseAccountQuote]
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseAccountRequirementList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TransferwiseAccountRequirement]
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseCurrencyList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TransferwiseCurrency]
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseQuoteTemporary(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TransferwiseQuoteTemporary
+        """
+
+        return super().value
+
+
+class BunqResponseTransferwiseUserList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TransferwiseUser]
         """
 
         return super().value
@@ -38190,6 +41224,86 @@ class BunqResponseMasterCardActionGreenAggregationList(BunqResponse):
     def value(self):
         """
         :rtype: list[MasterCardActionGreenAggregation]
+        """
+
+        return super().value
+
+
+class BunqResponseRegistryEntryList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RegistryEntry]
+        """
+
+        return super().value
+
+
+class BunqResponseRegistryEntry(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RegistryEntry
+        """
+
+        return super().value
+
+
+class BunqResponseRegistrySetting(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RegistrySetting
+        """
+
+        return super().value
+
+
+class BunqResponseRegistrySettlementPendingList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RegistrySettlementPending]
+        """
+
+        return super().value
+
+
+class BunqResponseRegistrySettlement(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RegistrySettlement
+        """
+
+        return super().value
+
+
+class BunqResponseRegistrySettlementList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[RegistrySettlement]
+        """
+
+        return super().value
+
+
+class BunqResponseRegistryList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[Registry]
+        """
+
+        return super().value
+
+
+class BunqResponseRegistry(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: Registry
         """
 
         return super().value
