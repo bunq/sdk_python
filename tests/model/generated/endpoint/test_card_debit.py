@@ -32,13 +32,11 @@ class TestCardDebit(BunqSdkTestCase):
         """
 
         second_line = self.second_line_random
-
         pin_code_assignment = CardPinAssignment(
             self._PIN_CODE_ASSIGNMENT_TYPE_PRIMARY,
             self._CARD_PIN_CODE,
             BunqContext.user_context().primary_monetary_account.id_
         )
-
         card_debit = CardDebit.create(second_line,
                                       self.card_name_allowed,
                                       self._CARD_TYPE_MAESTRO,
@@ -53,21 +51,11 @@ class TestCardDebit(BunqSdkTestCase):
         self.assertEqual(card_debit.created, card.created)
 
     @property
-    def card_name_allowed(self):
-        """
-        :rtype: str
-        """
-
-        return \
-            CardName.list().value[self._FIRST_INDEX].possible_card_name_array[
-                self._FIRST_INDEX]
+    def card_name_allowed(self) -> str:
+        return CardName.list().value[self._FIRST_INDEX].possible_card_name_array[self._FIRST_INDEX]
 
     @property
-    def second_line_random(self):
-        """
-        :rtype: str
-        """
-
+    def second_line_random(self) -> str:
         second_line_characters = []
 
         for _ in range(self._SECOND_LINE_LENGTH_MAXIMUM):

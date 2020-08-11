@@ -23,15 +23,9 @@ class TestMonetaryAccountJoint(BunqSdkTestCase):
         pass
 
     def test_monetary_account_joint_parser(self):
-        """
-        """
-
         base_path = os.path.dirname(__file__)
         file_path = os.path.abspath(
-            os.path.join(base_path,
-                         self._BASE_PATH_JSON_MODEL +
-                         self._MONETARY_ACCOUNT_JOINT_JSON
-                         )
+            os.path.join(base_path, self._BASE_PATH_JSON_MODEL + self._MONETARY_ACCOUNT_JOINT_JSON)
         )
 
         with open(file_path, self._FILE_MODE_READ) as f:
