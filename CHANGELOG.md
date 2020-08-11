@@ -28,6 +28,9 @@
 
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.16...1.13.0)
 
+**Breaking Changes:**
+- Breaking changes since v1.13.0 [\#142](https://github.com/bunq/sdk_python/issues/142) ([angelomelonas](https://github.com/angelomelonas))
+
 **Implemented enhancements:**
 
 - Python SDK Refactor [\#117](https://github.com/bunq/sdk_python/pull/117) ([angelomelonas](https://github.com/angelomelonas))
