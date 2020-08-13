@@ -27,18 +27,11 @@ class TestRequestEnquiry(BunqSdkTestCase):
 
         self.send_request()
 
-        request_response_id = \
-            RequestResponse.list(self._second_monetary_account.id_).value[
-                self._FIRST_INDEX
-            ].id_
+        request_response_id = RequestResponse.list(self._second_monetary_account.id_).value[self._FIRST_INDEX].id_
 
         self.accept_request(request_response_id)
 
-    def send_request(self):
-        """
-        :rtype: None
-        """
-
+    def send_request(self) -> None:
         RequestInquiry.create(
             Amount(self._REQUEST_AMOUNT_EUR, self._REQUEST_CURRENCY),
             self._get_alias_second_account(),
@@ -46,14 +39,5 @@ class TestRequestEnquiry(BunqSdkTestCase):
             False
         )
 
-    def accept_request(self, response_id):
-        """
-        :param response_id:
-        :rtype response_id: int
-        """
-
-        RequestResponse.update(
-            response_id,
-            monetary_account_id=self._second_monetary_account.id_,
-            status=self._STATUS
-        )
+    def accept_request(self, response_id: int) -> None:
+        RequestResponse.update(response_id, monetary_account_id=self._second_monetary_account.id_, status=self._STATUS)

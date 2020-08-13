@@ -1,3 +1,5 @@
+from typing import AnyStr
+
 from bunq.sdk.http.api_client import ApiClient
 from bunq.sdk.model.generated.endpoint import AttachmentPublic
 from bunq.sdk.model.generated.endpoint import AttachmentPublicContent
@@ -24,26 +26,14 @@ class TestAvatar(BunqSdkTestCase):
                 self._ATTACHMENT_DESCRIPTION,
             ApiClient.HEADER_CONTENT_TYPE: self._CONTENT_TYPE
         }
-        attachment_public_uuid = AttachmentPublic.create(
-            self.attachment_contents, custom_header).value
-
+        attachment_public_uuid = AttachmentPublic.create(self.attachment_contents, custom_header).value
         avatar_uuid = Avatar.create(attachment_public_uuid).value
-        attachment_uuid_after = Avatar.get(avatar_uuid) \
-            .value.image[self._FIRST_INDEX].attachment_public_uuid
-
-        file_contents_received = AttachmentPublicContent.list(
-            attachment_uuid_after).value
+        attachment_uuid_after = Avatar.get(avatar_uuid).value.image[self._FIRST_INDEX].attachment_public_uuid
+        file_contents_received = AttachmentPublicContent.list(attachment_uuid_after).value
 
         self.assertEqual(self.attachment_contents, file_contents_received)
 
     @property
-    def attachment_contents(self):
-        """
-        :rtype: bytes
-        """
-
-        with open(
-                self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN,
-                self._READ_BYTES
-        ) as file:
+    def attachment_contents(self) -> AnyStr:
+        with open(self._PATH_ATTACHMENT + self._ATTACHMENT_PATH_IN, self._READ_BYTES) as file:
             return file.read()

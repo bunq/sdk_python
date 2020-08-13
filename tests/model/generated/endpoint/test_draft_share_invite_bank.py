@@ -29,25 +29,16 @@ class TestDraftShareInvite(BunqSdkTestCase):
         without errors
         """
 
-        share_detail = ShareDetail(
-            read_only=ShareDetailReadOnly(True, True, True)
-        )
+        share_detail = ShareDetail(read_only=ShareDetailReadOnly(True, True, True))
         share_settings = DraftShareInviteEntry(share_detail)
-
-        draft_id = DraftShareInviteBank.create(self.expiration_date,
-                                               share_settings).value
-
+        draft_id = DraftShareInviteBank.create(self.expiration_date,  share_settings).value
         connect_qr = DraftShareInviteBankQrCodeContent.list(draft_id).value
 
         with open(self._OUT_PUT_FILE_PATH, self._WRITE_BYTES) as f:
             f.write(connect_qr)
 
     @property
-    def expiration_date(self):
-        """
-        :rtype: str
-        """
-
+    def expiration_date(self) -> str:
         date = datetime.utcnow() + timedelta(hours=self._EXPIRATION_ADDED_TIME)
 
         return date.isoformat()
