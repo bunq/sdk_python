@@ -4,5 +4,5 @@
          
 ## This PR closes/fixes the following issues:
 [//]: # (If for some reason your pull request does not require a test case you can just mark this box as checked and explain why it does not require a test case.)
- - Closes bunq/sdk_php#
+ - Closes bunq/sdk_python#
     - [ ] Tested
