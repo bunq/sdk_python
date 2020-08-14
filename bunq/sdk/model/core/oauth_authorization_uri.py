@@ -11,8 +11,8 @@ from bunq.sdk.model.generated.endpoint import OauthClient
 
 class OauthAuthorizationUri(BunqModel):
     # Auth constants.
-    AUTH_URI_FORMAT_SANDBOX = "https://oauth.sandbox.bunq.com/auth?%s"
-    AUTH_URI_FORMAT_PRODUCTION = "https://oauth.bunq.com/auth?%s"
+    AUTH_URI_FORMAT_SANDBOX = "https://oauth.sandbox.bunq.com/auth?{}"
+    AUTH_URI_FORMAT_PRODUCTION = "https://oauth.bunq.com/auth?{}"
 
     # Field constants
     FIELD_RESPONSE_TYPE = "response_type"
@@ -38,9 +38,11 @@ class OauthAuthorizationUri(BunqModel):
                state: str = None) -> OauthAuthorizationUri:
         all_request_parameter = {
             cls.FIELD_REDIRECT_URI: redirect_uri,
-            cls.FIELD_RESPONSE_TYPE: response_type.value,
-            cls.FIELD_CLIENT_ID: client.client_id
+            cls.FIELD_RESPONSE_TYPE: response_type.name.lower()
         }
+
+        if client.client_id is not None:
+            all_request_parameter[cls.FIELD_CLIENT_ID] = client.client_id
 
         if state is not None:
             all_request_parameter[cls.FIELD_STATE] = state
@@ -48,6 +50,9 @@ class OauthAuthorizationUri(BunqModel):
         return OauthAuthorizationUri(
             cls.determine_auth_uri_format().format(HttpUtil.create_query_string(all_request_parameter))
         )
+
+    def get_authorization_uri(self) -> str:
+        return self._authorization_uri
 
     def is_all_field_none(self) -> bool:
         if self._authorization_uri is None:

@@ -2,9 +2,8 @@ from typing import Dict
 
 
 class HttpUtil:
-    # Query constants.
-    QUERY_FORMAT = "%s=%s"
-    QUERY_DELIMITER = "&"
+    QUERY_FORMAT = '{}={}'
+    QUERY_DELIMITER = '&'
 
     @classmethod
     def create_query_string(cls, all_parameter: Dict[str, str]):
