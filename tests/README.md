@@ -46,7 +46,11 @@ Note:
     4. Use the Avatar's UUID to create a `Cash Register`
     5. Copy the Cash Register's ID to the `config.json`
 
-## Execution
+## Installation and Execution
+
+You can install all the required dependencies with the following command:
+    
+    python setup.py install
 
 You can run all the tests via command line: 
 
