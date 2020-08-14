@@ -20,7 +20,7 @@ class TestApiContext(BunqSdkTestCase):
     __TIME_STAMP_IN_PAST = '2000-04-07 19:50:43.839717'
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         super().setUpClass()
         cls._FILE_MODE_READ = ApiContext._FILE_MODE_READ
         cls._API_CONTEXT = cls._get_api_context()
@@ -96,8 +96,8 @@ class TestApiContext(BunqSdkTestCase):
         Tests the auto update of BunqContext.
         """
 
-        api_context: ApiContext = BunqContext.api_context()
-        api_context_json: object = json.loads(api_context.to_json())
+        api_context = BunqContext.api_context()
+        api_context_json = json.loads(api_context.to_json())
 
         api_context_json[self.__FIELD_SESSION_CONTEXT][self.__FIELD_EXPIRE_TIME] = self.__TIME_STAMP_IN_PAST
 
