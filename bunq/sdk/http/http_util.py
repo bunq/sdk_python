@@ -9,7 +9,7 @@ class HttpUtil:
     def create_query_string(cls, all_parameter: Dict[str, str]):
         encoded_parameters = []
 
-        for parameter in all_parameter:
-            encoded_parameters.append(cls.QUERY_FORMAT.format(parameter, all_parameter[parameter]))
+        for parameter, value in all_parameter.items():
+            encoded_parameters.append(cls.QUERY_FORMAT.format(parameter, value))
 
         return cls.QUERY_DELIMITER.join(encoded_parameters)
