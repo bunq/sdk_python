@@ -1,5 +1,41 @@
 # Changelog
 
+## [Unreleased](https://github.com/bunq/sdk_python/tree/HEAD)
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.14.0...HEAD)
+
+**Implemented enhancements:**
+
+-  Add a test for oauth\_authorization\_uri [\#145](https://github.com/bunq/sdk_python/issues/145)
+- Update tests with Type Hints \(and other small Type Hint improvements\) [\#139](https://github.com/bunq/sdk_python/issues/139)
+- Complete OAuth/PSD2 implementation [\#136](https://github.com/bunq/sdk_python/issues/136)
+- Allow for a looser range of runtime dependency versions in conformance with semver backward compatibility guarantees [\#107](https://github.com/bunq/sdk_python/issues/107)
+- Updated dependencies, and made them more flexible [\#146](https://github.com/bunq/sdk_python/pull/146) ([angelomelonas](https://github.com/angelomelonas))
+- Added type hints for tests [\#141](https://github.com/bunq/sdk_python/pull/141) ([angelomelonas](https://github.com/angelomelonas))
+
+**Fixed bugs:**
+
+- Add missing \_user\_payment\_service\_provider variable with the value None to session\_server [\#135](https://github.com/bunq/sdk_python/pull/135) ([siccovansas](https://github.com/siccovansas))
+
+**Closed issues:**
+
+- Breaking changes since v1.13.0 [\#142](https://github.com/bunq/sdk_python/issues/142)
+- Is this repository even maintained?  [\#140](https://github.com/bunq/sdk_python/issues/140)
+- AttributeError: 'SessionServer' object has no attribute '\_user\_payment\_service\_provider' [\#134](https://github.com/bunq/sdk_python/issues/134)
+- cannot import name 'ApiContext' from 'bunq.sdk.context' [\#132](https://github.com/bunq/sdk_python/issues/132)
+- The CHANGELOG is out of date [\#131](https://github.com/bunq/sdk_python/issues/131)
+- Error in class conversion since BillingInvoice does not exist  [\#124](https://github.com/bunq/sdk_python/issues/124)
+
+**Merged pull requests:**
+
+- Update CHANGELOG with breaking changes [\#143](https://github.com/bunq/sdk_python/pull/143) ([angelomelonas](https://github.com/angelomelonas))
+- sdk\_python\#136 complete Oauth/PSD2 implementation [\#138](https://github.com/bunq/sdk_python/pull/138) ([angelomelonas](https://github.com/angelomelonas))
+- update setup.py: only python 3.7 is supported. [\#133](https://github.com/bunq/sdk_python/pull/133) ([csdenboer](https://github.com/csdenboer))
+
+## [1.14.0](https://github.com/bunq/sdk_python/tree/1.14.0) (2020-08-04)
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.13.1...1.14.0)
+
 ## [1.13.1](https://github.com/bunq/sdk_python/tree/1.13.1) (2020-02-21)
 
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.13.0...1.13.1)
@@ -27,9 +63,6 @@
 ## [1.13.0](https://github.com/bunq/sdk_python/tree/1.13.0) (2020-02-19)
 
 [Full Changelog](https://github.com/bunq/sdk_python/compare/1.10.16...1.13.0)
-
-**Breaking Changes:**
-- Breaking changes since v1.13.0 [\#142](https://github.com/bunq/sdk_python/issues/142) ([angelomelonas](https://github.com/angelomelonas))
 
 **Implemented enhancements:**
 
@@ -270,10 +303,10 @@
 - Add proxy support to Python SDK [\#16](https://github.com/bunq/sdk_python/issues/16)
 - Break the SDK's dependence on the bunq.conf file [\#11](https://github.com/bunq/sdk_python/issues/11)
 - Response is missing response headers and pagination [\#9](https://github.com/bunq/sdk_python/issues/9)
+- cleanup tests \[\#18\] [\#19](https://github.com/bunq/sdk_python/pull/19) ([dnl-blkv](https://github.com/dnl-blkv))
 - Changed test class name [\#14](https://github.com/bunq/sdk_python/pull/14) ([OGKevin](https://github.com/OGKevin))
 - Load and Save an ApiContext from and to JSON Data [\#13](https://github.com/bunq/sdk_python/pull/13) ([PJUllrich](https://github.com/PJUllrich))
 - \#9 Introduce BunqResponse [\#10](https://github.com/bunq/sdk_python/pull/10) ([dnl-blkv](https://github.com/dnl-blkv))
-- Readme for tests [\#5](https://github.com/bunq/sdk_python/pull/5) ([OGKevin](https://github.com/OGKevin))
 
 **Closed issues:**
 
@@ -290,7 +323,7 @@
 **Implemented enhancements:**
 
 - Submit this as package to PyPi [\#2](https://github.com/bunq/sdk_python/issues/2)
-- cleanup tests \[\#18\] [\#19](https://github.com/bunq/sdk_python/pull/19) ([dnl-blkv](https://github.com/dnl-blkv))
+- Readme for tests [\#5](https://github.com/bunq/sdk_python/pull/5) ([OGKevin](https://github.com/OGKevin))
 - Uploaded to PyPi [\#4](https://github.com/bunq/sdk_python/pull/4) ([OGKevin](https://github.com/OGKevin))
 - Add first series of unit-tests [\#1](https://github.com/bunq/sdk_python/pull/1) ([OGKevin](https://github.com/OGKevin))
 
