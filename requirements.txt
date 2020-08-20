@@ -1,6 +1,6 @@
-aenum==2.2.3
+aenum==2.2.4
 chardet==3.0.4
-pycryptodomex==3.9.7
-requests[socks]==2.23.0
-simplejson==3.17.0
-urllib3==1.25.8
+pycryptodomex==3.9.8
+requests[socks]==2.24.0
+simplejson==3.17.2
+urllib3==1.25.10

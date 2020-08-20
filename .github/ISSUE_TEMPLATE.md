@@ -11,7 +11,7 @@
 [//]: # (If there is a traceback please share it in a quote! You can do this by pasting the traceback text, highlighting it and pressing the quote button.)
 
 ## SDK version and environment
-- Tested on [1.14.0](https://github.com/bunq/sdk_python/releases/tag/1.14.0)
+- Tested on [1.14.1](https://github.com/bunq/sdk_python/releases/tag/1.14.1)
 - [ ] Sandbox
 - [ ] Production
 
