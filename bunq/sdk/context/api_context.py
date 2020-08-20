@@ -84,7 +84,8 @@ class ApiContext:
         service_provider_credential = api_context.__initialize_psd2_credential(
             certificate,
             private_key,
-            all_chain_certificate)
+            all_chain_certificate
+        )
 
         api_context._api_key = service_provider_credential.token_value
 

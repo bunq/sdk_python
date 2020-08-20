@@ -1343,95 +1343,6 @@ class Geolocation(BunqModel):
         return converter.json_to_class(Geolocation, json_str)
 
 
-class Error(BunqModel):
-    """
-    :param _error_description: The error description (in English).
-    :type _error_description: str
-    :param _error_description_translated: The error description (in the user
-    language).
-    :type _error_description_translated: str
-    """
-
-    _error_description = None
-    _error_description_translated = None
-
-    @property
-    def error_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description
-
-    @property
-    def error_description_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description_translated
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._error_description is not None:
-            return False
-
-        if self._error_description_translated is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Error
-        """
-
-        return converter.json_to_class(Error, json_str)
-
-
-class PaymentBatchAnchoredPayment(BunqModel):
-    """
-    :param _Payment: 
-    :type _Payment: list[endpoint.Payment]
-    """
-
-    _Payment = None
-
-    @property
-    def Payment(self):
-        """
-        :rtype: list[endpoint.Payment]
-        """
-
-        return self._Payment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._Payment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentBatchAnchoredPayment
-        """
-
-        return converter.json_to_class(PaymentBatchAnchoredPayment, json_str)
-
-
 class AttachmentPublic(BunqModel):
     """
     :param _uuid: The uuid of the attachment.
@@ -2702,6 +2613,43 @@ class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
         """
 
         return converter.json_to_class(DraftPaymentAnchorObject, json_str)
+
+
+class PaymentBatchAnchoredPayment(BunqModel):
+    """
+    :param _Payment: 
+    :type _Payment: list[endpoint.Payment]
+    """
+
+    _Payment = None
+
+    @property
+    def Payment(self):
+        """
+        :rtype: list[endpoint.Payment]
+        """
+
+        return self._Payment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._Payment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatchAnchoredPayment
+        """
+
+        return converter.json_to_class(PaymentBatchAnchoredPayment, json_str)
 
 
 class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
@@ -4015,6 +3963,58 @@ class SchedulePaymentEntry(BunqModel):
         """
 
         return converter.json_to_class(SchedulePaymentEntry, json_str)
+
+
+class Error(BunqModel):
+    """
+    :param _error_description: The error description (in English).
+    :type _error_description: str
+    :param _error_description_translated: The error description (in the user
+    language).
+    :type _error_description_translated: str
+    """
+
+    _error_description = None
+    _error_description_translated = None
+
+    @property
+    def error_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description
+
+    @property
+    def error_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description_translated
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._error_description is not None:
+            return False
+
+        if self._error_description_translated is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Error
+        """
+
+        return converter.json_to_class(Error, json_str)
 
 
 class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
@@ -5864,7 +5864,7 @@ class TransferwiseRequirementField(BunqModel):
     :param _name: The descriptive label of the field.
     :type _name: str
     :param _group: The field group.
-    :type _group: core.BunqModel
+    :type _group: TransferwiseRequirementFieldGroup
     """
 
     _name = None
@@ -5894,7 +5894,7 @@ class TransferwiseRequirementField(BunqModel):
     @property
     def group(self):
         """
-        :rtype: core.BunqModel
+        :rtype: TransferwiseRequirementFieldGroup
         """
 
         return self._group
@@ -5921,6 +5921,370 @@ class TransferwiseRequirementField(BunqModel):
         """
 
         return converter.json_to_class(TransferwiseRequirementField, json_str)
+
+
+class TransferwiseRequirementFieldGroup(BunqModel):
+    """
+    :param _key: The key of the field. This is the value to send as input.
+    :type _key: str
+    :param _type_: The field's input type: "text", "select" or "radio".
+    :type _type_: str
+    :param _name: The field name.
+    :type _name: str
+    :param _refresh_requirements_on_change: Indicates that any changes in this
+    field affect the requirements, if this field is changed, the requirements
+    endpoint must be called again to recheck if there are any additional
+    requirements.
+    :type _refresh_requirements_on_change: bool
+    :param _required: Whether or not the field is required.
+    :type _required: bool
+    :param _display_format: Formatting mask to guide user input.
+    :type _display_format: str
+    :param _example: An example value for this field.
+    :type _example: str
+    :param _min_length: The minimum length of the field's value.
+    :type _min_length: str
+    :param _max_length: The maximum length of the field's value.
+    :type _max_length: str
+    :param _validation_regexp: A regular expression which may be used to
+    validate the user input.
+    :type _validation_regexp: str
+    :param _validation_async: Details of an endpoint which may be used to
+    validate the user input.
+    :type _validation_async: TransferwiseRequirementFieldGroupValidationAsync
+    :param _values_allowed: Shows which values are allowed for fields of type
+    "select" or "radio".
+    :type _values_allowed: TransferwiseRequirementFieldGroupValuesAllowed
+    """
+
+    _key = None
+    _type_ = None
+    _name = None
+    _refresh_requirements_on_change = None
+    _required = None
+    _display_format = None
+    _example = None
+    _min_length = None
+    _max_length = None
+    _validation_regexp = None
+    _validation_async = None
+    _values_allowed = None
+
+    @property
+    def key(self):
+        """
+        :rtype: str
+        """
+
+        return self._key
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def refresh_requirements_on_change(self):
+        """
+        :rtype: bool
+        """
+
+        return self._refresh_requirements_on_change
+
+    @property
+    def required(self):
+        """
+        :rtype: bool
+        """
+
+        return self._required
+
+    @property
+    def display_format(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_format
+
+    @property
+    def example(self):
+        """
+        :rtype: str
+        """
+
+        return self._example
+
+    @property
+    def min_length(self):
+        """
+        :rtype: str
+        """
+
+        return self._min_length
+
+    @property
+    def max_length(self):
+        """
+        :rtype: str
+        """
+
+        return self._max_length
+
+    @property
+    def validation_regexp(self):
+        """
+        :rtype: str
+        """
+
+        return self._validation_regexp
+
+    @property
+    def validation_async(self):
+        """
+        :rtype: TransferwiseRequirementFieldGroupValidationAsync
+        """
+
+        return self._validation_async
+
+    @property
+    def values_allowed(self):
+        """
+        :rtype: TransferwiseRequirementFieldGroupValuesAllowed
+        """
+
+        return self._values_allowed
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._key is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._refresh_requirements_on_change is not None:
+            return False
+
+        if self._required is not None:
+            return False
+
+        if self._display_format is not None:
+            return False
+
+        if self._example is not None:
+            return False
+
+        if self._min_length is not None:
+            return False
+
+        if self._max_length is not None:
+            return False
+
+        if self._validation_regexp is not None:
+            return False
+
+        if self._validation_async is not None:
+            return False
+
+        if self._values_allowed is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseRequirementFieldGroup
+        """
+
+        return converter.json_to_class(TransferwiseRequirementFieldGroup, json_str)
+
+
+class TransferwiseRequirementFieldGroupValidationAsync(BunqModel):
+    """
+    :param _url: The url to be used to validate user input.
+    :type _url: str
+    :param _params: The parameters to send when validating user input.
+    :type _params: TransferwiseRequirementFieldGroupValidationAsyncParams
+    """
+
+    _url = None
+    _params = None
+
+    @property
+    def url(self):
+        """
+        :rtype: str
+        """
+
+        return self._url
+
+    @property
+    def params(self):
+        """
+        :rtype: TransferwiseRequirementFieldGroupValidationAsyncParams
+        """
+
+        return self._params
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._url is not None:
+            return False
+
+        if self._params is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseRequirementFieldGroupValidationAsync
+        """
+
+        return converter.json_to_class(TransferwiseRequirementFieldGroupValidationAsync, json_str)
+
+
+class TransferwiseRequirementFieldGroupValidationAsyncParams(BunqModel):
+    """
+    :param _key: The parameter key.
+    :type _key: str
+    :param _parameter_name: The parameter label.
+    :type _parameter_name: str
+    :param _required: Shows whether the parameter is required or not.
+    :type _required: bool
+    """
+
+    _key = None
+    _parameter_name = None
+    _required = None
+
+    @property
+    def key(self):
+        """
+        :rtype: str
+        """
+
+        return self._key
+
+    @property
+    def parameter_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._parameter_name
+
+    @property
+    def required(self):
+        """
+        :rtype: bool
+        """
+
+        return self._required
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._key is not None:
+            return False
+
+        if self._parameter_name is not None:
+            return False
+
+        if self._required is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseRequirementFieldGroupValidationAsyncParams
+        """
+
+        return converter.json_to_class(TransferwiseRequirementFieldGroupValidationAsyncParams, json_str)
+
+
+class TransferwiseRequirementFieldGroupValuesAllowed(BunqModel):
+    """
+    :param _key: The key.
+    :type _key: str
+    :param _name: The label.
+    :type _name: str
+    """
+
+    _key = None
+    _name = None
+
+    @property
+    def key(self):
+        """
+        :rtype: str
+        """
+
+        return self._key
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._key is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TransferwiseRequirementFieldGroupValuesAllowed
+        """
+
+        return converter.json_to_class(TransferwiseRequirementFieldGroupValuesAllowed, json_str)
 
 
 class AllocationItem(BunqModel):

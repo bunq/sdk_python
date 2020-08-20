@@ -2536,9 +2536,6 @@ class Payment(BunqModel):
     :param _balance_after_mutation: The new balance of the monetary account
     after the mutation.
     :type _balance_after_mutation: object_.Amount
-    :param _payment_auto_allocate_instance: A reference to the
-    PaymentAutoAllocateInstance if it exists.
-    :type _payment_auto_allocate_instance: PaymentAutoAllocateInstance
     """
 
     # Endpoint constants.
@@ -2581,7 +2578,6 @@ class Payment(BunqModel):
     _geolocation = None
     _request_reference_split_the_bill = None
     _balance_after_mutation = None
-    _payment_auto_allocate_instance = None
     _amount_field_for_request = None
     _counterparty_alias_field_for_request = None
     _description_field_for_request = None
@@ -2925,14 +2921,6 @@ class Payment(BunqModel):
 
         return self._balance_after_mutation
 
-    @property
-    def payment_auto_allocate_instance(self):
-        """
-        :rtype: PaymentAutoAllocateInstance
-        """
-
-        return self._payment_auto_allocate_instance
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -3010,9 +2998,6 @@ class Payment(BunqModel):
         if self._balance_after_mutation is not None:
             return False
 
-        if self._payment_auto_allocate_instance is not None:
-            return False
-
         return True
 
     @staticmethod
@@ -3024,395 +3009,6 @@ class Payment(BunqModel):
         """
 
         return converter.json_to_class(Payment, json_str)
-
-
-class PaymentAutoAllocateInstance(BunqModel):
-    """
-    List all the times a users payment was automatically allocated.
-    
-    :param _id_: The id of the PaymentAutoAllocateInstance.
-    :type _id_: int
-    :param _created: The timestamp when the PaymentAutoAllocateInstance was
-    created.
-    :type _created: str
-    :param _updated: The timestamp when the PaymentAutoAllocateInstance was last
-    updated.
-    :type _updated: str
-    :param _payment_auto_allocate_id: The ID of the payment auto allocate this
-    instance belongs to.
-    :type _payment_auto_allocate_id: int
-    :param _status: The status of the payment auto allocate instance. SUCCEEDED
-    or FAILED.
-    :type _status: str
-    :param _error_message: The error message, if the payment auto allocating
-    failed.
-    :type _error_message: list[object_.Error]
-    :param _payment_batch: The payment batch allocating all the payments.
-    :type _payment_batch: PaymentBatch
-    :param _payment_id: The ID of the payment that triggered the allocating of
-    the payments.
-    :type _payment_id: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance/{}"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PaymentAutoAllocateInstance"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _payment_auto_allocate_id = None
-    _status = None
-    _error_message = None
-    _payment_batch = None
-    _payment_id = None
-
-    @classmethod
-    def list(cls, payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_auto_allocate_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentAutoAllocateInstanceList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
-                                                        cls._determine_monetary_account_id(monetary_account_id),
-                                                        payment_auto_allocate_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentAutoAllocateInstanceList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def get(cls, payment_auto_allocate_id, payment_auto_allocate_instance_id, monetary_account_id=None,
-            custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_auto_allocate_id: int
-        :type payment_auto_allocate_instance_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentAutoAllocateInstance
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(monetary_account_id),
-                                                     payment_auto_allocate_id, payment_auto_allocate_instance_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePaymentAutoAllocateInstance.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def payment_auto_allocate_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._payment_auto_allocate_id
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def error_message(self):
-        """
-        :rtype: list[object_.Error]
-        """
-
-        return self._error_message
-
-    @property
-    def payment_batch(self):
-        """
-        :rtype: PaymentBatch
-        """
-
-        return self._payment_batch
-
-    @property
-    def payment_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._payment_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._payment_auto_allocate_id is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._error_message is not None:
-            return False
-
-        if self._payment_batch is not None:
-            return False
-
-        if self._payment_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentAutoAllocateInstance
-        """
-
-        return converter.json_to_class(PaymentAutoAllocateInstance, json_str)
-
-
-class PaymentBatch(BunqModel):
-    """
-    Create a payment batch, or show the payment batches of a monetary account.
-    
-    :param _payments: The list of mutations that were made.
-    :type _payments: object_.PaymentBatchAnchoredPayment
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-batch"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-batch/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-batch/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-batch"
-
-    # Field constants.
-    FIELD_PAYMENTS = "payments"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PaymentBatch"
-
-    _payments = None
-    _payments_field_for_request = None
-
-    def __init__(self, payments):
-        """
-        :param payments: The list of payments we want to send in a single batch.
-        :type payments: list[Payment]
-        """
-
-        self._payments_field_for_request = payments
-
-    @classmethod
-    def create(cls, payments, monetary_account_id=None, custom_headers=None):
-        """
-        Create a payment batch by sending an array of single payment objects,
-        that will become part of the batch.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param payments: The list of payments we want to send in a single batch.
-        :type payments: list[Payment]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-            cls.FIELD_PAYMENTS: payments
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls, payment_batch_id, monetary_account_id=None, custom_headers=None):
-        """
-        Revoke a bunq.to payment batch. The status of all the payments will be
-        set to REVOKED.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
-                                                       cls._determine_monetary_account_id(monetary_account_id),
-                                                       payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls, payment_batch_id, monetary_account_id=None, custom_headers=None):
-        """
-        Return the details of a specific payment batch.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentBatch
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
-                                                     cls._determine_monetary_account_id(monetary_account_id),
-                                                     payment_batch_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePaymentBatch.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Return all the payment batches for a monetary account.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentBatchList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
-                                                        cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentBatchList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def payments(self):
-        """
-        :rtype: object_.PaymentBatchAnchoredPayment
-        """
-
-        return self._payments
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._payments is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentBatch
-        """
-
-        return converter.json_to_class(PaymentBatch, json_str)
 
 
 class BunqMeFundraiserProfileUser(BunqModel):
@@ -3439,6 +3035,8 @@ class BunqMeFundraiserProfileUser(BunqModel):
     :param _status: The status of the bunq.me fundraiser profile, can be ACTIVE
     or DEACTIVATED.
     :type _status: str
+    :param _owner_user_id: Id of the user owning the profile.
+    :type _owner_user_id: int
     :param _alias: The LabelMonetaryAccount with the public information of the
     User and the MonetaryAccount that created the bunq.me fundraiser profile.
     :type _alias: object_.MonetaryAccountReference
@@ -3464,6 +3062,7 @@ class BunqMeFundraiserProfileUser(BunqModel):
     _OBJECT_TYPE_GET = "BunqMeFundraiserProfileModel"
 
     _monetary_account_id = None
+    _owner_user_id = None
     _color = None
     _alias = None
     _description = None
@@ -3567,6 +3166,14 @@ class BunqMeFundraiserProfileUser(BunqModel):
         return self._monetary_account_id
 
     @property
+    def owner_user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._owner_user_id
+
+    @property
     def color(self):
         """
         :rtype: str
@@ -3628,6 +3235,9 @@ class BunqMeFundraiserProfileUser(BunqModel):
         """
 
         if self._monetary_account_id is not None:
+            return False
+
+        if self._owner_user_id is not None:
             return False
 
         if self._color is not None:
@@ -11014,6 +10624,190 @@ class DraftPayment(BunqModel):
         """
 
         return converter.json_to_class(DraftPayment, json_str)
+
+
+class PaymentBatch(BunqModel):
+    """
+    Create a payment batch, or show the payment batches of a monetary account.
+    
+    :param _payments: The list of mutations that were made.
+    :type _payments: object_.PaymentBatchAnchoredPayment
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-batch"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-batch/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-batch/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-batch"
+
+    # Field constants.
+    FIELD_PAYMENTS = "payments"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentBatch"
+
+    _payments = None
+    _payments_field_for_request = None
+
+    def __init__(self, payments):
+        """
+        :param payments: The list of payments we want to send in a single batch.
+        :type payments: list[Payment]
+        """
+
+        self._payments_field_for_request = payments
+
+    @classmethod
+    def create(cls, payments, monetary_account_id=None, custom_headers=None):
+        """
+        Create a payment batch by sending an array of single payment objects,
+        that will become part of the batch.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param payments: The list of payments we want to send in a single batch.
+        :type payments: list[Payment]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+            cls.FIELD_PAYMENTS: payments
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, payment_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        Revoke a bunq.to payment batch. The status of all the payments will be
+        set to REVOKED.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+
+        }
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(),
+                                                       cls._determine_monetary_account_id(monetary_account_id),
+                                                       payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, payment_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        Return the details of a specific payment batch.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     payment_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Return all the payment batches for a monetary account.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentBatchList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def payments(self):
+        """
+        :rtype: object_.PaymentBatchAnchoredPayment
+        """
+
+        return self._payments
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payments is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatch
+        """
+
+        return converter.json_to_class(PaymentBatch, json_str)
 
 
 class Schedule(BunqModel):
@@ -32972,6 +32766,211 @@ class PaymentAutoAllocateDefinition(BunqModel):
         return converter.json_to_class(PaymentAutoAllocateDefinition, json_str)
 
 
+class PaymentAutoAllocateInstance(BunqModel):
+    """
+    List all the times a users payment was automatically allocated.
+    
+    :param _id_: The id of the PaymentAutoAllocateInstance.
+    :type _id_: int
+    :param _created: The timestamp when the PaymentAutoAllocateInstance was
+    created.
+    :type _created: str
+    :param _updated: The timestamp when the PaymentAutoAllocateInstance was last
+    updated.
+    :type _updated: str
+    :param _payment_auto_allocate_id: The ID of the payment auto allocate this
+    instance belongs to.
+    :type _payment_auto_allocate_id: int
+    :param _status: The status of the payment auto allocate instance. SUCCEEDED
+    or FAILED.
+    :type _status: str
+    :param _error_message: The error message, if the payment auto allocating
+    failed.
+    :type _error_message: list[object_.Error]
+    :param _payment_batch: The payment batch allocating all the payments.
+    :type _payment_batch: PaymentBatch
+    :param _payment_id: The ID of the payment that triggered the allocating of
+    the payments.
+    :type _payment_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance/{}"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentAutoAllocateInstance"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _payment_auto_allocate_id = None
+    _status = None
+    _error_message = None
+    _payment_batch = None
+    _payment_id = None
+
+    @classmethod
+    def list(cls, payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_auto_allocate_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentAutoAllocateInstanceList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(),
+                                                        cls._determine_monetary_account_id(monetary_account_id),
+                                                        payment_auto_allocate_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentAutoAllocateInstanceList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, payment_auto_allocate_id, payment_auto_allocate_instance_id, monetary_account_id=None,
+            custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_auto_allocate_id: int
+        :type payment_auto_allocate_instance_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentAutoAllocateInstance
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(),
+                                                     cls._determine_monetary_account_id(monetary_account_id),
+                                                     payment_auto_allocate_id, payment_auto_allocate_instance_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentAutoAllocateInstance.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def payment_auto_allocate_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._payment_auto_allocate_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def error_message(self):
+        """
+        :rtype: list[object_.Error]
+        """
+
+        return self._error_message
+
+    @property
+    def payment_batch(self):
+        """
+        :rtype: PaymentBatch
+        """
+
+        return self._payment_batch
+
+    @property
+    def payment_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._payment_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._payment_auto_allocate_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._error_message is not None:
+            return False
+
+        if self._payment_batch is not None:
+            return False
+
+        if self._payment_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentAutoAllocateInstance
+        """
+
+        return converter.json_to_class(PaymentAutoAllocateInstance, json_str)
+
+
 class PaymentAutoAllocate(BunqModel):
     """
     Manage a users automatic payment auto allocated settings.
@@ -36730,7 +36729,7 @@ class TreeProgress(BunqModel):
     :param _progress_tree_next: The progress towards the next tree.
     :type _progress_tree_next: float
     :param _label_user: The label of the user the progress belongs to.
-    :type _label_user: core.BunqModel
+    :type _label_user: object_.LabelUser
     """
 
     # Endpoint constants.
@@ -36786,7 +36785,7 @@ class TreeProgress(BunqModel):
     @property
     def label_user(self):
         """
-        :rtype: core.BunqModel
+        :rtype: object_.LabelUser
         """
 
         return self._label_user
@@ -37622,8 +37621,6 @@ class RegistryEntry(BunqModel):
     :type _membership_created: RegistryMembership
     :param _membership_owned: The membership of the owner.
     :type _membership_owned: RegistryMembership
-    :param _object_: The object that is connected to this RegistryEntry.
-    :type _object_: core.BunqModel
     """
 
     # Endpoint constants.
@@ -37658,7 +37655,6 @@ class RegistryEntry(BunqModel):
     _membership_created = None
     _membership_owned = None
     _allocations = None
-    _object_ = None
     _attachment = None
     _alias_owner_field_for_request = None
     _amount_field_for_request = None
@@ -37969,14 +37965,6 @@ class RegistryEntry(BunqModel):
         return self._allocations
 
     @property
-    def object_(self):
-        """
-        :rtype: core.BunqModel
-        """
-
-        return self._object_
-
-    @property
     def attachment(self):
         """
         :rtype: list[object_.RegistryEntryAttachment]
@@ -38029,9 +38017,6 @@ class RegistryEntry(BunqModel):
             return False
 
         if self._allocations is not None:
-            return False
-
-        if self._object_ is not None:
             return False
 
         if self._attachment is not None:
@@ -39209,46 +39194,6 @@ class BunqResponsePaymentList(BunqResponse):
         return super().value
 
 
-class BunqResponsePaymentAutoAllocateInstanceList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[PaymentAutoAllocateInstance]
-        """
-
-        return super().value
-
-
-class BunqResponsePaymentAutoAllocateInstance(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: PaymentAutoAllocateInstance
-        """
-
-        return super().value
-
-
-class BunqResponsePaymentBatch(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: PaymentBatch
-        """
-
-        return super().value
-
-
-class BunqResponsePaymentBatchList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[PaymentBatch]
-        """
-
-        return super().value
-
-
 class BunqResponseBunqMeFundraiserProfileUser(BunqResponse):
     @property
     def value(self):
@@ -39614,6 +39559,26 @@ class BunqResponseDraftPayment(BunqResponse):
     def value(self):
         """
         :rtype: DraftPayment
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentBatch(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentBatch
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentBatchList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[PaymentBatch]
         """
 
         return super().value
@@ -40904,6 +40869,26 @@ class BunqResponsePaymentAutoAllocateDefinitionList(BunqResponse):
     def value(self):
         """
         :rtype: list[PaymentAutoAllocateDefinition]
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentAutoAllocateInstanceList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[PaymentAutoAllocateInstance]
+        """
+
+        return super().value
+
+
+class BunqResponsePaymentAutoAllocateInstance(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentAutoAllocateInstance
         """
 
         return super().value

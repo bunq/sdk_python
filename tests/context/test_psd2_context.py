@@ -28,20 +28,20 @@ class TestPsd2Context(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls._FILE_MODE_READ = ApiContext._FILE_MODE_READ
         cls._FILE_TEST_CONFIGURATION_PATH_FULL = (
-                BunqSdkTestCase._get_directory_test_root() +
-                cls._FILE_TEST_CONFIGURATION)
+                BunqSdkTestCase._get_directory_test_root() + cls._FILE_TEST_CONFIGURATION
+        )
         cls._FILE_TEST_OAUTH_PATH_FULL = (
-                BunqSdkTestCase._get_directory_test_root() +
-                cls._FILE_TEST_OAUTH)
+                BunqSdkTestCase._get_directory_test_root() + cls._FILE_TEST_OAUTH
+        )
         cls._FILE_TEST_CERTIFICATE_PATH_FULL = (
-                BunqSdkTestCase._get_directory_test_root() +
-                cls._FILE_TEST_CERTIFICATE)
+                BunqSdkTestCase._get_directory_test_root() + cls._FILE_TEST_CERTIFICATE
+        )
         cls._FILE_TEST_CERTIFICATE_CHAIN_PATH_FULL = (
-                BunqSdkTestCase._get_directory_test_root() +
-                cls._FILE_TEST_CERTIFICATE_CHAIN)
+                BunqSdkTestCase._get_directory_test_root() + cls._FILE_TEST_CERTIFICATE_CHAIN
+        )
         cls._FILE_TEST_PRIVATE_KEY_PATH_FULL = (
-                BunqSdkTestCase._get_directory_test_root() +
-                cls._FILE_TEST_PRIVATE_KEY)
+                BunqSdkTestCase._get_directory_test_root() + cls._FILE_TEST_PRIVATE_KEY
+        )
         cls.setup_test_data()
 
     @classmethod

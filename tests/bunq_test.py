@@ -1,19 +1,22 @@
 import os
 import time
 import unittest
+from typing import AnyStr
 
+from bunq.sdk.context.api_context import ApiContext
 from bunq.sdk.context.bunq_context import BunqContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.http.api_client import ApiClient
+from bunq.sdk.model.generated.endpoint import MonetaryAccountBank, RequestInquiry, AttachmentPublic, Avatar, \
+    CashRegister
+from bunq.sdk.model.generated.object_ import Amount, Pointer
 from bunq.sdk.util import util
-from bunq.sdk.model.generated import endpoint
-from bunq.sdk.model.generated import object_
 
 
 class BunqSdkTestCase(unittest.TestCase):
     """
-    :type _second_monetary_account: endpoint.MonetaryAccountBank
-    :type _cash_register: endpoint.CashRegister
+    :type _second_monetary_account: MonetaryAccountBank
+    :type _cash_register: CashRegister
     """
 
     # Error constants.
@@ -61,31 +64,25 @@ class BunqSdkTestCase(unittest.TestCase):
         BunqContext.user_context().refresh_user_context()
 
     def __set_second_monetary_account(self):
-        response = endpoint.MonetaryAccountBank.create(
+        response = MonetaryAccountBank.create(
             self.__CURRENCY_EUR,
             self.__SECOND_MONETARY_ACCOUNT_DESCRIPTION
         )
 
-        self._second_monetary_account = endpoint.MonetaryAccountBank.get(
+        self._second_monetary_account = MonetaryAccountBank.get(
             response.value
         ).value
 
     def __request_spending_money(self):
-        endpoint.RequestInquiry.create(
-            object_.Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
-            object_.Pointer(
-                self._POINTER_EMAIL,
-                self.__SPENDING_MONEY_RECIPIENT
-            ),
+        RequestInquiry.create(
+            Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
+            Pointer(self._POINTER_EMAIL, self.__SPENDING_MONEY_RECIPIENT),
             self.__REQUEST_SPENDING_DESCRIPTION,
             False
         )
-        endpoint.RequestInquiry.create(
-            object_.Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
-            object_.Pointer(
-                self._POINTER_EMAIL,
-                self.__SPENDING_MONEY_RECIPIENT
-            ),
+        RequestInquiry.create(
+            Amount(self.__SPENDING_MONEY_AMOUNT, self.__CURRENCY_EUR),
+            Pointer(self._POINTER_EMAIL, self.__SPENDING_MONEY_RECIPIENT),
             self.__REQUEST_SPENDING_DESCRIPTION,
             False,
             self._second_monetary_account.id_
@@ -98,25 +95,13 @@ class BunqSdkTestCase(unittest.TestCase):
         return self._cash_register.id_
 
     @classmethod
-    def _get_api_context(cls):
-        """
-        :rtype: ApiContext
-        """
-
+    def _get_api_context(cls) -> ApiContext:
         return util.automatic_sandbox_install()
 
-    def _get_pointer_bravo(self):
-        """
-        :rtype: object_.Pointer
-        """
+    def _get_pointer_bravo(self) -> Pointer:
+        return Pointer(self._POINTER_EMAIL, self._EMAIL_BRAVO)
 
-        return object_.Pointer(self._POINTER_EMAIL, self._EMAIL_BRAVO)
-
-    def _get_alias_second_account(self):
-        """
-        :rtype: object_.Pointer
-        """
-
+    def _get_alias_second_account(self) -> Pointer:
         return self._second_monetary_account.alias[self._FIRST_INDEX]
 
     @staticmethod
@@ -124,29 +109,24 @@ class BunqSdkTestCase(unittest.TestCase):
         return os.path.dirname(os.path.abspath(__file__))
 
     def _set_cash_register(self):
-        attachment_uuid = endpoint.AttachmentPublic.create(
+        attachment_uuid = AttachmentPublic.create(
             self._attachment_contents,
             {
                 ApiClient.HEADER_CONTENT_TYPE: self._CONTENT_TYPE,
-                ApiClient.HEADER_ATTACHMENT_DESCRIPTION:
-                    self._ATTACHMENT_DESCRIPTION,
+                ApiClient.HEADER_ATTACHMENT_DESCRIPTION: self._ATTACHMENT_DESCRIPTION,
             }
         )
-        avatar_uuid = endpoint.Avatar.create(attachment_uuid.value)
-        cash_register_id = endpoint.CashRegister.create(
+        avatar_uuid = Avatar.create(attachment_uuid.value)
+        cash_register_id = CashRegister.create(
             self.__CASH_REGISTER_DESCRIPTION,
             self.__CASH_REGISTER_STATUS,
             avatar_uuid.value
         )
 
-        self._cash_register = endpoint.CashRegister.get(cash_register_id.value)
+        self._cash_register = CashRegister.get(cash_register_id.value)
 
     @property
-    def _attachment_contents(self):
-        """
-        :rtype: bytes
-        """
-
+    def _attachment_contents(self) -> AnyStr:
         with open(
                 self._get_directory_test_root() +
                 self._PATH_ATTACHMENT +
@@ -156,17 +136,11 @@ class BunqSdkTestCase(unittest.TestCase):
             return file.read()
 
     @property
-    def alias_first(self):
-        """
-        :rtype: Pointer
-        """
-
+    def alias_first(self) -> Pointer:
         if BunqContext.user_context().is_only_user_company_set():
-            return BunqContext.user_context().user_company.alias[
-                self._FIRST_INDEX]
+            return BunqContext.user_context().user_company.alias[self._FIRST_INDEX]
 
         if BunqContext.user_context().is_only_user_person_set():
-            return BunqContext.user_context().user_person.alias[
-                self._FIRST_INDEX]
+            return BunqContext.user_context().user_person.alias[self._FIRST_INDEX]
 
         raise BunqException(self.__ERROR_COULD_NOT_DETERMINE_USER)

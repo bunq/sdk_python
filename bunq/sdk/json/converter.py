@@ -7,7 +7,7 @@ import sys
 import typing
 import warnings
 from types import ModuleType
-from typing import Type, Optional, Callable, Generator, Any, Dict, Match, List, Union, Generic
+from typing import Type, Optional, Callable, Generator, Dict, Match, List, Union, Generic
 
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.util.type_alias import T, JsonValue
@@ -74,14 +74,14 @@ class JsonAdapter(Generic[T]):
             cls._custom_deserializers[class_name] = adapter
 
     @classmethod
-    def _get_serializer(cls, cls_for: Type[Any]) -> type:
+    def _get_serializer(cls, cls_for: Type[T]) -> type:
         if cls_for.__name__ in cls._custom_serializers:
             return cls._custom_serializers[cls_for.__name__]
 
         return JsonAdapter
 
     @classmethod
-    def _get_deserializer(cls, cls_for: Type[Any]) -> Type[JsonAdapter]:
+    def _get_deserializer(cls, cls_for: Type[T]) -> Type[JsonAdapter]:
         if cls_for.__name__ in cls._custom_deserializers:
             return cls._custom_deserializers[cls_for.__name__]
 
@@ -121,7 +121,7 @@ class JsonAdapter(Generic[T]):
     @classmethod
     def _is_deserialized(cls,
                          cls_target: Type[T],
-                         obj: Any) -> bool:
+                         obj: T) -> bool:
         if cls_target is None:
             return True
 
@@ -151,7 +151,7 @@ class JsonAdapter(Generic[T]):
 
     @classmethod
     def _deserialize_dict_attributes(cls,
-                                     cls_context: Type[Any],
+                                     cls_context: Type[T],
                                      dict_: Dict) -> Dict:
         dict_deserialized = {}
 
@@ -243,7 +243,7 @@ class JsonAdapter(Generic[T]):
     @classmethod
     def _str_to_type_from_member_module(cls,
                                         module_: ModuleType,
-                                        string: str) -> Type[Any]:
+                                        string: str) -> Type[T]:
         """
 
         :raise: BunqException when could not find the class for the string.
@@ -307,7 +307,7 @@ class JsonAdapter(Generic[T]):
         return True
 
     @classmethod
-    def serialize(cls, obj: Any) -> JsonValue:
+    def serialize(cls, obj: T) -> JsonValue:
         cls._initialize()
         serializer = cls._get_serializer(type(obj))
 
@@ -317,7 +317,7 @@ class JsonAdapter(Generic[T]):
             return serializer.serialize(obj)
 
     @classmethod
-    def _serialize_default(cls, obj: Any) -> JsonValue:
+    def _serialize_default(cls, obj: T) -> JsonValue:
         if obj is None or cls._is_primitive(obj):
             return obj
         elif cls._is_bytes(obj):
@@ -330,19 +330,19 @@ class JsonAdapter(Generic[T]):
             return cls._serialize_dict(dict_)
 
     @classmethod
-    def _is_primitive(cls, obj: Any) -> bool:
+    def _is_primitive(cls, obj: T) -> bool:
         return cls._is_type_primitive(type(obj))
 
     @classmethod
-    def _is_type_primitive(cls, type_: Type[Any]) -> bool:
+    def _is_type_primitive(cls, type_: Type[T]) -> bool:
         return type_ in {int, str, bool, float}
 
     @classmethod
-    def _is_bytes(cls, obj: Any) -> bool:
+    def _is_bytes(cls, obj: T) -> bool:
         return cls._is_bytes_type(type(obj))
 
     @classmethod
-    def _is_bytes_type(cls, type_: Type[Any]) -> bool:
+    def _is_bytes_type(cls, type_: Type[T]) -> bool:
         return type_.__name__ in cls._TYPE_NAMES_BYTES
 
     @classmethod
@@ -356,7 +356,7 @@ class JsonAdapter(Generic[T]):
         return list_serialized
 
     @classmethod
-    def _get_obj_raw(cls, obj: Any) -> Dict:
+    def _get_obj_raw(cls, obj: T) -> Dict:
         return obj if type(obj) == dict else obj.__dict__
 
     @classmethod
@@ -375,32 +375,22 @@ class JsonAdapter(Generic[T]):
 
 
 class ValueTypes:
-    """
-    :type _main: type|None
-    :type _sub: type|None
-    """
-
     def __init__(self,
-                 main: Type[Any] = None,
-                 sub: Type[Any] = None) -> None:
+                 main: Type[T] = None,
+                 sub: Type[T] = None) -> None:
         self._main = main
         self._sub = sub
 
     @property
-    def main(self) -> Type[Any]:
+    def main(self) -> Type[T]:
         return self._main
 
     @property
-    def sub(self) -> Type[Any]:
+    def sub(self) -> Type[T]:
         return self._sub
 
 
 class ValueSpecs:
-    """
-    :type _name: str|None
-    :type _types: ValueTypes|None
-    """
-
     def __init__(self,
                  name: str = None,
                  types: ValueTypes = None) -> None:
@@ -444,11 +434,11 @@ def deserialize(cls: Type[T], obj_raw: JsonValue) -> T:
     return JsonAdapter.deserialize(cls, obj_raw)
 
 
-def class_to_json(obj: Any) -> JsonValue:
+def class_to_json(obj: T) -> JsonValue:
     obj_raw = serialize(obj)
 
     return json.dumps(obj_raw, indent=_JSON_INDENT, sort_keys=True)
 
 
-def serialize(obj_cls: Any) -> JsonValue:
+def serialize(obj_cls: T) -> JsonValue:
     return JsonAdapter.serialize(obj_cls)

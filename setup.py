@@ -25,7 +25,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.14.0',
+    version='1.14.1',
 
     description='bunq Python SDK',
     long_description=long_description,
@@ -58,8 +58,6 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
 
@@ -70,19 +68,23 @@ setup(
     keywords='open-banking sepa bunq finance api payment',
 
     # Packages of the project. "find_packages()" lists all the project packages.
-    packages=find_packages(exclude=['contrib',
-                                    'docs',
-                                    'tests',
-                                    'examples',
-                                    'assets',
-                                    '.idea',
-                                    'run.py']),
+    packages=find_packages(exclude=[
+        'contrib',
+        'docs',
+        'tests',
+        'examples',
+        'assets',
+        '.idea',
+        'run.py'
+    ]),
 
     # Run-time dependencies of the project. These will be installed by pip.
-    install_requires=['aenum==2.2.3',
-                      'chardet==3.0.4',
-                      'pycryptodomex==3.9.7',
-                      'requests==2.23.0',
-                      'simplejson==3.17.0',
-                      'urllib3==1.25.8'],
+    install_requires=[
+        'aenum>=2.2.4,<3.0.0',
+        'chardet>=3.0.4,<4.0.0',
+        'pycryptodomex>=3.9.8,<4.0.0',
+        'requests>=2.24.0,<3.0.0',
+        'simplejson>=3.17.2,<4.0.0',
+        'urllib3>=1.25.10,<2.0.0'
+    ],
 )

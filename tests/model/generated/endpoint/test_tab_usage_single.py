@@ -20,7 +20,7 @@ class TestTabUsageSingle(BunqSdkTestCase):
     _STATUS_WAITING = 'WAITING_FOR_PAYMENT'
     _TAB_ITEM_DESCRIPTION = 'Super expensive python tea'
     _TAB_DESCRIPTION = 'Pay the tab for Python test please.'
-    _ERROR_ONLY_USER_COMPANY_CAN_CREATE_TAB =\
+    _ERROR_ONLY_USER_COMPANY_CAN_CREATE_TAB = \
         'Only user company can create/use cash registers.'
 
     def test_create_and_update_tab(self):
@@ -36,33 +36,18 @@ class TestTabUsageSingle(BunqSdkTestCase):
                 self._ERROR_ONLY_USER_COMPANY_CAN_CREATE_TAB
             )
 
-        tab_uuid = TabUsageSingle.create(self._get_cash_register_id(),
-                                         self._TAB_DESCRIPTION,
-                                         self._STATUS_OPEN,
-                                         Amount(self._AMOUNT_EUR,
-                                                self._CURRENCY)).value
+        tab_uuid = TabUsageSingle.create(
+            self._get_cash_register_id(),
+            self._TAB_DESCRIPTION,
+            self._STATUS_OPEN,
+            Amount(self._AMOUNT_EUR, self._CURRENCY)
+        ).value
 
         self._add_item_to_tab(tab_uuid)
         self._update_tab(tab_uuid)
 
-    def _add_item_to_tab(self, tab_uuid):
-        """
-        :param tab_uuid:
-        :type tab_uuid: str
-        """
+    def _add_item_to_tab(self, tab_uuid: str):
+        TabItemShop.create(self._get_cash_register_id(), tab_uuid, self._TAB_ITEM_DESCRIPTION)
 
-        TabItemShop.create(
-            self._get_cash_register_id(), tab_uuid,
-            self._TAB_ITEM_DESCRIPTION
-        )
-
-    def _update_tab(self, tab_uuid):
-        """
-        :param tab_uuid:
-        :type tab_uuid: str
-        """
-
-        TabUsageSingle.update(
-            self._get_cash_register_id(),
-            tab_uuid
-        )
+    def _update_tab(self, tab_uuid: str):
+        TabUsageSingle.update(self._get_cash_register_id(), tab_uuid)
