@@ -1,3 +1,4 @@
+from bunq import T
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.model.core.bunq_model import BunqModel
 from bunq.sdk.model.generated import endpoint
@@ -9,13 +10,15 @@ class UserContext:
     _ERROR_NO_ACTIVE_MONETARY_ACCOUNT_FOUND = 'No active monetary account found.'
     _STATUS_ACTIVE = 'ACTIVE'
 
-    def __init__(self, user_id: int) -> None:
+    def __init__(self, user_id: int, user: BunqModel) -> None:
         self._user_id = user_id
         self._user_person = None
         self._user_company = None
         self._user_api_key = None
         self._user_payment_service_provider = None
         self._primary_monetary_account = None
+
+        self._set_user(user)
 
     @staticmethod
     def __get_user_object() -> BunqModel:

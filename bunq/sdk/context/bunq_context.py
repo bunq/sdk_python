@@ -17,7 +17,7 @@ class BunqContext:
     @classmethod
     def load_api_context(cls, api_context: ApiContext) -> None:
         cls._api_context = api_context
-        cls._user_context = UserContext(api_context.session_context.user_id)
+        cls._user_context = UserContext(api_context.session_context.user_id, api_context.session_context.user)
         cls._user_context.init_main_monetary_account()
 
     @classmethod
