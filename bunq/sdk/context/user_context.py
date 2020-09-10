@@ -17,8 +17,6 @@ class UserContext:
         self._user_payment_service_provider = None
         self._primary_monetary_account = None
 
-        self._set_user(self.__get_user_object())
-
     @staticmethod
     def __get_user_object() -> BunqModel:
         return endpoint.User.list().value[0].get_referenced_object()
