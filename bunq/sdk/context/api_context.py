@@ -13,7 +13,7 @@ from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.payment_service_provider_credential_internal import PaymentServiceProviderCredentialInternal
 from bunq.sdk.model.generated import endpoint
-from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp, UserPaymentServiceProvider
+from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp
 from bunq.sdk.security import security
 
 if typing.TYPE_CHECKING:
@@ -90,7 +90,7 @@ class ApiContext:
         api_context._api_key = service_provider_credential.token_value
 
         api_context.__register_device(description, all_permitted_ip)
-        api_context.__initialize_session_for_psd2(service_provider_credential)
+        api_context.__initialize_session()
 
         return api_context
 
@@ -104,8 +104,7 @@ class ApiContext:
             security.public_key_to_string(private_key_client.publickey())
         ).value
         token = installation.token.token
-        public_key_server_string = \
-            installation.server_public_key.server_public_key
+        public_key_server_string = installation.server_public_key.server_public_key
         public_key_server = RSA.import_key(public_key_server_string)
 
         self._installation_context = InstallationContext(
@@ -117,7 +116,7 @@ class ApiContext:
     def __initialize_psd2_credential(self,
                                      certificate: str,
                                      private_key: str,
-                                     all_chain_certificate: List[str], ) -> UserCredentialPasswordIp:
+                                     all_chain_certificate: List[str]) -> UserCredentialPasswordIp:
         session_token = self.installation_context.token
         client_key_pair = self.installation_context.private_key_client
 
@@ -149,22 +148,7 @@ class ApiContext:
         from bunq.sdk.model.core.session_server import SessionServer
 
         session_server = SessionServer.create(self).value
-        token = session_server.token.token
-        expiry_time = self._get_expiry_timestamp(session_server)
-        user_id = session_server.get_referenced_user().id_
-
-        self._session_context = SessionContext(token, expiry_time, user_id)
-
-    def __initialize_session_for_psd2(self, user_payment_service_provider: UserPaymentServiceProvider) -> None:
-        from bunq.sdk.model.core.session_server import SessionServer
-
-        session_server = SessionServer.create(self).value
-
-        token = session_server.token.token
-        expiry_time = self._get_expiry_timestamp(session_server)
-        user_id = session_server.get_referenced_user().id_
-
-        self._session_context = SessionContext(token, expiry_time, user_id)
+        self._session_context = SessionContext(session_server)
 
     @classmethod
     def _get_expiry_timestamp(cls, session_server: SessionServer) -> datetime.datetime:
