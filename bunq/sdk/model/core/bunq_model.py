@@ -3,7 +3,7 @@ from __future__ import annotations
 import typing
 from typing import Dict, List
 
-from bunq import T
+from bunq.sdk.util.type_alias import T
 from bunq.sdk.http.bunq_response import BunqResponse
 from bunq.sdk.http.bunq_response_raw import BunqResponseRaw
 from bunq.sdk.json import converter
