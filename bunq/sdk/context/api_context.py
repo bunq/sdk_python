@@ -12,8 +12,7 @@ from bunq.sdk.context.session_context import SessionContext
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.payment_service_provider_credential_internal import PaymentServiceProviderCredentialInternal
-from bunq.sdk.model.generated import endpoint
-from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp
+from bunq.sdk.model.generated.endpoint import UserCredentialPasswordIp, Session
 from bunq.sdk.security import security
 
 if typing.TYPE_CHECKING:
@@ -221,7 +220,7 @@ class ApiContext:
         self._drop_session_context()
 
     def _delete_session(self) -> None:
-        endpoint.Session.delete(self._SESSION_ID_DUMMY)
+        Session.delete(self._SESSION_ID_DUMMY)
 
     @property
     def environment_type(self) -> ApiEnvironmentType:

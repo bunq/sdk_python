@@ -116,7 +116,7 @@ class TestNotificationUrl(bunq_test.BunqSdkTestCase):
 
             self.assertTrue(self._KEY_NOTIFICATION_URL_MODEL in json_object)
 
-            return object_.NotificationUrl.from_json(json_string)
+            return NotificationUrl.from_json(json_string)
 
     def test_mutation_model(self):
         self.execute_notification_url_test(

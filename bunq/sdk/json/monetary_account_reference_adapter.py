@@ -1,8 +1,7 @@
 from typing import Type, Dict
 
 from bunq.sdk.json import converter
-from bunq.sdk.model.generated import object_
-from bunq.sdk.model.generated.object_ import MonetaryAccountReference
+from bunq.sdk.model.generated.object_ import MonetaryAccountReference, LabelMonetaryAccount
 
 
 class MonetaryAccountReferenceAdapter(converter.JsonAdapter):
@@ -10,10 +9,7 @@ class MonetaryAccountReferenceAdapter(converter.JsonAdapter):
     def deserialize(cls,
                     target_class: Type[MonetaryAccountReference],
                     obj: Dict) -> MonetaryAccountReference:
-        label_monetary_account = converter.deserialize(
-            object_.LabelMonetaryAccount,
-            obj
-        )
+        label_monetary_account = converter.deserialize(LabelMonetaryAccount, obj)
 
         return target_class.create_from_label_monetary_account(label_monetary_account)
 

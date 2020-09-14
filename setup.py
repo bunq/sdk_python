@@ -62,7 +62,7 @@ setup(
     ],
 
     # Require Python version equal or higher than the requested version.
-    python_requires='>=3.5.3',
+    python_requires='>=3.7.0',
 
     # Keywords related to the project
     keywords='open-banking sepa bunq finance api payment',
