@@ -5,6 +5,7 @@ from bunq.sdk.context.installation_context import InstallationContext
 from bunq.sdk.http.pagination import Pagination
 from bunq.sdk.json import converter
 from bunq.sdk.model.core.anchor_object_interface import AnchorObjectInterface
+from bunq.sdk.model.generated.object_ import Geolocation, ShareDetail, MonetaryAccountReference
 from bunq.sdk.util.type_alias import T
 
 
@@ -36,9 +37,9 @@ def initialize_converter() -> None:
     converter.register_adapter(InstallationContext, InstallationContextAdapter)
     converter.register_adapter(ApiEnvironmentType, ApiEnvironmentTypeAdapter)
     converter.register_adapter(float, FloatAdapter)
-    converter.register_adapter(object_.Geolocation, GeolocationAdapter)
-    converter.register_adapter(object_.MonetaryAccountReference, MonetaryAccountReferenceAdapter)
-    converter.register_adapter(object_.ShareDetail, ShareDetailAdapter)
+    converter.register_adapter(Geolocation, GeolocationAdapter)
+    converter.register_adapter(MonetaryAccountReference, MonetaryAccountReferenceAdapter)
+    converter.register_adapter(ShareDetail, ShareDetailAdapter)
     converter.register_adapter(datetime.datetime, DateTimeAdapter)
     converter.register_adapter(Pagination, PaginationAdapter)
 

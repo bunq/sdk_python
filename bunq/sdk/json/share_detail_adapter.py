@@ -1,8 +1,8 @@
 from typing import Dict, Type, Optional
 
 from bunq.sdk.json import converter
-from bunq.sdk.model.generated import object_
-from bunq.sdk.model.generated.object_ import ShareDetail
+from bunq.sdk.model.generated.object_ import ShareDetail, ShareDetailPayment, ShareDetailReadOnly, \
+    ShareDetailDraftPayment
 
 
 class ShareDetailAdapter(converter.JsonAdapter):
@@ -21,24 +21,24 @@ class ShareDetailAdapter(converter.JsonAdapter):
                     target_class: Type[ShareDetail],
                     obj: Dict) -> ShareDetail:
         """
-        :type target_class: object_.ShareDetail|type
+        :type target_class: ShareDetail|type
         :type obj: dict
 
-        :rtype: object_.ShareDetail
+        :rtype: ShareDetail
         """
 
         share_detail = target_class.__new__(target_class)
         share_detail.__dict__ = {
             cls._ATTRIBUTE_PAYMENT: converter.deserialize(
-                object_.ShareDetailPayment,
+                ShareDetailPayment,
                 cls._get_field_or_none(cls._FIELD_DRAFT_PAYMENT, obj)
             ),
             cls._ATTRIBUTE_READ_ONLY: converter.deserialize(
-                object_.ShareDetailReadOnly,
+                ShareDetailReadOnly,
                 cls._get_field_or_none(cls._FIELD_READ_ONLY, obj)
             ),
             cls._ATTRIBUTE_DRAFT_PAYMENT: converter.deserialize(
-                object_.ShareDetailDraftPayment,
+                ShareDetailDraftPayment,
                 cls._get_field_or_none(cls._FIELD_DRAFT_PAYMENT, obj)
             ),
         }

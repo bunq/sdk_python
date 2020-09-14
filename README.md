@@ -82,7 +82,7 @@ Creating objects through the API requires an `ApiContext`, a `requestMap` and id
 dependencies (such as User ID required for accessing a Monetary Account). Optionally, custom headers
 can be passed to requests.
 
-    payment_id = endpoint.Payment.create(
+    payment_id = Payment.create(
         amount=Amount(amount_string, self._CURRENCY_EURL),
         counterparty_alias=Pointer(self._POINTER_TYPE_EMAIL, recipient),
         description=description
@@ -109,7 +109,7 @@ See [`tinker/list_all_payment`](https://github.com/bunq/tinker_python/blob/2182b
 Updating objects through the API goes the same way as creating objects, except that also the object to update identifier 
 (ID or UUID) is needed.
 
-    endpoint.Card.update(
+    Card.update(
         card_id=int(card_id),
         monetary_account_current_id=int(account_id)
     )
@@ -130,7 +130,7 @@ passed to requests.
 Listing objects through the API requires an `ApiContext` and identifiers of all dependencies (such as User ID required
 for accessing a Monetary Account). Optionally, custom headers can be passed to requests.
 
-    users = endpoint.User.list(api_context)
+    users = User.list(api_context)
 
 ##### Example
 See [`UserListExample.py`](./examples/user_list_example.py)
