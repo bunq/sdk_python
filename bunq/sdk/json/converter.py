@@ -7,7 +7,7 @@ import sys
 import typing
 import warnings
 from types import ModuleType
-from typing import Type, Optional, Callable, Generator, Dict, Match, List, Union, Generic
+from typing import Type, Optional, Callable, Generator, Dict, Match, List, Union, Generic, Any
 
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.util.type_alias import T, JsonValue
@@ -22,6 +22,7 @@ _JSON_INDENT = 4
 class JsonAdapter(Generic[T]):
     # Error constants
     _ERROR_COULD_NOT_FIND_CLASS = 'Could not find class: {}'
+    _ERROR_MISSING_DOC_COMMENT = 'A doc :type is missing for {} in class {}'
 
     # Maps to store custom serializers and deserializers
     _custom_serializers = {}
@@ -41,15 +42,14 @@ class JsonAdapter(Generic[T]):
     _PREFIX_KEY_PROTECTED = '_'
 
     # Constants to fetch param types from the docstrings
-    _TEMPLATE_PATTERN_PARAM_TYPES = ':type (_?{}):[\s\n\r]+([\w.]+)(?:\[([\w.]+)\])?'
-    _PATTERN_PARAM_NAME_TYPED_ANY = ':type (\w+):'
+    _TEMPLATE_PATTERN_PARAM_TYPES = ':type (_?{}):[\\s\\n\\r]+([\\w.]+)(?:\\[([\\w.]+)\\])?'
+    _PATTERN_PARAM_NAME_TYPED_ANY = ':type (\\w+):'
     _SUBMATCH_INDEX_NAME = 1
     _SUBMATCH_INDEX_TYPE_MAIN = 2
     _SUBMATCH_INDEX_TYPE_SUB = 3
 
     # List of builtin type names
-    _TYPE_NAMES_BUILTIN = {'int', 'bool', 'float', 'str', 'list', 'dict',
-                           'bytes', 'unicode'}
+    _TYPE_NAMES_BUILTIN = {'int', 'bool', 'float', 'str', 'list', 'dict', 'bytes', 'unicode'}
 
     # Delimiter between modules in class paths
     _DELIMITER_MODULE = '.'
@@ -187,7 +187,12 @@ class JsonAdapter(Generic[T]):
                                         cls_in: Type[T],
                                         attribute_name: str) -> Optional[ValueSpecs]:
         pattern = cls._TEMPLATE_PATTERN_PARAM_TYPES.format(attribute_name)
-        match = re.search(pattern, cls_in.__doc__)
+        doc_type = cls_in.__doc__
+
+        if doc_type is None:
+            raise BunqException(cls._ERROR_MISSING_DOC_COMMENT.format(attribute_name, cls_in))
+
+        match = re.search(pattern, doc_type)
 
         if match is not None:
             return ValueSpecs(
