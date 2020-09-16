@@ -23,11 +23,10 @@ class TestApiContext(BunqSdkTestCase):
     def setUpClass(cls) -> None:
         super().setUpClass()
         cls._FILE_MODE_READ = ApiContext._FILE_MODE_READ
-        cls._API_CONTEXT = cls._get_api_context()
-        cls._TMP_FILE_PATH_FULL = (cls._get_directory_test_root() +
-                                   cls._TMP_FILE_PATH)
+        cls._API_CONTEXT: ApiContext = cls._get_api_context()
+        cls._TMP_FILE_PATH_FULL = (cls._get_directory_test_root() + cls._TMP_FILE_PATH)
 
-    def test_api_context_save(self):
+    def test_api_context_save(self) -> None:
         """
         Converts an ApiContext to JSON data, saves the same ApiContext to a
         temporary file, and compares whether the JSON data is equal to the
@@ -47,7 +46,7 @@ class TestApiContext(BunqSdkTestCase):
 
         self.assertEqual(context_retrieved, context_json)
 
-    def test_api_context_restore(self):
+    def test_api_context_restore(self) -> None:
         """
         Saves an ApiContext to a temporary file, restores an ApiContext from
         that file, and compares whether the api_keys, tokens, and environment
