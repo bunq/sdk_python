@@ -20,7 +20,7 @@ class SessionServer(BunqModel):
     :type _user_person: UserPerson|None
     :type _user_company: UserCompany|None
     :type _user_api_key: UserApiKey|None
-    :type _user_payment_service_provider:UserPaymentServiceProvider|None
+    :type _user_payment_service_provider: UserPaymentServiceProvider|None
     """
 
     # Endpoint name.
@@ -32,28 +32,20 @@ class SessionServer(BunqModel):
     # Error constants
     _ERROR_ALL_FIELD_IS_NULL = 'All fields are null'
 
-    def __init__(self) -> None:
-        self._id_ = None
-        self._token = None
-        self._user_person = None
-        self._user_company = None
-        self._user_api_key = None
-        self._user_payment_service_provider = None
-
     @property
-    def id_(self) -> Id:
+    def id_(self) -> Optional[Id]:
         return self._id_
 
     @property
-    def token(self) -> SessionToken:
+    def token(self) -> Optional[SessionToken]:
         return self._token
 
     @property
-    def user_person(self) -> UserPerson:
+    def user_person(self) -> Optional[UserPerson]:
         return self._user_person
 
     @property
-    def user_company(self) -> UserCompany:
+    def user_company(self) -> Optional[UserCompany]:
         return self._user_company
 
     @property
@@ -61,11 +53,20 @@ class SessionServer(BunqModel):
         return self._user_api_key
 
     @property
-    def user_payment_service_provider(self) -> UserPaymentServiceProvider:
+    def user_payment_service_provider(self) -> Optional[UserPaymentServiceProvider]:
         return self._user_payment_service_provider
+
+    def __init__(self) -> None:
+        self._user_person = None
+        self._user_company = None
+        self._user_api_key = None
+        self._user_payment_service_provider = None
+        self._token = None
+        self._id_ = None
 
     @classmethod
     def create(cls, api_context: ApiContext) -> BunqResponse[SessionServer]:
+        cls.__init__(cls)
         api_client = ApiClient(api_context)
         body_bytes = cls.generate_request_body_bytes(api_context.api_key)
         response_raw = api_client.post(cls._ENDPOINT_URL_POST, body_bytes, {})
@@ -79,35 +80,27 @@ class SessionServer(BunqModel):
     def is_all_field_none(self) -> bool:
         if self.id_ is not None:
             return False
-
-        if self.token is not None:
+        elif self.token is not None:
             return False
+        elif self.user_person is not None:
+            return False
+        elif self.user_company is not None:
+            return False
+        elif self.user_api_key is not None:
+            return False
+        elif self.user_payment_service_provider is not None:
+            return False
+        else:
+            return True
 
+    def get_user_reference(self) -> BunqModel:
         if self.user_person is not None:
-            return False
-
-        if self.user_company is not None:
-            return False
-
-        if self.user_payment_service_provider is not None:
-            return False
-
-        if self.user_api_key is not None:
-            return False
-
-        return True
-
-    def get_referenced_user(self) -> BunqModel:
-        if self._user_person is not None:
-            return self._user_person
-
-        if self._user_company is not None:
-            return self._user_company
-
-        if self._user_payment_service_provider is not None:
-            return self._user_payment_service_provider
-
-        if self._user_api_key is not None:
-            return self._user_api_key
-
-        raise BunqException(self._ERROR_ALL_FIELD_IS_NULL)
+            return self.user_person
+        elif self.user_company is not None:
+            return self.user_company
+        elif self.user_api_key is not None:
+            return self.user_api_key
+        elif self.user_payment_service_provider is not None:
+            return self.user_payment_service_provider
+        else:
+            raise BunqException(self._ERROR_ALL_FIELD_IS_NULL)

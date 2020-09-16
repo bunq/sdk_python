@@ -16,6 +16,7 @@ from Cryptodome.Hash import SHA256
 from Cryptodome.PublicKey import RSA
 from Cryptodome.PublicKey.RSA import RsaKey
 from Cryptodome.Signature import PKCS1_v1_5
+from requests.structures import CaseInsensitiveDict
 
 from bunq.sdk.exception.bunq_exception import BunqException
 
@@ -57,6 +58,7 @@ _HEADER_CLIENT_ENCRYPTION_KEY = 'X-Bunq-Client-Encryption-Key'
 _HEADER_CLIENT_ENCRYPTION_IV = 'X-Bunq-Client-Encryption-Iv'
 _HEADER_CLIENT_ENCRYPTION_HMAC = 'X-Bunq-Client-Encryption-Hmac'
 _HEADER_SERVER_SIGNATURE = 'X-Bunq-Server-Signature'
+
 
 def generate_rsa_private_key() -> RsaKey:
     return RSA.generate(_RSA_KEY_SIZE)
@@ -177,7 +179,7 @@ def _add_header_client_encryption_hmac(request_bytes: bytes,
 def validate_response(public_key_server: RsaKey,
                       status_code: int,
                       body_bytes: bytes,
-                      headers: Dict[str, str]) -> None:
+                      headers: CaseInsensitiveDict[str, str]) -> None:
     if is_valid_response_header_with_body(public_key_server, status_code, body_bytes, headers):
         return
     elif is_valid_response_body(public_key_server, body_bytes, headers):
@@ -189,7 +191,7 @@ def validate_response(public_key_server: RsaKey,
 def is_valid_response_header_with_body(public_key_server: RsaKey,
                                        status_code: int,
                                        body_bytes: bytes,
-                                       headers: Dict[str, str]) -> bool:
+                                       headers: CaseInsensitiveDict[str, str]) -> bool:
     head_bytes = _generate_response_head_bytes(status_code, headers)
     bytes_signed = head_bytes + body_bytes
     signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
@@ -205,8 +207,8 @@ def is_valid_response_header_with_body(public_key_server: RsaKey,
 
 
 def is_valid_response_body(public_key_server: RsaKey,
-                      body_bytes: bytes,
-                      headers: Dict[str, str]) -> bool:
+                           body_bytes: bytes,
+                           headers: CaseInsensitiveDict[str, str]) -> bool:
     signer = PKCS1_v1_5.pkcs1_15.new(public_key_server)
     digest = SHA256.new()
     digest.update(body_bytes)
@@ -220,7 +222,7 @@ def is_valid_response_body(public_key_server: RsaKey,
 
 
 def _generate_response_head_bytes(status_code: int,
-                                  headers: Dict[str, str]) -> bytes:
+                                  headers: CaseInsensitiveDict[str, str]) -> bytes:
     head_string = str(status_code) + _DELIMITER_NEWLINE
     header_tuples = sorted((k, headers[k]) for k in headers)
 

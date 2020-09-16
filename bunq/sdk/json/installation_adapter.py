@@ -51,5 +51,5 @@ class InstallationAdapter(converter.JsonAdapter):
         return [
             {cls._FIELD_ID: converter.serialize(installation.id_)},
             {cls._FIELD_TOKEN: converter.serialize(installation.token)},
-            {cls._FIELD_SERVER_PUBLIC_KEY: converter.serialize(installation.server_public_key), },
+            {cls._FIELD_SERVER_PUBLIC_KEY: converter.serialize(installation.server_public_key)},
         ]

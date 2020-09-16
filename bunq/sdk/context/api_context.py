@@ -145,9 +145,13 @@ class ApiContext:
 
     def __initialize_session(self) -> None:
         from bunq.sdk.model.core.session_server import SessionServer
-
         session_server = SessionServer.create(self).value
-        self._session_context = SessionContext(session_server)
+
+        token = session_server.token
+        expiry_time = self._get_expiry_timestamp(session_server)
+        user = session_server.get_user_reference()
+
+        self._session_context = SessionContext(token, expiry_time, user)
 
     @classmethod
     def _get_expiry_timestamp(cls, session_server: SessionServer) -> datetime.datetime:
