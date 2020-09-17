@@ -5,7 +5,7 @@ from bunq.sdk.json import converter
 from bunq.sdk.model.core.id import Id
 from bunq.sdk.model.core.session_server import SessionServer
 from bunq.sdk.model.core.session_token import SessionToken
-from bunq.sdk.model.generated import endpoint
+from bunq.sdk.model.generated.endpoint import UserCompany, UserPerson, UserApiKey, UserPaymentServiceProvider
 
 
 class SessionServerAdapter(converter.JsonAdapter):
@@ -65,25 +65,25 @@ class SessionServerAdapter(converter.JsonAdapter):
         if cls._FIELD_USER_COMPANY in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_COMPANY] = \
                 converter.deserialize(
-                    endpoint.UserCompany,
+                    UserCompany,
                     user_dict_wrapped[cls._FIELD_USER_COMPANY]
                 )
         elif cls._FIELD_USER_PERSON in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_PERSON] = \
                 converter.deserialize(
-                    endpoint.UserPerson,
+                    UserPerson,
                     user_dict_wrapped[cls._FIELD_USER_PERSON]
                 )
         elif cls._FIELD_USER_API_KEY in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_API_KEY] = \
                 converter.deserialize(
-                    endpoint.UserApiKey,
+                    UserApiKey,
                     user_dict_wrapped[cls._FIELD_USER_API_KEY]
                 )
         elif cls._FIELD_USER_PAYMENT_SERVER_PROVIDER in user_dict_wrapped:
             session_server.__dict__[cls._ATTRIBUTE_USER_PAYMENT_SERVER_PROVIDER] = \
                 converter.deserialize(
-                    endpoint.UserPaymentServiceProvider,
+                    UserPaymentServiceProvider,
                     user_dict_wrapped[cls._FIELD_USER_PAYMENT_SERVER_PROVIDER]
                 )
         else:

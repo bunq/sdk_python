@@ -1,7 +1,7 @@
 from bunq.sdk.exception.bunq_exception import BunqException
 from bunq.sdk.model.core.bunq_model import BunqModel
-from bunq.sdk.model.generated import endpoint
-from bunq.sdk.model.generated.endpoint import UserPerson, UserCompany, UserApiKey, MonetaryAccountBank
+from bunq.sdk.model.generated.endpoint import UserPerson, UserCompany, UserApiKey, MonetaryAccountBank, User, \
+    UserPaymentServiceProvider
 
 
 class UserContext:
@@ -9,7 +9,7 @@ class UserContext:
     _ERROR_NO_ACTIVE_MONETARY_ACCOUNT_FOUND = 'No active monetary account found.'
     _STATUS_ACTIVE = 'ACTIVE'
 
-    def __init__(self, user_id: int) -> None:
+    def __init__(self, user_id: int, user: BunqModel) -> None:
         self._user_id = user_id
         self._user_person = None
         self._user_company = None
@@ -17,23 +17,23 @@ class UserContext:
         self._user_payment_service_provider = None
         self._primary_monetary_account = None
 
-        self._set_user(self.__get_user_object())
+        self._set_user(user)
 
     @staticmethod
     def __get_user_object() -> BunqModel:
-        return endpoint.User.list().value[0].get_referenced_object()
+        return User.list().value[0].get_referenced_object()
 
     def _set_user(self, user: BunqModel) -> None:
-        if isinstance(user, endpoint.UserPerson):
+        if isinstance(user, UserPerson):
             self._user_person = user
 
-        elif isinstance(user, endpoint.UserCompany):
+        elif isinstance(user, UserCompany):
             self._user_company = user
 
-        elif isinstance(user, endpoint.UserApiKey):
+        elif isinstance(user, UserApiKey):
             self._user_api_key = user
 
-        elif isinstance(user, endpoint.UserPaymentServiceProvider):
+        elif isinstance(user, UserPaymentServiceProvider):
             self._user_payment_service_provider = user
 
         else:
@@ -44,7 +44,7 @@ class UserContext:
         if self._user_payment_service_provider is not None:
             return
 
-        all_monetary_account = endpoint.MonetaryAccountBank.list().value
+        all_monetary_account = MonetaryAccountBank.list().value
 
         for account in all_monetary_account:
             if account.status == self._STATUS_ACTIVE:

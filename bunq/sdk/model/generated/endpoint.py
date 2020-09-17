@@ -8629,6 +8629,8 @@ class Company(BunqModel):
     :type _chamber_of_commerce_number: str
     :param _legal_form: The company's legal form.
     :type _legal_form: str
+    :param _subscription_type: The subscription type for the company.
+    :type _subscription_type: str
     :param _avatar_uuid: The public UUID of the company's avatar.
     :type _avatar_uuid: str
     :param _UserCompany: 
@@ -8649,6 +8651,7 @@ class Company(BunqModel):
     FIELD_UBO = "ubo"
     FIELD_CHAMBER_OF_COMMERCE_NUMBER = "chamber_of_commerce_number"
     FIELD_LEGAL_FORM = "legal_form"
+    FIELD_SUBSCRIPTION_TYPE = "subscription_type"
     FIELD_AVATAR_UUID = "avatar_uuid"
 
     # Object type.
@@ -8662,10 +8665,11 @@ class Company(BunqModel):
     _ubo_field_for_request = None
     _chamber_of_commerce_number_field_for_request = None
     _legal_form_field_for_request = None
+    _subscription_type_field_for_request = None
     _avatar_uuid_field_for_request = None
 
     def __init__(self, name, address_main, address_postal, country, legal_form, ubo=None,
-                 chamber_of_commerce_number=None, avatar_uuid=None):
+                 chamber_of_commerce_number=None, subscription_type=None, avatar_uuid=None):
         """
         :param name: The company name.
         :type name: str
@@ -8682,6 +8686,8 @@ class Company(BunqModel):
         :type ubo: list[object_.Ubo]
         :param chamber_of_commerce_number: The company's chamber of commerce number.
         :type chamber_of_commerce_number: str
+        :param subscription_type: The subscription type for the company.
+        :type subscription_type: str
         :param avatar_uuid: The public UUID of the company's avatar.
         :type avatar_uuid: str
         """
@@ -8693,11 +8699,12 @@ class Company(BunqModel):
         self._legal_form_field_for_request = legal_form
         self._ubo_field_for_request = ubo
         self._chamber_of_commerce_number_field_for_request = chamber_of_commerce_number
+        self._subscription_type_field_for_request = subscription_type
         self._avatar_uuid_field_for_request = avatar_uuid
 
     @classmethod
     def create(cls, name, address_main, address_postal, country, legal_form, ubo=None, chamber_of_commerce_number=None,
-               avatar_uuid=None, custom_headers=None):
+               subscription_type=None, avatar_uuid=None, custom_headers=None):
         """
         :type user_id: int
         :param name: The company name.
@@ -8716,6 +8723,8 @@ class Company(BunqModel):
         :param chamber_of_commerce_number: The company's chamber of commerce
         number.
         :type chamber_of_commerce_number: str
+        :param subscription_type: The subscription type for the company.
+        :type subscription_type: str
         :param avatar_uuid: The public UUID of the company's avatar.
         :type avatar_uuid: str
         :type custom_headers: dict[str, str]|None
@@ -8734,6 +8743,7 @@ class Company(BunqModel):
             cls.FIELD_UBO: ubo,
             cls.FIELD_CHAMBER_OF_COMMERCE_NUMBER: chamber_of_commerce_number,
             cls.FIELD_LEGAL_FORM: legal_form,
+            cls.FIELD_SUBSCRIPTION_TYPE: subscription_type,
             cls.FIELD_AVATAR_UUID: avatar_uuid
         }
         request_map_string = converter.class_to_json(request_map)
@@ -34408,77 +34418,6 @@ class SandboxUserPerson(BunqModel):
         return converter.json_to_class(SandboxUserPerson, json_str)
 
 
-class SandboxUser(BunqModel):
-    """
-    Used to create a sandbox user.
-    
-    :param _api_key: The API key of the newly created sandbox user.
-    :type _api_key: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "sandbox-user"
-
-    # Object type.
-    _OBJECT_TYPE_POST = "ApiKey"
-
-    _api_key = None
-
-    @classmethod
-    def create(cls, custom_headers=None):
-        """
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseSandboxUser
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-
-        }
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseSandboxUser.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
-        )
-
-    @property
-    def api_key(self):
-        """
-        :rtype: str
-        """
-
-        return self._api_key
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._api_key is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: SandboxUser
-        """
-
-        return converter.json_to_class(SandboxUser, json_str)
-
-
 class ScheduleUser(BunqModel):
     """
     view for reading the scheduled definitions.
@@ -41009,16 +40948,6 @@ class BunqResponseSandboxUserPerson(BunqResponse):
     def value(self):
         """
         :rtype: SandboxUserPerson
-        """
-
-        return super().value
-
-
-class BunqResponseSandboxUser(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: SandboxUser
         """
 
         return super().value

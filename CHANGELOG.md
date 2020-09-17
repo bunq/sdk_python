@@ -2,7 +2,25 @@
 
 ## [Unreleased](https://github.com/bunq/sdk_python/tree/HEAD)
 
-[Full Changelog](https://github.com/bunq/sdk_python/compare/1.14.0...HEAD)
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.14.1...HEAD)
+
+**Implemented enhancements:**
+
+- Replace /sandbox-user with /sandbox-user-person and /sandbox-user-company [\#151](https://github.com/bunq/sdk_python/issues/151)
+
+**Fixed bugs:**
+
+- Remove \_\_get\_user\_object call immediately after UserContext creation \(reduce rate-limit hits\) [\#149](https://github.com/bunq/sdk_python/issues/149)
+- Feature/sdk python\#149 save/restore User in SessionContext from file [\#153](https://github.com/bunq/sdk_python/pull/153) ([angelomelonas](https://github.com/angelomelonas))
+
+**Merged pull requests:**
+
+- feature/sdk\_python\#151 Deprecated SandboxUser and replaced it with SandboxUserPerson/Company [\#152](https://github.com/bunq/sdk_python/pull/152) ([angelomelonas](https://github.com/angelomelonas))
+- feature/sdk\_python\#149 Remove get\_user\_object call directly after UserContext creation [\#150](https://github.com/bunq/sdk_python/pull/150) ([angelomelonas](https://github.com/angelomelonas))
+
+## [1.14.1](https://github.com/bunq/sdk_python/tree/1.14.1) (2020-08-20)
+
+[Full Changelog](https://github.com/bunq/sdk_python/compare/1.14.0...1.14.1)
 
 **Implemented enhancements:**
 
@@ -126,32 +144,18 @@
 
 **Implemented enhancements:**
 
-- \[python\] Update examples in readme [\#87](https://github.com/bunq/sdk_python/issues/87)
-- It is not possible to refresh userContext data  [\#79](https://github.com/bunq/sdk_python/issues/79)
-- Optimise test framework [\#78](https://github.com/bunq/sdk_python/issues/78)
-- Add more example scripts [\#68](https://github.com/bunq/sdk_python/issues/68)
-- Auto save the session after automatic session reset has been executed  [\#65](https://github.com/bunq/sdk_python/issues/65)
-- Add optional parameters to constructor  [\#55](https://github.com/bunq/sdk_python/issues/55)
-- Monetary account joint cannot be retrieved. [\#52](https://github.com/bunq/sdk_python/issues/52)
-- Endpoint HTTP methods should not be static [\#41](https://github.com/bunq/sdk_python/issues/41)
-- Name field for pointer counterparty [\#29](https://github.com/bunq/sdk_python/issues/29)
 - Added method to refresh user context data. \(bunq/sdk\_python\#79\) [\#80](https://github.com/bunq/sdk_python/pull/80) ([OGKevin](https://github.com/OGKevin))
-
-**Fixed bugs:**
-
-- bunq-sdk 0.12.4 package on PyPI contains code from 0.13.0 [\#88](https://github.com/bunq/sdk_python/issues/88)
-- Can not construct a BunqMeTabEntry to create a BunqMeTab [\#77](https://github.com/bunq/sdk_python/issues/77)
-- ImportError: cannot import name 'JSONDecodeError' [\#72](https://github.com/bunq/sdk_python/issues/72)
 
 **Closed issues:**
 
+- Add oath support. [\#102](https://github.com/bunq/sdk_python/issues/102)
 - Update Sandbox API key procedure [\#100](https://github.com/bunq/sdk_python/issues/100)
-- Python 3.4.2: ImportError: cannot import name 'context'  \(cyclic import?\) [\#73](https://github.com/bunq/sdk_python/issues/73)
 
 **Merged pull requests:**
 
 - Oauth bunq/sdk\_python\#102 [\#103](https://github.com/bunq/sdk_python/pull/103) ([OGKevin](https://github.com/OGKevin))
 - Update Sandbox API key procedure. \(bunq/sdk\_python\#100\) [\#101](https://github.com/bunq/sdk_python/pull/101) ([sandervdo](https://github.com/sandervdo))
+- Move to new sandbox bunq/sdk\_python\#98 [\#99](https://github.com/bunq/sdk_python/pull/99) ([OGKevin](https://github.com/OGKevin))
 - Updated readme to point to tinker for examples. \(bunq/sdk\_python\#87\) [\#95](https://github.com/bunq/sdk_python/pull/95) ([OGKevin](https://github.com/OGKevin))
 - Fix monetary account joint retrieval bunq/sdk\_python\#52 [\#94](https://github.com/bunq/sdk_python/pull/94) ([OGKevin](https://github.com/OGKevin))
 - Fix supperfouls fields error bunq/sdk\_python\#77 [\#91](https://github.com/bunq/sdk_python/pull/91) ([OGKevin](https://github.com/OGKevin))
@@ -165,19 +169,33 @@
 
 [Full Changelog](https://github.com/bunq/sdk_python/compare/0.13.0...0.13.1)
 
+**Implemented enhancements:**
+
+- \[python\] Update examples in readme [\#87](https://github.com/bunq/sdk_python/issues/87)
+- It is not possible to refresh userContext data  [\#79](https://github.com/bunq/sdk_python/issues/79)
+- Optimise test framework [\#78](https://github.com/bunq/sdk_python/issues/78)
+- Add more example scripts [\#68](https://github.com/bunq/sdk_python/issues/68)
+- Auto save the session after automatic session reset has been executed  [\#65](https://github.com/bunq/sdk_python/issues/65)
+- Add optional parameters to constructor  [\#55](https://github.com/bunq/sdk_python/issues/55)
+- Monetary account joint cannot be retrieved. [\#52](https://github.com/bunq/sdk_python/issues/52)
+- Endpoint HTTP methods should not be static [\#41](https://github.com/bunq/sdk_python/issues/41)
+- Name field for pointer counterparty [\#29](https://github.com/bunq/sdk_python/issues/29)
+
+**Fixed bugs:**
+
+- bunq-sdk 0.12.4 package on PyPI contains code from 0.13.0 [\#88](https://github.com/bunq/sdk_python/issues/88)
+- Can not construct a BunqMeTabEntry to create a BunqMeTab [\#77](https://github.com/bunq/sdk_python/issues/77)
+- ImportError: cannot import name 'JSONDecodeError' [\#72](https://github.com/bunq/sdk_python/issues/72)
+
 **Closed issues:**
 
+- Move to new sandbox env.  [\#98](https://github.com/bunq/sdk_python/issues/98)
 - Bunq sdk release request [\#97](https://github.com/bunq/sdk_python/issues/97)
 - reopening of question \#12 generated.Payment.FIELD\_COUNTERPARTY\_ALIAS not working with IBAN [\#96](https://github.com/bunq/sdk_python/issues/96)
 - Update samples and readme [\#93](https://github.com/bunq/sdk_python/issues/93)
 - bunq.sdk.exception.BunqException: ApiContext has not been loaded. Please load ApiContext in BunqContext [\#92](https://github.com/bunq/sdk_python/issues/92)
 - Sample for reading/using shared accounts [\#90](https://github.com/bunq/sdk_python/issues/90)
-- Add oath support. [\#102](https://github.com/bunq/sdk_python/issues/102)
-- Move to new sandbox env.  [\#98](https://github.com/bunq/sdk_python/issues/98)
-
-**Merged pull requests:**
-
-- Move to new sandbox bunq/sdk\_python\#98 [\#99](https://github.com/bunq/sdk_python/pull/99) ([OGKevin](https://github.com/OGKevin))
+- Python 3.4.2: ImportError: cannot import name 'context'  \(cyclic import?\) [\#73](https://github.com/bunq/sdk_python/issues/73)
 
 ## [0.13.0](https://github.com/bunq/sdk_python/tree/0.13.0) (2018-03-20)
 

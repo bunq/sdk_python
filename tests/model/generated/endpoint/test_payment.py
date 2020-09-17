@@ -1,7 +1,6 @@
 from typing import List
 
-from bunq.sdk.model.generated import endpoint
-from bunq.sdk.model.generated.endpoint import Payment
+from bunq.sdk.model.generated.endpoint import Payment, PaymentBatch, BunqResponseInt, BunqResponsePaymentBatch
 from bunq.sdk.model.generated.object_ import Amount, Pointer
 from tests.bunq_test import BunqSdkTestCase
 
@@ -29,7 +28,7 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        endpoint.Payment.create(
+        Payment.create(
             Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
             self._get_pointer_bravo(),
             self._PAYMENT_DESCRIPTION
@@ -43,21 +42,21 @@ class TestPayment(BunqSdkTestCase):
         without errors
         """
 
-        endpoint.Payment.create(
+        Payment.create(
             Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
             self._get_alias_second_account(),
             self._PAYMENT_DESCRIPTION
         )
 
     def test_payment_batch(self):
-        response_create = endpoint.PaymentBatch.create(self.__create_payment_list())
+        response_create = PaymentBatch.create(self.__create_payment_list())
 
-        self.assertIsInstance(response_create, endpoint.BunqResponseInt)
+        self.assertIsInstance(response_create, BunqResponseInt)
         self.assertIsNotNone(response_create)
 
-        response_get = endpoint.PaymentBatch.get(response_create.value)
+        response_get = PaymentBatch.get(response_create.value)
 
-        self.assertIsInstance(response_get, endpoint.BunqResponsePaymentBatch)
+        self.assertIsInstance(response_get, BunqResponsePaymentBatch)
         self.assertIsNotNone(response_get)
         self.assertFalse(response_get.value.is_all_field_none())
 
@@ -66,13 +65,13 @@ class TestPayment(BunqSdkTestCase):
 
         while len(all_payment) < self._MAXIMUM_PAYMENT_IN_BATCH:
             all_payment.append(
-                endpoint.Payment(
+                Payment(
                     Amount(self._PAYMENT_AMOUNT_EUR, self._PAYMENT_CURRENCY),
                     Pointer(self._POINTER_EMAIL, self._EMAIL_BRAVO),
                     self._PAYMENT_DESCRIPTION
                 )
             )
         self.assertIsInstance(all_payment, List)
-        self.assertIsInstance(all_payment[0], endpoint.Payment)
+        self.assertIsInstance(all_payment[0], Payment)
 
         return all_payment

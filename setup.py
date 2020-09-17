@@ -25,7 +25,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.14.1',
+    version='1.14.18',
 
     description='bunq Python SDK',
     long_description=long_description,
@@ -62,7 +62,7 @@ setup(
     ],
 
     # Require Python version equal or higher than the requested version.
-    python_requires='>=3.5.3',
+    python_requires='>=3.7.0',
 
     # Keywords related to the project
     keywords='open-banking sepa bunq finance api payment',
