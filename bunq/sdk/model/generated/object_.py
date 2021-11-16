@@ -547,11 +547,14 @@ class Avatar(BunqModel):
     :type _anchor_uuid: str
     :param _image: The actual image information of this avatar.
     :type _image: list[Image]
+    :param _style: The style (if applicable) for this Avatar.
+    :type _style: str
     """
 
     _uuid = None
     _anchor_uuid = None
     _image = None
+    _style = None
     _uuid_field_for_request = None
 
     def __init__(self, uuid=None):
@@ -586,6 +589,14 @@ class Avatar(BunqModel):
 
         return self._image
 
+    @property
+    def style(self):
+        """
+        :rtype: str
+        """
+
+        return self._style
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -598,6 +609,9 @@ class Avatar(BunqModel):
             return False
 
         if self._image is not None:
+            return False
+
+        if self._style is not None:
             return False
 
         return True
@@ -813,6 +827,9 @@ class Pointer(BunqModel):
     :type _value: str
     :param _name: The alias name.
     :type _name: str
+    :param _service: The pointer service. Only required for external
+    counterparties.
+    :type _service: str
     """
 
     _type_ = None
@@ -821,8 +838,9 @@ class Pointer(BunqModel):
     _type__field_for_request = None
     _value_field_for_request = None
     _name_field_for_request = None
+    _service_field_for_request = None
 
-    def __init__(self, type_=None, value=None, name=None):
+    def __init__(self, type_=None, value=None, name=None, service=None):
         """
         :param type_: The alias type, can be: EMAIL|PHONE_NUMBER|IBAN.
         :type type_: str
@@ -831,11 +849,15 @@ class Pointer(BunqModel):
         :type value: str
         :param name: The alias name. Only required for IBANs.
         :type name: str
+        :param service: The pointer service. Only required for external
+        counterparties.
+        :type service: str
         """
 
         self._type__field_for_request = type_
         self._value_field_for_request = value
         self._name_field_for_request = name
+        self._service_field_for_request = service
 
     @property
     def type_(self):
@@ -930,8 +952,7 @@ class Address(BunqModel):
     _extra_field_for_request = None
     _mailbox_name_field_for_request = None
 
-    def __init__(self, street=None, house_number=None, postal_code=None, city=None, country=None, po_box=None,
-                 extra=None, mailbox_name=None):
+    def __init__(self, street=None, house_number=None, postal_code=None, city=None, country=None, po_box=None, extra=None, mailbox_name=None):
         """
         :param street: The street.
         :type street: str
@@ -1343,6 +1364,95 @@ class Geolocation(BunqModel):
         return converter.json_to_class(Geolocation, json_str)
 
 
+class Error(BunqModel):
+    """
+    :param _error_description: The error description (in English).
+    :type _error_description: str
+    :param _error_description_translated: The error description (in the user
+    language).
+    :type _error_description_translated: str
+    """
+
+    _error_description = None
+    _error_description_translated = None
+
+    @property
+    def error_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description
+
+    @property
+    def error_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._error_description_translated
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._error_description is not None:
+            return False
+
+        if self._error_description_translated is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Error
+        """
+
+        return converter.json_to_class(Error, json_str)
+
+
+class PaymentBatchAnchoredPayment(BunqModel):
+    """
+    :param _Payment: 
+    :type _Payment: list[endpoint.Payment]
+    """
+
+    _Payment = None
+
+    @property
+    def Payment(self):
+        """
+        :rtype: list[endpoint.Payment]
+        """
+
+        return self._Payment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._Payment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatchAnchoredPayment
+        """
+
+        return converter.json_to_class(PaymentBatchAnchoredPayment, json_str)
+
+
 class AttachmentPublic(BunqModel):
     """
     :param _uuid: The uuid of the attachment.
@@ -1505,6 +1615,135 @@ class BunqId(BunqModel):
         return converter.json_to_class(BunqId, json_str)
 
 
+class CardBatchReplaceEntry(BunqModel):
+    """
+    :param _id_: The ID of the card that needs to be replaced.
+    :type _id_: int
+    :param _name_on_card: The user's name as it will be on the card. Check
+    'card-name' for the available card names for a user.
+    :type _name_on_card: str
+    :param _pin_code_assignment: Array of Types, PINs, account IDs assigned to
+    the card.
+    :type _pin_code_assignment: list[CardPinAssignment]
+    :param _second_line: The second line on the card.
+    :type _second_line: str
+    """
+
+    _id__field_for_request = None
+    _name_on_card_field_for_request = None
+    _pin_code_assignment_field_for_request = None
+    _second_line_field_for_request = None
+
+    def __init__(self, id_, name_on_card=None, pin_code_assignment=None, second_line=None):
+        """
+        :param id_: The ID of the card that needs to be replaced.
+        :type id_: int
+        :param name_on_card: The user's name as it will be on the card. Check
+        'card-name' for the available card names for a user.
+        :type name_on_card: str
+        :param pin_code_assignment: Array of Types, PINs, account IDs assigned to
+        the card.
+        :type pin_code_assignment: list[CardPinAssignment]
+        :param second_line: The second line on the card.
+        :type second_line: str
+        """
+
+        self._id__field_for_request = id_
+        self._name_on_card_field_for_request = name_on_card
+        self._pin_code_assignment_field_for_request = pin_code_assignment
+        self._second_line_field_for_request = second_line
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardBatchReplaceEntry
+        """
+
+        return converter.json_to_class(CardBatchReplaceEntry, json_str)
+
+
+class CardPinAssignment(BunqModel):
+    """
+    :param _type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
+    :type _type_: str
+    :param _pin_code: The 4 digit PIN to be assigned to this account.
+    :type _pin_code: str
+    :param _monetary_account_id: The ID of the monetary account to assign to
+    this pin for the card.
+    :type _monetary_account_id: int
+    """
+
+    _type_ = None
+    _monetary_account_id = None
+    _type__field_for_request = None
+    _pin_code_field_for_request = None
+    _monetary_account_id_field_for_request = None
+
+    def __init__(self, type_=None, pin_code=None, monetary_account_id=None):
+        """
+        :param type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
+        :type type_: str
+        :param pin_code: The 4 digit PIN to be assigned to this account.
+        :type pin_code: str
+        :param monetary_account_id: The ID of the monetary account to assign to this
+        pin for the card.
+        :type monetary_account_id: int
+        """
+
+        self._type__field_for_request = type_
+        self._pin_code_field_for_request = pin_code
+        self._monetary_account_id_field_for_request = monetary_account_id
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardPinAssignment
+        """
+
+        return converter.json_to_class(CardPinAssignment, json_str)
+
+
 class CardBatchEntry(BunqModel):
     """
     :param _id_: The ID of the card that needs to be updated.
@@ -1539,8 +1778,7 @@ class CardBatchEntry(BunqModel):
     _country_permission_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
 
-    def __init__(self, id_, status=None, card_limit=None, card_limit_atm=None, country_permission=None,
-                 monetary_account_id_fallback=None):
+    def __init__(self, id_, status=None, card_limit=None, card_limit_atm=None, country_permission=None, monetary_account_id_fallback=None):
         """
         :param id_: The ID of the card that needs to be updated.
         :type id_: int
@@ -1573,6 +1811,7 @@ class CardBatchEntry(BunqModel):
         self._card_limit_atm_field_for_request = card_limit_atm
         self._country_permission_field_for_request = country_permission
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
+
 
     def is_all_field_none(self):
         """
@@ -1668,78 +1907,6 @@ class CardCountryPermission(BunqModel):
         """
 
         return converter.json_to_class(CardCountryPermission, json_str)
-
-
-class CardPinAssignment(BunqModel):
-    """
-    :param _type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
-    :type _type_: str
-    :param _pin_code: The 4 digit PIN to be assigned to this account.
-    :type _pin_code: str
-    :param _monetary_account_id: The ID of the monetary account to assign to
-    this pin for the card.
-    :type _monetary_account_id: int
-    """
-
-    _type_ = None
-    _monetary_account_id = None
-    _type__field_for_request = None
-    _pin_code_field_for_request = None
-    _monetary_account_id_field_for_request = None
-
-    def __init__(self, type_=None, pin_code=None, monetary_account_id=None):
-        """
-        :param type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
-        :type type_: str
-        :param pin_code: The 4 digit PIN to be assigned to this account.
-        :type pin_code: str
-        :param monetary_account_id: The ID of the monetary account to assign to this
-        pin for the card.
-        :type monetary_account_id: int
-        """
-
-        self._type__field_for_request = type_
-        self._pin_code_field_for_request = pin_code
-        self._monetary_account_id_field_for_request = monetary_account_id
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._type_ is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CardPinAssignment
-        """
-
-        return converter.json_to_class(CardPinAssignment, json_str)
 
 
 class CardPrimaryAccountNumber(BunqModel):
@@ -2324,6 +2491,154 @@ class NotificationFilter(BunqModel):
         return converter.json_to_class(NotificationFilter, json_str)
 
 
+class TaxResident(BunqModel):
+    """
+    :param _country: The country of the tax number.
+    :type _country: str
+    :param _tax_number: The tax number.
+    :type _tax_number: str
+    :param _status: The status of the tax number. Either CONFIRMED or
+    UNCONFIRMED.
+    :type _status: str
+    """
+
+    _country = None
+    _tax_number = None
+    _status = None
+    _country_field_for_request = None
+    _tax_number_field_for_request = None
+    _status_field_for_request = None
+
+    def __init__(self, country=None, tax_number=None, status=None):
+        """
+        :param country: The country of the tax number.
+        :type country: str
+        :param tax_number: The tax number.
+        :type tax_number: str
+        :param status: The status of the tax number. Either CONFIRMED or
+        UNCONFIRMED.
+        :type status: str
+        """
+
+        self._country_field_for_request = country
+        self._tax_number_field_for_request = tax_number
+        self._status_field_for_request = status
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
+    def tax_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._tax_number
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._country is not None:
+            return False
+
+        if self._tax_number is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TaxResident
+        """
+
+        return converter.json_to_class(TaxResident, json_str)
+
+
+class CompanyVatNumber(BunqModel):
+    """
+    :param _country: The country of the VAT identification number.
+    :type _country: str
+    :param _value: The VAT identification number number.
+    :type _value: str
+    """
+
+    _country = None
+    _value = None
+    _country_field_for_request = None
+    _value_field_for_request = None
+
+    def __init__(self, country=None, value=None):
+        """
+        :param country: The country of the VAT identification number.
+        :type country: str
+        :param value: The VAT identification number number.
+        :type value: str
+        """
+
+        self._country_field_for_request = country
+        self._value_field_for_request = value
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
+    def value(self):
+        """
+        :rtype: str
+        """
+
+        return self._value
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._country is not None:
+            return False
+
+        if self._value is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CompanyVatNumber
+        """
+
+        return converter.json_to_class(CompanyVatNumber, json_str)
+
+
 class DraftPaymentResponse(BunqModel):
     """
     :param _status: The status with which was responded.
@@ -2414,8 +2729,7 @@ class DraftPaymentEntry(BunqModel):
     _merchant_reference_field_for_request = None
     _attachment_field_for_request = None
 
-    def __init__(self, amount=None, counterparty_alias=None, description=None, merchant_reference=None,
-                 attachment=None):
+    def __init__(self, amount=None, counterparty_alias=None, description=None, merchant_reference=None, attachment=None):
         """
         :param amount: The amount of the payment.
         :type amount: Amount
@@ -2558,6 +2872,7 @@ class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
+
     _Payment = None
     _PaymentBatch = None
 
@@ -2576,7 +2891,6 @@ class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
         """
 
         return self._PaymentBatch
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -2615,43 +2929,6 @@ class DraftPaymentAnchorObject(BunqModel, AnchorObjectInterface):
         return converter.json_to_class(DraftPaymentAnchorObject, json_str)
 
 
-class PaymentBatchAnchoredPayment(BunqModel):
-    """
-    :param _Payment: 
-    :type _Payment: list[endpoint.Payment]
-    """
-
-    _Payment = None
-
-    @property
-    def Payment(self):
-        """
-        :rtype: list[endpoint.Payment]
-        """
-
-        return self._Payment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._Payment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentBatchAnchoredPayment
-        """
-
-        return converter.json_to_class(PaymentBatchAnchoredPayment, json_str)
-
-
 class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _Payment: 
@@ -2662,6 +2939,7 @@ class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
 
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
 
     _Payment = None
     _PaymentBatch = None
@@ -2681,7 +2959,6 @@ class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
         """
 
         return self._PaymentBatch
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -2927,8 +3204,7 @@ class ShareDetailPayment(BunqModel):
     _view_new_events_field_for_request = None
     _budget_field_for_request = None
 
-    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None,
-                 make_draft_payments=None, budget=None):
+    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None, make_draft_payments=None, budget=None):
         """
         :param make_payments: If set to true, the invited user will be able to make
         payments from the shared account.
@@ -3366,6 +3642,7 @@ class EventObject(BunqModel, AnchorObjectInterface):
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
+
     _BunqMeTab = None
     _BunqMeTabResultResponse = None
     _BunqMeFundraiserResult = None
@@ -3618,7 +3895,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         """
 
         return self._TransferwisePayment
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -3851,8 +4127,7 @@ class SchedulePaymentEntry(BunqModel):
     _merchant_reference_field_for_request = None
     _allow_bunqto_field_for_request = None
 
-    def __init__(self, amount=None, counterparty_alias=None, description=None, attachment=None, merchant_reference=None,
-                 allow_bunqto=None):
+    def __init__(self, amount=None, counterparty_alias=None, description=None, attachment=None, merchant_reference=None, allow_bunqto=None):
         """
         :param amount: The Amount to transfer with the Payment. Must be bigger 0 and
         smaller than the MonetaryAccount's balance.
@@ -3965,58 +4240,6 @@ class SchedulePaymentEntry(BunqModel):
         return converter.json_to_class(SchedulePaymentEntry, json_str)
 
 
-class Error(BunqModel):
-    """
-    :param _error_description: The error description (in English).
-    :type _error_description: str
-    :param _error_description_translated: The error description (in the user
-    language).
-    :type _error_description_translated: str
-    """
-
-    _error_description = None
-    _error_description_translated = None
-
-    @property
-    def error_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description
-
-    @property
-    def error_description_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._error_description_translated
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._error_description is not None:
-            return False
-
-        if self._error_description_translated is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Error
-        """
-
-        return converter.json_to_class(Error, json_str)
-
-
 class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _Payment: 
@@ -4027,6 +4250,7 @@ class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
 
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
 
     _Payment = None
     _PaymentBatch = None
@@ -4046,7 +4270,6 @@ class ScheduleInstanceAnchorObject(BunqModel, AnchorObjectInterface):
         """
 
         return self._PaymentBatch
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -4192,6 +4415,183 @@ class LabelCard(BunqModel):
         return converter.json_to_class(LabelCard, json_str)
 
 
+class MasterCardActionReference(BunqModel):
+    """
+    :param _event_id: The id of the event.
+    :type _event_id: int
+    """
+
+    _event_id = None
+
+    @property
+    def event_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._event_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._event_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MasterCardActionReference
+        """
+
+        return converter.json_to_class(MasterCardActionReference, json_str)
+
+
+class AdditionalInformation(BunqModel):
+    """
+    :param _category: The category of the refund, required for chargeback.
+    :type _category: str
+    :param _reason: The reason to refund, required for chargeback.
+    :type _reason: str
+    :param _comment: Comment about the refund.
+    :type _comment: str
+    :param _attachment: The Attachments to attach to the refund request.
+    :type _attachment: list[AttachmentMasterCardActionRefund]
+    :param _terms_and_conditions: Proof that the user acknowledged the terms and
+    conditions for chargebacks.
+    :type _terms_and_conditions: str
+    """
+
+    _category = None
+    _reason = None
+    _comment = None
+    _attachment = None
+    _terms_and_conditions = None
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def comment(self):
+        """
+        :rtype: str
+        """
+
+        return self._comment
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[AttachmentMasterCardActionRefund]
+        """
+
+        return self._attachment
+
+    @property
+    def terms_and_conditions(self):
+        """
+        :rtype: str
+        """
+
+        return self._terms_and_conditions
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._category is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._comment is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._terms_and_conditions is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AdditionalInformation
+        """
+
+        return converter.json_to_class(AdditionalInformation, json_str)
+
+
+class AttachmentMasterCardActionRefund(BunqModel):
+    """
+    :param _id_: The id of the attached Attachment.
+    :type _id_: int
+    """
+
+    _id_ = None
+    _id__field_for_request = None
+
+    def __init__(self, id_):
+        """
+        :param id_: The id of the Attachment.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentMasterCardActionRefund
+        """
+
+        return converter.json_to_class(AttachmentMasterCardActionRefund, json_str)
+
+
 class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface):
     """
     :param _BillingInvoice: 
@@ -4218,6 +4618,7 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
 
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
 
     _BillingInvoice = None
     _DraftPayment = None
@@ -4309,7 +4710,6 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
         """
 
         return self._TransferwisePayment
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -4488,7 +4888,7 @@ class MonetaryAccountProfileFill(BunqModel):
     _method_fill_field_for_request = None
     _issuer_field_for_request = None
 
-    def __init__(self, status, balance_preferred, balance_threshold_low, method_fill, issuer=None):
+    def __init__(self, status, balance_preferred, balance_threshold_low, method_fill=None, issuer=None):
         """
         :param status: The status of the profile.
         :type status: str
@@ -4759,18 +5159,23 @@ class MonetaryAccountSetting(BunqModel):
     :param _restriction_chat: The chat restriction. Possible values are
     ALLOW_INCOMING or BLOCK_INCOMING
     :type _restriction_chat: str
+    :param _sdd_expiration_action: The preference for this monetary account on
+    whether to automatically accept or reject expiring SDDs.
+    :type _sdd_expiration_action: str
     """
 
     _color = None
     _icon = None
     _default_avatar_status = None
     _restriction_chat = None
+    _sdd_expiration_action = None
     _color_field_for_request = None
     _icon_field_for_request = None
     _default_avatar_status_field_for_request = None
     _restriction_chat_field_for_request = None
+    _sdd_expiration_action_field_for_request = None
 
-    def __init__(self, color=None, icon=None, default_avatar_status=None, restriction_chat=None):
+    def __init__(self, color=None, icon=None, default_avatar_status=None, restriction_chat=None, sdd_expiration_action=None):
         """
         :param color: The color chosen for the MonetaryAccount in hexadecimal
         format.
@@ -4783,12 +5188,16 @@ class MonetaryAccountSetting(BunqModel):
         :param restriction_chat: The chat restriction. Possible values are
         ALLOW_INCOMING or BLOCK_INCOMING
         :type restriction_chat: str
+        :param sdd_expiration_action: The preference for this monetary account on
+        whether to automatically accept or reject expiring SDDs.
+        :type sdd_expiration_action: str
         """
 
         self._color_field_for_request = color
         self._icon_field_for_request = icon
         self._default_avatar_status_field_for_request = default_avatar_status
         self._restriction_chat_field_for_request = restriction_chat
+        self._sdd_expiration_action_field_for_request = sdd_expiration_action
 
     @property
     def color(self):
@@ -4822,6 +5231,14 @@ class MonetaryAccountSetting(BunqModel):
 
         return self._restriction_chat
 
+    @property
+    def sdd_expiration_action(self):
+        """
+        :rtype: str
+        """
+
+        return self._sdd_expiration_action
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -4837,6 +5254,9 @@ class MonetaryAccountSetting(BunqModel):
             return False
 
         if self._restriction_chat is not None:
+            return False
+
+        if self._sdd_expiration_action is not None:
             return False
 
         return True
@@ -5198,6 +5618,7 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
 
+
     _BunqMeFundraiserResult = None
     _BunqMeTab = None
     _BunqMeTabResultInquiry = None
@@ -5396,7 +5817,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
         """
 
         return self._User
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -5555,90 +5975,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
         return converter.json_to_class(NotificationAnchorObject, json_str)
 
 
-class TaxResident(BunqModel):
-    """
-    :param _country: The country of the tax number.
-    :type _country: str
-    :param _tax_number: The tax number.
-    :type _tax_number: str
-    :param _status: The status of the tax number. Either CONFIRMED or
-    UNCONFIRMED.
-    :type _status: str
-    """
-
-    _country = None
-    _tax_number = None
-    _status = None
-    _country_field_for_request = None
-    _tax_number_field_for_request = None
-    _status_field_for_request = None
-
-    def __init__(self, country=None, tax_number=None, status=None):
-        """
-        :param country: The country of the tax number.
-        :type country: str
-        :param tax_number: The tax number.
-        :type tax_number: str
-        :param status: The status of the tax number. Either CONFIRMED or
-        UNCONFIRMED.
-        :type status: str
-        """
-
-        self._country_field_for_request = country
-        self._tax_number_field_for_request = tax_number
-        self._status_field_for_request = status
-
-    @property
-    def country(self):
-        """
-        :rtype: str
-        """
-
-        return self._country
-
-    @property
-    def tax_number(self):
-        """
-        :rtype: str
-        """
-
-        return self._tax_number
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._country is not None:
-            return False
-
-        if self._tax_number is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TaxResident
-        """
-
-        return converter.json_to_class(TaxResident, json_str)
-
-
 class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
     """
     :param _UserPerson: 
@@ -5651,6 +5987,7 @@ class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
 
     # Error constants.
     _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
 
     _UserPerson = None
     _UserCompany = None
@@ -5679,7 +6016,6 @@ class UserApiKeyAnchoredUser(BunqModel, AnchorObjectInterface):
         """
 
         return self._UserPaymentServiceProvider
-
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -5853,6 +6189,41 @@ class PermittedDevice(BunqModel):
         """
 
         return converter.json_to_class(PermittedDevice, json_str)
+
+
+class TabAttachment(BunqModel):
+    """
+    :param _id_: The ID of the AttachmentTab you want to attach to the TabItem.
+    :type _id_: int
+    """
+
+    _id__field_for_request = None
+
+    def __init__(self, id_=None):
+        """
+        :param id_: The ID of the AttachmentTab you want to attach to the TabItem.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TabAttachment
+        """
+
+        return converter.json_to_class(TabAttachment, json_str)
 
 
 class TransferwiseRequirementField(BunqModel):
@@ -6287,209 +6658,6 @@ class TransferwiseRequirementFieldGroupValuesAllowed(BunqModel):
         return converter.json_to_class(TransferwiseRequirementFieldGroupValuesAllowed, json_str)
 
 
-class AllocationItem(BunqModel):
-    """
-    :param _alias: The Alias of the party we are allocating money for.
-    :type _alias: Pointer
-    :param _type_: The type of the AllocationItem.
-    :type _type_: str
-    :param _amount: The Amount of the AllocationItem.
-    :type _amount: Amount
-    :param _share_ratio: The share ratio of the AllocationItem.
-    :type _share_ratio: int
-    :param _membership: The membership.
-    :type _membership: endpoint.RegistryMembership
-    """
-
-    _type_ = None
-    _membership = None
-    _amount = None
-    _share_ratio = None
-    _alias_field_for_request = None
-    _type__field_for_request = None
-    _amount_field_for_request = None
-    _share_ratio_field_for_request = None
-
-    def __init__(self, alias=None, type_=None, amount=None, share_ratio=None):
-        """
-        :param alias: The Alias of the party we are allocating money for.
-        :type alias: Pointer
-        :param type_: The type of the AllocationItem.
-        :type type_: str
-        :param amount: The Amount of the AllocationItem.
-        :type amount: Amount
-        :param share_ratio: The share ratio of the AllocationItem.
-        :type share_ratio: int
-        """
-
-        self._alias_field_for_request = alias
-        self._type__field_for_request = type_
-        self._amount_field_for_request = amount
-        self._share_ratio_field_for_request = share_ratio
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def membership(self):
-        """
-        :rtype: endpoint.RegistryMembership
-        """
-
-        return self._membership
-
-    @property
-    def amount(self):
-        """
-        :rtype: Amount
-        """
-
-        return self._amount
-
-    @property
-    def share_ratio(self):
-        """
-        :rtype: int
-        """
-
-        return self._share_ratio
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._type_ is not None:
-            return False
-
-        if self._membership is not None:
-            return False
-
-        if self._amount is not None:
-            return False
-
-        if self._share_ratio is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: AllocationItem
-        """
-
-        return converter.json_to_class(AllocationItem, json_str)
-
-
-class RegistryEntryAttachment(BunqModel):
-    """
-    :param _id_: The id of the attachment.
-    :type _id_: int
-    :param _monetary_account_id: The id of the monetary account to which the
-    attachment belongs.
-    :type _monetary_account_id: int
-    """
-
-    _id_ = None
-    _monetary_account_id = None
-    _id__field_for_request = None
-
-    def __init__(self, id_=None):
-        """
-        :param id_: The id of the attachment we are attaching.
-        :type id_: int
-        """
-
-        self._id__field_for_request = id_
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._monetary_account_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RegistryEntryAttachment
-        """
-
-        return converter.json_to_class(RegistryEntryAttachment, json_str)
-
-
-class RegistryEntryReference(BunqModel):
-    """
-    :param _type_: The object type that will be linked to the RegistryEntry.
-    :type _type_: str
-    :param _id_: The ID of the object that will be used for the RegistryEntry.
-    :type _id_: int
-    """
-
-    _type__field_for_request = None
-    _id__field_for_request = None
-
-    def __init__(self, type_=None, id_=None):
-        """
-        :param type_: The object type that will be linked to the RegistryEntry.
-        :type type_: str
-        :param id_: The ID of the object that will be used for the RegistryEntry.
-        :type id_: int
-        """
-
-        self._type__field_for_request = type_
-        self._id__field_for_request = id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RegistryEntryReference
-        """
-
-        return converter.json_to_class(RegistryEntryReference, json_str)
-
-
 class RegistrySettlementItem(BunqModel):
     """
     :param _amount: The amount of the RegistrySettlementItem.
@@ -6584,8 +6752,6 @@ class RegistrySettlementItem(BunqModel):
         """
 
         return converter.json_to_class(RegistrySettlementItem, json_str)
-
-
 class MonetaryAccountReference(BunqModel):
     """
     :type pointer: Pointer
