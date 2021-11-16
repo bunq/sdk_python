@@ -19,17 +19,13 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-# Get the version from the VERSION file
-with open(path.join(here, 'VERSION'), encoding='utf-8') as f:
-    version = f.read()
-
 setup(
     name='bunq_sdk',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version=version,
+    version='1.14.18',
 
     description='bunq Python SDK',
     long_description=long_description,
