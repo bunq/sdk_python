@@ -1158,10 +1158,13 @@ class Attachment(BunqModel):
     :type _description: str
     :param _content_type: The content type of the attachment's file.
     :type _content_type: str
+    :param _urls: The URLs where the file can be downloaded.
+    :type _urls: list[AttachmentUrl]
     """
 
     _description = None
     _content_type = None
+    _urls = None
 
     @property
     def description(self):
@@ -1179,6 +1182,14 @@ class Attachment(BunqModel):
 
         return self._content_type
 
+    @property
+    def urls(self):
+        """
+        :rtype: list[AttachmentUrl]
+        """
+
+        return self._urls
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -1188,6 +1199,9 @@ class Attachment(BunqModel):
             return False
 
         if self._content_type is not None:
+            return False
+
+        if self._urls is not None:
             return False
 
         return True
@@ -1201,6 +1215,57 @@ class Attachment(BunqModel):
         """
 
         return converter.json_to_class(Attachment, json_str)
+
+
+class AttachmentUrl(BunqModel):
+    """
+    :param _type_: The file type of attachment.
+    :type _type_: str
+    :param _url: The URL where the attachment can be downloaded.
+    :type _url: str
+    """
+
+    _type_ = None
+    _url = None
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def url(self):
+        """
+        :rtype: str
+        """
+
+        return self._url
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._url is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentUrl
+        """
+
+        return converter.json_to_class(AttachmentUrl, json_str)
 
 
 class AttachmentMonetaryAccountPayment(BunqModel):
