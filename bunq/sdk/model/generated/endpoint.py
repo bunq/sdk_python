@@ -6317,6 +6317,9 @@ class Card(BunqModel):
     :type _expiry_date: str
     :param _name_on_card: The user's name on the card.
     :type _name_on_card: str
+    :param _payment_account_reference: The payment account reference number
+    associated with the card.
+    :type _payment_account_reference: str
     :param _label_monetary_account_ordered: The monetary account this card was
     ordered on and the label user that owns the card.
     :type _label_monetary_account_ordered: object_.MonetaryAccountReference
@@ -6368,6 +6371,7 @@ class Card(BunqModel):
     _expiry_date = None
     _name_on_card = None
     _primary_account_numbers = None
+    _payment_account_reference = None
     _card_limit = None
     _card_limit_atm = None
     _country_permission = None
@@ -6680,6 +6684,14 @@ cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback
         return self._primary_account_numbers
 
     @property
+    def payment_account_reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._payment_account_reference
+
+    @property
     def card_limit(self):
         """
         :rtype: object_.Amount
@@ -6804,6 +6816,9 @@ cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback
             return False
 
         if self._primary_account_numbers is not None:
+            return False
+
+        if self._payment_account_reference is not None:
             return False
 
         if self._card_limit is not None:
