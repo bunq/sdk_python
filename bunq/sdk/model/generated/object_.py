@@ -197,6 +197,8 @@ class InvoiceItemGroup(BunqModel):
 
 class InvoiceItem(BunqModel):
     """
+    :param _id_: The id of the invoice item.
+    :type _id_: int
     :param _billing_date: The billing date of the item.
     :type _billing_date: str
     :param _type_description: The price description.
@@ -217,6 +219,7 @@ class InvoiceItem(BunqModel):
     :type _total_vat_inclusive: Amount
     """
 
+    _id_ = None
     _billing_date = None
     _type_description = None
     _type_description_translated = None
@@ -226,6 +229,14 @@ class InvoiceItem(BunqModel):
     _quantity = None
     _total_vat_exclusive = None
     _total_vat_inclusive = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
 
     @property
     def billing_date(self):
@@ -303,6 +314,9 @@ class InvoiceItem(BunqModel):
         """
         :rtype: bool
         """
+
+        if self._id_ is not None:
+            return False
 
         if self._billing_date is not None:
             return False
