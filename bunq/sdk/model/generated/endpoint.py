@@ -18649,14 +18649,10 @@ class ExportRib(BunqModel):
         return converter.json_to_class(ExportRib, json_str)
 
 
-class ExportStatementCard(BunqModel):
+class ExportStatementCardCsv(BunqModel):
     """
-    Used to create new and read existing card statement exports. Statement
-    exports can be created in either CSV or PDF file format.
+    Used to serialize ExportStatementCardCsv
     
-    :param _statement_format: The format type of statement. Allowed values: CSV,
-    PDF.
-    :type _statement_format: str
     :param _date_start: The date from when this statement shows transactions.
     :type _date_start: str
     :param _date_end: The date until which statement shows transactions.
@@ -18676,19 +18672,18 @@ class ExportStatementCard(BunqModel):
     """
 
     # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/card/{}/card-statement"
-    _ENDPOINT_URL_READ = "user/{}/card/{}/card-statement/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/card/{}/card-statement"
-    _ENDPOINT_URL_DELETE = "user/{}/card/{}/card-statement/{}"
+    _ENDPOINT_URL_CREATE = "user/{}/card/{}/export-statement-card-csv"
+    _ENDPOINT_URL_READ = "user/{}/card/{}/export-statement-card-csv/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/card/{}/export-statement-card-csv"
+    _ENDPOINT_URL_DELETE = "user/{}/card/{}/export-statement-card-csv/{}"
 
     # Field constants.
-    FIELD_STATEMENT_FORMAT = "statement_format"
     FIELD_DATE_START = "date_start"
     FIELD_DATE_END = "date_end"
     FIELD_REGIONAL_FORMAT = "regional_format"
 
     # Object type.
-    _OBJECT_TYPE_GET = "ExportStatementCard"
+    _OBJECT_TYPE_GET = "ExportStatementCardCsv"
 
     _id_ = None
     _created = None
@@ -18698,16 +18693,12 @@ class ExportStatementCard(BunqModel):
     _status = None
     _regional_format = None
     _card_id = None
-    _statement_format_field_for_request = None
     _date_start_field_for_request = None
     _date_end_field_for_request = None
     _regional_format_field_for_request = None
 
-    def __init__(self, statement_format, date_start, date_end, regional_format=None):
+    def __init__(self, date_start, date_end, regional_format):
         """
-        :param statement_format: The format type of statement. Allowed values: CSV,
-        PDF.
-        :type statement_format: str
         :param date_start: The start date for making statements.
         :type date_start: str
         :param date_end: The end date for making statements.
@@ -18717,19 +18708,15 @@ class ExportStatementCard(BunqModel):
         :type regional_format: str
         """
 
-        self._statement_format_field_for_request = statement_format
         self._date_start_field_for_request = date_start
         self._date_end_field_for_request = date_end
         self._regional_format_field_for_request = regional_format
 
     @classmethod
-    def create(cls,card_id, statement_format, date_start, date_end, regional_format=None, custom_headers=None):
+    def create(cls,card_id, date_start, date_end, regional_format, custom_headers=None):
         """
         :type user_id: int
         :type card_id: int
-        :param statement_format: The format type of statement. Allowed values:
-        CSV, PDF.
-        :type statement_format: str
         :param date_start: The start date for making statements.
         :type date_start: str
         :param date_end: The end date for making statements.
@@ -18747,7 +18734,6 @@ class ExportStatementCard(BunqModel):
             custom_headers = {}
 
         request_map = {
-cls.FIELD_STATEMENT_FORMAT : statement_format,
 cls.FIELD_DATE_START : date_start,
 cls.FIELD_DATE_END : date_end,
 cls.FIELD_REGIONAL_FORMAT : regional_format
@@ -18763,6 +18749,473 @@ cls.FIELD_REGIONAL_FORMAT : regional_format
         return BunqResponseInt.cast_from_bunq_response(
             cls._process_for_id(response_raw)
         )
+
+    @classmethod
+    def get(cls, card_id,  export_statement_card_csv_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type card_id: int
+        :type export_statement_card_csv_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseExportStatementCardCsv
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), card_id, export_statement_card_csv_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseExportStatementCardCsv.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls,card_id, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseExportStatementCardCsvList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseExportStatementCardCsvList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def delete(cls, card_id,  export_statement_card_csv_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :type export_statement_card_csv_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), card_id, export_statement_card_csv_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def date_start(self):
+        """
+        :rtype: str
+        """
+
+        return self._date_start
+
+    @property
+    def date_end(self):
+        """
+        :rtype: str
+        """
+
+        return self._date_end
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def regional_format(self):
+        """
+        :rtype: str
+        """
+
+        return self._regional_format
+
+    @property
+    def card_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._card_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._date_start is not None:
+            return False
+
+        if self._date_end is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._regional_format is not None:
+            return False
+
+        if self._card_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ExportStatementCardCsv
+        """
+
+        return converter.json_to_class(ExportStatementCardCsv, json_str)
+
+
+class ExportStatementCardPdf(BunqModel):
+    """
+    Used to serialize ExportStatementCardPdf
+    
+    :param _date_start: The date from when this statement shows transactions.
+    :type _date_start: str
+    :param _date_end: The date until which statement shows transactions.
+    :type _date_end: str
+    :param _id_: The id of the customer statement model.
+    :type _id_: int
+    :param _created: The timestamp of the statement model's creation.
+    :type _created: str
+    :param _updated: The timestamp of the statement model's last update.
+    :type _updated: str
+    :param _status: The status of the export.
+    :type _status: str
+    :param _card_id: The card for which this statement was created.
+    :type _card_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/card/{}/export-statement-card-pdf"
+    _ENDPOINT_URL_READ = "user/{}/card/{}/export-statement-card-pdf/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/card/{}/export-statement-card-pdf"
+    _ENDPOINT_URL_DELETE = "user/{}/card/{}/export-statement-card-pdf/{}"
+
+    # Field constants.
+    FIELD_DATE_START = "date_start"
+    FIELD_DATE_END = "date_end"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ExportStatementCardPdf"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _date_start = None
+    _date_end = None
+    _status = None
+    _card_id = None
+    _date_start_field_for_request = None
+    _date_end_field_for_request = None
+
+    def __init__(self, date_start, date_end):
+        """
+        :param date_start: The start date for making statements.
+        :type date_start: str
+        :param date_end: The end date for making statements.
+        :type date_end: str
+        """
+
+        self._date_start_field_for_request = date_start
+        self._date_end_field_for_request = date_end
+
+    @classmethod
+    def create(cls,card_id, date_start, date_end, custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :param date_start: The start date for making statements.
+        :type date_start: str
+        :param date_end: The end date for making statements.
+        :type date_end: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_DATE_START : date_start,
+cls.FIELD_DATE_END : date_end
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls, card_id,  export_statement_card_pdf_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type card_id: int
+        :type export_statement_card_pdf_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseExportStatementCardPdf
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), card_id, export_statement_card_pdf_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseExportStatementCardPdf.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls,card_id, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseExportStatementCardPdfList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseExportStatementCardPdfList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def delete(cls, card_id,  export_statement_card_pdf_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :type export_statement_card_pdf_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), card_id, export_statement_card_pdf_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def date_start(self):
+        """
+        :rtype: str
+        """
+
+        return self._date_start
+
+    @property
+    def date_end(self):
+        """
+        :rtype: str
+        """
+
+        return self._date_end
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def card_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._card_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._date_start is not None:
+            return False
+
+        if self._date_end is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._card_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ExportStatementCardPdf
+        """
+
+        return converter.json_to_class(ExportStatementCardPdf, json_str)
+
+
+class ExportStatementCard(BunqModel):
+    """
+    Used to create new and read existing card statement exports. Statement
+    exports can be created in either CSV or PDF file format.
+    
+    :param _id_: The id of the customer statement model.
+    :type _id_: int
+    :param _created: The timestamp of the statement model's creation.
+    :type _created: str
+    :param _updated: The timestamp of the statement model's last update.
+    :type _updated: str
+    :param _date_start: The date from when this statement shows transactions.
+    :type _date_start: str
+    :param _date_end: The date until which statement shows transactions.
+    :type _date_end: str
+    :param _status: The status of the export.
+    :type _status: str
+    :param _regional_format: The regional format of a CSV statement.
+    :type _regional_format: str
+    :param _card_id: The card for which this statement was created.
+    :type _card_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/card/{}/export-statement-card/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/card/{}/export-statement-card"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ExportStatementCard"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _date_start = None
+    _date_end = None
+    _status = None
+    _regional_format = None
+    _card_id = None
 
     @classmethod
     def get(cls, card_id,  export_statement_card_id, custom_headers=None):
@@ -18810,28 +19263,6 @@ cls.FIELD_REGIONAL_FORMAT : regional_format
 
         return BunqResponseExportStatementCardList.cast_from_bunq_response(
             cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def delete(cls, card_id,  export_statement_card_id, custom_headers=None):
-        """
-        :type user_id: int
-        :type card_id: int
-        :type export_statement_card_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNone
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), card_id, export_statement_card_id)
-        response_raw = api_client.delete(endpoint_url, custom_headers)
-
-        return BunqResponseNone.cast_from_bunq_response(
-            BunqResponse(None, response_raw.headers)
         )
 
     @property
@@ -18949,17 +19380,17 @@ class ExportStatementCardContent(BunqModel):
     """
 
     # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/card/{}/card-statement/{}/content"
+    _ENDPOINT_URL_LISTING = "user/{}/card/{}/export-statement-card/{}/content"
 
     # Object type.
     _OBJECT_TYPE_GET = "ExportStatementCardContent"
 
     @classmethod
-    def list(cls, card_id, card_statement_id, custom_headers=None):
+    def list(cls, card_id, export_statement_card_id, custom_headers=None):
         """
         :type user_id: int
         :type card_id: int
-        :type card_statement_id: int
+        :type export_statement_card_id: int
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseBytes
@@ -18969,7 +19400,7 @@ class ExportStatementCardContent(BunqModel):
             custom_headers = {}
 
         api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id, card_statement_id)
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id, export_statement_card_id)
         response_raw = api_client.get(endpoint_url, {}, custom_headers)
 
         return BunqResponseBytes.cast_from_bunq_response(
@@ -40328,6 +40759,46 @@ class BunqResponseExportRibList(BunqResponse):
     def value(self):
         """
         :rtype: list[ExportRib]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseExportStatementCardCsv(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: ExportStatementCardCsv
+        """
+ 
+        return super().value
+
+    
+class BunqResponseExportStatementCardCsvList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[ExportStatementCardCsv]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseExportStatementCardPdf(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: ExportStatementCardPdf
+        """
+ 
+        return super().value
+
+    
+class BunqResponseExportStatementCardPdfList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[ExportStatementCardPdf]
         """
  
         return super().value
