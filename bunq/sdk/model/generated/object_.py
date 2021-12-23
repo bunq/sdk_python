@@ -946,6 +946,9 @@ class Address(BunqModel):
     :type _mailbox_name: str
     :param _province: The province according to local standard.
     :type _province: str
+    :param _is_user_address_updated: To show whether user created or updated her
+    address for app event listing.
+    :type _is_user_address_updated: bool
     """
 
     _street = None
@@ -957,6 +960,7 @@ class Address(BunqModel):
     _province = None
     _extra = None
     _mailbox_name = None
+    _is_user_address_updated = None
     _street_field_for_request = None
     _house_number_field_for_request = None
     _po_box_field_for_request = None
@@ -1069,6 +1073,14 @@ class Address(BunqModel):
 
         return self._mailbox_name
 
+    @property
+    def is_user_address_updated(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_user_address_updated
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -1099,6 +1111,9 @@ class Address(BunqModel):
             return False
 
         if self._mailbox_name is not None:
+            return False
+
+        if self._is_user_address_updated is not None:
             return False
 
         return True
