@@ -4468,6 +4468,9 @@ class BunqMeTabEntry(BunqModel):
     :type _status: str
     :param _merchant_available: List of available merchants.
     :type _merchant_available: list[object_.BunqMeMerchantAvailable]
+    :param _invite_profile_name: Provided if the user has enabled their invite
+    link.
+    :type _invite_profile_name: str
     """
 
     # Field constants.
@@ -4483,6 +4486,7 @@ class BunqMeTabEntry(BunqModel):
     _status = None
     _redirect_url = None
     _merchant_available = None
+    _invite_profile_name = None
     _amount_inquired_field_for_request = None
     _description_field_for_request = None
     _redirect_url_field_for_request = None
@@ -4561,6 +4565,14 @@ class BunqMeTabEntry(BunqModel):
 
         return self._merchant_available
 
+    @property
+    def invite_profile_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._invite_profile_name
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -4585,6 +4597,9 @@ class BunqMeTabEntry(BunqModel):
             return False
 
         if self._merchant_available is not None:
+            return False
+
+        if self._invite_profile_name is not None:
             return False
 
         return True
