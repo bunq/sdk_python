@@ -1133,57 +1133,6 @@ class InvoiceByUser(BunqModel):
         return converter.json_to_class(InvoiceByUser, json_str)
 
 
-class AttachmentContent(BunqModel):
-    """
-    Fetch the raw content of an attachment.
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "attachment-content/{}"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "AttachmentContent"
-
-    @classmethod
-    def get(cls,  attachment_content_uuid, custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type attachment_content_uuid: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseAttachmentContent
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(attachment_content_uuid)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseAttachmentContent.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: AttachmentContent
-        """
-
-        return converter.json_to_class(AttachmentContent, json_str)
-
-
 class AttachmentConversationContent(BunqModel):
     """
     Fetch the raw content of an attachment with given ID. The raw content is the
@@ -39824,16 +39773,6 @@ class BunqResponseInvoiceByUser(BunqResponse):
     def value(self):
         """
         :rtype: InvoiceByUser
-        """
- 
-        return super().value
-
-    
-class BunqResponseAttachmentContent(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: AttachmentContent
         """
  
         return super().value
