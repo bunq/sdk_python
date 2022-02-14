@@ -23543,6 +23543,8 @@ class MonetaryAccountInvestment(BunqModel):
     :type _display_name: str
     :param _setting: The settings of the MonetaryAccountInvestment.
     :type _setting: object_.MonetaryAccountSetting
+    :param _birdee_investment_portfolio: The Birdee investment portfolio.
+    :type _birdee_investment_portfolio: BirdeeInvestmentPortfolio
     :param _id_: The id of the MonetaryAccountInvestment.
     :type _id_: int
     :param _created: The timestamp of the MonetaryAccountInvestment's creation.
@@ -23579,6 +23581,7 @@ class MonetaryAccountInvestment(BunqModel):
     FIELD_REASON_DESCRIPTION = "reason_description"
     FIELD_DISPLAY_NAME = "display_name"
     FIELD_SETTING = "setting"
+    FIELD_BIRDEE_INVESTMENT_PORTFOLIO = "birdee_investment_portfolio"
 
 
     _id_ = None
@@ -23611,8 +23614,9 @@ class MonetaryAccountInvestment(BunqModel):
     _reason_description_field_for_request = None
     _display_name_field_for_request = None
     _setting_field_for_request = None
+    _birdee_investment_portfolio_field_for_request = None
 
-    def __init__(self, currency, provider, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None):
+    def __init__(self, currency, provider, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, birdee_investment_portfolio=None):
         """
         :param currency: The currency of the MonetaryAccountInvestment as an ISO
         4217 formatted currency code.
@@ -23654,6 +23658,8 @@ class MonetaryAccountInvestment(BunqModel):
         :type display_name: str
         :param setting: The settings of the MonetaryAccountInvestment.
         :type setting: object_.MonetaryAccountSetting
+        :param birdee_investment_portfolio: The Birdee investment portfolio.
+        :type birdee_investment_portfolio: BirdeeInvestmentPortfolio
         """
 
         self._currency_field_for_request = currency
@@ -23667,6 +23673,7 @@ class MonetaryAccountInvestment(BunqModel):
         self._reason_description_field_for_request = reason_description
         self._display_name_field_for_request = display_name
         self._setting_field_for_request = setting
+        self._birdee_investment_portfolio_field_for_request = birdee_investment_portfolio
 
 
 
@@ -23895,6 +23902,500 @@ class MonetaryAccountInvestment(BunqModel):
         """
 
         return converter.json_to_class(MonetaryAccountInvestment, json_str)
+
+
+class BirdeeInvestmentPortfolio(BunqModel):
+    """
+    Endpoint for interacting with the investment portfolio opened at Birdee.
+    
+    :param _risk_profile_type: The type of risk profile associated with the
+    portfolio.
+    :type _risk_profile_type: str
+    :param _investment_theme: The investment theme.
+    :type _investment_theme: str
+    :param _name: The name associated with the investment portfolio.
+    :type _name: str
+    :param _goal: The investment goal.
+    :type _goal: object_.BirdeeInvestmentPortfolioGoal
+    :param _status: Status of the portfolio.
+    :type _status: str
+    :param _number_of_strategy_change_annual_maximum: Maximum number of strategy
+    changes in a year.
+    :type _number_of_strategy_change_annual_maximum: int
+    :param _number_of_strategy_change_annual_used: Maximum number of strategy
+    changes used.
+    :type _number_of_strategy_change_annual_used: int
+    :param _balance: The investment portfolio balance.
+    :type _balance: BirdeeInvestmentPortfolioBalance
+    :param _allocations: The allocations of the investment portfolio.
+    :type _allocations: list[BirdeePortfolioAllocation]
+    """
+
+    # Field constants.
+    FIELD_RISK_PROFILE_TYPE = "risk_profile_type"
+    FIELD_INVESTMENT_THEME = "investment_theme"
+    FIELD_NAME = "name"
+    FIELD_GOAL = "goal"
+
+
+    _status = None
+    _risk_profile_type = None
+    _investment_theme = None
+    _number_of_strategy_change_annual_maximum = None
+    _number_of_strategy_change_annual_used = None
+    _name = None
+    _goal = None
+    _balance = None
+    _allocations = None
+    _risk_profile_type_field_for_request = None
+    _investment_theme_field_for_request = None
+    _name_field_for_request = None
+    _goal_field_for_request = None
+
+    def __init__(self, risk_profile_type=None, investment_theme=None, name=None, goal=None):
+        """
+        :param risk_profile_type: The type of risk profile associated with the
+        portfolio.
+        :type risk_profile_type: str
+        :param investment_theme: The investment theme.
+        :type investment_theme: str
+        :param name: The name associated with the investment portfolio.
+        :type name: str
+        :param goal: The investment goal.
+        :type goal: object_.BirdeeInvestmentPortfolioGoal
+        """
+
+        self._risk_profile_type_field_for_request = risk_profile_type
+        self._investment_theme_field_for_request = investment_theme
+        self._name_field_for_request = name
+        self._goal_field_for_request = goal
+
+
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def risk_profile_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._risk_profile_type
+
+    @property
+    def investment_theme(self):
+        """
+        :rtype: str
+        """
+
+        return self._investment_theme
+
+    @property
+    def number_of_strategy_change_annual_maximum(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_strategy_change_annual_maximum
+
+    @property
+    def number_of_strategy_change_annual_used(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_strategy_change_annual_used
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def goal(self):
+        """
+        :rtype: object_.BirdeeInvestmentPortfolioGoal
+        """
+
+        return self._goal
+
+    @property
+    def balance(self):
+        """
+        :rtype: BirdeeInvestmentPortfolioBalance
+        """
+
+        return self._balance
+
+    @property
+    def allocations(self):
+        """
+        :rtype: list[BirdeePortfolioAllocation]
+        """
+
+        return self._allocations
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._risk_profile_type is not None:
+            return False
+
+        if self._investment_theme is not None:
+            return False
+
+        if self._number_of_strategy_change_annual_maximum is not None:
+            return False
+
+        if self._number_of_strategy_change_annual_used is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._goal is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._allocations is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeeInvestmentPortfolio
+        """
+
+        return converter.json_to_class(BirdeeInvestmentPortfolio, json_str)
+
+
+class BirdeeInvestmentPortfolioBalance(BunqModel):
+    """
+    Endpoint for interacting with the birdee investment portfolio balance..
+    
+    :param _amount_available: The current valuation of the portfolio, minus any
+    amount pending withdrawal.
+    :type _amount_available: object_.Amount
+    :param _amount_deposit_total: The total amount deposited.
+    :type _amount_deposit_total: object_.Amount
+    :param _amount_withdrawal_total: The total amount withdrawn.
+    :type _amount_withdrawal_total: object_.Amount
+    :param _amount_fee_total: The total fee amount.
+    :type _amount_fee_total: object_.Amount
+    :param _amount_profit: The difference between the netto deposited amount and
+    the current valuation.
+    :type _amount_profit: object_.Amount
+    :param _amount_deposit_pending: The amount that's sent to Birdee, but
+    pending investment on the portfolio.
+    :type _amount_deposit_pending: object_.Amount
+    :param _amount_withdrawal_pending: The amount that's sent to Birdee, but
+    pending withdrawal.
+    :type _amount_withdrawal_pending: object_.Amount
+    """
+
+    _amount_available = None
+    _amount_deposit_total = None
+    _amount_withdrawal_total = None
+    _amount_fee_total = None
+    _amount_profit = None
+    _amount_deposit_pending = None
+    _amount_withdrawal_pending = None
+
+    @property
+    def amount_available(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_available
+
+    @property
+    def amount_deposit_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_deposit_total
+
+    @property
+    def amount_withdrawal_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_withdrawal_total
+
+    @property
+    def amount_fee_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_fee_total
+
+    @property
+    def amount_profit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_profit
+
+    @property
+    def amount_deposit_pending(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_deposit_pending
+
+    @property
+    def amount_withdrawal_pending(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_withdrawal_pending
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount_available is not None:
+            return False
+
+        if self._amount_deposit_total is not None:
+            return False
+
+        if self._amount_withdrawal_total is not None:
+            return False
+
+        if self._amount_fee_total is not None:
+            return False
+
+        if self._amount_profit is not None:
+            return False
+
+        if self._amount_deposit_pending is not None:
+            return False
+
+        if self._amount_withdrawal_pending is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeeInvestmentPortfolioBalance
+        """
+
+        return converter.json_to_class(BirdeeInvestmentPortfolioBalance, json_str)
+
+
+class BirdeePortfolioAllocation(BunqModel):
+    """
+    Endpoint for viewing the allocations of the model portfolios Birdee offers.
+    
+    :param _instrument_currency: Currency of the instrument.
+    :type _instrument_currency: str
+    :param _instrument_asset_class: Asset Class of the instrument.
+    :type _instrument_asset_class: str
+    :param _instrument_asset_class_name: Name of the asset class.
+    :type _instrument_asset_class_name: str
+    :param _instrument_isin: ISIN code of the instrument.
+    :type _instrument_isin: str
+    :param _instrument_name: Name of the instrument.
+    :type _instrument_name: str
+    :param _instrument_region_name: Name of the geographical region covered by
+    the instrument
+    :type _instrument_region_name: str
+    :param _instrument_key_information_document_uri: Key Information Document of
+    the instrument.
+    :type _instrument_key_information_document_uri: str
+    :param _weight: Weight of the financial instrument in the model portfolio.
+    :type _weight: str
+    :param _quantity: Quantity of the financial instrument in the portfolio.
+    :type _quantity: str
+    :param _price: Unit price of the financial instrument.
+    :type _price: str
+    :param _amount: Monetary amount of the financial instrument in the
+    portfolio.
+    :type _amount: str
+    """
+
+    _instrument_currency = None
+    _instrument_asset_class = None
+    _instrument_asset_class_name = None
+    _instrument_isin = None
+    _instrument_name = None
+    _instrument_region_name = None
+    _instrument_key_information_document_uri = None
+    _weight = None
+    _quantity = None
+    _price = None
+    _amount = None
+
+    @property
+    def instrument_currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_currency
+
+    @property
+    def instrument_asset_class(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_asset_class
+
+    @property
+    def instrument_asset_class_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_asset_class_name
+
+    @property
+    def instrument_isin(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_isin
+
+    @property
+    def instrument_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_name
+
+    @property
+    def instrument_region_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_region_name
+
+    @property
+    def instrument_key_information_document_uri(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_key_information_document_uri
+
+    @property
+    def weight(self):
+        """
+        :rtype: str
+        """
+
+        return self._weight
+
+    @property
+    def quantity(self):
+        """
+        :rtype: str
+        """
+
+        return self._quantity
+
+    @property
+    def price(self):
+        """
+        :rtype: str
+        """
+
+        return self._price
+
+    @property
+    def amount(self):
+        """
+        :rtype: str
+        """
+
+        return self._amount
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._instrument_currency is not None:
+            return False
+
+        if self._instrument_asset_class is not None:
+            return False
+
+        if self._instrument_asset_class_name is not None:
+            return False
+
+        if self._instrument_isin is not None:
+            return False
+
+        if self._instrument_name is not None:
+            return False
+
+        if self._instrument_region_name is not None:
+            return False
+
+        if self._instrument_key_information_document_uri is not None:
+            return False
+
+        if self._weight is not None:
+            return False
+
+        if self._quantity is not None:
+            return False
+
+        if self._price is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeePortfolioAllocation
+        """
+
+        return converter.json_to_class(BirdeePortfolioAllocation, json_str)
 
 
 class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(BunqModel):
