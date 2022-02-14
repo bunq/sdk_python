@@ -5426,6 +5426,70 @@ class CoOwner(BunqModel):
         return converter.json_to_class(CoOwner, json_str)
 
 
+class BirdeeInvestmentPortfolioGoal(BunqModel):
+    """
+    :param _amount_target: The investment goal amount.
+    :type _amount_target: Amount
+    :param _time_end: The investment goal end time.
+    :type _time_end: str
+    """
+
+    _amount_target = None
+    _time_end = None
+    _amount_target_field_for_request = None
+    _time_end_field_for_request = None
+
+    def __init__(self, amount_target=None, time_end=None):
+        """
+        :param amount_target: The investment goal amount.
+        :type amount_target: Amount
+        :param time_end: The investment goal end time.
+        :type time_end: str
+        """
+
+        self._amount_target_field_for_request = amount_target
+        self._time_end_field_for_request = time_end
+
+    @property
+    def amount_target(self):
+        """
+        :rtype: Amount
+        """
+
+        return self._amount_target
+
+    @property
+    def time_end(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_end
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount_target is not None:
+            return False
+
+        if self._time_end is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeeInvestmentPortfolioGoal
+        """
+
+        return converter.json_to_class(BirdeeInvestmentPortfolioGoal, json_str)
+
+
 class NotificationFilterPush(BunqModel):
     """
     :param _category: The notification category that will match this
