@@ -4649,7 +4649,7 @@ class AttachmentMasterCardActionRefund(BunqModel):
     _id_ = None
     _id__field_for_request = None
 
-    def __init__(self, id_):
+    def __init__(self, id_=None):
         """
         :param id_: The id of the Attachment.
         :type id_: int
