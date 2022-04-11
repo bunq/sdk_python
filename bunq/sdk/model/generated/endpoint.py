@@ -5805,6 +5805,132 @@ cls.FIELD_ORDER_STATUS : order_status
         return converter.json_to_class(CardDebit, json_str)
 
 
+class CardDigitalPrimaryAccountNumber(BunqModel):
+    """
+    View for getting the dPAN of the card.
+    
+    :param _digital_primary_account_number: The digital PAN of the card.
+    :type _digital_primary_account_number: str
+    :param _expiry_date: The expiry date.
+    :type _expiry_date: str
+    :param _sequence_number: The sequence number.
+    :type _sequence_number: str
+    :param _token_unique_reference: Unique reference given by MDES.
+    :type _token_unique_reference: str
+    :param _token_status_code: Status code of the token given by MDES.
+    :type _token_status_code: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/card/{}/digital-primary-account-number"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "CardDigitalPrimaryAccountNumber"
+
+    _digital_primary_account_number = None
+    _expiry_date = None
+    _sequence_number = None
+    _token_unique_reference = None
+    _token_status_code = None
+
+    @classmethod
+    def list(cls,card_id, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type card_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCardDigitalPrimaryAccountNumberList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), card_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseCardDigitalPrimaryAccountNumberList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def digital_primary_account_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._digital_primary_account_number
+
+    @property
+    def expiry_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_date
+
+    @property
+    def sequence_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._sequence_number
+
+    @property
+    def token_unique_reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._token_unique_reference
+
+    @property
+    def token_status_code(self):
+        """
+        :rtype: str
+        """
+
+        return self._token_status_code
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._digital_primary_account_number is not None:
+            return False
+
+        if self._expiry_date is not None:
+            return False
+
+        if self._sequence_number is not None:
+            return False
+
+        if self._token_unique_reference is not None:
+            return False
+
+        if self._token_status_code is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardDigitalPrimaryAccountNumber
+        """
+
+        return converter.json_to_class(CardDigitalPrimaryAccountNumber, json_str)
+
+
 class CardGeneratedCvc2(BunqModel):
     """
     Endpoint for generating and retrieving a new CVC2 code.
@@ -38512,6 +38638,8 @@ class TreeProgress(BunqModel):
     :type _number_of_tree: float
     :param _progress_tree_next: The progress towards the next tree.
     :type _progress_tree_next: float
+    :param _url_invite_profile: URL of the invite profile.
+    :type _url_invite_profile: str
     :param _label_user: The label of the user the progress belongs to.
     :type _label_user: object_.LabelUser
     """
@@ -38524,6 +38652,7 @@ class TreeProgress(BunqModel):
 
     _number_of_tree = None
     _progress_tree_next = None
+    _url_invite_profile = None
     _label_user = None
 
     @classmethod
@@ -38567,6 +38696,14 @@ class TreeProgress(BunqModel):
         return self._progress_tree_next
 
     @property
+    def url_invite_profile(self):
+        """
+        :rtype: str
+        """
+
+        return self._url_invite_profile
+
+    @property
     def label_user(self):
         """
         :rtype: object_.LabelUser
@@ -38583,6 +38720,9 @@ class TreeProgress(BunqModel):
             return False
 
         if self._progress_tree_next is not None:
+            return False
+
+        if self._url_invite_profile is not None:
             return False
 
         if self._label_user is not None:
@@ -40985,6 +41125,16 @@ class BunqResponseCardDebit(BunqResponse):
     def value(self):
         """
         :rtype: CardDebit
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCardDigitalPrimaryAccountNumberList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[CardDigitalPrimaryAccountNumber]
         """
  
         return super().value
