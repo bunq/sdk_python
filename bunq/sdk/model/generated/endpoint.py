@@ -33028,11 +33028,6 @@ class UserPerson(BunqModel):
     :param _date_of_birth: The person's date of birth. Accepts ISO8601 date
     formats.
     :type _date_of_birth: str
-    :param _place_of_birth: The person's place of birth.
-    :type _place_of_birth: str
-    :param _country_of_birth: The person's country of birth. Formatted as a SO
-    3166-1 alpha-2 country code.
-    :type _country_of_birth: str
     :param _nationality: The person's nationality. Formatted as a SO 3166-1
     alpha-2 country code.
     :type _nationality: str
@@ -33076,6 +33071,11 @@ class UserPerson(BunqModel):
     :type _legal_name: str
     :param _alias: The aliases of the user.
     :type _alias: list[object_.Pointer]
+    :param _place_of_birth: The person's place of birth.
+    :type _place_of_birth: str
+    :param _country_of_birth: The person's country of birth. Formatted as a SO
+    3166-1 alpha-2 country code.
+    :type _country_of_birth: str
     :param _avatar: The user's avatar.
     :type _avatar: object_.Avatar
     :param _version_terms_of_service: The version of the terms of service
@@ -33107,8 +33107,6 @@ class UserPerson(BunqModel):
     FIELD_DOCUMENT_FRONT_ATTACHMENT_ID = "document_front_attachment_id"
     FIELD_DOCUMENT_BACK_ATTACHMENT_ID = "document_back_attachment_id"
     FIELD_DATE_OF_BIRTH = "date_of_birth"
-    FIELD_PLACE_OF_BIRTH = "place_of_birth"
-    FIELD_COUNTRY_OF_BIRTH = "country_of_birth"
     FIELD_NATIONALITY = "nationality"
     FIELD_LANGUAGE = "language"
     FIELD_REGION = "region"
@@ -33166,8 +33164,6 @@ class UserPerson(BunqModel):
     _document_front_attachment_id_field_for_request = None
     _document_back_attachment_id_field_for_request = None
     _date_of_birth_field_for_request = None
-    _place_of_birth_field_for_request = None
-    _country_of_birth_field_for_request = None
     _nationality_field_for_request = None
     _language_field_for_request = None
     _region_field_for_request = None
@@ -33179,7 +33175,7 @@ class UserPerson(BunqModel):
     _daily_limit_without_confirmation_login_field_for_request = None
     _display_name_field_for_request = None
 
-    def __init__(self, status=None, document_back_attachment_id=None, tax_resident=None, address_postal=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, sub_status=None, gender=None, address_main=None, region=None, language=None, nationality=None, country_of_birth=None, place_of_birth=None, date_of_birth=None, document_front_attachment_id=None, document_country_of_issuance=None, document_number=None, document_type=None, avatar_uuid=None, display_name=None):
+    def __init__(self, sub_status=None, document_back_attachment_id=None, tax_resident=None, address_postal=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, status=None, address_main=None, gender=None, region=None, language=None, nationality=None, date_of_birth=None, document_front_attachment_id=None, document_country_of_issuance=None, document_number=None, document_type=None, avatar_uuid=None, display_name=None):
         """
         :param address_main: The user's main address.
         :type address_main: object_.Address
@@ -33200,11 +33196,6 @@ class UserPerson(BunqModel):
         :param date_of_birth: The person's date of birth. Accepts ISO8601 date
         formats.
         :type date_of_birth: str
-        :param place_of_birth: The person's place of birth.
-        :type place_of_birth: str
-        :param country_of_birth: The person's country of birth. Formatted as a SO
-        3166-1 alpha-2 country code.
-        :type country_of_birth: str
         :param nationality: The person's nationality. Formatted as a SO 3166-1
         alpha-2 country code.
         :type nationality: str
@@ -33261,8 +33252,6 @@ class UserPerson(BunqModel):
         self._document_country_of_issuance_field_for_request = document_country_of_issuance
         self._document_front_attachment_id_field_for_request = document_front_attachment_id
         self._date_of_birth_field_for_request = date_of_birth
-        self._place_of_birth_field_for_request = place_of_birth
-        self._country_of_birth_field_for_request = country_of_birth
         self._nationality_field_for_request = nationality
         self._language_field_for_request = language
         self._region_field_for_request = region
@@ -33305,7 +33294,7 @@ class UserPerson(BunqModel):
         )
 
     @classmethod
-    def update(cls, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, place_of_birth=None, country_of_birth=None, nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, custom_headers=None):
+    def update(cls, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, custom_headers=None):
         """
         Modify a specific person object's data.
         
@@ -33345,11 +33334,6 @@ class UserPerson(BunqModel):
         :param date_of_birth: The person's date of birth. Accepts ISO8601 date
         formats.
         :type date_of_birth: str
-        :param place_of_birth: The person's place of birth.
-        :type place_of_birth: str
-        :param country_of_birth: The person's country of birth. Formatted as a
-        SO 3166-1 alpha-2 country code.
-        :type country_of_birth: str
         :param nationality: The person's nationality. Formatted as a SO 3166-1
         alpha-2 country code.
         :type nationality: str
@@ -33406,8 +33390,6 @@ cls.FIELD_DOCUMENT_COUNTRY_OF_ISSUANCE : document_country_of_issuance,
 cls.FIELD_DOCUMENT_FRONT_ATTACHMENT_ID : document_front_attachment_id,
 cls.FIELD_DOCUMENT_BACK_ATTACHMENT_ID : document_back_attachment_id,
 cls.FIELD_DATE_OF_BIRTH : date_of_birth,
-cls.FIELD_PLACE_OF_BIRTH : place_of_birth,
-cls.FIELD_COUNTRY_OF_BIRTH : country_of_birth,
 cls.FIELD_NATIONALITY : nationality,
 cls.FIELD_LANGUAGE : language,
 cls.FIELD_REGION : region,
