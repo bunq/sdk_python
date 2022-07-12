@@ -40208,6 +40208,177 @@ class MasterCardPayment(BunqModel):
         return converter.json_to_class(MasterCardPayment, json_str)
 
 
+class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
+    """
+    Endpoint for apps to fetch a challenge request.
+    
+    :param _status: The status of the secure code. Can be PENDING, ACCEPTED,
+    REJECTED, EXPIRED.
+    :type _status: str
+    :param _amount: The transaction amount.
+    :type _amount: str
+    :param _expiry_time: When the secure code expires.
+    :type _expiry_time: str
+    :param _description: The description of the purchase. NULL if no description
+    is given.
+    :type _description: str
+    :param _counterparty_alias: The monetary account label of the counterparty.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/challenge-request/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/challenge-request/{}"
+
+    # Field constants.
+    FIELD_STATUS = "status"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MasterCardIdentityCheckChallengeRequest"
+
+    _amount = None
+    _expiry_time = None
+    _description = None
+    _status = None
+    _counterparty_alias = None
+    _status_field_for_request = None
+
+    def __init__(self, status=None):
+        """
+        :param status: The status of the identity check. Can be
+        ACCEPTED_PENDING_RESPONSE or REJECTED_PENDING_RESPONSE.
+        :type status: str
+        """
+
+        self._status_field_for_request = status
+
+    @classmethod
+    def get(cls,  master_card_identity_check_challenge_request_user_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type master_card_identity_check_challenge_request_user_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMasterCardIdentityCheckChallengeRequestUser
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), master_card_identity_check_challenge_request_user_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMasterCardIdentityCheckChallengeRequestUser.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  master_card_identity_check_challenge_request_user_id, status=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type master_card_identity_check_challenge_request_user_id: int
+        :param status: The status of the identity check. Can be
+        ACCEPTED_PENDING_RESPONSE or REJECTED_PENDING_RESPONSE.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_STATUS : status
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), master_card_identity_check_challenge_request_user_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @property
+    def amount(self):
+        """
+        :rtype: str
+        """
+
+        return self._amount
+
+    @property
+    def expiry_time(self):
+        """
+        :rtype: str
+        """
+
+        return self._expiry_time
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount is not None:
+            return False
+
+        if self._expiry_time is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MasterCardIdentityCheckChallengeRequestUser
+        """
+
+        return converter.json_to_class(MasterCardIdentityCheckChallengeRequestUser, json_str)
+
+
 class RegistrySettlement(BunqModel):
     """
     Used to settle a Slice group.
@@ -42968,6 +43139,16 @@ class BunqResponseMasterCardPaymentList(BunqResponse):
     def value(self):
         """
         :rtype: list[MasterCardPayment]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMasterCardIdentityCheckChallengeRequestUser(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MasterCardIdentityCheckChallengeRequestUser
         """
  
         return super().value
