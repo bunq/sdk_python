@@ -13188,9 +13188,6 @@ class MasterCardAction(BunqModel):
     :type _pos_card_holder_presence: str
     :param _eligible_whitelist_id: The whitelist id for this action or null.
     :type _eligible_whitelist_id: int
-    :param _additional_authentication_status: The status of the additional
-    authentication performed (3ds) by the user for this transaction.
-    :type _additional_authentication_status: str
     """
 
     # Endpoint constants.
@@ -13237,7 +13234,6 @@ class MasterCardAction(BunqModel):
     _pos_card_presence = None
     _pos_card_holder_presence = None
     _eligible_whitelist_id = None
-    _additional_authentication_status = None
 
     @classmethod
     def get(cls,  master_card_action_id, monetary_account_id=None, custom_headers=None):
@@ -13583,14 +13579,6 @@ class MasterCardAction(BunqModel):
 
         return self._eligible_whitelist_id
 
-    @property
-    def additional_authentication_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._additional_authentication_status
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -13705,9 +13693,6 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._eligible_whitelist_id is not None:
-            return False
-
-        if self._additional_authentication_status is not None:
             return False
 
         return True
