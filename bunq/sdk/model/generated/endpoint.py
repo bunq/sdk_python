@@ -12695,6 +12695,7 @@ class SchedulePaymentBatch(BunqModel):
     """
 
     # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
     _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-payment-batch"
     _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
     _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-payment-batch/{}"
@@ -12703,6 +12704,8 @@ class SchedulePaymentBatch(BunqModel):
     FIELD_PAYMENTS = "payments"
     FIELD_SCHEDULE = "schedule"
 
+    # Object type.
+    _OBJECT_TYPE_GET = "ScheduledPaymentBatch"
 
     _payments = None
     _schedule = None
@@ -12719,6 +12722,29 @@ class SchedulePaymentBatch(BunqModel):
 
         self._payments_field_for_request = payments
         self._schedule_field_for_request = schedule
+
+    @classmethod
+    def get(cls,  schedule_payment_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseSchedulePaymentBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_payment_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseSchedulePaymentBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
 
     @classmethod
     def create(cls,payments, schedule, monetary_account_id=None, custom_headers=None):
@@ -41637,6 +41663,16 @@ class BunqResponseSchedulePaymentList(BunqResponse):
     def value(self):
         """
         :rtype: list[SchedulePayment]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseSchedulePaymentBatch(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: SchedulePaymentBatch
         """
  
         return super().value
