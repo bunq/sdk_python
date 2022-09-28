@@ -32484,74 +32484,55 @@ cls.FIELD_CONTENT : content
         return converter.json_to_class(NoteTextWhitelistResult, json_str)
 
 
-class NotificationFilterGroup(BunqModel):
+class NotificationFilterEmailUser(BunqModel):
     """
-    Manage the notification filter groups for a user.
+    Manage the email notification filters for a user.
     
-    :param _group: The notification filter group.
-    :type _group: str
-    :param _status_push: The status for push messaging.
-    :type _status_push: str
-    :param _status_email: The status for emails.
-    :type _status_email: str
+    :param _notification_filters: The types of notifications that will result in
+    a email notification for this user.
+    :type _notification_filters: list[object_.NotificationFilterEmail]
     """
 
     # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/notification-filter-group"
-    _ENDPOINT_URL_LISTING = "user/{}/notification-filter-group"
+    _ENDPOINT_URL_CREATE = "user/{}/notification-filter-email"
+    _ENDPOINT_URL_LISTING = "user/{}/notification-filter-email"
 
     # Field constants.
-    FIELD_GROUP = "group"
-    FIELD_STATUS_PUSH = "status_push"
-    FIELD_STATUS_EMAIL = "status_email"
+    FIELD_NOTIFICATION_FILTERS = "notification_filters"
 
     # Object type.
-    _OBJECT_TYPE_POST = "NotificationFilterGroup"
-    _OBJECT_TYPE_GET = "NotificationFilterGroup"
+    _OBJECT_TYPE_POST = "NotificationFilterEmail"
+    _OBJECT_TYPE_GET = "NotificationFilterEmail"
 
-    _group = None
-    _status_push = None
-    _status_email = None
-    _group_field_for_request = None
-    _status_push_field_for_request = None
-    _status_email_field_for_request = None
+    _notification_filters = None
+    _notification_filters_field_for_request = None
 
-    def __init__(self, group, status_push, status_email):
+    def __init__(self, notification_filters=None):
         """
-        :param group: The notification filter group.
-        :type group: str
-        :param status_push: The status for push messaging.
-        :type status_push: str
-        :param status_email: The status for emails.
-        :type status_email: str
+        :param notification_filters: The types of notifications that will result in
+        a email notification for this user.
+        :type notification_filters: list[object_.NotificationFilterEmail]
         """
 
-        self._group_field_for_request = group
-        self._status_push_field_for_request = status_push
-        self._status_email_field_for_request = status_email
+        self._notification_filters_field_for_request = notification_filters
 
     @classmethod
-    def create(cls,group, status_push, status_email, custom_headers=None):
+    def create(cls,notification_filters=None, custom_headers=None):
         """
         :type user_id: int
-        :param group: The notification filter group.
-        :type group: str
-        :param status_push: The status for push messaging.
-        :type status_push: str
-        :param status_email: The status for emails.
-        :type status_email: str
+        :param notification_filters: The types of notifications that will result
+        in a email notification for this user.
+        :type notification_filters: list[object_.NotificationFilterEmail]
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseNotificationFilterGroup
+        :rtype: BunqResponseNotificationFilterEmailUser
         """
 
         if custom_headers is None:
             custom_headers = {}
 
         request_map = {
-cls.FIELD_GROUP : group,
-cls.FIELD_STATUS_PUSH : status_push,
-cls.FIELD_STATUS_EMAIL : status_email
+cls.FIELD_NOTIFICATION_FILTERS : notification_filters
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -32561,7 +32542,7 @@ cls.FIELD_STATUS_EMAIL : status_email
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseNotificationFilterGroup.cast_from_bunq_response(
+        return BunqResponseNotificationFilterEmailUser.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
         )
 
@@ -32572,7 +32553,7 @@ cls.FIELD_STATUS_EMAIL : status_email
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseNotificationFilterGroupList
+        :rtype: BunqResponseNotificationFilterEmailUserList
         """
 
         if params is None:
@@ -32585,46 +32566,24 @@ cls.FIELD_STATUS_EMAIL : status_email
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return BunqResponseNotificationFilterGroupList.cast_from_bunq_response(
+        return BunqResponseNotificationFilterEmailUserList.cast_from_bunq_response(
             cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
         )
 
     @property
-    def group(self):
+    def notification_filters(self):
         """
-        :rtype: str
-        """
-
-        return self._group
-
-    @property
-    def status_push(self):
-        """
-        :rtype: str
+        :rtype: list[object_.NotificationFilterEmail]
         """
 
-        return self._status_push
-
-    @property
-    def status_email(self):
-        """
-        :rtype: str
-        """
-
-        return self._status_email
+        return self._notification_filters
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
-        if self._group is not None:
-            return False
-
-        if self._status_push is not None:
-            return False
-
-        if self._status_email is not None:
+        if self._notification_filters is not None:
             return False
 
         return True
@@ -32634,10 +32593,10 @@ cls.FIELD_STATUS_EMAIL : status_email
         """
         :type json_str: str
         
-        :rtype: NotificationFilterGroup
+        :rtype: NotificationFilterEmailUser
         """
 
-        return converter.json_to_class(NotificationFilterGroup, json_str)
+        return converter.json_to_class(NotificationFilterEmailUser, json_str)
 
 
 class NotificationFilterPushUser(BunqModel):
@@ -42808,21 +42767,21 @@ class BunqResponseNoteTextWhitelistResult(BunqResponse):
         return super().value
 
     
-class BunqResponseNotificationFilterGroup(BunqResponse):
+class BunqResponseNotificationFilterEmailUser(BunqResponse):
     @property
     def value(self):
         """
-        :rtype: NotificationFilterGroup
+        :rtype: NotificationFilterEmailUser
         """
  
         return super().value
 
     
-class BunqResponseNotificationFilterGroupList(BunqResponse):
+class BunqResponseNotificationFilterEmailUserList(BunqResponse):
     @property
     def value(self):
         """
-        :rtype: list[NotificationFilterGroup]
+        :rtype: list[NotificationFilterEmailUser]
         """
  
         return super().value
