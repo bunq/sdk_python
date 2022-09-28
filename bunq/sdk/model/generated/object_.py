@@ -5360,6 +5360,54 @@ class BirdeeInvestmentPortfolioGoal(BunqModel):
         return converter.json_to_class(BirdeeInvestmentPortfolioGoal, json_str)
 
 
+class NotificationFilterEmail(BunqModel):
+    """
+    :param _category: The notification category that will match this
+    notification filter.
+    :type _category: str
+    """
+
+    _category = None
+    _category_field_for_request = None
+
+    def __init__(self, category=None):
+        """
+        :param category: The notification category that will match this notification
+        filter.
+        :type category: str
+        """
+
+        self._category_field_for_request = category
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._category is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilterEmail
+        """
+
+        return converter.json_to_class(NotificationFilterEmail, json_str)
+
+
 class NotificationFilterPush(BunqModel):
     """
     :param _category: The notification category that will match this
