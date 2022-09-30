@@ -5365,19 +5365,35 @@ class NotificationFilterEmail(BunqModel):
     :param _category: The notification category that will match this
     notification filter.
     :type _category: str
+    :param _all_user_id: The users this filter pertains to.
+    :type _all_user_id: list[str]
+    :param _all_monetary_account_id: The MAs this filter pertains to.
+    :type _all_monetary_account_id: list[str]
     """
 
     _category = None
+    _all_user_id = None
+    _all_monetary_account_id = None
     _category_field_for_request = None
+    _all_user_id_field_for_request = None
+    _all_monetary_account_id_field_for_request = None
 
-    def __init__(self, category=None):
+    def __init__(self, category, all_user_id=None, all_monetary_account_id=None):
         """
         :param category: The notification category that will match this notification
         filter.
         :type category: str
+        :param all_user_id: The users this filter pertains to. OPTIONAL FOR BACKWARD
+        COMPATIBILITY
+        :type all_user_id: list[str]
+        :param all_monetary_account_id: The MAs this filter pertains to. OPTIONAL
+        FOR BACKWARD COMPATIBILITY
+        :type all_monetary_account_id: list[str]
         """
 
         self._category_field_for_request = category
+        self._all_user_id_field_for_request = all_user_id
+        self._all_monetary_account_id_field_for_request = all_monetary_account_id
 
     @property
     def category(self):
@@ -5387,12 +5403,34 @@ class NotificationFilterEmail(BunqModel):
 
         return self._category
 
+    @property
+    def all_user_id(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_user_id
+
+    @property
+    def all_monetary_account_id(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_monetary_account_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         if self._category is not None:
+            return False
+
+        if self._all_user_id is not None:
+            return False
+
+        if self._all_monetary_account_id is not None:
             return False
 
         return True
@@ -5413,19 +5451,35 @@ class NotificationFilterPush(BunqModel):
     :param _category: The notification category that will match this
     notification filter.
     :type _category: str
+    :param _all_user_id: The users this filter pertains to.
+    :type _all_user_id: list[str]
+    :param _all_monetary_account_id: The MAs this filter pertains to.
+    :type _all_monetary_account_id: list[str]
     """
 
     _category = None
+    _all_user_id = None
+    _all_monetary_account_id = None
     _category_field_for_request = None
+    _all_user_id_field_for_request = None
+    _all_monetary_account_id_field_for_request = None
 
-    def __init__(self, category=None):
+    def __init__(self, category, all_user_id=None, all_monetary_account_id=None):
         """
         :param category: The notification category that will match this notification
         filter.
         :type category: str
+        :param all_user_id: The users this filter pertains to. OPTIONAL FOR BACKWARD
+        COMPATIBILITY
+        :type all_user_id: list[str]
+        :param all_monetary_account_id: The MAs this filter pertains to. OPTIONAL
+        FOR BACKWARD COMPATIBILITY
+        :type all_monetary_account_id: list[str]
         """
 
         self._category_field_for_request = category
+        self._all_user_id_field_for_request = all_user_id
+        self._all_monetary_account_id_field_for_request = all_monetary_account_id
 
     @property
     def category(self):
@@ -5435,12 +5489,34 @@ class NotificationFilterPush(BunqModel):
 
         return self._category
 
+    @property
+    def all_user_id(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_user_id
+
+    @property
+    def all_monetary_account_id(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_monetary_account_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         if self._category is not None:
+            return False
+
+        if self._all_user_id is not None:
+            return False
+
+        if self._all_monetary_account_id is not None:
             return False
 
         return True
@@ -5461,6 +5537,10 @@ class NotificationFilterUrl(BunqModel):
     :param _category: The notification category that will match this
     notification filter.
     :type _category: str
+    :param _all_user_id: The users this filter pertains to.
+    :type _all_user_id: list[str]
+    :param _all_monetary_account_id: The MAs this filter pertains to.
+    :type _all_monetary_account_id: list[str]
     :param _notification_target: The URL to which the callback should be made.
     :type _notification_target: str
     :param _id_: The id of the NotificationFilterUrl.
@@ -5475,21 +5555,33 @@ class NotificationFilterUrl(BunqModel):
     _created = None
     _updated = None
     _category = None
+    _all_user_id = None
+    _all_monetary_account_id = None
     _notification_target = None
     _category_field_for_request = None
+    _all_user_id_field_for_request = None
+    _all_monetary_account_id_field_for_request = None
     _notification_target_field_for_request = None
 
-    def __init__(self, category=None, notification_target=None):
+    def __init__(self, category, notification_target=None, all_user_id=None, all_monetary_account_id=None):
         """
         :param category: The notification category that will match this notification
         filter.
         :type category: str
         :param notification_target: The URL to which the callback should be made.
         :type notification_target: str
+        :param all_user_id: The users this filter pertains to. OPTIONAL FOR BACKWARD
+        COMPATIBILITY
+        :type all_user_id: list[str]
+        :param all_monetary_account_id: The MAs this filter pertains to. OPTIONAL
+        FOR BACKWARD COMPATIBILITY
+        :type all_monetary_account_id: list[str]
         """
 
         self._category_field_for_request = category
         self._notification_target_field_for_request = notification_target
+        self._all_user_id_field_for_request = all_user_id
+        self._all_monetary_account_id_field_for_request = all_monetary_account_id
 
     @property
     def id_(self):
@@ -5524,6 +5616,22 @@ class NotificationFilterUrl(BunqModel):
         return self._category
 
     @property
+    def all_user_id(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_user_id
+
+    @property
+    def all_monetary_account_id(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_monetary_account_id
+
+    @property
     def notification_target(self):
         """
         :rtype: str
@@ -5546,6 +5654,12 @@ class NotificationFilterUrl(BunqModel):
             return False
 
         if self._category is not None:
+            return False
+
+        if self._all_user_id is not None:
+            return False
+
+        if self._all_monetary_account_id is not None:
             return False
 
         if self._notification_target is not None:
