@@ -32484,7 +32484,7 @@ cls.FIELD_CONTENT : content
         return converter.json_to_class(NoteTextWhitelistResult, json_str)
 
 
-class NotificationFilterEmailUser(BunqModel):
+class NotificationFilterEmail(BunqModel):
     """
     Manage the email notification filters for a user.
     
@@ -32525,7 +32525,7 @@ class NotificationFilterEmailUser(BunqModel):
         :type notification_filters: list[object_.NotificationFilterEmail]
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseNotificationFilterEmailUser
+        :rtype: BunqResponseNotificationFilterEmail
         """
 
         if custom_headers is None:
@@ -32542,7 +32542,7 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseNotificationFilterEmailUser.cast_from_bunq_response(
+        return BunqResponseNotificationFilterEmail.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
         )
 
@@ -32553,7 +32553,7 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseNotificationFilterEmailUserList
+        :rtype: BunqResponseNotificationFilterEmailList
         """
 
         if params is None:
@@ -32566,7 +32566,7 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return BunqResponseNotificationFilterEmailUserList.cast_from_bunq_response(
+        return BunqResponseNotificationFilterEmailList.cast_from_bunq_response(
             cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
         )
 
@@ -32593,13 +32593,13 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         """
         :type json_str: str
         
-        :rtype: NotificationFilterEmailUser
+        :rtype: NotificationFilterEmail
         """
 
-        return converter.json_to_class(NotificationFilterEmailUser, json_str)
+        return converter.json_to_class(NotificationFilterEmail, json_str)
 
 
-class NotificationFilterPushUser(BunqModel):
+class NotificationFilterPush(BunqModel):
     """
     Manage the push notification filters for a user.
     
@@ -32640,7 +32640,7 @@ class NotificationFilterPushUser(BunqModel):
         :type notification_filters: list[object_.NotificationFilterPush]
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseNotificationFilterPushUser
+        :rtype: BunqResponseNotificationFilterPush
         """
 
         if custom_headers is None:
@@ -32657,7 +32657,7 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
         response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
 
-        return BunqResponseNotificationFilterPushUser.cast_from_bunq_response(
+        return BunqResponseNotificationFilterPush.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
         )
 
@@ -32668,7 +32668,7 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         :type params: dict[str, str]|None
         :type custom_headers: dict[str, str]|None
         
-        :rtype: BunqResponseNotificationFilterPushUserList
+        :rtype: BunqResponseNotificationFilterPushList
         """
 
         if params is None:
@@ -32681,7 +32681,7 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
-        return BunqResponseNotificationFilterPushUserList.cast_from_bunq_response(
+        return BunqResponseNotificationFilterPushList.cast_from_bunq_response(
             cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
         )
 
@@ -32708,10 +32708,124 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         """
         :type json_str: str
         
-        :rtype: NotificationFilterPushUser
+        :rtype: NotificationFilterPush
         """
 
-        return converter.json_to_class(NotificationFilterPushUser, json_str)
+        return converter.json_to_class(NotificationFilterPush, json_str)
+
+
+class NotificationFilterUrl(BunqModel):
+    """
+    Manage the url notification filters for a user.
+    
+    :param _notification_filters: The types of notifications that will result in
+    a url notification for this user.
+    :type _notification_filters: list[object_.NotificationFilterUrl]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/notification-filter-url"
+    _ENDPOINT_URL_LISTING = "user/{}/notification-filter-url"
+
+    # Field constants.
+    FIELD_NOTIFICATION_FILTERS = "notification_filters"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NotificationFilterUrl"
+
+    _notification_filters = None
+    _notification_filters_field_for_request = None
+
+    def __init__(self, notification_filters=None):
+        """
+        :param notification_filters: The types of notifications that will result in
+        a url notification for this user.
+        :type notification_filters: list[object_.NotificationFilterUrl]
+        """
+
+        self._notification_filters_field_for_request = notification_filters
+
+    @classmethod
+    def create(cls,notification_filters=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param notification_filters: The types of notifications that will result
+        in a url notification for this user.
+        :type notification_filters: list[object_.NotificationFilterUrl]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_NOTIFICATION_FILTERS : notification_filters
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNotificationFilterUrlList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNotificationFilterUrlList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def notification_filters(self):
+        """
+        :rtype: list[object_.NotificationFilterUrl]
+        """
+
+        return self._notification_filters
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._notification_filters is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilterUrl
+        """
+
+        return converter.json_to_class(NotificationFilterUrl, json_str)
 
 
 class NotificationFilterUrlMonetaryAccount(BunqModel):
@@ -32828,120 +32942,6 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         """
 
         return converter.json_to_class(NotificationFilterUrlMonetaryAccount, json_str)
-
-
-class NotificationFilterUrlUser(BunqModel):
-    """
-    Manage the url notification filters for a user.
-    
-    :param _notification_filters: The types of notifications that will result in
-    a url notification for this user.
-    :type _notification_filters: list[object_.NotificationFilterUrl]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/notification-filter-url"
-    _ENDPOINT_URL_LISTING = "user/{}/notification-filter-url"
-
-    # Field constants.
-    FIELD_NOTIFICATION_FILTERS = "notification_filters"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "NotificationFilterUrl"
-
-    _notification_filters = None
-    _notification_filters_field_for_request = None
-
-    def __init__(self, notification_filters=None):
-        """
-        :param notification_filters: The types of notifications that will result in
-        a url notification for this user.
-        :type notification_filters: list[object_.NotificationFilterUrl]
-        """
-
-        self._notification_filters_field_for_request = notification_filters
-
-    @classmethod
-    def create(cls,notification_filters=None, custom_headers=None):
-        """
-        :type user_id: int
-        :param notification_filters: The types of notifications that will result
-        in a url notification for this user.
-        :type notification_filters: list[object_.NotificationFilterUrl]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_NOTIFICATION_FILTERS : notification_filters
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNotificationFilterUrlUserList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseNotificationFilterUrlUserList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def notification_filters(self):
-        """
-        :rtype: list[object_.NotificationFilterUrl]
-        """
-
-        return self._notification_filters
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._notification_filters is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: NotificationFilterUrlUser
-        """
-
-        return converter.json_to_class(NotificationFilterUrlUser, json_str)
 
 
 class ChatMessage(BunqModel):
@@ -42767,41 +42767,51 @@ class BunqResponseNoteTextWhitelistResult(BunqResponse):
         return super().value
 
     
-class BunqResponseNotificationFilterEmailUser(BunqResponse):
+class BunqResponseNotificationFilterEmail(BunqResponse):
     @property
     def value(self):
         """
-        :rtype: NotificationFilterEmailUser
+        :rtype: NotificationFilterEmail
         """
  
         return super().value
 
     
-class BunqResponseNotificationFilterEmailUserList(BunqResponse):
+class BunqResponseNotificationFilterEmailList(BunqResponse):
     @property
     def value(self):
         """
-        :rtype: list[NotificationFilterEmailUser]
+        :rtype: list[NotificationFilterEmail]
         """
  
         return super().value
 
     
-class BunqResponseNotificationFilterPushUser(BunqResponse):
+class BunqResponseNotificationFilterPush(BunqResponse):
     @property
     def value(self):
         """
-        :rtype: NotificationFilterPushUser
+        :rtype: NotificationFilterPush
         """
  
         return super().value
 
     
-class BunqResponseNotificationFilterPushUserList(BunqResponse):
+class BunqResponseNotificationFilterPushList(BunqResponse):
     @property
     def value(self):
         """
-        :rtype: list[NotificationFilterPushUser]
+        :rtype: list[NotificationFilterPush]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNotificationFilterUrlList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NotificationFilterUrl]
         """
  
         return super().value
@@ -42812,16 +42822,6 @@ class BunqResponseNotificationFilterUrlMonetaryAccountList(BunqResponse):
     def value(self):
         """
         :rtype: list[NotificationFilterUrlMonetaryAccount]
-        """
- 
-        return super().value
-
-    
-class BunqResponseNotificationFilterUrlUserList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[NotificationFilterUrlUser]
         """
  
         return super().value
