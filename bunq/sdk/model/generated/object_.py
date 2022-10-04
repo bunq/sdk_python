@@ -1770,6 +1770,8 @@ class CardPinAssignment(BunqModel):
     """
     :param _type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
     :type _type_: str
+    :param _routing_type: Routing type. Can be MANUAL or AUTOMATIC
+    :type _routing_type: str
     :param _pin_code: The 4 digit PIN to be assigned to this account.
     :type _pin_code: str
     :param _monetary_account_id: The ID of the monetary account to assign to
@@ -1780,13 +1782,16 @@ class CardPinAssignment(BunqModel):
     _type_ = None
     _monetary_account_id = None
     _type__field_for_request = None
+    _routing_type_field_for_request = None
     _pin_code_field_for_request = None
     _monetary_account_id_field_for_request = None
 
-    def __init__(self, type_=None, pin_code=None, monetary_account_id=None):
+    def __init__(self, type_=None, routing_type=None, pin_code=None, monetary_account_id=None):
         """
         :param type_: PIN type. Can be PRIMARY, SECONDARY or TERTIARY
         :type type_: str
+        :param routing_type: Routing type. Can be MANUAL or AUTOMATIC
+        :type routing_type: str
         :param pin_code: The 4 digit PIN to be assigned to this account.
         :type pin_code: str
         :param monetary_account_id: The ID of the monetary account to assign to this
@@ -1795,6 +1800,7 @@ class CardPinAssignment(BunqModel):
         """
 
         self._type__field_for_request = type_
+        self._routing_type_field_for_request = routing_type
         self._pin_code_field_for_request = pin_code
         self._monetary_account_id_field_for_request = monetary_account_id
 
