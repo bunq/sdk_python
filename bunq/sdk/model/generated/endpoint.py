@@ -4067,7 +4067,7 @@ class BunqMeTab(BunqModel):
     :param _monetary_account_id: The id of the MonetaryAccount the bunq.me was
     sent from.
     :type _monetary_account_id: int
-    :param _type_: The type of the bunq.me Tab. Can be BUNQ_ME or SPLIT_RECEIPT.
+    :param _type_: The type of the bunq.me Tab. Should be BUNQ_ME
     :type _type_: str
     :param _alias_monetary_account: The LabelMonetaryAccount with the public
     information of the User and the MonetaryAccount that created the bunq.me
