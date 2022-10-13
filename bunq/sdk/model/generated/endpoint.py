@@ -10322,6 +10322,10 @@ class RelationUser(BunqModel):
     :type _relationship: str
     :param _status: The request's status, only for UPDATE.
     :type _status: str
+    :param _user_status: The account status of a user
+    :type _user_status: str
+    :param _counter_user_status: The account status of a user
+    :type _counter_user_status: str
     """
 
     _user_id = None
@@ -10330,6 +10334,8 @@ class RelationUser(BunqModel):
     _counter_label_user = None
     _relationship = None
     _status = None
+    _user_status = None
+    _counter_user_status = None
 
     @property
     def user_id(self):
@@ -10379,6 +10385,22 @@ class RelationUser(BunqModel):
 
         return self._status
 
+    @property
+    def user_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._user_status
+
+    @property
+    def counter_user_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._counter_user_status
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -10400,6 +10422,12 @@ class RelationUser(BunqModel):
             return False
 
         if self._status is not None:
+            return False
+
+        if self._user_status is not None:
+            return False
+
+        if self._counter_user_status is not None:
             return False
 
         return True
