@@ -2009,226 +2009,6 @@ class CardCountryPermission(BunqModel):
         return converter.json_to_class(CardCountryPermission, json_str)
 
 
-class TabTextWaitingScreen(BunqModel):
-    """
-    :param _language: Language of tab text
-    :type _language: str
-    :param _description: Tab text
-    :type _description: str
-    """
-
-    _language = None
-    _description = None
-    _language_field_for_request = None
-    _description_field_for_request = None
-
-    def __init__(self, language=None, description=None):
-        """
-        :param language: Language of tab text
-        :type language: str
-        :param description: Tab text
-        :type description: str
-        """
-
-        self._language_field_for_request = language
-        self._description_field_for_request = description
-
-    @property
-    def language(self):
-        """
-        :rtype: str
-        """
-
-        return self._language
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._language is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabTextWaitingScreen
-        """
-
-        return converter.json_to_class(TabTextWaitingScreen, json_str)
-
-
-class TabVisibility(BunqModel):
-    """
-    :param _cash_register_qr_code: When true the tab will be linked to the
-    ACTIVE cash registers QR code.
-    :type _cash_register_qr_code: bool
-    :param _tab_qr_code: When true the tab will be visible through its own QR
-    code. Use ../tab/{tab-id}/qr-code-content to get the raw content of this QR
-    code
-    :type _tab_qr_code: bool
-    :param _location: The location of the Tab in NearPay.
-    :type _location: Geolocation
-    """
-
-    _cash_register_qr_code = None
-    _tab_qr_code = None
-    _location = None
-    _cash_register_qr_code_field_for_request = None
-    _tab_qr_code_field_for_request = None
-    _location_field_for_request = None
-
-    def __init__(self, cash_register_qr_code=None, tab_qr_code=None, location=None):
-        """
-        :param cash_register_qr_code: When true the Tab will be linked to the ACTIVE
-        cash registers QR code. If no cash register QR code exists, one will be
-        created.
-        :type cash_register_qr_code: bool
-        :param tab_qr_code: When true the Tab will be visible through its own QR
-        code. Use ../tab/{tab-id}/qr-code-content to get the raw content of this QR
-        code
-        :type tab_qr_code: bool
-        :param location: The location on which this tab will be made visible in
-        NearPay. This location must overlap with the location of the CashRegister.
-        If no location is provided the location of the CashRegister will be used.
-        :type location: Geolocation
-        """
-
-        self._cash_register_qr_code_field_for_request = cash_register_qr_code
-        self._tab_qr_code_field_for_request = tab_qr_code
-        self._location_field_for_request = location
-
-    @property
-    def cash_register_qr_code(self):
-        """
-        :rtype: bool
-        """
-
-        return self._cash_register_qr_code
-
-    @property
-    def tab_qr_code(self):
-        """
-        :rtype: bool
-        """
-
-        return self._tab_qr_code
-
-    @property
-    def location(self):
-        """
-        :rtype: Geolocation
-        """
-
-        return self._location
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._cash_register_qr_code is not None:
-            return False
-
-        if self._tab_qr_code is not None:
-            return False
-
-        if self._location is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabVisibility
-        """
-
-        return converter.json_to_class(TabVisibility, json_str)
-
-
-class AttachmentTab(BunqModel):
-    """
-    :param _id_: The id of the attachment.
-    :type _id_: int
-    :param _description: The description of the attachment.
-    :type _description: str
-    :param _content_type: The content type of the attachment's file.
-    :type _content_type: str
-    """
-
-    _id_ = None
-    _description = None
-    _content_type = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def content_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._content_type
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._content_type is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: AttachmentTab
-        """
-
-        return converter.json_to_class(AttachmentTab, json_str)
-
-
 class Certificate(BunqModel):
     """
     :param _certificate: A single certificate in the chain in .PEM format.
@@ -3601,10 +3381,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
     :type _ShareInviteBankResponse: endpoint.ShareInviteMonetaryAccountResponse
     :param _SofortMerchantTransaction: 
     :type _SofortMerchantTransaction: endpoint.SofortMerchantTransaction
-    :param _TabResultInquiry: 
-    :type _TabResultInquiry: endpoint.TabResultInquiry
-    :param _TabResultResponse: 
-    :type _TabResultResponse: endpoint.TabResultResponse
     :param _TransferwisePayment: 
     :type _TransferwisePayment: endpoint.TransferwiseTransfer
     """
@@ -3638,8 +3414,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
     _ShareInviteBankInquiry = None
     _ShareInviteBankResponse = None
     _SofortMerchantTransaction = None
-    _TabResultInquiry = None
-    _TabResultResponse = None
     _TransferwisePayment = None
 
     @property
@@ -3843,22 +3617,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         return self._SofortMerchantTransaction
 
     @property
-    def TabResultInquiry(self):
-        """
-        :rtype: endpoint.TabResultInquiry
-        """
-
-        return self._TabResultInquiry
-
-    @property
-    def TabResultResponse(self):
-        """
-        :rtype: endpoint.TabResultResponse
-        """
-
-        return self._TabResultResponse
-
-    @property
     def TransferwisePayment(self):
         """
         :rtype: endpoint.TransferwiseTransfer
@@ -3946,12 +3704,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         if self._SofortMerchantTransaction is not None:
             return self._SofortMerchantTransaction
 
-        if self._TabResultInquiry is not None:
-            return self._TabResultInquiry
-
-        if self._TabResultResponse is not None:
-            return self._TabResultResponse
-
         if self._TransferwisePayment is not None:
             return self._TransferwisePayment
 
@@ -4035,12 +3787,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
             return False
 
         if self._SofortMerchantTransaction is not None:
-            return False
-
-        if self._TabResultInquiry is not None:
-            return False
-
-        if self._TabResultResponse is not None:
             return False
 
         if self._TransferwisePayment is not None:
@@ -4578,8 +4324,6 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
     :type _RequestResponse: endpoint.RequestResponse
     :param _ScheduleInstance: 
     :type _ScheduleInstance: endpoint.ScheduleInstance
-    :param _TabResultResponse: 
-    :type _TabResultResponse: endpoint.TabResultResponse
     :param _WhitelistResult: 
     :type _WhitelistResult: endpoint.WhitelistResult
     :param _TransferwisePayment: 
@@ -4597,7 +4341,6 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
     _PaymentBatch = None
     _RequestResponse = None
     _ScheduleInstance = None
-    _TabResultResponse = None
     _WhitelistResult = None
     _TransferwisePayment = None
 
@@ -4658,14 +4401,6 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
         return self._ScheduleInstance
 
     @property
-    def TabResultResponse(self):
-        """
-        :rtype: endpoint.TabResultResponse
-        """
-
-        return self._TabResultResponse
-
-    @property
     def WhitelistResult(self):
         """
         :rtype: endpoint.WhitelistResult
@@ -4707,9 +4442,6 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
         if self._ScheduleInstance is not None:
             return self._ScheduleInstance
 
-        if self._TabResultResponse is not None:
-            return self._TabResultResponse
-
         if self._WhitelistResult is not None:
             return self._WhitelistResult
 
@@ -4742,9 +4474,6 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
             return False
 
         if self._ScheduleInstance is not None:
-            return False
-
-        if self._TabResultResponse is not None:
             return False
 
         if self._WhitelistResult is not None:
@@ -5803,10 +5532,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     :type _ScheduledPayment: endpoint.SchedulePayment
     :param _ScheduledInstance: 
     :type _ScheduledInstance: endpoint.ScheduleInstance
-    :param _TabResultInquiry: 
-    :type _TabResultInquiry: endpoint.TabResultInquiry
-    :param _TabResultResponse: 
-    :type _TabResultResponse: endpoint.TabResultResponse
     :param _User: 
     :type _User: endpoint.User
     """
@@ -5834,8 +5559,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
     _ShareInviteBankResponse = None
     _ScheduledPayment = None
     _ScheduledInstance = None
-    _TabResultInquiry = None
-    _TabResultResponse = None
     _User = None
 
     @property
@@ -5991,22 +5714,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
         return self._ScheduledInstance
 
     @property
-    def TabResultInquiry(self):
-        """
-        :rtype: endpoint.TabResultInquiry
-        """
-
-        return self._TabResultInquiry
-
-    @property
-    def TabResultResponse(self):
-        """
-        :rtype: endpoint.TabResultResponse
-        """
-
-        return self._TabResultResponse
-
-    @property
     def User(self):
         """
         :rtype: endpoint.User
@@ -6076,12 +5783,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
         if self._ScheduledInstance is not None:
             return self._ScheduledInstance
 
-        if self._TabResultInquiry is not None:
-            return self._TabResultInquiry
-
-        if self._TabResultResponse is not None:
-            return self._TabResultResponse
-
         if self._User is not None:
             return self._User
 
@@ -6147,12 +5848,6 @@ class NotificationAnchorObject(BunqModel, AnchorObjectInterface):
             return False
 
         if self._ScheduledInstance is not None:
-            return False
-
-        if self._TabResultInquiry is not None:
-            return False
-
-        if self._TabResultResponse is not None:
             return False
 
         if self._User is not None:
@@ -6385,41 +6080,6 @@ class PermittedDevice(BunqModel):
         """
 
         return converter.json_to_class(PermittedDevice, json_str)
-
-
-class TabAttachment(BunqModel):
-    """
-    :param _id_: The ID of the AttachmentTab you want to attach to the TabItem.
-    :type _id_: int
-    """
-
-    _id__field_for_request = None
-
-    def __init__(self, id_=None):
-        """
-        :param id_: The ID of the AttachmentTab you want to attach to the TabItem.
-        :type id_: int
-        """
-
-        self._id__field_for_request = id_
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: TabAttachment
-        """
-
-        return converter.json_to_class(TabAttachment, json_str)
 
 
 class TransferwiseRequirementField(BunqModel):
