@@ -7970,6 +7970,1010 @@ cls.FIELD_AMOUNT : amount
         return converter.json_to_class(ConfirmationOfFunds, json_str)
 
 
+class CurrencyCloudBeneficiaryRequirement(BunqModel):
+    """
+    Endpoint to list requirements for CurrencyCloud beneficiaries.
+    
+    :param _payment_type: The payment type this requirement is for.
+    :type _payment_type: str
+    :param _legal_entity_type: The entity type this requirement is for.
+    :type _legal_entity_type: str
+    :param _all_field: The fields that are required.
+    :type _all_field: list[CurrencyCloudBeneficiaryRequirementField]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/currency-cloud-beneficiary-requirement"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "CurrencyCloudBeneficiaryRequirement"
+
+    _payment_type = None
+    _legal_entity_type = None
+    _all_field = None
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyCloudBeneficiaryRequirementList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseCurrencyCloudBeneficiaryRequirementList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def payment_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._payment_type
+
+    @property
+    def legal_entity_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._legal_entity_type
+
+    @property
+    def all_field(self):
+        """
+        :rtype: list[CurrencyCloudBeneficiaryRequirementField]
+        """
+
+        return self._all_field
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payment_type is not None:
+            return False
+
+        if self._legal_entity_type is not None:
+            return False
+
+        if self._all_field is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CurrencyCloudBeneficiaryRequirement
+        """
+
+        return converter.json_to_class(CurrencyCloudBeneficiaryRequirement, json_str)
+
+
+class CurrencyCloudBeneficiary(BunqModel):
+    """
+    Endpoint to manage CurrencyCloud beneficiaries.
+    
+    :param _name: The name of the beneficiary.
+    :type _name: str
+    :param _country: The country of the beneficiary.
+    :type _country: str
+    :param _currency: The currency of the beneficiary.
+    :type _currency: str
+    :param _payment_type: The payment type this requirement is for.
+    :type _payment_type: str
+    :param _legal_entity_type: The legal entity type of the beneficiary.
+    :type _legal_entity_type: str
+    :param _all_field: All fields that were required by CurrencyCloud. Obtained
+    through the CurrencyCloudBeneficiaryRequirement listing.
+    :type _all_field: list[str]
+    :param _id_: The id of the profile.
+    :type _id_: int
+    :param _created: The timestamp of the beneficiaries creation.
+    :type _created: str
+    :param _updated: The timestamp of the beneficiaries last update.
+    :type _updated: str
+    :param _account_number: The account number to display for the beneficiary.
+    :type _account_number: str
+    :param _external_identifier: The external identifier of the beneficiary.
+    :type _external_identifier: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/currency-cloud-beneficiary"
+    _ENDPOINT_URL_READ = "user/{}/currency-cloud-beneficiary/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/currency-cloud-beneficiary"
+
+    # Field constants.
+    FIELD_NAME = "name"
+    FIELD_COUNTRY = "country"
+    FIELD_CURRENCY = "currency"
+    FIELD_PAYMENT_TYPE = "payment_type"
+    FIELD_LEGAL_ENTITY_TYPE = "legal_entity_type"
+    FIELD_ALL_FIELD = "all_field"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "CurrencyCloudBeneficiary"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _name = None
+    _account_number = None
+    _currency = None
+    _external_identifier = None
+    _name_field_for_request = None
+    _country_field_for_request = None
+    _currency_field_for_request = None
+    _payment_type_field_for_request = None
+    _legal_entity_type_field_for_request = None
+    _all_field_field_for_request = None
+
+    def __init__(self, name, country, currency, payment_type, legal_entity_type, all_field):
+        """
+        :param name: The name of the beneficiary.
+        :type name: str
+        :param country: The country of the beneficiary.
+        :type country: str
+        :param currency: The currency of the beneficiary.
+        :type currency: str
+        :param payment_type: The payment type this requirement is for.
+        :type payment_type: str
+        :param legal_entity_type: The legal entity type of the beneficiary.
+        :type legal_entity_type: str
+        :param all_field: All fields that were required by CurrencyCloud. Obtained
+        through the CurrencyCloudBeneficiaryRequirement listing.
+        :type all_field: list[str]
+        """
+
+        self._name_field_for_request = name
+        self._country_field_for_request = country
+        self._currency_field_for_request = currency
+        self._payment_type_field_for_request = payment_type
+        self._legal_entity_type_field_for_request = legal_entity_type
+        self._all_field_field_for_request = all_field
+
+    @classmethod
+    def create(cls,name, country, currency, payment_type, legal_entity_type, all_field, custom_headers=None):
+        """
+        :type user_id: int
+        :param name: The name of the beneficiary.
+        :type name: str
+        :param country: The country of the beneficiary.
+        :type country: str
+        :param currency: The currency of the beneficiary.
+        :type currency: str
+        :param payment_type: The payment type this requirement is for.
+        :type payment_type: str
+        :param legal_entity_type: The legal entity type of the beneficiary.
+        :type legal_entity_type: str
+        :param all_field: All fields that were required by CurrencyCloud.
+        Obtained through the CurrencyCloudBeneficiaryRequirement listing.
+        :type all_field: list[str]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_NAME : name,
+cls.FIELD_COUNTRY : country,
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_PAYMENT_TYPE : payment_type,
+cls.FIELD_LEGAL_ENTITY_TYPE : legal_entity_type,
+cls.FIELD_ALL_FIELD : all_field
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  currency_cloud_beneficiary_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type currency_cloud_beneficiary_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyCloudBeneficiary
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), currency_cloud_beneficiary_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseCurrencyCloudBeneficiary.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyCloudBeneficiaryList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseCurrencyCloudBeneficiaryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def account_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._account_number
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def external_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._external_identifier
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._account_number is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._external_identifier is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CurrencyCloudBeneficiary
+        """
+
+        return converter.json_to_class(CurrencyCloudBeneficiary, json_str)
+
+
+class CurrencyCloudPaymentQuote(BunqModel):
+    """
+    Endpoint for managing currency conversions.
+    
+    :param _pointers: The points we want to know the fees for.
+    :type _pointers: list[object_.Pointer]
+    :param _amount_fee: The amount that we'll charge the user with.
+    :type _amount_fee: object_.Amount
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/currency-cloud-payment-quote"
+
+    # Field constants.
+    FIELD_POINTERS = "pointers"
+
+
+    _amount_fee = None
+    _pointers_field_for_request = None
+
+    def __init__(self, pointers):
+        """
+        :param pointers: The points we want to know the fees for.
+        :type pointers: list[object_.Pointer]
+        """
+
+        self._pointers_field_for_request = pointers
+
+    @classmethod
+    def create(cls,pointers, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :param pointers: The points we want to know the fees for.
+        :type pointers: list[object_.Pointer]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_POINTERS : pointers
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @property
+    def amount_fee(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_fee
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount_fee is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CurrencyCloudPaymentQuote
+        """
+
+        return converter.json_to_class(CurrencyCloudPaymentQuote, json_str)
+
+
+class CurrencyConversionQuote(BunqModel):
+    """
+    Endpoint to create a quote for currency conversions.
+    
+    :param _amount: The amount to convert.
+    :type _amount: object_.Amount
+    :param _currency_source: The currency we are converting.
+    :type _currency_source: str
+    :param _currency_target: The currency we are converting towards.
+    :type _currency_target: str
+    :param _counterparty_alias: The Alias of the party we are transferring the
+    money to.
+    :type _counterparty_alias: object_.Pointer
+    :param _status: The status of the quote.
+    :type _status: str
+    :param _id_: The id of the quote.
+    :type _id_: int
+    :param _created: The timestamp of the quote's creation.
+    :type _created: str
+    :param _updated: The timestamp of the quote's last update.
+    :type _updated: str
+    :param _amount_source: The amount to convert.
+    :type _amount_source: object_.Amount
+    :param _amount_target: The amount to convert to.
+    :type _amount_target: object_.Amount
+    :param _rate: The conversion rate.
+    :type _rate: str
+    :param _time_expiry: Timestamp for when this quote expires and the user
+    should request a new one.
+    :type _time_expiry: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/currency-conversion-quote"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/currency-conversion-quote/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/currency-conversion-quote/{}"
+
+    # Field constants.
+    FIELD_AMOUNT = "amount"
+    FIELD_CURRENCY_SOURCE = "currency_source"
+    FIELD_CURRENCY_TARGET = "currency_target"
+    FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
+    FIELD_STATUS = "status"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "CurrencyConversionQuote"
+    _OBJECT_TYPE_PUT = ""
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _status = None
+    _amount_source = None
+    _amount_target = None
+    _rate = None
+    _time_expiry = None
+    _amount_field_for_request = None
+    _currency_source_field_for_request = None
+    _currency_target_field_for_request = None
+    _counterparty_alias_field_for_request = None
+    _status_field_for_request = None
+
+    def __init__(self, amount, currency_source, currency_target, counterparty_alias, status=None):
+        """
+        :param amount: The amount to convert.
+        :type amount: object_.Amount
+        :param currency_source: The currency we are converting.
+        :type currency_source: str
+        :param currency_target: The currency we are converting towards.
+        :type currency_target: str
+        :param counterparty_alias: The Alias of the party we are transferring the
+        money to.
+        :type counterparty_alias: object_.Pointer
+        :param status: The status of the quote.
+        :type status: str
+        """
+
+        self._amount_field_for_request = amount
+        self._currency_source_field_for_request = currency_source
+        self._currency_target_field_for_request = currency_target
+        self._counterparty_alias_field_for_request = counterparty_alias
+        self._status_field_for_request = status
+
+    @classmethod
+    def create(cls,amount, currency_source, currency_target, counterparty_alias, monetary_account_id=None, status=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :param amount: The amount to convert.
+        :type amount: object_.Amount
+        :param currency_source: The currency we are converting.
+        :type currency_source: str
+        :param currency_target: The currency we are converting towards.
+        :type currency_target: str
+        :param counterparty_alias: The Alias of the party we are transferring
+        the money to.
+        :type counterparty_alias: object_.Pointer
+        :param status: The status of the quote.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_AMOUNT : amount,
+cls.FIELD_CURRENCY_SOURCE : currency_source,
+cls.FIELD_CURRENCY_TARGET : currency_target,
+cls.FIELD_COUNTERPARTY_ALIAS : counterparty_alias,
+cls.FIELD_STATUS : status
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  currency_conversion_quote_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type currency_conversion_quote_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyConversionQuote
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), currency_conversion_quote_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseCurrencyConversionQuote.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  currency_conversion_quote_id, monetary_account_id=None, status=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type currency_conversion_quote_id: int
+        :param status: The status of the quote.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyConversionQuote
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_STATUS : status
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), currency_conversion_quote_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseCurrencyConversionQuote.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_PUT)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount_source(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_source
+
+    @property
+    def amount_target(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_target
+
+    @property
+    def rate(self):
+        """
+        :rtype: str
+        """
+
+        return self._rate
+
+    @property
+    def time_expiry(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_expiry
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._amount_source is not None:
+            return False
+
+        if self._amount_target is not None:
+            return False
+
+        if self._rate is not None:
+            return False
+
+        if self._time_expiry is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CurrencyConversionQuote
+        """
+
+        return converter.json_to_class(CurrencyConversionQuote, json_str)
+
+
+class CurrencyConversion(BunqModel):
+    """
+    Endpoint for managing currency conversions.
+    
+    :param _id_: The id of the conversion.
+    :type _id_: int
+    :param _created: The timestamp of the conversion's creation.
+    :type _created: str
+    :param _updated: The timestamp of the conversion's last update.
+    :type _updated: str
+    :param _status: The status of the conversion.
+    :type _status: str
+    :param _date_delivery_expected: The expected delivery date of the
+    conversion.
+    :type _date_delivery_expected: str
+    :param _rate: The rate of the conversion.
+    :type _rate: str
+    :param _amount: The amount of the conversion.
+    :type _amount: object_.Amount
+    :param _counter_amount: The amount of the counter conversion.
+    :type _counter_amount: object_.Amount
+    :param _group_uuid: The group uuid of the conversion.
+    :type _group_uuid: str
+    :param _type_: The type of this conversion in the pair.
+    :type _type_: str
+    :param _label_monetary_account: The label of the monetary account.
+    :type _label_monetary_account: object_.MonetaryAccountReference
+    :param _counter_label_monetary_account: The label of the counter monetary
+    account.
+    :type _counter_label_monetary_account: object_.MonetaryAccountReference
+    :param _payment: The payment associated with this conversion.
+    :type _payment: Payment
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/currency-conversion"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/currency-conversion/{}"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "CurrencyConversion"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _status = None
+    _date_delivery_expected = None
+    _rate = None
+    _amount = None
+    _counter_amount = None
+    _group_uuid = None
+    _type_ = None
+    _label_monetary_account = None
+    _counter_label_monetary_account = None
+    _payment = None
+
+    @classmethod
+    def list(cls,monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyConversionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseCurrencyConversionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls,  currency_conversion_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type currency_conversion_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseCurrencyConversion
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), currency_conversion_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseCurrencyConversion.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def date_delivery_expected(self):
+        """
+        :rtype: str
+        """
+
+        return self._date_delivery_expected
+
+    @property
+    def rate(self):
+        """
+        :rtype: str
+        """
+
+        return self._rate
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def counter_amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._counter_amount
+
+    @property
+    def group_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._group_uuid
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def label_monetary_account(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._label_monetary_account
+
+    @property
+    def counter_label_monetary_account(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counter_label_monetary_account
+
+    @property
+    def payment(self):
+        """
+        :rtype: Payment
+        """
+
+        return self._payment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._date_delivery_expected is not None:
+            return False
+
+        if self._rate is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._counter_amount is not None:
+            return False
+
+        if self._group_uuid is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._label_monetary_account is not None:
+            return False
+
+        if self._counter_label_monetary_account is not None:
+            return False
+
+        if self._payment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CurrencyConversion
+        """
+
+        return converter.json_to_class(CurrencyConversion, json_str)
+
+
 class DeviceServer(BunqModel):
     """
     After having created an Installation you can now create a DeviceServer. A
@@ -38017,6 +39021,66 @@ class BunqResponseConfirmationOfFunds(BunqResponse):
     def value(self):
         """
         :rtype: ConfirmationOfFunds
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCurrencyCloudBeneficiaryRequirementList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[CurrencyCloudBeneficiaryRequirement]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCurrencyCloudBeneficiary(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: CurrencyCloudBeneficiary
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCurrencyCloudBeneficiaryList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[CurrencyCloudBeneficiary]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCurrencyConversionQuote(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: CurrencyConversionQuote
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCurrencyConversionList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[CurrencyConversion]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseCurrencyConversion(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: CurrencyConversion
         """
  
         return super().value
