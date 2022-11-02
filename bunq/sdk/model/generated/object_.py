@@ -2389,6 +2389,86 @@ class CompanyVatNumber(BunqModel):
         return converter.json_to_class(CompanyVatNumber, json_str)
 
 
+class CurrencyCloudBeneficiaryRequirementField(BunqModel):
+    """
+    :param _label: The label to display for the field.
+    :type _label: str
+    :param _name: The name of the field.
+    :type _name: str
+    :param _validation_expression: The expression to validate field input.
+    :type _validation_expression: str
+    :param _input_type: The type of data to input. Determines the keyboard to
+    display.
+    :type _input_type: str
+    """
+
+    _label = None
+    _name = None
+    _validation_expression = None
+    _input_type = None
+
+    @property
+    def label(self):
+        """
+        :rtype: str
+        """
+
+        return self._label
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def validation_expression(self):
+        """
+        :rtype: str
+        """
+
+        return self._validation_expression
+
+    @property
+    def input_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._input_type
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._label is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._validation_expression is not None:
+            return False
+
+        if self._input_type is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CurrencyCloudBeneficiaryRequirementField
+        """
+
+        return converter.json_to_class(CurrencyCloudBeneficiaryRequirementField, json_str)
+
+
 class DraftPaymentResponse(BunqModel):
     """
     :param _status: The status with which was responded.
