@@ -1943,7 +1943,6 @@ class CardCountryPermission(BunqModel):
 
     _id_ = None
     _country = None
-    _expiry_time = None
     _country_field_for_request = None
     _expiry_time_field_for_request = None
 
@@ -1974,14 +1973,6 @@ class CardCountryPermission(BunqModel):
 
         return self._country
 
-    @property
-    def expiry_time(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_time
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -1991,9 +1982,6 @@ class CardCountryPermission(BunqModel):
             return False
 
         if self._country is not None:
-            return False
-
-        if self._expiry_time is not None:
             return False
 
         return True
