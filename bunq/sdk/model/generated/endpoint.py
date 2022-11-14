@@ -38440,6 +38440,8 @@ class RegistryMembership(BunqModel):
     """
     View for RegistryMembership.
     
+    :param _uuid: The UUID of the membership.
+    :type _uuid: str
     :param _alias: The LabelMonetaryAccount of the user who belongs to this
     RegistryMembership.
     :type _alias: object_.MonetaryAccountReference
@@ -38465,11 +38467,13 @@ class RegistryMembership(BunqModel):
     """
 
     # Field constants.
+    FIELD_UUID = "uuid"
     FIELD_ALIAS = "alias"
     FIELD_STATUS = "status"
     FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
 
 
+    _uuid = None
     _alias = None
     _balance = None
     _total_amount_spent = None
@@ -38479,14 +38483,19 @@ class RegistryMembership(BunqModel):
     _registry_id = None
     _registry_title = None
     _invitor = None
+    _uuid_field_for_request = None
     _alias_field_for_request = None
     _status_field_for_request = None
     _auto_add_card_transaction_field_for_request = None
 
-    def __init__(self, alias=None, status=None, auto_add_card_transaction=None):
+    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None):
         """
         :param alias: The Alias of the party we are inviting to the Registry.
         :type alias: object_.Pointer
+        :param uuid: The UUID of the membership. May be used as an alternative to
+        the alias field to identify specific memberships, as the alias may be
+        updated server-side, whereas the UUID will remain consistent.
+        :type uuid: str
         :param status: The status of the RegistryMembership.
         :type status: str
         :param auto_add_card_transaction: The setting for for adding automatically
@@ -38495,10 +38504,19 @@ class RegistryMembership(BunqModel):
         """
 
         self._alias_field_for_request = alias
+        self._uuid_field_for_request = uuid
         self._status_field_for_request = status
         self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
 
 
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
 
     @property
     def alias(self):
@@ -38576,6 +38594,9 @@ class RegistryMembership(BunqModel):
         """
         :rtype: bool
         """
+
+        if self._uuid is not None:
+            return False
 
         if self._alias is not None:
             return False
