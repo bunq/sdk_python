@@ -37879,91 +37879,6 @@ class WhitelistSddMonetaryAccountPaying(BunqModel):
         return converter.json_to_class(WhitelistSddMonetaryAccountPaying, json_str)
 
 
-class MasterCardActionGreenAggregation(BunqModel):
-    """
-    Aggregation of how many card payments have been done with a Green Card in
-    the current calendar month.
-    
-    :param _date: The date of the aggregation.
-    :type _date: str
-    :param _percentage: The percentage of card payments that were done with a
-    Green Card.
-    :type _percentage: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/mastercard-action-green-aggregation"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MasterCardActionGreenAggregation"
-
-    _date = None
-    _percentage = None
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMasterCardActionGreenAggregationList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMasterCardActionGreenAggregationList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def date(self):
-        """
-        :rtype: str
-        """
-
-        return self._date
-
-    @property
-    def percentage(self):
-        """
-        :rtype: str
-        """
-
-        return self._percentage
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._date is not None:
-            return False
-
-        if self._percentage is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MasterCardActionGreenAggregation
-        """
-
-        return converter.json_to_class(MasterCardActionGreenAggregation, json_str)
-
-
 class MasterCardPayment(BunqModel):
     """
     MasterCard transaction view.
@@ -40862,16 +40777,6 @@ class BunqResponseWhitelistSddMonetaryAccountPayingList(BunqResponse):
     def value(self):
         """
         :rtype: list[WhitelistSddMonetaryAccountPaying]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMasterCardActionGreenAggregationList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MasterCardActionGreenAggregation]
         """
  
         return super().value
