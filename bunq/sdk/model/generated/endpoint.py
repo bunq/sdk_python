@@ -10240,6 +10240,60 @@ cls.FIELD_DRAFT_SHARE_SETTINGS : draft_share_settings
         return converter.json_to_class(DraftShareInviteBank, json_str)
 
 
+class ServerError(BunqModel):
+    """
+    An endpoint that will always throw an error.
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "server-error"
+
+
+    @classmethod
+    def create(cls, custom_headers=None):
+        """
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ServerError
+        """
+
+        return converter.json_to_class(ServerError, json_str)
+
+
 class Event(BunqModel):
     """
     Used to view events. Events are automatically created and contain
