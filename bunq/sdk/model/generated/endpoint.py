@@ -37998,7 +37998,7 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     :type _status: str
     :param _amount: The transaction amount.
     :type _amount: str
-    :param _expiry_time: When the secure code expires.
+    :param _expiry_time: When the identity check expires.
     :type _expiry_time: str
     :param _description: The description of the purchase. NULL if no description
     is given.
