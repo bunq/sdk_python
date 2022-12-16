@@ -3005,8 +3005,6 @@ class ShareDetailPayment(BunqModel):
     :param _view_new_events: If set to true, the invited user will be able to
     view events starting from the time the share became active.
     :type _view_new_events: bool
-    :param _budget: The budget restriction.
-    :type _budget: BudgetRestriction
     """
 
     _make_payments = None
@@ -3014,15 +3012,13 @@ class ShareDetailPayment(BunqModel):
     _view_balance = None
     _view_old_events = None
     _view_new_events = None
-    _budget = None
     _make_payments_field_for_request = None
     _make_draft_payments_field_for_request = None
     _view_balance_field_for_request = None
     _view_old_events_field_for_request = None
     _view_new_events_field_for_request = None
-    _budget_field_for_request = None
 
-    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None, make_draft_payments=None, budget=None):
+    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None, make_draft_payments=None):
         """
         :param make_payments: If set to true, the invited user will be able to make
         payments from the shared account.
@@ -3039,8 +3035,6 @@ class ShareDetailPayment(BunqModel):
         :param make_draft_payments: If set to true, the invited user will be able to
         make draft payments from the shared account.
         :type make_draft_payments: bool
-        :param budget: The budget restriction.
-        :type budget: BudgetRestriction
         """
 
         self._make_payments_field_for_request = make_payments
@@ -3048,7 +3042,6 @@ class ShareDetailPayment(BunqModel):
         self._view_old_events_field_for_request = view_old_events
         self._view_new_events_field_for_request = view_new_events
         self._make_draft_payments_field_for_request = make_draft_payments
-        self._budget_field_for_request = budget
 
     @property
     def make_payments(self):
@@ -3090,14 +3083,6 @@ class ShareDetailPayment(BunqModel):
 
         return self._view_new_events
 
-    @property
-    def budget(self):
-        """
-        :rtype: BudgetRestriction
-        """
-
-        return self._budget
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -3118,9 +3103,6 @@ class ShareDetailPayment(BunqModel):
         if self._view_new_events is not None:
             return False
 
-        if self._budget is not None:
-            return False
-
         return True
 
     @staticmethod
@@ -3132,72 +3114,6 @@ class ShareDetailPayment(BunqModel):
         """
 
         return converter.json_to_class(ShareDetailPayment, json_str)
-
-
-class BudgetRestriction(BunqModel):
-    """
-    :param _amount: The amount of the budget given to the invited user.
-    :type _amount: Amount
-    :param _frequency: The duration for a budget restriction. Valid values are
-    DAILY, WEEKLY, MONTHLY, YEARLY.
-    :type _frequency: str
-    """
-
-    _amount = None
-    _frequency = None
-    _amount_field_for_request = None
-    _frequency_field_for_request = None
-
-    def __init__(self, amount=None, frequency=None):
-        """
-        :param amount: The amount of the budget given to the invited user.
-        :type amount: Amount
-        :param frequency: The duration for a budget restriction. Valid values are
-        DAILY, WEEKLY, MONTHLY, YEARLY.
-        :type frequency: str
-        """
-
-        self._amount_field_for_request = amount
-        self._frequency_field_for_request = frequency
-
-    @property
-    def amount(self):
-        """
-        :rtype: Amount
-        """
-
-        return self._amount
-
-    @property
-    def frequency(self):
-        """
-        :rtype: str
-        """
-
-        return self._frequency
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._amount is not None:
-            return False
-
-        if self._frequency is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BudgetRestriction
-        """
-
-        return converter.json_to_class(BudgetRestriction, json_str)
 
 
 class ShareDetailReadOnly(BunqModel):
@@ -3441,8 +3357,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
     :type _RewardRecipient: endpoint.RewardRecipient
     :param _RewardSender: 
     :type _RewardSender: endpoint.RewardSender
-    :param _ShareInviteBankInquiryBatch: 
-    :type _ShareInviteBankInquiryBatch: endpoint.ShareInviteBankInquiryBatch
     :param _ShareInviteBankInquiry: 
     :type _ShareInviteBankInquiry: endpoint.ShareInviteMonetaryAccountInquiry
     :param _ShareInviteBankResponse: 
@@ -3478,7 +3392,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
     _RequestResponse = None
     _RewardRecipient = None
     _RewardSender = None
-    _ShareInviteBankInquiryBatch = None
     _ShareInviteBankInquiry = None
     _ShareInviteBankResponse = None
     _SofortMerchantTransaction = None
@@ -3653,14 +3566,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         return self._RewardSender
 
     @property
-    def ShareInviteBankInquiryBatch(self):
-        """
-        :rtype: endpoint.ShareInviteBankInquiryBatch
-        """
-
-        return self._ShareInviteBankInquiryBatch
-
-    @property
     def ShareInviteBankInquiry(self):
         """
         :rtype: endpoint.ShareInviteMonetaryAccountInquiry
@@ -3760,9 +3665,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         if self._RewardSender is not None:
             return self._RewardSender
 
-        if self._ShareInviteBankInquiryBatch is not None:
-            return self._ShareInviteBankInquiryBatch
-
         if self._ShareInviteBankInquiry is not None:
             return self._ShareInviteBankInquiry
 
@@ -3843,9 +3745,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
             return False
 
         if self._RewardSender is not None:
-            return False
-
-        if self._ShareInviteBankInquiryBatch is not None:
             return False
 
         if self._ShareInviteBankInquiry is not None:
