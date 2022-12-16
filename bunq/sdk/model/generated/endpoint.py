@@ -15298,64 +15298,6 @@ class RewardSender(BunqModel):
         return converter.json_to_class(RewardSender, json_str)
 
 
-class ShareInviteBankInquiryBatch(BunqModel):
-    """
-    Used to share a monetary account with another bunq user, as in the 'Connect'
-    feature in the bunq app. Allow the creation of share inquiries that, in the
-    same way as request inquiries, can be revoked by the user creating them or
-    accepted/rejected by the other party.
-    
-    :param _share_invite_bank_inquiries: The list of share invite bank inquiries
-    that were made.
-    :type _share_invite_bank_inquiries: list[ShareInviteMonetaryAccountInquiry]
-    :param _alias: The LabelMonetaryAccount containing the public information of
-    this share invite inquiry batch.
-    :type _alias: object_.MonetaryAccountReference
-    """
-
-    _share_invite_bank_inquiries = None
-    _alias = None
-
-    @property
-    def share_invite_bank_inquiries(self):
-        """
-        :rtype: list[ShareInviteMonetaryAccountInquiry]
-        """
-
-        return self._share_invite_bank_inquiries
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._share_invite_bank_inquiries is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareInviteBankInquiryBatch
-        """
-
-        return converter.json_to_class(ShareInviteBankInquiryBatch, json_str)
-
-
 class ShareInviteMonetaryAccountInquiry(BunqModel):
     """
     [DEPRECATED - use /share-invite-monetary-account-response] Used to share a
@@ -34712,63 +34654,6 @@ class Session(BunqModel):
         """
 
         return converter.json_to_class(Session, json_str)
-
-
-class ShareInviteMonetaryAccountAmountUsed(BunqModel):
-    """
-    When you have connected your monetary account to a user, and given this user
-    a (for example) daily budget of 10 EUR. If this users has used his entire
-    budget or part of it, this call can be used to reset the amount he used to
-    0. The user can then spend the daily budget of 10 EUR again.
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/share-invite-monetary-account-inquiry/{}/amount-used/{}"
-
-
-    @classmethod
-    def delete(cls, share_invite_monetary_account_inquiry_id,  share_invite_monetary_account_amount_used_id, monetary_account_id=None, custom_headers=None):
-        """
-        Reset the available budget for an account share. To be called without
-        any ID at the end of the path.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type share_invite_monetary_account_inquiry_id: int
-        :type share_invite_monetary_account_amount_used_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseNone
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), share_invite_monetary_account_inquiry_id, share_invite_monetary_account_amount_used_id)
-        response_raw = api_client.delete(endpoint_url, custom_headers)
-
-        return BunqResponseNone.cast_from_bunq_response(
-            BunqResponse(None, response_raw.headers)
-        )
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareInviteMonetaryAccountAmountUsed
-        """
-
-        return converter.json_to_class(ShareInviteMonetaryAccountAmountUsed, json_str)
 
 
 class TokenQrRequestIdeal(BunqModel):
