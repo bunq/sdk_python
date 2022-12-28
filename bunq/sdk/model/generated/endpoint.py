@@ -38490,6 +38490,286 @@ class RegistryMembership(BunqModel):
         """
 
         return converter.json_to_class(RegistryMembership, json_str)
+
+
+class TranslinkTransaction(BunqModel):
+    """
+    Used to create translink transactions.
+    
+    :param _type_: Type of transaction, can be TRIP, REFUND, WITHDRAWAL or
+    TOP_UP.
+    :type _type_: str
+    :param _reference: The request reference.
+    :type _reference: str
+    :param _description: Description of the payment request.
+    :type _description: str
+    :param _payments: The list of mutations that were made.
+    :type _payments: object_.PaymentBatchAnchoredPayment
+    :param _status: The status of the transaction. Can be CREATED, SETTLED or
+    FAILED.
+    :type _status: str
+    :param _failure_reason: The reason why the transaction FAILED processing.
+    :type _failure_reason: list[object_.Error]
+    :param _entries: The list of entries in the transaction.
+    :type _entries: list[object_.TranslinkTransactionEntry]
+    :param _amount: The total amount of the transaction.
+    :type _amount: object_.Amount
+    :param _alias: The LabelMonetaryAccount containing the public information of
+    'this' (party) side of the Payment.
+    :type _alias: object_.MonetaryAccountReference
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/translink-transaction"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/translink-transaction/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/translink-transaction"
+
+    # Field constants.
+    FIELD_TYPE = "type"
+    FIELD_REFERENCE = "reference"
+    FIELD_DESCRIPTION = "description"
+    FIELD_PAYMENTS = "payments"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "TranslinkTransaction"
+
+    _type_ = None
+    _status = None
+    _failure_reason = None
+    _payments = None
+    _entries = None
+    _amount = None
+    _alias = None
+    _reference = None
+    _description = None
+    _type__field_for_request = None
+    _reference_field_for_request = None
+    _description_field_for_request = None
+    _payments_field_for_request = None
+
+    def __init__(self, type_, reference, description, payments):
+        """
+        :param type_: Type of transaction, can be TRIP, REFUND, WITHDRAWAL or
+        TOP_UP.
+        :type type_: str
+        :param reference: The request reference.
+        :type reference: str
+        :param description: Description of the payment request.
+        :type description: str
+        :param payments: The list of payments we want to send in a single
+        transaction.
+        :type payments: list[Payment]
+        """
+
+        self._type__field_for_request = type_
+        self._reference_field_for_request = reference
+        self._description_field_for_request = description
+        self._payments_field_for_request = payments
+
+    @classmethod
+    def create(cls,type_, reference, description, payments, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :param type_: Type of transaction, can be TRIP, REFUND, WITHDRAWAL or
+        TOP_UP.
+        :type type_: str
+        :param reference: The request reference.
+        :type reference: str
+        :param description: Description of the payment request.
+        :type description: str
+        :param payments: The list of payments we want to send in a single
+        transaction.
+        :type payments: list[Payment]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_TYPE : type_,
+cls.FIELD_REFERENCE : reference,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_PAYMENTS : payments
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  translink_transaction_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type translink_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTranslinkTransaction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), translink_transaction_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseTranslinkTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls,monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseTranslinkTransactionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseTranslinkTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def failure_reason(self):
+        """
+        :rtype: list[object_.Error]
+        """
+
+        return self._failure_reason
+
+    @property
+    def payments(self):
+        """
+        :rtype: object_.PaymentBatchAnchoredPayment
+        """
+
+        return self._payments
+
+    @property
+    def entries(self):
+        """
+        :rtype: list[object_.TranslinkTransactionEntry]
+        """
+
+        return self._entries
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def reference(self):
+        """
+        :rtype: str
+        """
+
+        return self._reference
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._failure_reason is not None:
+            return False
+
+        if self._payments is not None:
+            return False
+
+        if self._entries is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._reference is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: TranslinkTransaction
+        """
+
+        return converter.json_to_class(TranslinkTransaction, json_str)
     
 class BunqResponseBillingContractSubscriptionList(BunqResponse):
     @property
@@ -40756,6 +41036,26 @@ class BunqResponseRegistrySettlementList(BunqResponse):
     def value(self):
         """
         :rtype: list[RegistrySettlement]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseTranslinkTransaction(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: TranslinkTransaction
+        """
+ 
+        return super().value
+
+    
+class BunqResponseTranslinkTransactionList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[TranslinkTransaction]
         """
  
         return super().value
