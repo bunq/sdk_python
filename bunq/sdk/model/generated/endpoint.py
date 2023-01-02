@@ -31343,6 +31343,8 @@ class UserPerson(BunqModel):
     set on a UserPerson level to receive callbacks. For more information check
     the <a href="/api/1/page/callbacks">dedicated callbacks page</a>.
     
+    :param _subscription_type: The subscription type the user should start on.
+    :type _subscription_type: str
     :param _first_name: The person's first name.
     :type _first_name: str
     :param _middle_name: The person's middle name.
@@ -31443,6 +31445,7 @@ class UserPerson(BunqModel):
     _ENDPOINT_URL_UPDATE = "user-person/{}"
 
     # Field constants.
+    FIELD_SUBSCRIPTION_TYPE = "subscription_type"
     FIELD_FIRST_NAME = "first_name"
     FIELD_MIDDLE_NAME = "middle_name"
     FIELD_LAST_NAME = "last_name"
@@ -31500,6 +31503,7 @@ class UserPerson(BunqModel):
     _daily_limit_without_confirmation_login = None
     _notification_filters = None
     _relations = None
+    _subscription_type_field_for_request = None
     _first_name_field_for_request = None
     _middle_name_field_for_request = None
     _last_name_field_for_request = None
@@ -31525,12 +31529,27 @@ class UserPerson(BunqModel):
     _daily_limit_without_confirmation_login_field_for_request = None
     _display_name_field_for_request = None
 
-    def __init__(self, sub_status=None, document_back_attachment_id=None, tax_resident=None, address_postal=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, status=None, address_main=None, gender=None, region=None, language=None, nationality=None, date_of_birth=None, document_front_attachment_id=None, document_country_of_issuance=None, document_number=None, document_type=None, avatar_uuid=None, display_name=None):
+    def __init__(self, document_back_attachment_id=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, sub_status=None, status=None, gender=None, region=None, language=None, nationality=None, date_of_birth=None, document_front_attachment_id=None, subscription_type=None, document_country_of_issuance=None, document_number=None, document_type=None, tax_resident=None, avatar_uuid=None, address_postal=None, address_main=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, display_name=None):
         """
+        :param subscription_type: The subscription type the user should start on.
+        :type subscription_type: str
+        :param first_name: The person's first name.
+        :type first_name: str
+        :param middle_name: The person's middle name.
+        :type middle_name: str
+        :param last_name: The person's last name.
+        :type last_name: str
+        :param public_nick_name: The person's public nick name.
+        :type public_nick_name: str
         :param address_main: The user's main address.
         :type address_main: object_.Address
+        :param address_postal: The person's postal address.
+        :type address_postal: object_.Address
         :param avatar_uuid: The public UUID of the user's avatar.
         :type avatar_uuid: str
+        :param tax_resident: The user's tax residence numbers for different
+        countries.
+        :type tax_resident: list[object_.TaxResident]
         :param document_type: The type of identification document the person
         registered with.
         :type document_type: str
@@ -31543,6 +31562,9 @@ class UserPerson(BunqModel):
         :param document_front_attachment_id: The reference to the uploaded
         picture/scan of the front side of the identification document.
         :type document_front_attachment_id: int
+        :param document_back_attachment_id: The reference to the uploaded
+        picture/scan of the back side of the identification document.
+        :type document_back_attachment_id: int
         :param date_of_birth: The person's date of birth. Accepts ISO8601 date
         formats.
         :type date_of_birth: str
@@ -31574,33 +31596,25 @@ class UserPerson(BunqModel):
         :param daily_limit_without_confirmation_login: The amount the user can pay
         in the session without asking for credentials.
         :type daily_limit_without_confirmation_login: object_.Amount
-        :param first_name: The person's first name.
-        :type first_name: str
-        :param middle_name: The person's middle name.
-        :type middle_name: str
-        :param last_name: The person's last name.
-        :type last_name: str
-        :param public_nick_name: The person's public nick name.
-        :type public_nick_name: str
-        :param address_postal: The person's postal address.
-        :type address_postal: object_.Address
-        :param tax_resident: The user's tax residence numbers for different
-        countries.
-        :type tax_resident: list[object_.TaxResident]
-        :param document_back_attachment_id: The reference to the uploaded
-        picture/scan of the back side of the identification document.
-        :type document_back_attachment_id: int
         :param display_name: The person's legal name. Available legal names can be
         listed via the 'user/{user_id}/legal-name' endpoint.
         :type display_name: str
         """
 
+        self._subscription_type_field_for_request = subscription_type
+        self._first_name_field_for_request = first_name
+        self._middle_name_field_for_request = middle_name
+        self._last_name_field_for_request = last_name
+        self._public_nick_name_field_for_request = public_nick_name
         self._address_main_field_for_request = address_main
+        self._address_postal_field_for_request = address_postal
         self._avatar_uuid_field_for_request = avatar_uuid
+        self._tax_resident_field_for_request = tax_resident
         self._document_type_field_for_request = document_type
         self._document_number_field_for_request = document_number
         self._document_country_of_issuance_field_for_request = document_country_of_issuance
         self._document_front_attachment_id_field_for_request = document_front_attachment_id
+        self._document_back_attachment_id_field_for_request = document_back_attachment_id
         self._date_of_birth_field_for_request = date_of_birth
         self._nationality_field_for_request = nationality
         self._language_field_for_request = language
@@ -31611,13 +31625,6 @@ class UserPerson(BunqModel):
         self._legal_guardian_alias_field_for_request = legal_guardian_alias
         self._session_timeout_field_for_request = session_timeout
         self._daily_limit_without_confirmation_login_field_for_request = daily_limit_without_confirmation_login
-        self._first_name_field_for_request = first_name
-        self._middle_name_field_for_request = middle_name
-        self._last_name_field_for_request = last_name
-        self._public_nick_name_field_for_request = public_nick_name
-        self._address_postal_field_for_request = address_postal
-        self._tax_resident_field_for_request = tax_resident
-        self._document_back_attachment_id_field_for_request = document_back_attachment_id
         self._display_name_field_for_request = display_name
 
     @classmethod
