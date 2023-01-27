@@ -18205,60 +18205,6 @@ cls.FIELD_INCLUDE_ATTACHMENT : include_attachment
         return converter.json_to_class(ExportStatement, json_str)
 
 
-class InsightBudget(BunqModel):
-    """
-    Used to get insights budgets between given time range.
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/insight-budget"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "InsightBudget"
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInsightBudgetList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseInsightBudgetList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: InsightBudget
-        """
-
-        return converter.json_to_class(InsightBudget, json_str)
-
-
 class InsightEvent(BunqModel):
     """
     Used to get events based on time and insight category.
@@ -39783,16 +39729,6 @@ class BunqResponseExportStatementList(BunqResponse):
     def value(self):
         """
         :rtype: list[ExportStatement]
-        """
- 
-        return super().value
-
-    
-class BunqResponseInsightBudgetList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[InsightBudget]
         """
  
         return super().value
