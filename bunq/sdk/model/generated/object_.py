@@ -2815,503 +2815,6 @@ class ScheduleAnchorObject(BunqModel, AnchorObjectInterface):
         return converter.json_to_class(ScheduleAnchorObject, json_str)
 
 
-class DraftShareInviteEntry(BunqModel):
-    """
-    :param _share_detail: The share details. Only one of these objects is
-    returned.
-    :type _share_detail: ShareDetail
-    :param _start_date: The start date of this share.
-    :type _start_date: str
-    :param _end_date: The expiration date of this share.
-    :type _end_date: str
-    """
-
-    _share_detail = None
-    _start_date = None
-    _end_date = None
-    _share_detail_field_for_request = None
-    _start_date_field_for_request = None
-    _end_date_field_for_request = None
-
-    def __init__(self, share_detail=None, start_date=None, end_date=None):
-        """
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: ShareDetail
-        :param start_date: The start date of this share.
-        :type start_date: str
-        :param end_date: The expiration date of this share.
-        :type end_date: str
-        """
-
-        self._share_detail_field_for_request = share_detail
-        self._start_date_field_for_request = start_date
-        self._end_date_field_for_request = end_date
-
-    @property
-    def share_detail(self):
-        """
-        :rtype: ShareDetail
-        """
-
-        return self._share_detail
-
-    @property
-    def start_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._start_date
-
-    @property
-    def end_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._end_date
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._share_detail is not None:
-            return False
-
-        if self._start_date is not None:
-            return False
-
-        if self._end_date is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: DraftShareInviteEntry
-        """
-
-        return converter.json_to_class(DraftShareInviteEntry, json_str)
-
-
-class ShareDetail(BunqModel):
-    """
-    :param _payment: The share details for a payment share. In the response
-    'payment' is replaced by 'ShareDetailPayment'.
-    :type _payment: ShareDetailPayment
-    :param _read_only: The share details for viewing a share. In the response
-    'read_only' is replaced by 'ShareDetailReadOnly'.
-    :type _read_only: ShareDetailReadOnly
-    :param _draft_payment: The share details for a draft payment share. In the
-    response 'draft_payment' is replaced by 'ShareDetailDraftPayment'.
-    :type _draft_payment: ShareDetailDraftPayment
-    """
-
-    _payment = None
-    _read_only = None
-    _draft_payment = None
-    _payment_field_for_request = None
-    _read_only_field_for_request = None
-    _draft_payment_field_for_request = None
-
-    def __init__(self, payment=None, read_only=None, draft_payment=None):
-        """
-        :param payment: The share details for a payment share. Remember to replace
-        'payment' with 'ShareDetailPayment' before sending a request.
-        :type payment: ShareDetailPayment
-        :param read_only: The share details for viewing a share. Remember to replace
-        'read_only' with 'ShareDetailReadOnly' before sending a request.
-        :type read_only: ShareDetailReadOnly
-        :param draft_payment: The share details for a draft payment share. Remember
-        to replace 'draft_payment' with 'ShareDetailDraftPayment' before sending a
-        request.
-        :type draft_payment: ShareDetailDraftPayment
-        """
-
-        self._payment_field_for_request = payment
-        self._read_only_field_for_request = read_only
-        self._draft_payment_field_for_request = draft_payment
-
-    @property
-    def payment(self):
-        """
-        :rtype: ShareDetailPayment
-        """
-
-        return self._payment
-
-    @property
-    def read_only(self):
-        """
-        :rtype: ShareDetailReadOnly
-        """
-
-        return self._read_only
-
-    @property
-    def draft_payment(self):
-        """
-        :rtype: ShareDetailDraftPayment
-        """
-
-        return self._draft_payment
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._payment is not None:
-            return False
-
-        if self._read_only is not None:
-            return False
-
-        if self._draft_payment is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareDetail
-        """
-
-        return converter.json_to_class(ShareDetail, json_str)
-
-
-class ShareDetailPayment(BunqModel):
-    """
-    :param _make_payments: If set to true, the invited user will be able to make
-    payments from the shared account.
-    :type _make_payments: bool
-    :param _make_draft_payments: If set to true, the invited user will be able
-    to make draft payments from the shared account.
-    :type _make_draft_payments: bool
-    :param _view_balance: If set to true, the invited user will be able to view
-    the account balance.
-    :type _view_balance: bool
-    :param _view_old_events: If set to true, the invited user will be able to
-    view events from before the share was active.
-    :type _view_old_events: bool
-    :param _view_new_events: If set to true, the invited user will be able to
-    view events starting from the time the share became active.
-    :type _view_new_events: bool
-    """
-
-    _make_payments = None
-    _make_draft_payments = None
-    _view_balance = None
-    _view_old_events = None
-    _view_new_events = None
-    _make_payments_field_for_request = None
-    _make_draft_payments_field_for_request = None
-    _view_balance_field_for_request = None
-    _view_old_events_field_for_request = None
-    _view_new_events_field_for_request = None
-
-    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None, make_draft_payments=None):
-        """
-        :param make_payments: If set to true, the invited user will be able to make
-        payments from the shared account.
-        :type make_payments: bool
-        :param view_balance: If set to true, the invited user will be able to view
-        the account balance.
-        :type view_balance: bool
-        :param view_old_events: If set to true, the invited user will be able to
-        view events from before the share was active.
-        :type view_old_events: bool
-        :param view_new_events: If set to true, the invited user will be able to
-        view events starting from the time the share became active.
-        :type view_new_events: bool
-        :param make_draft_payments: If set to true, the invited user will be able to
-        make draft payments from the shared account.
-        :type make_draft_payments: bool
-        """
-
-        self._make_payments_field_for_request = make_payments
-        self._view_balance_field_for_request = view_balance
-        self._view_old_events_field_for_request = view_old_events
-        self._view_new_events_field_for_request = view_new_events
-        self._make_draft_payments_field_for_request = make_draft_payments
-
-    @property
-    def make_payments(self):
-        """
-        :rtype: bool
-        """
-
-        return self._make_payments
-
-    @property
-    def make_draft_payments(self):
-        """
-        :rtype: bool
-        """
-
-        return self._make_draft_payments
-
-    @property
-    def view_balance(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_balance
-
-    @property
-    def view_old_events(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_old_events
-
-    @property
-    def view_new_events(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_new_events
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._make_payments is not None:
-            return False
-
-        if self._make_draft_payments is not None:
-            return False
-
-        if self._view_balance is not None:
-            return False
-
-        if self._view_old_events is not None:
-            return False
-
-        if self._view_new_events is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareDetailPayment
-        """
-
-        return converter.json_to_class(ShareDetailPayment, json_str)
-
-
-class ShareDetailReadOnly(BunqModel):
-    """
-    :param _view_balance: If set to true, the invited user will be able to view
-    the account balance.
-    :type _view_balance: bool
-    :param _view_old_events: If set to true, the invited user will be able to
-    view events from before the share was active.
-    :type _view_old_events: bool
-    :param _view_new_events: If set to true, the invited user will be able to
-    view events starting from the time the share became active.
-    :type _view_new_events: bool
-    """
-
-    _view_balance = None
-    _view_old_events = None
-    _view_new_events = None
-    _view_balance_field_for_request = None
-    _view_old_events_field_for_request = None
-    _view_new_events_field_for_request = None
-
-    def __init__(self, view_balance=None, view_old_events=None, view_new_events=None):
-        """
-        :param view_balance: If set to true, the invited user will be able to view
-        the account balance.
-        :type view_balance: bool
-        :param view_old_events: If set to true, the invited user will be able to
-        view events from before the share was active.
-        :type view_old_events: bool
-        :param view_new_events: If set to true, the invited user will be able to
-        view events starting from the time the share became active.
-        :type view_new_events: bool
-        """
-
-        self._view_balance_field_for_request = view_balance
-        self._view_old_events_field_for_request = view_old_events
-        self._view_new_events_field_for_request = view_new_events
-
-    @property
-    def view_balance(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_balance
-
-    @property
-    def view_old_events(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_old_events
-
-    @property
-    def view_new_events(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_new_events
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._view_balance is not None:
-            return False
-
-        if self._view_old_events is not None:
-            return False
-
-        if self._view_new_events is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareDetailReadOnly
-        """
-
-        return converter.json_to_class(ShareDetailReadOnly, json_str)
-
-
-class ShareDetailDraftPayment(BunqModel):
-    """
-    :param _make_draft_payments: If set to true, the invited user will be able
-    to make draft payments from the shared account.
-    :type _make_draft_payments: bool
-    :param _view_balance: If set to true, the invited user will be able to view
-    the account balance.
-    :type _view_balance: bool
-    :param _view_old_events: If set to true, the invited user will be able to
-    view events from before the share was active.
-    :type _view_old_events: bool
-    :param _view_new_events: If set to true, the invited user will be able to
-    view events starting from the time the share became active.
-    :type _view_new_events: bool
-    """
-
-    _make_draft_payments = None
-    _view_balance = None
-    _view_old_events = None
-    _view_new_events = None
-    _make_draft_payments_field_for_request = None
-    _view_balance_field_for_request = None
-    _view_old_events_field_for_request = None
-    _view_new_events_field_for_request = None
-
-    def __init__(self, make_draft_payments=None, view_balance=None, view_old_events=None, view_new_events=None):
-        """
-        :param make_draft_payments: If set to true, the invited user will be able to
-        make draft payments from the shared account.
-        :type make_draft_payments: bool
-        :param view_balance: If set to true, the invited user will be able to view
-        the account balance.
-        :type view_balance: bool
-        :param view_old_events: If set to true, the invited user will be able to
-        view events from before the share was active.
-        :type view_old_events: bool
-        :param view_new_events: If set to true, the invited user will be able to
-        view events starting from the time the share became active.
-        :type view_new_events: bool
-        """
-
-        self._make_draft_payments_field_for_request = make_draft_payments
-        self._view_balance_field_for_request = view_balance
-        self._view_old_events_field_for_request = view_old_events
-        self._view_new_events_field_for_request = view_new_events
-
-    @property
-    def make_draft_payments(self):
-        """
-        :rtype: bool
-        """
-
-        return self._make_draft_payments
-
-    @property
-    def view_balance(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_balance
-
-    @property
-    def view_old_events(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_old_events
-
-    @property
-    def view_new_events(self):
-        """
-        :rtype: bool
-        """
-
-        return self._view_new_events
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._make_draft_payments is not None:
-            return False
-
-        if self._view_balance is not None:
-            return False
-
-        if self._view_old_events is not None:
-            return False
-
-        if self._view_new_events is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: ShareDetailDraftPayment
-        """
-
-        return converter.json_to_class(ShareDetailDraftPayment, json_str)
-
-
 class EventObject(BunqModel, AnchorObjectInterface):
     """
     :param _BunqMeTab: 
@@ -4525,6 +4028,419 @@ class WhitelistResultViewAnchoredObject(BunqModel):
         """
 
         return converter.json_to_class(WhitelistResultViewAnchoredObject, json_str)
+
+
+class ShareDetail(BunqModel):
+    """
+    :param _payment: The share details for a payment share. In the response
+    'payment' is replaced by 'ShareDetailPayment'.
+    :type _payment: ShareDetailPayment
+    :param _read_only: The share details for viewing a share. In the response
+    'read_only' is replaced by 'ShareDetailReadOnly'.
+    :type _read_only: ShareDetailReadOnly
+    :param _draft_payment: The share details for a draft payment share. In the
+    response 'draft_payment' is replaced by 'ShareDetailDraftPayment'.
+    :type _draft_payment: ShareDetailDraftPayment
+    """
+
+    _payment = None
+    _read_only = None
+    _draft_payment = None
+    _payment_field_for_request = None
+    _read_only_field_for_request = None
+    _draft_payment_field_for_request = None
+
+    def __init__(self, payment=None, read_only=None, draft_payment=None):
+        """
+        :param payment: The share details for a payment share. Remember to replace
+        'payment' with 'ShareDetailPayment' before sending a request.
+        :type payment: ShareDetailPayment
+        :param read_only: The share details for viewing a share. Remember to replace
+        'read_only' with 'ShareDetailReadOnly' before sending a request.
+        :type read_only: ShareDetailReadOnly
+        :param draft_payment: The share details for a draft payment share. Remember
+        to replace 'draft_payment' with 'ShareDetailDraftPayment' before sending a
+        request.
+        :type draft_payment: ShareDetailDraftPayment
+        """
+
+        self._payment_field_for_request = payment
+        self._read_only_field_for_request = read_only
+        self._draft_payment_field_for_request = draft_payment
+
+    @property
+    def payment(self):
+        """
+        :rtype: ShareDetailPayment
+        """
+
+        return self._payment
+
+    @property
+    def read_only(self):
+        """
+        :rtype: ShareDetailReadOnly
+        """
+
+        return self._read_only
+
+    @property
+    def draft_payment(self):
+        """
+        :rtype: ShareDetailDraftPayment
+        """
+
+        return self._draft_payment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payment is not None:
+            return False
+
+        if self._read_only is not None:
+            return False
+
+        if self._draft_payment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareDetail
+        """
+
+        return converter.json_to_class(ShareDetail, json_str)
+
+
+class ShareDetailPayment(BunqModel):
+    """
+    :param _make_payments: If set to true, the invited user will be able to make
+    payments from the shared account.
+    :type _make_payments: bool
+    :param _make_draft_payments: If set to true, the invited user will be able
+    to make draft payments from the shared account.
+    :type _make_draft_payments: bool
+    :param _view_balance: If set to true, the invited user will be able to view
+    the account balance.
+    :type _view_balance: bool
+    :param _view_old_events: If set to true, the invited user will be able to
+    view events from before the share was active.
+    :type _view_old_events: bool
+    :param _view_new_events: If set to true, the invited user will be able to
+    view events starting from the time the share became active.
+    :type _view_new_events: bool
+    """
+
+    _make_payments = None
+    _make_draft_payments = None
+    _view_balance = None
+    _view_old_events = None
+    _view_new_events = None
+    _make_payments_field_for_request = None
+    _make_draft_payments_field_for_request = None
+    _view_balance_field_for_request = None
+    _view_old_events_field_for_request = None
+    _view_new_events_field_for_request = None
+
+    def __init__(self, make_payments=None, view_balance=None, view_old_events=None, view_new_events=None, make_draft_payments=None):
+        """
+        :param make_payments: If set to true, the invited user will be able to make
+        payments from the shared account.
+        :type make_payments: bool
+        :param view_balance: If set to true, the invited user will be able to view
+        the account balance.
+        :type view_balance: bool
+        :param view_old_events: If set to true, the invited user will be able to
+        view events from before the share was active.
+        :type view_old_events: bool
+        :param view_new_events: If set to true, the invited user will be able to
+        view events starting from the time the share became active.
+        :type view_new_events: bool
+        :param make_draft_payments: If set to true, the invited user will be able to
+        make draft payments from the shared account.
+        :type make_draft_payments: bool
+        """
+
+        self._make_payments_field_for_request = make_payments
+        self._view_balance_field_for_request = view_balance
+        self._view_old_events_field_for_request = view_old_events
+        self._view_new_events_field_for_request = view_new_events
+        self._make_draft_payments_field_for_request = make_draft_payments
+
+    @property
+    def make_payments(self):
+        """
+        :rtype: bool
+        """
+
+        return self._make_payments
+
+    @property
+    def make_draft_payments(self):
+        """
+        :rtype: bool
+        """
+
+        return self._make_draft_payments
+
+    @property
+    def view_balance(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_balance
+
+    @property
+    def view_old_events(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_old_events
+
+    @property
+    def view_new_events(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_new_events
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._make_payments is not None:
+            return False
+
+        if self._make_draft_payments is not None:
+            return False
+
+        if self._view_balance is not None:
+            return False
+
+        if self._view_old_events is not None:
+            return False
+
+        if self._view_new_events is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareDetailPayment
+        """
+
+        return converter.json_to_class(ShareDetailPayment, json_str)
+
+
+class ShareDetailReadOnly(BunqModel):
+    """
+    :param _view_balance: If set to true, the invited user will be able to view
+    the account balance.
+    :type _view_balance: bool
+    :param _view_old_events: If set to true, the invited user will be able to
+    view events from before the share was active.
+    :type _view_old_events: bool
+    :param _view_new_events: If set to true, the invited user will be able to
+    view events starting from the time the share became active.
+    :type _view_new_events: bool
+    """
+
+    _view_balance = None
+    _view_old_events = None
+    _view_new_events = None
+    _view_balance_field_for_request = None
+    _view_old_events_field_for_request = None
+    _view_new_events_field_for_request = None
+
+    def __init__(self, view_balance=None, view_old_events=None, view_new_events=None):
+        """
+        :param view_balance: If set to true, the invited user will be able to view
+        the account balance.
+        :type view_balance: bool
+        :param view_old_events: If set to true, the invited user will be able to
+        view events from before the share was active.
+        :type view_old_events: bool
+        :param view_new_events: If set to true, the invited user will be able to
+        view events starting from the time the share became active.
+        :type view_new_events: bool
+        """
+
+        self._view_balance_field_for_request = view_balance
+        self._view_old_events_field_for_request = view_old_events
+        self._view_new_events_field_for_request = view_new_events
+
+    @property
+    def view_balance(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_balance
+
+    @property
+    def view_old_events(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_old_events
+
+    @property
+    def view_new_events(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_new_events
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._view_balance is not None:
+            return False
+
+        if self._view_old_events is not None:
+            return False
+
+        if self._view_new_events is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareDetailReadOnly
+        """
+
+        return converter.json_to_class(ShareDetailReadOnly, json_str)
+
+
+class ShareDetailDraftPayment(BunqModel):
+    """
+    :param _make_draft_payments: If set to true, the invited user will be able
+    to make draft payments from the shared account.
+    :type _make_draft_payments: bool
+    :param _view_balance: If set to true, the invited user will be able to view
+    the account balance.
+    :type _view_balance: bool
+    :param _view_old_events: If set to true, the invited user will be able to
+    view events from before the share was active.
+    :type _view_old_events: bool
+    :param _view_new_events: If set to true, the invited user will be able to
+    view events starting from the time the share became active.
+    :type _view_new_events: bool
+    """
+
+    _make_draft_payments = None
+    _view_balance = None
+    _view_old_events = None
+    _view_new_events = None
+    _make_draft_payments_field_for_request = None
+    _view_balance_field_for_request = None
+    _view_old_events_field_for_request = None
+    _view_new_events_field_for_request = None
+
+    def __init__(self, make_draft_payments=None, view_balance=None, view_old_events=None, view_new_events=None):
+        """
+        :param make_draft_payments: If set to true, the invited user will be able to
+        make draft payments from the shared account.
+        :type make_draft_payments: bool
+        :param view_balance: If set to true, the invited user will be able to view
+        the account balance.
+        :type view_balance: bool
+        :param view_old_events: If set to true, the invited user will be able to
+        view events from before the share was active.
+        :type view_old_events: bool
+        :param view_new_events: If set to true, the invited user will be able to
+        view events starting from the time the share became active.
+        :type view_new_events: bool
+        """
+
+        self._make_draft_payments_field_for_request = make_draft_payments
+        self._view_balance_field_for_request = view_balance
+        self._view_old_events_field_for_request = view_old_events
+        self._view_new_events_field_for_request = view_new_events
+
+    @property
+    def make_draft_payments(self):
+        """
+        :rtype: bool
+        """
+
+        return self._make_draft_payments
+
+    @property
+    def view_balance(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_balance
+
+    @property
+    def view_old_events(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_old_events
+
+    @property
+    def view_new_events(self):
+        """
+        :rtype: bool
+        """
+
+        return self._view_new_events
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._make_draft_payments is not None:
+            return False
+
+        if self._view_balance is not None:
+            return False
+
+        if self._view_old_events is not None:
+            return False
+
+        if self._view_new_events is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ShareDetailDraftPayment
+        """
+
+        return converter.json_to_class(ShareDetailDraftPayment, json_str)
 
 
 class MonetaryAccountProfileFill(BunqModel):
