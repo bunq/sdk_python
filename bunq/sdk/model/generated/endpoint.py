@@ -9897,349 +9897,6 @@ class Schedule(BunqModel):
         return converter.json_to_class(Schedule, json_str)
 
 
-class DraftShareInviteBankQrCodeContent(BunqModel):
-    """
-    This call returns the raw content of the QR code that links to this draft
-    share invite. When a bunq user scans this QR code with the bunq app the
-    draft share invite will be shown on his/her device.
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/draft-share-invite-bank/{}/qr-code-content"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "DraftShareInviteBankQrCodeContent"
-
-    @classmethod
-    def list(cls, draft_share_invite_bank_id, custom_headers=None):
-        """
-        Returns the raw content of the QR code that links to this draft share
-        invite. The raw content is the binary representation of a file, without
-        any JSON wrapping.
-        
-        :type user_id: int
-        :type draft_share_invite_bank_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseBytes
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), draft_share_invite_bank_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseBytes.cast_from_bunq_response(
-            BunqResponse(response_raw.body_bytes, response_raw.headers)
-        )
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: DraftShareInviteBankQrCodeContent
-        """
-
-        return converter.json_to_class(DraftShareInviteBankQrCodeContent, json_str)
-
-
-class DraftShareInviteBank(BunqModel):
-    """
-    Used to create a draft share invite for a monetary account with another bunq
-    user, as in the 'Connect' feature in the bunq app. The user that accepts the
-    invite can share one of their MonetaryAccounts with the user that created
-    the invite.
-    
-    :param _status: The status of the draft share invite. Can be USED, CANCELLED
-    and PENDING.
-    :type _status: str
-    :param _expiration: The moment when this draft share invite expires.
-    :type _expiration: str
-    :param _draft_share_settings: The draft share invite details.
-    :type _draft_share_settings: object_.DraftShareInviteEntry
-    :param _user_alias_created: The user who created the draft share invite.
-    :type _user_alias_created: object_.LabelUser
-    :param _share_invite_bank_response_id: The id of the share invite bank
-    response this draft share belongs to.
-    :type _share_invite_bank_response_id: int
-    :param _draft_share_url: The URL redirecting user to the draft share invite
-    in the app. Only works on mobile devices.
-    :type _draft_share_url: str
-    :param _id_: The id of the newly created draft share invite.
-    :type _id_: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/draft-share-invite-bank"
-    _ENDPOINT_URL_READ = "user/{}/draft-share-invite-bank/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/draft-share-invite-bank/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/draft-share-invite-bank"
-
-    # Field constants.
-    FIELD_STATUS = "status"
-    FIELD_EXPIRATION = "expiration"
-    FIELD_DRAFT_SHARE_SETTINGS = "draft_share_settings"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "DraftShareInviteBank"
-
-    _user_alias_created = None
-    _status = None
-    _expiration = None
-    _share_invite_bank_response_id = None
-    _draft_share_url = None
-    _draft_share_settings = None
-    _id_ = None
-    _status_field_for_request = None
-    _expiration_field_for_request = None
-    _draft_share_settings_field_for_request = None
-
-    def __init__(self, expiration=None, draft_share_settings=None, status=None):
-        """
-        :param expiration: The moment when this draft share invite expires.
-        :type expiration: str
-        :param draft_share_settings: The draft share invite details.
-        :type draft_share_settings: object_.DraftShareInviteEntry
-        :param status: The status of the draft share invite. Can be CANCELLED (the
-        user cancels the draft share before it's used).
-        :type status: str
-        """
-
-        self._expiration_field_for_request = expiration
-        self._draft_share_settings_field_for_request = draft_share_settings
-        self._status_field_for_request = status
-
-    @classmethod
-    def create(cls,expiration, draft_share_settings, status=None, custom_headers=None):
-        """
-        :type user_id: int
-        :param expiration: The moment when this draft share invite expires.
-        :type expiration: str
-        :param draft_share_settings: The draft share invite details.
-        :type draft_share_settings: object_.DraftShareInviteEntry
-        :param status: The status of the draft share invite. Can be CANCELLED
-        (the user cancels the draft share before it's used).
-        :type status: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_STATUS : status,
-cls.FIELD_EXPIRATION : expiration,
-cls.FIELD_DRAFT_SHARE_SETTINGS : draft_share_settings
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  draft_share_invite_bank_id, custom_headers=None):
-        """
-        Get the details of a specific draft of a share invite.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type draft_share_invite_bank_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseDraftShareInviteBank
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), draft_share_invite_bank_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseDraftShareInviteBank.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  draft_share_invite_bank_id, status=None, expiration=None, draft_share_settings=None, custom_headers=None):
-        """
-        Update a draft share invite. When sending status CANCELLED it is
-        possible to cancel the draft share invite.
-        
-        :type user_id: int
-        :type draft_share_invite_bank_id: int
-        :param status: The status of the draft share invite. Can be CANCELLED
-        (the user cancels the draft share before it's used).
-        :type status: str
-        :param expiration: The moment when this draft share invite expires.
-        :type expiration: str
-        :param draft_share_settings: The draft share invite details.
-        :type draft_share_settings: object_.DraftShareInviteEntry
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-cls.FIELD_STATUS : status,
-cls.FIELD_EXPIRATION : expiration,
-cls.FIELD_DRAFT_SHARE_SETTINGS : draft_share_settings
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), draft_share_invite_bank_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseDraftShareInviteBankList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseDraftShareInviteBankList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def user_alias_created(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._user_alias_created
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def expiration(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiration
-
-    @property
-    def share_invite_bank_response_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._share_invite_bank_response_id
-
-    @property
-    def draft_share_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._draft_share_url
-
-    @property
-    def draft_share_settings(self):
-        """
-        :rtype: object_.DraftShareInviteEntry
-        """
-
-        return self._draft_share_settings
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._user_alias_created is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._expiration is not None:
-            return False
-
-        if self._share_invite_bank_response_id is not None:
-            return False
-
-        if self._draft_share_url is not None:
-            return False
-
-        if self._draft_share_settings is not None:
-            return False
-
-        if self._id_ is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: DraftShareInviteBank
-        """
-
-        return converter.json_to_class(DraftShareInviteBank, json_str)
-
-
 class ServerError(BunqModel):
     """
     An endpoint that will always throw an error.
@@ -15308,24 +14965,27 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     
     :param _counter_user_alias: The label of the user to share with.
     :type _counter_user_alias: object_.LabelUser
-    :param _draft_share_invite_bank_id: The id of the draft share invite bank.
+    :param _access_type: Type of access that is in place.
+    :type _access_type: str
+    :param _draft_share_invite_bank_id: DEPRECATED: USE `access_type` INSTEAD |
+    The id of the draft share invite bank.
     :type _draft_share_invite_bank_id: int
-    :param _share_detail: The share details. Only one of these objects is
-    returned.
+    :param _share_detail: DEPRECATED: USE `access_type` INSTEAD | The share
+    details. Only one of these objects may be passed.
     :type _share_detail: object_.ShareDetail
-    :param _status: The status of the share. Can be PENDING, REVOKED (the user
-    deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-    user deletes an active share) or CANCELLATION_PENDING,
-    CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
+    :param _status: The status of the share. Can be ACTIVE, REVOKED, REJECTED.
     :type _status: str
     :param _relationship: The relationship: COMPANY_DIRECTOR, COMPANY_EMPLOYEE,
     etc
     :type _relationship: str
-    :param _share_type: The share type, either STANDARD or MUTUAL.
+    :param _share_type: DEPRECATED: USE `access_type` INSTEAD | The share type,
+    either STANDARD or MUTUAL.
     :type _share_type: str
-    :param _start_date: The start date of this share.
+    :param _start_date: DEPRECATED: USE `access_type` INSTEAD | The start date
+    of this share.
     :type _start_date: str
-    :param _end_date: The expiration date of this share.
+    :param _end_date: DEPRECATED: USE `access_type` INSTEAD | The expiration
+    date of this share.
     :type _end_date: str
     :param _alias: The label of the monetary account that's being shared.
     :type _alias: object_.MonetaryAccountReference
@@ -15348,6 +15008,7 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
 
     # Field constants.
     FIELD_COUNTER_USER_ALIAS = "counter_user_alias"
+    FIELD_ACCESS_TYPE = "access_type"
     FIELD_DRAFT_SHARE_INVITE_BANK_ID = "draft_share_invite_bank_id"
     FIELD_SHARE_DETAIL = "share_detail"
     FIELD_STATUS = "status"
@@ -15364,15 +15025,12 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     _user_alias_revoked = None
     _counter_user_alias = None
     _monetary_account_id = None
-    _draft_share_invite_bank_id = None
-    _share_detail = None
     _status = None
+    _access_type = None
     _relationship = None
-    _share_type = None
-    _start_date = None
-    _end_date = None
     _id_ = None
     _counter_user_alias_field_for_request = None
+    _access_type_field_for_request = None
     _draft_share_invite_bank_id_field_for_request = None
     _share_detail_field_for_request = None
     _status_field_for_request = None
@@ -15381,43 +15039,47 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
     _start_date_field_for_request = None
     _end_date_field_for_request = None
 
-    def __init__(self, counter_user_alias, share_detail=None, status=None, draft_share_invite_bank_id=None, relationship=None, share_type=None, start_date=None, end_date=None):
+    def __init__(self, counter_user_alias, access_type=None, draft_share_invite_bank_id=None, share_detail=None, status=None, relationship=None, share_type=None, start_date=None, end_date=None):
         """
         :param counter_user_alias: The pointer of the user to share with.
         :type counter_user_alias: object_.Pointer
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: object_.ShareDetail
-        :param status: The status of the share. Can be PENDING, REVOKED (the user
-        deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-        user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects).
-        :type status: str
-        :param draft_share_invite_bank_id: The id of the draft share invite bank.
+        :param access_type: Type of access that is wanted, one of VIEW_BALANCE,
+        VIEW_TRANSACTION, DRAFT_PAYMENT or FULL_TRANSIENT
+        :type access_type: str
+        :param draft_share_invite_bank_id: DEPRECATED: USE `access_type` INSTEAD |
+        The id of the draft share invite bank.
         :type draft_share_invite_bank_id: int
+        :param share_detail: DEPRECATED: USE `access_type` INSTEAD | The share
+        details. Only one of these objects may be passed.
+        :type share_detail: object_.ShareDetail
+        :param status: The status of the share. Can be ACTIVE, REVOKED, REJECTED.
+        :type status: str
         :param relationship: The relationship: COMPANY_DIRECTOR, COMPANY_EMPLOYEE,
         etc
         :type relationship: str
-        :param share_type: The share type, either STANDARD or MUTUAL.
+        :param share_type: DEPRECATED: USE `access_type` INSTEAD | The share type,
+        either STANDARD or MUTUAL.
         :type share_type: str
-        :param start_date: The start date of this share.
+        :param start_date: DEPRECATED: USE `access_type` INSTEAD | The start date of
+        this share.
         :type start_date: str
-        :param end_date: The expiration date of this share.
+        :param end_date: DEPRECATED: USE `access_type` INSTEAD | The expiration date
+        of this share.
         :type end_date: str
         """
 
         self._counter_user_alias_field_for_request = counter_user_alias
+        self._access_type_field_for_request = access_type
+        self._draft_share_invite_bank_id_field_for_request = draft_share_invite_bank_id
         self._share_detail_field_for_request = share_detail
         self._status_field_for_request = status
-        self._draft_share_invite_bank_id_field_for_request = draft_share_invite_bank_id
         self._relationship_field_for_request = relationship
         self._share_type_field_for_request = share_type
         self._start_date_field_for_request = start_date
         self._end_date_field_for_request = end_date
 
     @classmethod
-    def create(cls,counter_user_alias, share_detail, status, monetary_account_id=None, draft_share_invite_bank_id=None, relationship=None, share_type=None, start_date=None, end_date=None, custom_headers=None):
+    def create(cls,counter_user_alias, monetary_account_id=None, access_type=None, draft_share_invite_bank_id=None, share_detail=None, status=None, relationship=None, share_type=None, start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-response] Create a new
         share inquiry for a monetary account, specifying the permission the
@@ -15427,26 +15089,29 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
         :type monetary_account_id: int
         :param counter_user_alias: The pointer of the user to share with.
         :type counter_user_alias: object_.Pointer
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
-        :type share_detail: object_.ShareDetail
-        :param status: The status of the share. Can be PENDING, REVOKED (the
-        user deletes the share inquiry before it's accepted), ACCEPTED,
-        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects).
-        :type status: str
-        :param draft_share_invite_bank_id: The id of the draft share invite
-        bank.
+        :param access_type: Type of access that is wanted, one of VIEW_BALANCE,
+        VIEW_TRANSACTION, DRAFT_PAYMENT or FULL_TRANSIENT
+        :type access_type: str
+        :param draft_share_invite_bank_id: DEPRECATED: USE `access_type` INSTEAD
+        | The id of the draft share invite bank.
         :type draft_share_invite_bank_id: int
+        :param share_detail: DEPRECATED: USE `access_type` INSTEAD | The share
+        details. Only one of these objects may be passed.
+        :type share_detail: object_.ShareDetail
+        :param status: The status of the share. Can be ACTIVE, REVOKED,
+        REJECTED.
+        :type status: str
         :param relationship: The relationship: COMPANY_DIRECTOR,
         COMPANY_EMPLOYEE, etc
         :type relationship: str
-        :param share_type: The share type, either STANDARD or MUTUAL.
+        :param share_type: DEPRECATED: USE `access_type` INSTEAD | The share
+        type, either STANDARD or MUTUAL.
         :type share_type: str
-        :param start_date: The start date of this share.
+        :param start_date: DEPRECATED: USE `access_type` INSTEAD | The start
+        date of this share.
         :type start_date: str
-        :param end_date: The expiration date of this share.
+        :param end_date: DEPRECATED: USE `access_type` INSTEAD | The expiration
+        date of this share.
         :type end_date: str
         :type custom_headers: dict[str, str]|None
         
@@ -15458,6 +15123,7 @@ class ShareInviteMonetaryAccountInquiry(BunqModel):
 
         request_map = {
 cls.FIELD_COUNTER_USER_ALIAS : counter_user_alias,
+cls.FIELD_ACCESS_TYPE : access_type,
 cls.FIELD_DRAFT_SHARE_INVITE_BANK_ID : draft_share_invite_bank_id,
 cls.FIELD_SHARE_DETAIL : share_detail,
 cls.FIELD_STATUS : status,
@@ -15505,7 +15171,7 @@ cls.FIELD_END_DATE : end_date
         )
 
     @classmethod
-    def update(cls,  share_invite_monetary_account_inquiry_id, monetary_account_id=None, share_detail=None, status=None, start_date=None, end_date=None, custom_headers=None):
+    def update(cls,  share_invite_monetary_account_inquiry_id, monetary_account_id=None, access_type=None, share_detail=None, status=None, start_date=None, end_date=None, custom_headers=None):
         """
         [DEPRECATED - use /share-invite-monetary-account-response] Update the
         details of a share. This includes updating status (revoking or
@@ -15514,18 +15180,20 @@ cls.FIELD_END_DATE : end_date
         :type user_id: int
         :type monetary_account_id: int
         :type share_invite_monetary_account_inquiry_id: int
-        :param share_detail: The share details. Only one of these objects may be
-        passed.
+        :param access_type: Type of access that is wanted, one of VIEW_BALANCE,
+        VIEW_TRANSACTION, DRAFT_PAYMENT or FULL_TRANSIENT
+        :type access_type: str
+        :param share_detail: DEPRECATED: USE `access_type` INSTEAD | The share
+        details. Only one of these objects may be passed.
         :type share_detail: object_.ShareDetail
-        :param status: The status of the share. Can be PENDING, REVOKED (the
-        user deletes the share inquiry before it's accepted), ACCEPTED,
-        CANCELLED (the user deletes an active share) or CANCELLATION_PENDING,
-        CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual
-        connects).
+        :param status: The status of the share. Can be ACTIVE, REVOKED,
+        REJECTED.
         :type status: str
-        :param start_date: The start date of this share.
+        :param start_date: DEPRECATED: USE `access_type` INSTEAD | The start
+        date of this share.
         :type start_date: str
-        :param end_date: The expiration date of this share.
+        :param end_date: DEPRECATED: USE `access_type` INSTEAD | The expiration
+        date of this share.
         :type end_date: str
         :type custom_headers: dict[str, str]|None
         
@@ -15538,6 +15206,7 @@ cls.FIELD_END_DATE : end_date
         api_client = ApiClient(cls._get_api_context())
 
         request_map = {
+cls.FIELD_ACCESS_TYPE : access_type,
 cls.FIELD_SHARE_DETAIL : share_detail,
 cls.FIELD_STATUS : status,
 cls.FIELD_START_DATE : start_date,
@@ -15625,22 +15294,6 @@ cls.FIELD_END_DATE : end_date
         return self._monetary_account_id
 
     @property
-    def draft_share_invite_bank_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._draft_share_invite_bank_id
-
-    @property
-    def share_detail(self):
-        """
-        :rtype: object_.ShareDetail
-        """
-
-        return self._share_detail
-
-    @property
     def status(self):
         """
         :rtype: str
@@ -15649,36 +15302,20 @@ cls.FIELD_END_DATE : end_date
         return self._status
 
     @property
+    def access_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._access_type
+
+    @property
     def relationship(self):
         """
         :rtype: str
         """
 
         return self._relationship
-
-    @property
-    def share_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._share_type
-
-    @property
-    def start_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._start_date
-
-    @property
-    def end_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._end_date
 
     @property
     def id_(self):
@@ -15708,25 +15345,13 @@ cls.FIELD_END_DATE : end_date
         if self._monetary_account_id is not None:
             return False
 
-        if self._draft_share_invite_bank_id is not None:
-            return False
-
-        if self._share_detail is not None:
-            return False
-
         if self._status is not None:
             return False
 
+        if self._access_type is not None:
+            return False
+
         if self._relationship is not None:
-            return False
-
-        if self._share_type is not None:
-            return False
-
-        if self._start_date is not None:
-            return False
-
-        if self._end_date is not None:
             return False
 
         if self._id_ is not None:
@@ -15751,10 +15376,7 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
     'share-invite-bank-inquiry' for more information about the inquiring
     endpoint.
     
-    :param _status: The status of the share. Can be PENDING, REVOKED (the user
-    deletes the share inquiry before it's accepted), ACCEPTED, CANCELLED (the
-    user deletes an active share) or CANCELLATION_PENDING,
-    CANCELLATION_ACCEPTED, CANCELLATION_REJECTED (for canceling mutual connects)
+    :param _status: The status of the share. Can be ACTIVE, REVOKED, REJECTED.
     :type _status: str
     :param _card_id: The card to link to the shared monetary account. Used only
     if share_detail is ShareDetailCardPayment.
@@ -15777,6 +15399,9 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
     :type _draft_share_invite_bank_id: int
     :param _share_detail: The share details.
     :type _share_detail: object_.ShareDetail
+    :param _access_type: Type of access that is wanted, one of VIEW_BALANCE,
+    VIEW_TRANSACTION, DRAFT_PAYMENT or FULL_TRANSIENT
+    :type _access_type: str
     :param _relation_user: All of the relation users towards this MA.
     :type _relation_user: RelationUser
     :param _share_type: The share type, either STANDARD or MUTUAL.
@@ -15810,6 +15435,7 @@ class ShareInviteMonetaryAccountResponse(BunqModel):
     _monetary_account_id = None
     _draft_share_invite_bank_id = None
     _share_detail = None
+    _access_type = None
     _status = None
     _relation_user = None
     _share_type = None
@@ -15990,6 +15616,14 @@ cls.FIELD_CARD_ID : card_id
         return self._share_detail
 
     @property
+    def access_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._access_type
+
+    @property
     def status(self):
         """
         :rtype: str
@@ -16064,6 +15698,9 @@ cls.FIELD_CARD_ID : card_id
             return False
 
         if self._share_detail is not None:
+            return False
+
+        if self._access_type is not None:
             return False
 
         if self._status is not None:
@@ -39269,26 +38906,6 @@ class BunqResponseScheduleList(BunqResponse):
     def value(self):
         """
         :rtype: list[Schedule]
-        """
- 
-        return super().value
-
-    
-class BunqResponseDraftShareInviteBank(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: DraftShareInviteBank
-        """
- 
-        return super().value
-
-    
-class BunqResponseDraftShareInviteBankList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[DraftShareInviteBank]
         """
  
         return super().value
