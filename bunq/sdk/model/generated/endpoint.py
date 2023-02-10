@@ -5931,8 +5931,6 @@ class Card(BunqModel):
     :param _card_shipment_tracking_url: A tracking link provided by our shipment
     provider.
     :type _card_shipment_tracking_url: str
-    :param _amount_saved_zero_fx: The amount saved through ZeroFX on this card.
-    :type _amount_saved_zero_fx: object_.Amount
     """
 
     # Endpoint constants.
@@ -5980,7 +5978,6 @@ class Card(BunqModel):
     _monetary_account_id_fallback = None
     _country = None
     _card_shipment_tracking_url = None
-    _amount_saved_zero_fx = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -6362,14 +6359,6 @@ cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback
 
         return self._card_shipment_tracking_url
 
-    @property
-    def amount_saved_zero_fx(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_saved_zero_fx
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6445,9 +6434,6 @@ cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback
             return False
 
         if self._card_shipment_tracking_url is not None:
-            return False
-
-        if self._amount_saved_zero_fx is not None:
             return False
 
         return True
