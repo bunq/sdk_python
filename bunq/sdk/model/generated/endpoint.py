@@ -6656,6 +6656,8 @@ class Company(BunqModel):
     :type _avatar_uuid: str
     :param _vat_number: All the vat numbers of the company
     :type _vat_number: object_.CompanyVatNumber
+    :param _signup_track_type: The type of signup track the user is following.
+    :type _signup_track_type: str
     :param _UserCompany: 
     :type _UserCompany: UserCompany
     """
@@ -6677,6 +6679,7 @@ class Company(BunqModel):
     FIELD_SUBSCRIPTION_TYPE = "subscription_type"
     FIELD_AVATAR_UUID = "avatar_uuid"
     FIELD_VAT_NUMBER = "vat_number"
+    FIELD_SIGNUP_TRACK_TYPE = "signup_track_type"
 
     # Object type.
     _OBJECT_TYPE_GET = "UserCompany"
@@ -6692,8 +6695,9 @@ class Company(BunqModel):
     _subscription_type_field_for_request = None
     _avatar_uuid_field_for_request = None
     _vat_number_field_for_request = None
+    _signup_track_type_field_for_request = None
 
-    def __init__(self, name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None):
+    def __init__(self, name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, signup_track_type=None):
         """
         :param name: The company name.
         :type name: str
@@ -6716,6 +6720,8 @@ class Company(BunqModel):
         :type avatar_uuid: str
         :param vat_number: All the vat numbers of the company
         :type vat_number: object_.CompanyVatNumber
+        :param signup_track_type: The type of signup track the user is following.
+        :type signup_track_type: str
         """
 
         self._name_field_for_request = name
@@ -6728,9 +6734,10 @@ class Company(BunqModel):
         self._chamber_of_commerce_number_field_for_request = chamber_of_commerce_number
         self._avatar_uuid_field_for_request = avatar_uuid
         self._vat_number_field_for_request = vat_number
+        self._signup_track_type_field_for_request = signup_track_type
 
     @classmethod
-    def create(cls,name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, custom_headers=None):
+    def create(cls,name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, signup_track_type=None, custom_headers=None):
         """
         :type user_id: int
         :param name: The company name.
@@ -6755,6 +6762,9 @@ class Company(BunqModel):
         :type avatar_uuid: str
         :param vat_number: All the vat numbers of the company
         :type vat_number: object_.CompanyVatNumber
+        :param signup_track_type: The type of signup track the user is
+        following.
+        :type signup_track_type: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -6773,7 +6783,8 @@ cls.FIELD_CHAMBER_OF_COMMERCE_NUMBER : chamber_of_commerce_number,
 cls.FIELD_LEGAL_FORM : legal_form,
 cls.FIELD_SUBSCRIPTION_TYPE : subscription_type,
 cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_VAT_NUMBER : vat_number
+cls.FIELD_VAT_NUMBER : vat_number,
+cls.FIELD_SIGNUP_TRACK_TYPE : signup_track_type
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -31030,6 +31041,8 @@ class UserPerson(BunqModel):
     :type _daily_limit_without_confirmation_login: object_.Amount
     :param _display_name: The display name for the person.
     :type _display_name: str
+    :param _signup_track_type: The type of signup track the user is following.
+    :type _signup_track_type: str
     :param _id_: The id of the modified person object.
     :type _id_: int
     :param _created: The timestamp of the person object's creation.
@@ -31089,6 +31102,7 @@ class UserPerson(BunqModel):
     FIELD_SESSION_TIMEOUT = "session_timeout"
     FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN = "daily_limit_without_confirmation_login"
     FIELD_DISPLAY_NAME = "display_name"
+    FIELD_SIGNUP_TRACK_TYPE = "signup_track_type"
 
     # Object type.
     _OBJECT_TYPE_GET = "UserPerson"
@@ -31147,8 +31161,9 @@ class UserPerson(BunqModel):
     _session_timeout_field_for_request = None
     _daily_limit_without_confirmation_login_field_for_request = None
     _display_name_field_for_request = None
+    _signup_track_type_field_for_request = None
 
-    def __init__(self, document_back_attachment_id=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, sub_status=None, status=None, gender=None, region=None, language=None, nationality=None, date_of_birth=None, document_front_attachment_id=None, subscription_type=None, document_country_of_issuance=None, document_number=None, document_type=None, tax_resident=None, avatar_uuid=None, address_postal=None, address_main=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, display_name=None):
+    def __init__(self, document_back_attachment_id=None, display_name=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, sub_status=None, status=None, gender=None, region=None, language=None, nationality=None, date_of_birth=None, document_front_attachment_id=None, subscription_type=None, document_country_of_issuance=None, document_number=None, document_type=None, tax_resident=None, avatar_uuid=None, address_postal=None, address_main=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, signup_track_type=None):
         """
         :param subscription_type: The subscription type the user should start on.
         :type subscription_type: str
@@ -31218,6 +31233,8 @@ class UserPerson(BunqModel):
         :param display_name: The person's legal name. Available legal names can be
         listed via the 'user/{user_id}/legal-name' endpoint.
         :type display_name: str
+        :param signup_track_type: The type of signup track the user is following.
+        :type signup_track_type: str
         """
 
         self._subscription_type_field_for_request = subscription_type
@@ -31245,6 +31262,7 @@ class UserPerson(BunqModel):
         self._session_timeout_field_for_request = session_timeout
         self._daily_limit_without_confirmation_login_field_for_request = daily_limit_without_confirmation_login
         self._display_name_field_for_request = display_name
+        self._signup_track_type_field_for_request = signup_track_type
 
     @classmethod
     def get(cls,  custom_headers=None):
