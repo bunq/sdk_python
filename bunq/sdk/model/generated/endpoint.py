@@ -13313,6 +13313,8 @@ class RequestResponse(BunqModel):
     for split the bill. Can be RequestInquiry or RequestInquiryBatch
     :type _request_reference_split_the_bill:
     list[object_.RequestInquiryReference]
+    :param _event_id: The ID of the latest event for the request.
+    :type _event_id: int
     """
 
     # Endpoint constants.
@@ -13358,6 +13360,7 @@ class RequestResponse(BunqModel):
     _mandate_identifier = None
     _eligible_whitelist_id = None
     _request_reference_split_the_bill = None
+    _event_id = None
     _amount_responded_field_for_request = None
     _status_field_for_request = None
     _address_shipping_field_for_request = None
@@ -13709,6 +13712,14 @@ cls.FIELD_ADDRESS_BILLING : address_billing
 
         return self._request_reference_split_the_bill
 
+    @property
+    def event_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._event_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -13796,6 +13807,9 @@ cls.FIELD_ADDRESS_BILLING : address_billing
             return False
 
         if self._request_reference_split_the_bill is not None:
+            return False
+
+        if self._event_id is not None:
             return False
 
         return True
@@ -37534,6 +37548,8 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     :type _description: str
     :param _counterparty_alias: The monetary account label of the counterparty.
     :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _event_id: The ID of the latest event for the identity check.
+    :type _event_id: int
     """
 
     # Endpoint constants.
@@ -37551,6 +37567,7 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     _description = None
     _status = None
     _counterparty_alias = None
+    _event_id = None
     _status_field_for_request = None
 
     def __init__(self, status=None):
@@ -37656,6 +37673,14 @@ cls.FIELD_STATUS : status
 
         return self._counterparty_alias
 
+    @property
+    def event_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._event_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -37674,6 +37699,9 @@ cls.FIELD_STATUS : status
             return False
 
         if self._counterparty_alias is not None:
+            return False
+
+        if self._event_id is not None:
             return False
 
         return True
