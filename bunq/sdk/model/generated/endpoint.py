@@ -1133,6 +1133,291 @@ class InvoiceByUser(BunqModel):
         return converter.json_to_class(InvoiceByUser, json_str)
 
 
+class AdditionalTransactionInformationCategory(BunqModel):
+    """
+    Get the available categories.
+    
+    :param _category: The category.
+    :type _category: str
+    :param _type_: Who created this category.
+    :type _type_: str
+    :param _status: Whether this category is active. Only relevant for
+    user-defined categories.
+    :type _status: str
+    :param _order: The sort order of the category.
+    :type _order: int
+    :param _description: The description of the category.
+    :type _description: str
+    :param _description_translated: The translation of the description of the
+    category.
+    :type _description_translated: str
+    :param _color: The color of the category.
+    :type _color: str
+    :param _icon: The icon of the category.
+    :type _icon: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/additional-transaction-information-category"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "AdditionalTransactionInformationCategory"
+
+    _category = None
+    _type_ = None
+    _status = None
+    _order = None
+    _description = None
+    _description_translated = None
+    _color = None
+    _icon = None
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseAdditionalTransactionInformationCategoryList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseAdditionalTransactionInformationCategoryList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def order(self):
+        """
+        :rtype: int
+        """
+
+        return self._order
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._description_translated
+
+    @property
+    def color(self):
+        """
+        :rtype: str
+        """
+
+        return self._color
+
+    @property
+    def icon(self):
+        """
+        :rtype: str
+        """
+
+        return self._icon
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._category is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._order is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._description_translated is not None:
+            return False
+
+        if self._color is not None:
+            return False
+
+        if self._icon is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AdditionalTransactionInformationCategory
+        """
+
+        return converter.json_to_class(AdditionalTransactionInformationCategory, json_str)
+
+
+class AdditionalTransactionInformationCategoryUserDefined(BunqModel):
+    """
+    Manage user-defined categories.
+    
+    :param _category: The category.
+    :type _category: str
+    :param _status: Whether this category is active. Only relevant for
+    user-defined categories.
+    :type _status: str
+    :param _description: The description of the category.
+    :type _description: str
+    :param _color: The color of the category.
+    :type _color: str
+    :param _icon: The icon of the category.
+    :type _icon: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/additional-transaction-information-category-user-defined"
+
+    # Field constants.
+    FIELD_CATEGORY = "category"
+    FIELD_STATUS = "status"
+    FIELD_DESCRIPTION = "description"
+    FIELD_COLOR = "color"
+    FIELD_ICON = "icon"
+
+
+    _category_field_for_request = None
+    _status_field_for_request = None
+    _description_field_for_request = None
+    _color_field_for_request = None
+    _icon_field_for_request = None
+
+    def __init__(self, status, category=None, description=None, color=None, icon=None):
+        """
+        :param status: Whether this category is active. Only relevant for
+        user-defined categories.
+        :type status: str
+        :param category: The category.
+        :type category: str
+        :param description: The description of the category.
+        :type description: str
+        :param color: The color of the category.
+        :type color: str
+        :param icon: The icon of the category.
+        :type icon: str
+        """
+
+        self._status_field_for_request = status
+        self._category_field_for_request = category
+        self._description_field_for_request = description
+        self._color_field_for_request = color
+        self._icon_field_for_request = icon
+
+    @classmethod
+    def create(cls,status, category=None, description=None, color=None, icon=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param status: Whether this category is active. Only relevant for
+        user-defined categories.
+        :type status: str
+        :param category: The category.
+        :type category: str
+        :param description: The description of the category.
+        :type description: str
+        :param color: The color of the category.
+        :type color: str
+        :param icon: The icon of the category.
+        :type icon: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CATEGORY : category,
+cls.FIELD_STATUS : status,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_COLOR : color,
+cls.FIELD_ICON : icon
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AdditionalTransactionInformationCategoryUserDefined
+        """
+
+        return converter.json_to_class(AdditionalTransactionInformationCategoryUserDefined, json_str)
+
+
 class AttachmentConversationContent(BunqModel):
     """
     Fetch the raw content of an attachment with given ID. The raw content is the
@@ -18116,11 +18401,15 @@ class Insight(BunqModel):
     :type _category: str
     :param _category_translated: The translated category.
     :type _category_translated: str
+    :param _category_color: The color of the category.
+    :type _category_color: str
+    :param _category_icon: The icon of the category.
+    :type _category_icon: str
     :param _amount_total: The total amount of the transactions in the category.
     :type _amount_total: object_.Amount
     :param _number_of_transactions: The number of the transactions in the
     category.
-    :type _number_of_transactions: float
+    :type _number_of_transactions: int
     """
 
     # Endpoint constants.
@@ -18131,6 +18420,8 @@ class Insight(BunqModel):
 
     _category = None
     _category_translated = None
+    _category_color = None
+    _category_icon = None
     _amount_total = None
     _number_of_transactions = None
 
@@ -18175,6 +18466,22 @@ class Insight(BunqModel):
         return self._category_translated
 
     @property
+    def category_color(self):
+        """
+        :rtype: str
+        """
+
+        return self._category_color
+
+    @property
+    def category_icon(self):
+        """
+        :rtype: str
+        """
+
+        return self._category_icon
+
+    @property
     def amount_total(self):
         """
         :rtype: object_.Amount
@@ -18185,7 +18492,7 @@ class Insight(BunqModel):
     @property
     def number_of_transactions(self):
         """
-        :rtype: float
+        :rtype: int
         """
 
         return self._number_of_transactions
@@ -18199,6 +18506,12 @@ class Insight(BunqModel):
             return False
 
         if self._category_translated is not None:
+            return False
+
+        if self._category_color is not None:
+            return False
+
+        if self._category_icon is not None:
             return False
 
         if self._amount_total is not None:
@@ -38508,6 +38821,16 @@ class BunqResponseInvoiceByUser(BunqResponse):
     def value(self):
         """
         :rtype: InvoiceByUser
+        """
+ 
+        return super().value
+
+    
+class BunqResponseAdditionalTransactionInformationCategoryList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[AdditionalTransactionInformationCategory]
         """
  
         return super().value
