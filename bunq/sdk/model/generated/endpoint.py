@@ -13627,6 +13627,9 @@ class RequestResponse(BunqModel):
     list[object_.RequestInquiryReference]
     :param _event_id: The ID of the latest event for the request.
     :type _event_id: int
+    :param _monetary_account_preferred_id: The ID of the monetary account this
+    user prefers to pay the request from.
+    :type _monetary_account_preferred_id: int
     """
 
     # Endpoint constants.
@@ -13674,6 +13677,7 @@ class RequestResponse(BunqModel):
     _eligible_whitelist_id = None
     _request_reference_split_the_bill = None
     _event_id = None
+    _monetary_account_preferred_id = None
     _amount_responded_field_for_request = None
     _status_field_for_request = None
     _address_shipping_field_for_request = None
@@ -14043,6 +14047,14 @@ cls.FIELD_CURRENCY_CONVERSION_QUOTE_ID : currency_conversion_quote_id
 
         return self._event_id
 
+    @property
+    def monetary_account_preferred_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_preferred_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -14133,6 +14145,9 @@ cls.FIELD_CURRENCY_CONVERSION_QUOTE_ID : currency_conversion_quote_id
             return False
 
         if self._event_id is not None:
+            return False
+
+        if self._monetary_account_preferred_id is not None:
             return False
 
         return True
