@@ -8715,6 +8715,8 @@ class CurrencyConversionQuote(BunqModel):
     :type _currency_source: str
     :param _currency_target: The currency we are converting towards.
     :type _currency_target: str
+    :param _order_type: The type of the quote, SELL or BUY.
+    :type _order_type: str
     :param _counterparty_alias: The Alias of the party we are transferring the
     money to.
     :type _counterparty_alias: object_.Pointer
@@ -8746,6 +8748,7 @@ class CurrencyConversionQuote(BunqModel):
     FIELD_AMOUNT = "amount"
     FIELD_CURRENCY_SOURCE = "currency_source"
     FIELD_CURRENCY_TARGET = "currency_target"
+    FIELD_ORDER_TYPE = "order_type"
     FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
     FIELD_STATUS = "status"
 
@@ -8764,10 +8767,11 @@ class CurrencyConversionQuote(BunqModel):
     _amount_field_for_request = None
     _currency_source_field_for_request = None
     _currency_target_field_for_request = None
+    _order_type_field_for_request = None
     _counterparty_alias_field_for_request = None
     _status_field_for_request = None
 
-    def __init__(self, amount, currency_source, currency_target, counterparty_alias, status=None):
+    def __init__(self, amount, currency_source, currency_target, counterparty_alias, order_type=None, status=None):
         """
         :param amount: The amount to convert.
         :type amount: object_.Amount
@@ -8778,6 +8782,8 @@ class CurrencyConversionQuote(BunqModel):
         :param counterparty_alias: The Alias of the party we are transferring the
         money to.
         :type counterparty_alias: object_.Pointer
+        :param order_type: The type of the quote, SELL or BUY.
+        :type order_type: str
         :param status: The status of the quote.
         :type status: str
         """
@@ -8786,10 +8792,11 @@ class CurrencyConversionQuote(BunqModel):
         self._currency_source_field_for_request = currency_source
         self._currency_target_field_for_request = currency_target
         self._counterparty_alias_field_for_request = counterparty_alias
+        self._order_type_field_for_request = order_type
         self._status_field_for_request = status
 
     @classmethod
-    def create(cls,amount, currency_source, currency_target, counterparty_alias, monetary_account_id=None, status=None, custom_headers=None):
+    def create(cls,amount, currency_source, currency_target, counterparty_alias, monetary_account_id=None, order_type=None, status=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -8802,6 +8809,8 @@ class CurrencyConversionQuote(BunqModel):
         :param counterparty_alias: The Alias of the party we are transferring
         the money to.
         :type counterparty_alias: object_.Pointer
+        :param order_type: The type of the quote, SELL or BUY.
+        :type order_type: str
         :param status: The status of the quote.
         :type status: str
         :type custom_headers: dict[str, str]|None
@@ -8816,6 +8825,7 @@ class CurrencyConversionQuote(BunqModel):
 cls.FIELD_AMOUNT : amount,
 cls.FIELD_CURRENCY_SOURCE : currency_source,
 cls.FIELD_CURRENCY_TARGET : currency_target,
+cls.FIELD_ORDER_TYPE : order_type,
 cls.FIELD_COUNTERPARTY_ALIAS : counterparty_alias,
 cls.FIELD_STATUS : status
 }
@@ -9015,8 +9025,10 @@ class CurrencyConversion(BunqModel):
     :type _counter_amount: object_.Amount
     :param _group_uuid: The group uuid of the conversion.
     :type _group_uuid: str
-    :param _type_: The type of this conversion in the pair.
+    :param _type_: The type of this conversion.
     :type _type_: str
+    :param _order_type: The order type, buying or selling.
+    :type _order_type: str
     :param _label_monetary_account: The label of the monetary account.
     :type _label_monetary_account: object_.MonetaryAccountReference
     :param _counter_label_monetary_account: The label of the counter monetary
@@ -9043,6 +9055,7 @@ class CurrencyConversion(BunqModel):
     _counter_amount = None
     _group_uuid = None
     _type_ = None
+    _order_type = None
     _label_monetary_account = None
     _counter_label_monetary_account = None
     _payment = None
@@ -9176,6 +9189,14 @@ class CurrencyConversion(BunqModel):
         return self._type_
 
     @property
+    def order_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._order_type
+
+    @property
     def label_monetary_account(self):
         """
         :rtype: object_.MonetaryAccountReference
@@ -9232,6 +9253,9 @@ class CurrencyConversion(BunqModel):
             return False
 
         if self._type_ is not None:
+            return False
+
+        if self._order_type is not None:
             return False
 
         if self._label_monetary_account is not None:
@@ -13530,6 +13554,9 @@ class RequestResponse(BunqModel):
     :param _address_billing: The billing address provided by the accepting user
     if an address was requested.
     :type _address_billing: object_.Address
+    :param _currency_conversion_quote_id: When the request is accepted on a
+    monetary account with a different currency, a quote is expected to convert.
+    :type _currency_conversion_quote_id: int
     :param _id_: The id of the Request Response.
     :type _id_: int
     :param _created: The timestamp when the Request Response was created.
@@ -13612,6 +13639,7 @@ class RequestResponse(BunqModel):
     FIELD_STATUS = "status"
     FIELD_ADDRESS_SHIPPING = "address_shipping"
     FIELD_ADDRESS_BILLING = "address_billing"
+    FIELD_CURRENCY_CONVERSION_QUOTE_ID = "currency_conversion_quote_id"
 
     # Object type.
     _OBJECT_TYPE_PUT = "RequestResponse"
@@ -13650,8 +13678,9 @@ class RequestResponse(BunqModel):
     _status_field_for_request = None
     _address_shipping_field_for_request = None
     _address_billing_field_for_request = None
+    _currency_conversion_quote_id_field_for_request = None
 
-    def __init__(self, status=None, amount_responded=None, address_shipping=None, address_billing=None):
+    def __init__(self, status=None, amount_responded=None, address_shipping=None, address_billing=None, currency_conversion_quote_id=None):
         """
         :param status: The responding status of the RequestResponse. Can be ACCEPTED
         or REJECTED.
@@ -13666,15 +13695,19 @@ class RequestResponse(BunqModel):
         created the RequestInquiry. Should only be provided if 'require_address' is
         set to BILLING, BILLING_SHIPPING or OPTIONAL.
         :type address_billing: object_.Address
+        :param currency_conversion_quote_id: When the request is accepted on a
+        monetary account with a different currency, a quote is expected to convert.
+        :type currency_conversion_quote_id: int
         """
 
         self._status_field_for_request = status
         self._amount_responded_field_for_request = amount_responded
         self._address_shipping_field_for_request = address_shipping
         self._address_billing_field_for_request = address_billing
+        self._currency_conversion_quote_id_field_for_request = currency_conversion_quote_id
 
     @classmethod
-    def update(cls,  request_response_id, monetary_account_id=None, amount_responded=None, status=None, address_shipping=None, address_billing=None, custom_headers=None):
+    def update(cls,  request_response_id, monetary_account_id=None, amount_responded=None, status=None, address_shipping=None, address_billing=None, currency_conversion_quote_id=None, custom_headers=None):
         """
         Update the status to accept or reject the RequestResponse.
         
@@ -13694,6 +13727,10 @@ class RequestResponse(BunqModel):
         created the RequestInquiry. Should only be provided if 'require_address'
         is set to BILLING, BILLING_SHIPPING or OPTIONAL.
         :type address_billing: object_.Address
+        :param currency_conversion_quote_id: When the request is accepted on a
+        monetary account with a different currency, a quote is expected to
+        convert.
+        :type currency_conversion_quote_id: int
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseRequestResponse
@@ -13708,7 +13745,8 @@ class RequestResponse(BunqModel):
 cls.FIELD_AMOUNT_RESPONDED : amount_responded,
 cls.FIELD_STATUS : status,
 cls.FIELD_ADDRESS_SHIPPING : address_shipping,
-cls.FIELD_ADDRESS_BILLING : address_billing
+cls.FIELD_ADDRESS_BILLING : address_billing,
+cls.FIELD_CURRENCY_CONVERSION_QUOTE_ID : currency_conversion_quote_id
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
