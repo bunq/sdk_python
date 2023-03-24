@@ -4451,9 +4451,6 @@ class MonetaryAccountProfileFill(BunqModel):
     :type _balance_preferred: Amount
     :param _balance_threshold_low: The low threshold balance.
     :type _balance_threshold_low: Amount
-    :param _method_fill: The method used to fill the monetary account. Currently
-    only iDEAL is supported, and it is the default one.
-    :type _method_fill: str
     :param _issuer: The bank the fill is supposed to happen from, with BIC and
     bank name.
     :type _issuer: Issuer
@@ -4462,15 +4459,13 @@ class MonetaryAccountProfileFill(BunqModel):
     _status = None
     _balance_preferred = None
     _balance_threshold_low = None
-    _method_fill = None
     _issuer = None
     _status_field_for_request = None
     _balance_preferred_field_for_request = None
     _balance_threshold_low_field_for_request = None
-    _method_fill_field_for_request = None
     _issuer_field_for_request = None
 
-    def __init__(self, status, balance_preferred, balance_threshold_low, method_fill=None, issuer=None):
+    def __init__(self, status, balance_preferred, balance_threshold_low, issuer=None):
         """
         :param status: The status of the profile.
         :type status: str
@@ -4478,9 +4473,6 @@ class MonetaryAccountProfileFill(BunqModel):
         :type balance_preferred: Amount
         :param balance_threshold_low: The low threshold balance.
         :type balance_threshold_low: Amount
-        :param method_fill: The method used to fill the monetary account. Currently
-        IDEAL and SOFORT is supported.
-        :type method_fill: str
         :param issuer: The bank the fill is supposed to happen from, with BIC and
         bank name.
         :type issuer: Issuer
@@ -4489,7 +4481,6 @@ class MonetaryAccountProfileFill(BunqModel):
         self._status_field_for_request = status
         self._balance_preferred_field_for_request = balance_preferred
         self._balance_threshold_low_field_for_request = balance_threshold_low
-        self._method_fill_field_for_request = method_fill
         self._issuer_field_for_request = issuer
 
     @property
@@ -4517,14 +4508,6 @@ class MonetaryAccountProfileFill(BunqModel):
         return self._balance_threshold_low
 
     @property
-    def method_fill(self):
-        """
-        :rtype: str
-        """
-
-        return self._method_fill
-
-    @property
     def issuer(self):
         """
         :rtype: Issuer
@@ -4544,9 +4527,6 @@ class MonetaryAccountProfileFill(BunqModel):
             return False
 
         if self._balance_threshold_low is not None:
-            return False
-
-        if self._method_fill is not None:
             return False
 
         if self._issuer is not None:
