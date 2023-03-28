@@ -38342,6 +38342,11 @@ class RegistryMembership(BunqModel):
     :param _auto_add_card_transaction: The setting for for adding automatically
     card transactions to the registry.
     :type _auto_add_card_transaction: str
+    :param _membership_ticount_id: The original TricountId of the membership for
+    backwards compatibility. May be used as an alternative to the UUID to
+    identify specific memberships to allow clients to sync changes made offline
+    before the Tricount migration.
+    :type _membership_ticount_id: int
     :param _balance: The balance of this RegistryMembership.
     :type _balance: object_.Amount
     :param _total_amount_spent: The total amount spent of this
@@ -38363,6 +38368,7 @@ class RegistryMembership(BunqModel):
     FIELD_ALIAS = "alias"
     FIELD_STATUS = "status"
     FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
+    FIELD_MEMBERSHIP_TICOUNT_ID = "membership_ticount_id"
 
 
     _uuid = None
@@ -38379,8 +38385,9 @@ class RegistryMembership(BunqModel):
     _alias_field_for_request = None
     _status_field_for_request = None
     _auto_add_card_transaction_field_for_request = None
+    _membership_ticount_id_field_for_request = None
 
-    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None):
+    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None, membership_ticount_id=None):
         """
         :param alias: The Alias of the party we are inviting to the Registry.
         :type alias: object_.Pointer
@@ -38393,12 +38400,18 @@ class RegistryMembership(BunqModel):
         :param auto_add_card_transaction: The setting for for adding automatically
         card transactions to the registry.
         :type auto_add_card_transaction: str
+        :param membership_ticount_id: The original TricountId of the membership for
+        backwards compatibility. May be used as an alternative to the UUID to
+        identify specific memberships to allow clients to sync changes made offline
+        before the Tricount migration.
+        :type membership_ticount_id: int
         """
 
         self._alias_field_for_request = alias
         self._uuid_field_for_request = uuid
         self._status_field_for_request = status
         self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
+        self._membership_ticount_id_field_for_request = membership_ticount_id
 
 
 
