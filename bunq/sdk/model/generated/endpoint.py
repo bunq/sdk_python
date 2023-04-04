@@ -19365,6 +19365,8 @@ class MonetaryAccountExternal(BunqModel):
     :param _currency: The currency of the MonetaryAccountExternal as an ISO 4217
     formatted currency code.
     :type _currency: str
+    :param _service: The service the MonetaryAccountExternal is connected with.
+    :type _service: str
     :param _description: The description of the MonetaryAccountExternal.
     Defaults to 'bunq account'.
     :type _description: str
@@ -19421,11 +19423,14 @@ class MonetaryAccountExternal(BunqModel):
     """
 
     # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-external"
     _ENDPOINT_URL_READ = "user/{}/monetary-account-external/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-external/{}"
     _ENDPOINT_URL_LISTING = "user/{}/monetary-account-external"
 
     # Field constants.
     FIELD_CURRENCY = "currency"
+    FIELD_SERVICE = "service"
     FIELD_DESCRIPTION = "description"
     FIELD_DAILY_LIMIT = "daily_limit"
     FIELD_AVATAR_UUID = "avatar_uuid"
@@ -19460,6 +19465,7 @@ class MonetaryAccountExternal(BunqModel):
     _setting = None
     _all_auto_save_id = None
     _currency_field_for_request = None
+    _service_field_for_request = None
     _description_field_for_request = None
     _daily_limit_field_for_request = None
     _avatar_uuid_field_for_request = None
@@ -19470,11 +19476,13 @@ class MonetaryAccountExternal(BunqModel):
     _display_name_field_for_request = None
     _setting_field_for_request = None
 
-    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None):
+    def __init__(self, currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None):
         """
         :param currency: The currency of the MonetaryAccountExternal as an ISO 4217
         formatted currency code.
         :type currency: str
+        :param service: The service the MonetaryAccountExternal is connected with.
+        :type service: str
         :param description: The description of the MonetaryAccountExternal. Defaults
         to 'bunq account'.
         :type description: str
@@ -19513,6 +19521,7 @@ class MonetaryAccountExternal(BunqModel):
         """
 
         self._currency_field_for_request = currency
+        self._service_field_for_request = service
         self._description_field_for_request = description
         self._daily_limit_field_for_request = daily_limit
         self._avatar_uuid_field_for_request = avatar_uuid
@@ -19522,6 +19531,86 @@ class MonetaryAccountExternal(BunqModel):
         self._reason_description_field_for_request = reason_description
         self._display_name_field_for_request = display_name
         self._setting_field_for_request = setting
+
+    @classmethod
+    def create(cls,currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountExternal as an ISO
+        4217 formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternal is connected
+        with.
+        :type service: str
+        :param description: The description of the MonetaryAccountExternal.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountExternal's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternal.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternal. Ignored in
+        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN
+        in PUT requests to cancel (close) or reopen the MonetaryAccountExternal.
+        When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternal
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternal, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternal. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternal.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_SERVICE : service,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
 
     @classmethod
     def get(cls,  monetary_account_external_id, custom_headers=None):
@@ -19543,6 +19632,80 @@ class MonetaryAccountExternal(BunqModel):
 
         return BunqResponseMonetaryAccountExternal.cast_from_bunq_response(
             cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_external_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_external_id: int
+        :param description: The description of the MonetaryAccountExternal.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountExternal's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternal.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternal. Ignored in
+        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN
+        in PUT requests to cancel (close) or reopen the MonetaryAccountExternal.
+        When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternal
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternal, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternal. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternal.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_external_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
         )
 
     @classmethod
