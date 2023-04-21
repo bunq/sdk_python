@@ -34146,6 +34146,354 @@ cls.FIELD_STATUS : status
         return converter.json_to_class(PaymentServiceProviderDraftPayment, json_str)
 
 
+class PaymentServiceProviderIssuerTransaction(BunqModel):
+    """
+    The endpoint for payment service provider issuer transactions
+    
+    :param _counterparty_alias: The counter party this transaction should be
+    sent to.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _amount: The money amount of this transaction
+    :type _amount: object_.Amount
+    :param _description: The description of this transaction, to be shown to the
+    user and to the counter party.
+    :type _description: str
+    :param _url_redirect: The url to which the user should be redirected once
+    the transaction is accepted or rejected.
+    :type _url_redirect: str
+    :param _time_expiry: The (optional) expiration time of the transaction.
+    Defaults to 10 minutes.
+    :type _time_expiry: str
+    :param _status: The status of the transaction. Can only be used for
+    cancelling the transaction.
+    :type _status: str
+    :param _id_: The id of this transaction.
+    :type _id_: int
+    :param _created: The time this transaction was created.
+    :type _created: str
+    :param _updated: The time this transaction was last updated.
+    :type _updated: str
+    :param _public_uuid: The public uuid used to identify this transaction.
+    :type _public_uuid: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/payment-service-provider-issuer-transaction"
+    _ENDPOINT_URL_READ = "user/{}/payment-service-provider-issuer-transaction/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/payment-service-provider-issuer-transaction/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/payment-service-provider-issuer-transaction"
+
+    # Field constants.
+    FIELD_COUNTERPARTY_ALIAS = "counterparty_alias"
+    FIELD_AMOUNT = "amount"
+    FIELD_DESCRIPTION = "description"
+    FIELD_URL_REDIRECT = "url_redirect"
+    FIELD_TIME_EXPIRY = "time_expiry"
+    FIELD_STATUS = "status"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentServiceProviderIssuerTransaction"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _public_uuid = None
+    _counterparty_alias = None
+    _amount = None
+    _description = None
+    _url_redirect = None
+    _time_expiry = None
+    _status = None
+    _counterparty_alias_field_for_request = None
+    _amount_field_for_request = None
+    _description_field_for_request = None
+    _url_redirect_field_for_request = None
+    _time_expiry_field_for_request = None
+    _status_field_for_request = None
+
+    def __init__(self, counterparty_alias, amount, description, url_redirect, time_expiry=None, status=None):
+        """
+        :param counterparty_alias: The counter party this transaction should be sent
+        to.
+        :type counterparty_alias: object_.Pointer
+        :param amount: The money amount of this transaction
+        :type amount: object_.Amount
+        :param description: The description of this transaction, to be shown to the
+        user and to the counter party.
+        :type description: str
+        :param url_redirect: The url to which the user should be redirected once the
+        transaction is accepted or rejected.
+        :type url_redirect: str
+        :param time_expiry: The (optional) expiration time of the transaction.
+        Defaults to 10 minutes.
+        :type time_expiry: str
+        :param status: The status of the transaction. Can only be used for
+        cancelling the transaction.
+        :type status: str
+        """
+
+        self._counterparty_alias_field_for_request = counterparty_alias
+        self._amount_field_for_request = amount
+        self._description_field_for_request = description
+        self._url_redirect_field_for_request = url_redirect
+        self._time_expiry_field_for_request = time_expiry
+        self._status_field_for_request = status
+
+    @classmethod
+    def create(cls,counterparty_alias, amount, description, url_redirect, time_expiry=None, status=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param counterparty_alias: The counter party this transaction should be
+        sent to.
+        :type counterparty_alias: object_.Pointer
+        :param amount: The money amount of this transaction
+        :type amount: object_.Amount
+        :param description: The description of this transaction, to be shown to
+        the user and to the counter party.
+        :type description: str
+        :param url_redirect: The url to which the user should be redirected once
+        the transaction is accepted or rejected.
+        :type url_redirect: str
+        :param time_expiry: The (optional) expiration time of the transaction.
+        Defaults to 10 minutes.
+        :type time_expiry: str
+        :param status: The status of the transaction. Can only be used for
+        cancelling the transaction.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_COUNTERPARTY_ALIAS : counterparty_alias,
+cls.FIELD_AMOUNT : amount,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_URL_REDIRECT : url_redirect,
+cls.FIELD_TIME_EXPIRY : time_expiry,
+cls.FIELD_STATUS : status
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  payment_service_provider_issuer_transaction_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type payment_service_provider_issuer_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentServiceProviderIssuerTransaction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), payment_service_provider_issuer_transaction_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentServiceProviderIssuerTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  payment_service_provider_issuer_transaction_id, status=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type payment_service_provider_issuer_transaction_id: int
+        :param status: The status of the transaction. Can only be used for
+        cancelling the transaction.
+        :type status: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_STATUS : status
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), payment_service_provider_issuer_transaction_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentServiceProviderIssuerTransactionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentServiceProviderIssuerTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def url_redirect(self):
+        """
+        :rtype: str
+        """
+
+        return self._url_redirect
+
+    @property
+    def time_expiry(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_expiry
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._url_redirect is not None:
+            return False
+
+        if self._time_expiry is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentServiceProviderIssuerTransaction
+        """
+
+        return converter.json_to_class(PaymentServiceProviderIssuerTransaction, json_str)
+
+
 class PermittedIp(BunqModel):
     """
     Manage the IPs which may be used for a credential of a user for server
@@ -40930,6 +41278,26 @@ class BunqResponsePaymentServiceProviderDraftPayment(BunqResponse):
     def value(self):
         """
         :rtype: PaymentServiceProviderDraftPayment
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentServiceProviderIssuerTransaction(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentServiceProviderIssuerTransaction
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentServiceProviderIssuerTransactionList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[PaymentServiceProviderIssuerTransaction]
         """
  
         return super().value
