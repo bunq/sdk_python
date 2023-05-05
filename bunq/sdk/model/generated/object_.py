@@ -5139,6 +5139,9 @@ class NotificationFilterUrl(BunqModel):
     :type _all_user_id: list[str]
     :param _all_monetary_account_id: The MAs this filter pertains to.
     :type _all_monetary_account_id: list[str]
+    :param _all_verification_type: Type of verification required for the
+    connection.
+    :type _all_verification_type: list[str]
     :param _notification_target: The URL to which the callback should be made.
     :type _notification_target: str
     :param _id_: The id of the NotificationFilterUrl.
@@ -5155,13 +5158,15 @@ class NotificationFilterUrl(BunqModel):
     _category = None
     _all_user_id = None
     _all_monetary_account_id = None
+    _all_verification_type = None
     _notification_target = None
     _category_field_for_request = None
     _all_user_id_field_for_request = None
     _all_monetary_account_id_field_for_request = None
+    _all_verification_type_field_for_request = None
     _notification_target_field_for_request = None
 
-    def __init__(self, category, notification_target=None, all_user_id=None, all_monetary_account_id=None):
+    def __init__(self, category, notification_target=None, all_user_id=None, all_monetary_account_id=None, all_verification_type=None):
         """
         :param category: The notification category that will match this notification
         filter.
@@ -5174,12 +5179,16 @@ class NotificationFilterUrl(BunqModel):
         :param all_monetary_account_id: The MAs this filter pertains to. OPTIONAL
         FOR BACKWARD COMPATIBILITY
         :type all_monetary_account_id: list[str]
+        :param all_verification_type: Type of verification required for the
+        connection.
+        :type all_verification_type: list[str]
         """
 
         self._category_field_for_request = category
         self._notification_target_field_for_request = notification_target
         self._all_user_id_field_for_request = all_user_id
         self._all_monetary_account_id_field_for_request = all_monetary_account_id
+        self._all_verification_type_field_for_request = all_verification_type
 
     @property
     def id_(self):
@@ -5230,6 +5239,14 @@ class NotificationFilterUrl(BunqModel):
         return self._all_monetary_account_id
 
     @property
+    def all_verification_type(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_verification_type
+
+    @property
     def notification_target(self):
         """
         :rtype: str
@@ -5258,6 +5275,9 @@ class NotificationFilterUrl(BunqModel):
             return False
 
         if self._all_monetary_account_id is not None:
+            return False
+
+        if self._all_verification_type is not None:
             return False
 
         if self._notification_target is not None:
