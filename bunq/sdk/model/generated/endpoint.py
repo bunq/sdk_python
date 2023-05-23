@@ -30995,6 +30995,163 @@ cls.FIELD_NOTIFICATION_FILTERS : notification_filters
         return converter.json_to_class(NotificationFilterEmail, json_str)
 
 
+class NotificationFilterFailure(BunqModel):
+    """
+    Manage the url notification filters for a user.
+    
+    :param _notification_filter_failed_ids: The IDs to retry.
+    :type _notification_filter_failed_ids: str
+    :param _notification_filters: The types of notifications that will result in
+    a url notification for this user.
+    :type _notification_filters: list[object_.NotificationFilter]
+    :param _category: The category of the failed notification.
+    :type _category: str
+    :param _event_type: The event type of the failed notification.
+    :type _event_type: str
+    :param _object_id: The object id used to generate the body of the
+    notification.
+    :type _object_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/notification-filter-failure"
+    _ENDPOINT_URL_LISTING = "user/{}/notification-filter-failure"
+
+    # Field constants.
+    FIELD_NOTIFICATION_FILTER_FAILED_IDS = "notification_filter_failed_ids"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NotificationFilterFailure"
+
+    _notification_filters = None
+    _category = None
+    _event_type = None
+    _object_id = None
+    _notification_filter_failed_ids_field_for_request = None
+
+    def __init__(self, notification_filter_failed_ids):
+        """
+        :param notification_filter_failed_ids: The IDs to retry.
+        :type notification_filter_failed_ids: str
+        """
+
+        self._notification_filter_failed_ids_field_for_request = notification_filter_failed_ids
+
+    @classmethod
+    def create(cls,notification_filter_failed_ids, custom_headers=None):
+        """
+        :type user_id: int
+        :param notification_filter_failed_ids: The IDs to retry.
+        :type notification_filter_failed_ids: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_NOTIFICATION_FILTER_FAILED_IDS : notification_filter_failed_ids
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNotificationFilterFailureList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNotificationFilterFailureList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def notification_filters(self):
+        """
+        :rtype: list[object_.NotificationFilter]
+        """
+
+        return self._notification_filters
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    @property
+    def event_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._event_type
+
+    @property
+    def object_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._object_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._notification_filters is not None:
+            return False
+
+        if self._category is not None:
+            return False
+
+        if self._event_type is not None:
+            return False
+
+        if self._object_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NotificationFilterFailure
+        """
+
+        return converter.json_to_class(NotificationFilterFailure, json_str)
+
+
 class NotificationFilterPush(BunqModel):
     """
     Manage the push notification filters for a user.
@@ -40822,6 +40979,16 @@ class BunqResponseNotificationFilterEmailList(BunqResponse):
     def value(self):
         """
         :rtype: list[NotificationFilterEmail]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNotificationFilterFailureList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NotificationFilterFailure]
         """
  
         return super().value
