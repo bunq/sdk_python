@@ -6955,6 +6955,8 @@ class Company(BunqModel):
     :type _avatar_uuid: str
     :param _vat_number: All the vat numbers of the company
     :type _vat_number: object_.CompanyVatNumber
+    :param _vat_numbers: All the vat numbers of the company
+    :type _vat_numbers: list[object_.CompanyVatNumber]
     :param _signup_track_type: The type of signup track the user is following.
     :type _signup_track_type: str
     :param _UserCompany: 
@@ -6978,6 +6980,7 @@ class Company(BunqModel):
     FIELD_SUBSCRIPTION_TYPE = "subscription_type"
     FIELD_AVATAR_UUID = "avatar_uuid"
     FIELD_VAT_NUMBER = "vat_number"
+    FIELD_VAT_NUMBERS = "vat_numbers"
     FIELD_SIGNUP_TRACK_TYPE = "signup_track_type"
 
     # Object type.
@@ -6994,9 +6997,10 @@ class Company(BunqModel):
     _subscription_type_field_for_request = None
     _avatar_uuid_field_for_request = None
     _vat_number_field_for_request = None
+    _vat_numbers_field_for_request = None
     _signup_track_type_field_for_request = None
 
-    def __init__(self, name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, signup_track_type=None):
+    def __init__(self, name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, vat_numbers=None, signup_track_type=None):
         """
         :param name: The company name.
         :type name: str
@@ -7019,6 +7023,8 @@ class Company(BunqModel):
         :type avatar_uuid: str
         :param vat_number: All the vat numbers of the company
         :type vat_number: object_.CompanyVatNumber
+        :param vat_numbers: All the vat numbers of the company
+        :type vat_numbers: list[object_.CompanyVatNumber]
         :param signup_track_type: The type of signup track the user is following.
         :type signup_track_type: str
         """
@@ -7033,10 +7039,11 @@ class Company(BunqModel):
         self._chamber_of_commerce_number_field_for_request = chamber_of_commerce_number
         self._avatar_uuid_field_for_request = avatar_uuid
         self._vat_number_field_for_request = vat_number
+        self._vat_numbers_field_for_request = vat_numbers
         self._signup_track_type_field_for_request = signup_track_type
 
     @classmethod
-    def create(cls,name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, signup_track_type=None, custom_headers=None):
+    def create(cls,name, address_main, address_postal, country, legal_form, subscription_type, ubo=None, chamber_of_commerce_number=None, avatar_uuid=None, vat_number=None, vat_numbers=None, signup_track_type=None, custom_headers=None):
         """
         :type user_id: int
         :param name: The company name.
@@ -7061,6 +7068,8 @@ class Company(BunqModel):
         :type avatar_uuid: str
         :param vat_number: All the vat numbers of the company
         :type vat_number: object_.CompanyVatNumber
+        :param vat_numbers: All the vat numbers of the company
+        :type vat_numbers: list[object_.CompanyVatNumber]
         :param signup_track_type: The type of signup track the user is
         following.
         :type signup_track_type: str
@@ -7083,6 +7092,7 @@ cls.FIELD_LEGAL_FORM : legal_form,
 cls.FIELD_SUBSCRIPTION_TYPE : subscription_type,
 cls.FIELD_AVATAR_UUID : avatar_uuid,
 cls.FIELD_VAT_NUMBER : vat_number,
+cls.FIELD_VAT_NUMBERS : vat_numbers,
 cls.FIELD_SIGNUP_TRACK_TYPE : signup_track_type
 }
         request_map_string = converter.class_to_json(request_map)
