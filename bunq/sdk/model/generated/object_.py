@@ -2315,6 +2315,8 @@ class TaxResident(BunqModel):
 
 class CompanyVatNumber(BunqModel):
     """
+    :param _type_: The VAT identification number type.
+    :type _type_: str
     :param _country: The country of the VAT identification number.
     :type _country: str
     :param _value: The VAT identification number number.
@@ -2323,19 +2325,23 @@ class CompanyVatNumber(BunqModel):
 
     _country = None
     _value = None
+    _type__field_for_request = None
     _country_field_for_request = None
     _value_field_for_request = None
 
-    def __init__(self, country=None, value=None):
+    def __init__(self, country=None, value=None, type_=None):
         """
         :param country: The country of the VAT identification number.
         :type country: str
         :param value: The VAT identification number number.
         :type value: str
+        :param type_: The VAT identification number type.
+        :type type_: str
         """
 
         self._country_field_for_request = country
         self._value_field_for_request = value
+        self._type__field_for_request = type_
 
     @property
     def country(self):
