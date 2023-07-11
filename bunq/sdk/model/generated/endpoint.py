@@ -11716,6 +11716,9 @@ class MasterCardAction(BunqModel):
     :type _pos_card_holder_presence: str
     :param _eligible_whitelist_id: The whitelist id for this action or null.
     :type _eligible_whitelist_id: int
+    :param _cashback_payout_item: The cashback payout item for this action or
+    null
+    :type _cashback_payout_item: CashbackPayoutItem
     """
 
     # Endpoint constants.
@@ -11762,6 +11765,7 @@ class MasterCardAction(BunqModel):
     _pos_card_presence = None
     _pos_card_holder_presence = None
     _eligible_whitelist_id = None
+    _cashback_payout_item = None
 
     @classmethod
     def get(cls,  master_card_action_id, monetary_account_id=None, custom_headers=None):
@@ -12107,6 +12111,14 @@ class MasterCardAction(BunqModel):
 
         return self._eligible_whitelist_id
 
+    @property
+    def cashback_payout_item(self):
+        """
+        :rtype: CashbackPayoutItem
+        """
+
+        return self._cashback_payout_item
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -12221,6 +12233,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._eligible_whitelist_id is not None:
+            return False
+
+        if self._cashback_payout_item is not None:
             return False
 
         return True
@@ -12610,6 +12625,103 @@ class MasterCardActionRefund(BunqModel):
         """
 
         return converter.json_to_class(MasterCardActionRefund, json_str)
+
+
+class CashbackPayoutItem(BunqModel):
+    """
+    Cashback payout item details.
+    
+    :param _status: The status of the cashback payout item.
+    :type _status: str
+    :param _amount: The amount of cashback earned.
+    :type _amount: object_.Amount
+    :param _rate_applied: The cashback rate.
+    :type _rate_applied: str
+    :param _transaction_category: The transaction category that this cashback is
+    for.
+    :type _transaction_category: AdditionalTransactionInformationCategory
+    :param _mastercard_action_event_id: The ID of the event of the mastercard
+    action that triggered this cashback.
+    :type _mastercard_action_event_id: int
+    """
+
+    _status = None
+    _amount = None
+    _rate_applied = None
+    _transaction_category = None
+    _mastercard_action_event_id = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def rate_applied(self):
+        """
+        :rtype: str
+        """
+
+        return self._rate_applied
+
+    @property
+    def transaction_category(self):
+        """
+        :rtype: AdditionalTransactionInformationCategory
+        """
+
+        return self._transaction_category
+
+    @property
+    def mastercard_action_event_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._mastercard_action_event_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._rate_applied is not None:
+            return False
+
+        if self._transaction_category is not None:
+            return False
+
+        if self._mastercard_action_event_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CashbackPayoutItem
+        """
+
+        return converter.json_to_class(CashbackPayoutItem, json_str)
 
 
 class RequestInquiryBatch(BunqModel):
