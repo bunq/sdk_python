@@ -12917,6 +12917,8 @@ class UserBlacklistMasterCardMerchant(BunqModel):
     :type _created: str
     :param _updated: The timestamp of the object's last update.
     :type _updated: str
+    :param _status: The status of the the blacklist.
+    :type _status: str
     :param _merchant_hash: Hash of the merchant we are blacklisting.
     :type _merchant_hash: str
     :param _merchant_avatar: 
@@ -12932,6 +12934,7 @@ class UserBlacklistMasterCardMerchant(BunqModel):
     _id_ = None
     _created = None
     _updated = None
+    _status = None
     _merchant_id = None
     _merchant_name = None
     _merchant_identifier = None
@@ -12981,6 +12984,14 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         """
 
         return self._updated
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
 
     @property
     def merchant_id(self):
@@ -13034,6 +13045,9 @@ class UserBlacklistMasterCardMerchant(BunqModel):
             return False
 
         if self._updated is not None:
+            return False
+
+        if self._status is not None:
             return False
 
         if self._merchant_id is not None:
