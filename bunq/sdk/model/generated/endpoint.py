@@ -11721,6 +11721,9 @@ class MasterCardAction(BunqModel):
     :type _cashback_payout_item: CashbackPayoutItem
     :param _mastercard_action_report: The report for this transaction
     :type _mastercard_action_report: MasterCardActionReport
+    :param _blacklist: The blacklist enabled for the merchant of this
+    transaction
+    :type _blacklist: UserBlacklistMasterCardMerchant
     """
 
     # Endpoint constants.
@@ -11769,6 +11772,7 @@ class MasterCardAction(BunqModel):
     _eligible_whitelist_id = None
     _cashback_payout_item = None
     _mastercard_action_report = None
+    _blacklist = None
 
     @classmethod
     def get(cls,  master_card_action_id, monetary_account_id=None, custom_headers=None):
@@ -12130,6 +12134,14 @@ class MasterCardAction(BunqModel):
 
         return self._mastercard_action_report
 
+    @property
+    def blacklist(self):
+        """
+        :rtype: UserBlacklistMasterCardMerchant
+        """
+
+        return self._blacklist
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -12250,6 +12262,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._mastercard_action_report is not None:
+            return False
+
+        if self._blacklist is not None:
             return False
 
         return True
@@ -12870,6 +12885,169 @@ class MasterCardActionReport(BunqModel):
         """
 
         return converter.json_to_class(MasterCardActionReport, json_str)
+
+
+class UserBlacklistMasterCardMerchant(BunqModel):
+    """
+    Fetch blacklists of merchants created by user
+    
+    :param _merchant_id: The blacklisted merchant.
+    :type _merchant_id: str
+    :param _merchant_name: The name of the merchant.
+    :type _merchant_name: str
+    :param _merchant_identifier: Identifier of the merchant we are blacklisting.
+    :type _merchant_identifier: str
+    :param _id_: The id of the blacklist.
+    :type _id_: int
+    :param _created: The timestamp of the object's creation.
+    :type _created: str
+    :param _updated: The timestamp of the object's last update.
+    :type _updated: str
+    :param _merchant_hash: Hash of the merchant we are blacklisting.
+    :type _merchant_hash: str
+    :param _merchant_avatar: 
+    :type _merchant_avatar: Avatar
+    """
+
+    # Field constants.
+    FIELD_MERCHANT_ID = "merchant_id"
+    FIELD_MERCHANT_NAME = "merchant_name"
+    FIELD_MERCHANT_IDENTIFIER = "merchant_identifier"
+
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _merchant_id = None
+    _merchant_name = None
+    _merchant_identifier = None
+    _merchant_hash = None
+    _merchant_avatar = None
+    _merchant_id_field_for_request = None
+    _merchant_name_field_for_request = None
+    _merchant_identifier_field_for_request = None
+
+    def __init__(self, merchant_id, merchant_name, merchant_identifier=None):
+        """
+        :param merchant_id: The merchant id.
+        :type merchant_id: str
+        :param merchant_name: The name of the merchant.
+        :type merchant_name: str
+        :param merchant_identifier: Optional identifier of the merchant to
+        blacklist.
+        :type merchant_identifier: str
+        """
+
+        self._merchant_id_field_for_request = merchant_id
+        self._merchant_name_field_for_request = merchant_name
+        self._merchant_identifier_field_for_request = merchant_identifier
+
+
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def merchant_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_id
+
+    @property
+    def merchant_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_name
+
+    @property
+    def merchant_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_identifier
+
+    @property
+    def merchant_hash(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_hash
+
+    @property
+    def merchant_avatar(self):
+        """
+        :rtype: Avatar
+        """
+
+        return self._merchant_avatar
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._merchant_id is not None:
+            return False
+
+        if self._merchant_name is not None:
+            return False
+
+        if self._merchant_identifier is not None:
+            return False
+
+        if self._merchant_hash is not None:
+            return False
+
+        if self._merchant_avatar is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: UserBlacklistMasterCardMerchant
+        """
+
+        return converter.json_to_class(UserBlacklistMasterCardMerchant, json_str)
 
 
 class RequestInquiryBatch(BunqModel):
