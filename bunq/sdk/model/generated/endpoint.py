@@ -21115,9 +21115,6 @@ class MonetaryAccountSavings(BunqModel):
     :type _updated: str
     :param _avatar: The Avatar of the MonetaryAccountSavings.
     :type _avatar: object_.Avatar
-    :param _overdraft_limit: The maximum Amount the MonetaryAccountSavings can
-    be 'in the red'. Must be 0 EUR or omitted.
-    :type _overdraft_limit: object_.Amount
     :param _balance: The current available balance Amount of the
     MonetaryAccountSavings.
     :type _balance: object_.Amount
@@ -21132,6 +21129,9 @@ class MonetaryAccountSavings(BunqModel):
     :param _savings_goal_progress: The progress in percentages for the Savings
     Goal set for this MonetaryAccountSavings.
     :type _savings_goal_progress: float
+    :param _number_of_payment_remaining: The number of payments that can be made
+    from this savings account
+    :type _number_of_payment_remaining: str
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
     """
@@ -21165,7 +21165,6 @@ class MonetaryAccountSavings(BunqModel):
     _currency = None
     _description = None
     _daily_limit = None
-    _overdraft_limit = None
     _balance = None
     _alias = None
     _public_uuid = None
@@ -21179,6 +21178,7 @@ class MonetaryAccountSavings(BunqModel):
     _setting = None
     _savings_goal = None
     _savings_goal_progress = None
+    _number_of_payment_remaining = None
     _all_auto_save_id = None
     _currency_field_for_request = None
     _description_field_for_request = None
@@ -21511,14 +21511,6 @@ cls.FIELD_SAVINGS_GOAL : savings_goal
         return self._daily_limit
 
     @property
-    def overdraft_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._overdraft_limit
-
-    @property
     def balance(self):
         """
         :rtype: object_.Amount
@@ -21623,6 +21615,14 @@ cls.FIELD_SAVINGS_GOAL : savings_goal
         return self._savings_goal_progress
 
     @property
+    def number_of_payment_remaining(self):
+        """
+        :rtype: str
+        """
+
+        return self._number_of_payment_remaining
+
+    @property
     def all_auto_save_id(self):
         """
         :rtype: list[object_.BunqId]
@@ -21654,9 +21654,6 @@ cls.FIELD_SAVINGS_GOAL : savings_goal
             return False
 
         if self._daily_limit is not None:
-            return False
-
-        if self._overdraft_limit is not None:
             return False
 
         if self._balance is not None:
@@ -21696,6 +21693,9 @@ cls.FIELD_SAVINGS_GOAL : savings_goal
             return False
 
         if self._savings_goal_progress is not None:
+            return False
+
+        if self._number_of_payment_remaining is not None:
             return False
 
         if self._all_auto_save_id is not None:
