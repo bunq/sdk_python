@@ -11684,6 +11684,8 @@ class MasterCardAction(BunqModel):
     :type _counterparty_alias: object_.MonetaryAccountReference
     :param _label_card: The label of the card.
     :type _label_card: object_.LabelCard
+    :param _merchant_id: The identification string of the merchant.
+    :type _merchant_id: str
     :param _token_status: If this is a tokenisation action, this shows the
     status of the token.
     :type _token_status: str
@@ -11759,6 +11761,7 @@ class MasterCardAction(BunqModel):
     _alias = None
     _counterparty_alias = None
     _label_card = None
+    _merchant_id = None
     _token_status = None
     _reservation_expiry_time = None
     _clearing_expiry_time = None
@@ -12031,6 +12034,14 @@ class MasterCardAction(BunqModel):
         return self._label_card
 
     @property
+    def merchant_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_id
+
+    @property
     def token_status(self):
         """
         :rtype: str
@@ -12223,6 +12234,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._label_card is not None:
+            return False
+
+        if self._merchant_id is not None:
             return False
 
         if self._token_status is not None:
