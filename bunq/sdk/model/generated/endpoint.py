@@ -22772,6 +22772,8 @@ class BirdeeInvestmentPortfolio(BunqModel):
     :param _number_of_strategy_change_annual_used: Maximum number of strategy
     changes used.
     :type _number_of_strategy_change_annual_used: int
+    :param _external_identifier: The external identifier of the portfolio.
+    :type _external_identifier: str
     :param _balance: The investment portfolio balance.
     :type _balance: BirdeeInvestmentPortfolioBalance
     :param _allocations: The allocations of the investment portfolio.
@@ -22791,6 +22793,7 @@ class BirdeeInvestmentPortfolio(BunqModel):
     _number_of_strategy_change_annual_maximum = None
     _number_of_strategy_change_annual_used = None
     _name = None
+    _external_identifier = None
     _goal = None
     _balance = None
     _allocations = None
@@ -22868,6 +22871,14 @@ class BirdeeInvestmentPortfolio(BunqModel):
         return self._name
 
     @property
+    def external_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._external_identifier
+
+    @property
     def goal(self):
         """
         :rtype: object_.BirdeeInvestmentPortfolioGoal
@@ -22912,6 +22923,9 @@ class BirdeeInvestmentPortfolio(BunqModel):
             return False
 
         if self._name is not None:
+            return False
+
+        if self._external_identifier is not None:
             return False
 
         if self._goal is not None:
