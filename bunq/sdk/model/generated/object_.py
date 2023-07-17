@@ -2323,6 +2323,7 @@ class CompanyVatNumber(BunqModel):
     :type _value: str
     """
 
+    _type_ = None
     _country = None
     _value = None
     _type__field_for_request = None
@@ -2344,6 +2345,14 @@ class CompanyVatNumber(BunqModel):
         self._type__field_for_request = type_
 
     @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
     def country(self):
         """
         :rtype: str
@@ -2363,6 +2372,9 @@ class CompanyVatNumber(BunqModel):
         """
         :rtype: bool
         """
+
+        if self._type_ is not None:
+            return False
 
         if self._country is not None:
             return False

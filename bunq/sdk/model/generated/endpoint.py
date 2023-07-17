@@ -6953,7 +6953,7 @@ class Company(BunqModel):
     :type _subscription_type: str
     :param _avatar_uuid: The public UUID of the company's avatar.
     :type _avatar_uuid: str
-    :param _vat_number: All the vat numbers of the company
+    :param _vat_number: DEPRECATED All the vat numbers of the company
     :type _vat_number: object_.CompanyVatNumber
     :param _vat_numbers: All the vat numbers of the company
     :type _vat_numbers: list[object_.CompanyVatNumber]
@@ -7021,7 +7021,7 @@ class Company(BunqModel):
         :type chamber_of_commerce_number: str
         :param avatar_uuid: The public UUID of the company's avatar.
         :type avatar_uuid: str
-        :param vat_number: All the vat numbers of the company
+        :param vat_number: DEPRECATED All the vat numbers of the company
         :type vat_number: object_.CompanyVatNumber
         :param vat_numbers: All the vat numbers of the company
         :type vat_numbers: list[object_.CompanyVatNumber]
@@ -7066,7 +7066,7 @@ class Company(BunqModel):
         :type chamber_of_commerce_number: str
         :param avatar_uuid: The public UUID of the company's avatar.
         :type avatar_uuid: str
-        :param vat_number: All the vat numbers of the company
+        :param vat_number: DEPRECATED All the vat numbers of the company
         :type vat_number: object_.CompanyVatNumber
         :param vat_numbers: All the vat numbers of the company
         :type vat_numbers: list[object_.CompanyVatNumber]
