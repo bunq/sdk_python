@@ -39084,6 +39084,9 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     :param _description: The description of the purchase. NULL if no description
     is given.
     :type _description: str
+    :param _url_merchant_app: The return url for the merchant app after the
+    challenge is accepted or rejected.
+    :type _url_merchant_app: str
     :param _counterparty_alias: The monetary account label of the counterparty.
     :type _counterparty_alias: object_.MonetaryAccountReference
     :param _event_id: The ID of the latest event for the identity check.
@@ -39104,6 +39107,7 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     _expiry_time = None
     _description = None
     _status = None
+    _url_merchant_app = None
     _counterparty_alias = None
     _event_id = None
     _status_field_for_request = None
@@ -39204,6 +39208,14 @@ cls.FIELD_STATUS : status
         return self._status
 
     @property
+    def url_merchant_app(self):
+        """
+        :rtype: str
+        """
+
+        return self._url_merchant_app
+
+    @property
     def counterparty_alias(self):
         """
         :rtype: object_.MonetaryAccountReference
@@ -39234,6 +39246,9 @@ cls.FIELD_STATUS : status
             return False
 
         if self._status is not None:
+            return False
+
+        if self._url_merchant_app is not None:
             return False
 
         if self._counterparty_alias is not None:
