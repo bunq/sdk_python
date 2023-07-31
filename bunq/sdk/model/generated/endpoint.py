@@ -19847,6 +19847,674 @@ class MonetaryAccountProfile(BunqModel):
         return converter.json_to_class(MonetaryAccountProfile, json_str)
 
 
+class MonetaryAccountExternalSavings(BunqModel):
+    """
+    Endpoint for managing monetary account savings which are connected to
+    external services.
+    
+    :param _currency: The currency of the MonetaryAccountExternalSavings as an
+    ISO 4217 formatted currency code.
+    :type _currency: str
+    :param _service: The service the MonetaryAccountExternalSavings is connected
+    with.
+    :type _service: str
+    :param _description: The description of the MonetaryAccountExternalSavings.
+    Defaults to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must match
+    the MonetaryAccountExternalSavings's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the
+    MonetaryAccountExternalSavings.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountExternalSavings. Can be:
+    ACTIVE, BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountExternalSavings
+    providing extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountExternalSavings, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+    provided message.
+    :type _reason_description: str
+    :param _display_name: The legal name of the user / company using this
+    monetary account.
+    :type _display_name: str
+    :param _setting: The settings of the MonetaryAccountExternalSavings.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _savings_goal: The Savings Goal set for this
+    MonetaryAccountExternalSavings.
+    :type _savings_goal: object_.Amount
+    :param _id_: The id of the MonetaryAccountExternalSavings.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountExternalSavings's
+    creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountExternalSavings's last
+    update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountExternalSavings.
+    :type _avatar: object_.Avatar
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountExternalSavings.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountExternalSavings.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountExternalSavings's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the
+    MonetaryAccountExternalSavings.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    :param _savings_goal_progress: The progress in percentages for the Savings
+    Goal set for this MonetaryAccountExternalSavings.
+    :type _savings_goal_progress: float
+    :param _number_of_payment_remaining: The number of payments that can be made
+    from this savings account
+    :type _number_of_payment_remaining: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-external-savings"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-external-savings/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-external-savings/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-external-savings"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_SERVICE = "service"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_DISPLAY_NAME = "display_name"
+    FIELD_SETTING = "setting"
+    FIELD_SAVINGS_GOAL = "savings_goal"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountExternalSavings"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _user_id = None
+    _monetary_account_profile = None
+    _display_name = None
+    _setting = None
+    _all_auto_save_id = None
+    _savings_goal = None
+    _savings_goal_progress = None
+    _number_of_payment_remaining = None
+    _currency_field_for_request = None
+    _service_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _display_name_field_for_request = None
+    _setting_field_for_request = None
+    _savings_goal_field_for_request = None
+
+    def __init__(self, currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None):
+        """
+        :param currency: The currency of the MonetaryAccountExternalSavings as an
+        ISO 4217 formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternalSavings is connected
+        with.
+        :type service: str
+        :param description: The description of the MonetaryAccountExternalSavings.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must match
+        the MonetaryAccountExternalSavings's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternalSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternalSavings. Ignored in
+        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountExternalSavings.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
+        providing extra information regarding the status. Should be ignored for POST
+        requests. In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternalSavings, can only be OTHER. Should only be specified
+        if updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternalSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        """
+
+        self._currency_field_for_request = currency
+        self._service_field_for_request = service
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._display_name_field_for_request = display_name
+        self._setting_field_for_request = setting
+        self._savings_goal_field_for_request = savings_goal
+
+    @classmethod
+    def create(cls,currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountExternalSavings as
+        an ISO 4217 formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternalSavings is
+        connected with.
+        :type service: str
+        :param description: The description of the
+        MonetaryAccountExternalSavings. Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must
+        match the MonetaryAccountExternalSavings's currency. Limited to 10000
+        EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternalSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternalSavings. Ignored
+        in POST requests (always set to ACTIVE) can be CANCELLED or
+        PENDING_REOPEN in PUT requests to cancel (close) or reopen the
+        MonetaryAccountExternalSavings. When updating the status and/or
+        sub_status no other fields can be updated in the same request (and vice
+        versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternalSavings, can only be OTHER. Should only be
+        specified if updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternalSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this
+        MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_SERVICE : service,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting,
+cls.FIELD_SAVINGS_GOAL : savings_goal
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  monetary_account_external_savings_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_external_savings_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountExternalSavings
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_external_savings_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountExternalSavings.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_external_savings_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_external_savings_id: int
+        :param description: The description of the
+        MonetaryAccountExternalSavings. Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must
+        match the MonetaryAccountExternalSavings's currency. Limited to 10000
+        EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternalSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternalSavings. Ignored
+        in POST requests (always set to ACTIVE) can be CANCELLED or
+        PENDING_REOPEN in PUT requests to cancel (close) or reopen the
+        MonetaryAccountExternalSavings. When updating the status and/or
+        sub_status no other fields can be updated in the same request (and vice
+        versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternalSavings, can only be OTHER. Should only be
+        specified if updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternalSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this
+        MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting,
+cls.FIELD_SAVINGS_GOAL : savings_goal
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_external_savings_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountExternalSavingsList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountExternalSavingsList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def display_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_name
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    @property
+    def savings_goal(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._savings_goal
+
+    @property
+    def savings_goal_progress(self):
+        """
+        :rtype: float
+        """
+
+        return self._savings_goal_progress
+
+    @property
+    def number_of_payment_remaining(self):
+        """
+        :rtype: str
+        """
+
+        return self._number_of_payment_remaining
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._display_name is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        if self._savings_goal is not None:
+            return False
+
+        if self._savings_goal_progress is not None:
+            return False
+
+        if self._number_of_payment_remaining is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountExternalSavings
+        """
+
+        return converter.json_to_class(MonetaryAccountExternalSavings, json_str)
+
+
 class MonetaryAccountExternal(BunqModel):
     """
     Endpoint for managing monetary accounts which are connected to external
@@ -40784,6 +41452,26 @@ class BunqResponseMonetaryAccountBankList(BunqResponse):
     def value(self):
         """
         :rtype: list[MonetaryAccountBank]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountExternalSavings(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountExternalSavings
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountExternalSavingsList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountExternalSavings]
         """
  
         return super().value
