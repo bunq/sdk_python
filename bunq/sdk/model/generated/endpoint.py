@@ -22402,6 +22402,8 @@ class MonetaryAccount(BunqModel, AnchorObjectInterface):
     :type _MonetaryAccountExternal: MonetaryAccountExternal
     :param _MonetaryAccountInvestment: 
     :type _MonetaryAccountInvestment: MonetaryAccountInvestment
+    :param _MonetaryAccountExternalSavings: 
+    :type _MonetaryAccountExternalSavings: MonetaryAccountExternalSavings
     """
 
     # Error constants.
@@ -22420,6 +22422,7 @@ class MonetaryAccount(BunqModel, AnchorObjectInterface):
     _MonetaryAccountSavings = None
     _MonetaryAccountExternal = None
     _MonetaryAccountInvestment = None
+    _MonetaryAccountExternalSavings = None
 
     @classmethod
     def get(cls,  monetary_account_id, custom_headers=None):
@@ -22518,6 +22521,14 @@ class MonetaryAccount(BunqModel, AnchorObjectInterface):
         """
 
         return self._MonetaryAccountInvestment
+
+    @property
+    def MonetaryAccountExternalSavings(self):
+        """
+        :rtype: MonetaryAccountExternalSavings
+        """
+
+        return self._MonetaryAccountExternalSavings
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -22542,6 +22553,9 @@ class MonetaryAccount(BunqModel, AnchorObjectInterface):
         if self._MonetaryAccountInvestment is not None:
             return self._MonetaryAccountInvestment
 
+        if self._MonetaryAccountExternalSavings is not None:
+            return self._MonetaryAccountExternalSavings
+
         raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
@@ -22565,6 +22579,9 @@ class MonetaryAccount(BunqModel, AnchorObjectInterface):
             return False
 
         if self._MonetaryAccountInvestment is not None:
+            return False
+
+        if self._MonetaryAccountExternalSavings is not None:
             return False
 
         return True
