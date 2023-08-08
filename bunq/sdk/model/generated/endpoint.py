@@ -38531,6 +38531,9 @@ class WhitelistSddOneOff(BunqModel):
     :param _maximum_amount_per_month: The monthly maximum amount that can be
     deducted from the target account.
     :type _maximum_amount_per_month: object_.Amount
+    :param _maximum_amount_per_payment: The maximum amount per payment that can
+    be deducted from the target account.
+    :type _maximum_amount_per_payment: object_.Amount
     :param _id_: The ID of the whitelist entry.
     :type _id_: int
     :param _monetary_account_incoming_id: The account to which payments will
@@ -38560,6 +38563,7 @@ class WhitelistSddOneOff(BunqModel):
     FIELD_MONETARY_ACCOUNT_PAYING_ID = "monetary_account_paying_id"
     FIELD_REQUEST_ID = "request_id"
     FIELD_MAXIMUM_AMOUNT_PER_MONTH = "maximum_amount_per_month"
+    FIELD_MAXIMUM_AMOUNT_PER_PAYMENT = "maximum_amount_per_payment"
 
     # Object type.
     _OBJECT_TYPE_GET = "WhitelistSddOneOff"
@@ -38572,12 +38576,14 @@ class WhitelistSddOneOff(BunqModel):
     _credit_scheme_identifier = None
     _counterparty_alias = None
     _maximum_amount_per_month = None
+    _maximum_amount_per_payment = None
     _user_alias_created = None
     _monetary_account_paying_id_field_for_request = None
     _request_id_field_for_request = None
     _maximum_amount_per_month_field_for_request = None
+    _maximum_amount_per_payment_field_for_request = None
 
-    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None):
+    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None):
         """
         :param monetary_account_paying_id: ID of the monetary account of which you
         want to pay from.
@@ -38586,13 +38592,17 @@ class WhitelistSddOneOff(BunqModel):
         originating SDD.
         :type request_id: int
         :param maximum_amount_per_month: The maximum amount of money that is allowed
-        to be deducted based on the whitelist.
+        to be deducted per month based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
+        :param maximum_amount_per_payment: The maximum amount of money that is
+        allowed to be deducted per payment based on the whitelist.
+        :type maximum_amount_per_payment: object_.Amount
         """
 
         self._monetary_account_paying_id_field_for_request = monetary_account_paying_id
         self._request_id_field_for_request = request_id
         self._maximum_amount_per_month_field_for_request = maximum_amount_per_month
+        self._maximum_amount_per_payment_field_for_request = maximum_amount_per_payment
 
     @classmethod
     def get(cls,  whitelist_sdd_one_off_id, custom_headers=None):
@@ -38619,7 +38629,7 @@ class WhitelistSddOneOff(BunqModel):
         )
 
     @classmethod
-    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, custom_headers=None):
+    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
         """
         Create a new one off SDD whitelist entry.
         
@@ -38631,8 +38641,11 @@ class WhitelistSddOneOff(BunqModel):
         originating SDD.
         :type request_id: int
         :param maximum_amount_per_month: The maximum amount of money that is
-        allowed to be deducted based on the whitelist.
+        allowed to be deducted per month based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
+        :param maximum_amount_per_payment: The maximum amount of money that is
+        allowed to be deducted per payment based on the whitelist.
+        :type maximum_amount_per_payment: object_.Amount
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -38644,7 +38657,8 @@ class WhitelistSddOneOff(BunqModel):
         request_map = {
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
 cls.FIELD_REQUEST_ID : request_id,
-cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
+cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -38659,7 +38673,7 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         )
 
     @classmethod
-    def update(cls,  whitelist_sdd_one_off_id, monetary_account_paying_id=None, maximum_amount_per_month=None, custom_headers=None):
+    def update(cls,  whitelist_sdd_one_off_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
         """
         :type user_id: int
         :type whitelist_sdd_one_off_id: int
@@ -38667,8 +38681,11 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         you want to pay from.
         :type monetary_account_paying_id: int
         :param maximum_amount_per_month: The maximum amount of money that is
-        allowed to be deducted based on the whitelist.
+        allowed to be deducted per month based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
+        :param maximum_amount_per_payment: The maximum amount of money that is
+        allowed to be deducted per payment based on the whitelist.
+        :type maximum_amount_per_payment: object_.Amount
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -38681,7 +38698,8 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
 
         request_map = {
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
-cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
+cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -38807,6 +38825,14 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         return self._maximum_amount_per_month
 
     @property
+    def maximum_amount_per_payment(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._maximum_amount_per_payment
+
+    @property
     def user_alias_created(self):
         """
         :rtype: object_.LabelUser
@@ -38843,6 +38869,9 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         if self._maximum_amount_per_month is not None:
             return False
 
+        if self._maximum_amount_per_payment is not None:
+            return False
+
         if self._user_alias_created is not None:
             return False
 
@@ -38873,6 +38902,9 @@ class WhitelistSddRecurring(BunqModel):
     :param _maximum_amount_per_month: The monthly maximum amount that can be
     deducted from the target account.
     :type _maximum_amount_per_month: object_.Amount
+    :param _maximum_amount_per_payment: The maximum amount per payment that can
+    be deducted from the target account.
+    :type _maximum_amount_per_payment: object_.Amount
     :param _id_: The ID of the whitelist entry.
     :type _id_: int
     :param _monetary_account_incoming_id: The account to which payments will
@@ -38904,6 +38936,7 @@ class WhitelistSddRecurring(BunqModel):
     FIELD_MONETARY_ACCOUNT_PAYING_ID = "monetary_account_paying_id"
     FIELD_REQUEST_ID = "request_id"
     FIELD_MAXIMUM_AMOUNT_PER_MONTH = "maximum_amount_per_month"
+    FIELD_MAXIMUM_AMOUNT_PER_PAYMENT = "maximum_amount_per_payment"
 
     # Object type.
     _OBJECT_TYPE_GET = "WhitelistSddRecurring"
@@ -38917,12 +38950,14 @@ class WhitelistSddRecurring(BunqModel):
     _mandate_identifier = None
     _counterparty_alias = None
     _maximum_amount_per_month = None
+    _maximum_amount_per_payment = None
     _user_alias_created = None
     _monetary_account_paying_id_field_for_request = None
     _request_id_field_for_request = None
     _maximum_amount_per_month_field_for_request = None
+    _maximum_amount_per_payment_field_for_request = None
 
-    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None):
+    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None):
         """
         :param monetary_account_paying_id: ID of the monetary account of which you
         want to pay from.
@@ -38931,13 +38966,17 @@ class WhitelistSddRecurring(BunqModel):
         originating SDD.
         :type request_id: int
         :param maximum_amount_per_month: The maximum amount of money that is allowed
-        to be deducted based on the whitelist.
+        to be deducted per month based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
+        :param maximum_amount_per_payment: The maximum amount of money that is
+        allowed to be deducted per payment based on the whitelist.
+        :type maximum_amount_per_payment: object_.Amount
         """
 
         self._monetary_account_paying_id_field_for_request = monetary_account_paying_id
         self._request_id_field_for_request = request_id
         self._maximum_amount_per_month_field_for_request = maximum_amount_per_month
+        self._maximum_amount_per_payment_field_for_request = maximum_amount_per_payment
 
     @classmethod
     def get(cls,  whitelist_sdd_recurring_id, custom_headers=None):
@@ -38964,7 +39003,7 @@ class WhitelistSddRecurring(BunqModel):
         )
 
     @classmethod
-    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, custom_headers=None):
+    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
         """
         Create a new recurring SDD whitelist entry.
         
@@ -38976,8 +39015,11 @@ class WhitelistSddRecurring(BunqModel):
         originating SDD.
         :type request_id: int
         :param maximum_amount_per_month: The maximum amount of money that is
-        allowed to be deducted based on the whitelist.
+        allowed to be deducted per month based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
+        :param maximum_amount_per_payment: The maximum amount of money that is
+        allowed to be deducted per payment based on the whitelist.
+        :type maximum_amount_per_payment: object_.Amount
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -38989,7 +39031,8 @@ class WhitelistSddRecurring(BunqModel):
         request_map = {
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
 cls.FIELD_REQUEST_ID : request_id,
-cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
+cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -39004,7 +39047,7 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         )
 
     @classmethod
-    def update(cls,  whitelist_sdd_recurring_id, monetary_account_paying_id=None, maximum_amount_per_month=None, custom_headers=None):
+    def update(cls,  whitelist_sdd_recurring_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
         """
         :type user_id: int
         :type whitelist_sdd_recurring_id: int
@@ -39012,8 +39055,11 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         you want to pay from.
         :type monetary_account_paying_id: int
         :param maximum_amount_per_month: The maximum amount of money that is
-        allowed to be deducted based on the whitelist.
+        allowed to be deducted per month based on the whitelist.
         :type maximum_amount_per_month: object_.Amount
+        :param maximum_amount_per_payment: The maximum amount of money that is
+        allowed to be deducted per payment based on the whitelist.
+        :type maximum_amount_per_payment: object_.Amount
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -39026,7 +39072,8 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
 
         request_map = {
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
-cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
+cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -39160,6 +39207,14 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
         return self._maximum_amount_per_month
 
     @property
+    def maximum_amount_per_payment(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._maximum_amount_per_payment
+
+    @property
     def user_alias_created(self):
         """
         :rtype: object_.LabelUser
@@ -39197,6 +39252,9 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month
             return False
 
         if self._maximum_amount_per_month is not None:
+            return False
+
+        if self._maximum_amount_per_payment is not None:
             return False
 
         if self._user_alias_created is not None:
