@@ -12683,16 +12683,12 @@ class CashbackPayoutItem(BunqModel):
     :param _transaction_category: The transaction category that this cashback is
     for.
     :type _transaction_category: AdditionalTransactionInformationCategory
-    :param _mastercard_action_event_id: The ID of the event of the mastercard
-    action that triggered this cashback.
-    :type _mastercard_action_event_id: int
     """
 
     _status = None
     _amount = None
     _rate_applied = None
     _transaction_category = None
-    _mastercard_action_event_id = None
 
     @property
     def status(self):
@@ -12726,14 +12722,6 @@ class CashbackPayoutItem(BunqModel):
 
         return self._transaction_category
 
-    @property
-    def mastercard_action_event_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._mastercard_action_event_id
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -12749,9 +12737,6 @@ class CashbackPayoutItem(BunqModel):
             return False
 
         if self._transaction_category is not None:
-            return False
-
-        if self._mastercard_action_event_id is not None:
             return False
 
         return True
