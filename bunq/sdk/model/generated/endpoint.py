@@ -6193,6 +6193,8 @@ class Card(BunqModel):
     for this card if insufficient balance. Fallback account is removed if not
     supplied.
     :type _monetary_account_id_fallback: int
+    :param _cancellation_reason: The reason for card cancellation.
+    :type _cancellation_reason: str
     :param _id_: The id of the card.
     :type _id_: int
     :param _created: The timestamp of the card's creation.
@@ -6248,6 +6250,7 @@ class Card(BunqModel):
     FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
     FIELD_PRIMARY_ACCOUNT_NUMBERS = "primary_account_numbers"
     FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
+    FIELD_CANCELLATION_REASON = "cancellation_reason"
 
     # Object type.
     _OBJECT_TYPE_PUT = "CardDebit"
@@ -6287,8 +6290,9 @@ class Card(BunqModel):
     _pin_code_assignment_field_for_request = None
     _primary_account_numbers_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
+    _cancellation_reason_field_for_request = None
 
-    def __init__(self, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None):
+    def __init__(self, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, cancellation_reason=None):
         """
         :param pin_code: The plaintext pin code. Requests require encryption to be
         enabled.
@@ -6325,6 +6329,8 @@ class Card(BunqModel):
         this card if insufficient balance. Fallback account is removed if not
         supplied.
         :type monetary_account_id_fallback: int
+        :param cancellation_reason: The reason for card cancellation.
+        :type cancellation_reason: str
         """
 
         self._pin_code_field_for_request = pin_code
@@ -6337,9 +6343,10 @@ class Card(BunqModel):
         self._pin_code_assignment_field_for_request = pin_code_assignment
         self._primary_account_numbers_field_for_request = primary_account_numbers
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
+        self._cancellation_reason_field_for_request = cancellation_reason
 
     @classmethod
-    def update(cls,  card_id, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, custom_headers=None):
+    def update(cls,  card_id, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, cancellation_reason=None, custom_headers=None):
         """
         Update the card details. Allow to change pin code, status, limits,
         country permissions and the monetary account connected to the card. When
@@ -6383,6 +6390,8 @@ class Card(BunqModel):
         for this card if insufficient balance. Fallback account is removed if
         not supplied.
         :type monetary_account_id_fallback: int
+        :param cancellation_reason: The reason for card cancellation.
+        :type cancellation_reason: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseCard
@@ -6403,7 +6412,8 @@ cls.FIELD_CARD_LIMIT_ATM : card_limit_atm,
 cls.FIELD_COUNTRY_PERMISSION : country_permission,
 cls.FIELD_PIN_CODE_ASSIGNMENT : pin_code_assignment,
 cls.FIELD_PRIMARY_ACCOUNT_NUMBERS : primary_account_numbers,
-cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback
+cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback,
+cls.FIELD_CANCELLATION_REASON : cancellation_reason
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
