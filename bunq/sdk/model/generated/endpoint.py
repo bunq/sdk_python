@@ -11736,6 +11736,11 @@ class MasterCardAction(BunqModel):
     :param _blacklist: The blacklist enabled for the merchant of this
     transaction
     :type _blacklist: UserBlacklistMasterCardMerchant
+    :param _additional_authentication_status: The status of the additional
+    authentication performed (3ds) by the user for this transaction.
+    :type _additional_authentication_status: str
+    :param _pin_status: Status checking the provided PIN.
+    :type _pin_status: str
     """
 
     # Endpoint constants.
@@ -11786,6 +11791,8 @@ class MasterCardAction(BunqModel):
     _cashback_payout_item = None
     _mastercard_action_report = None
     _blacklist = None
+    _additional_authentication_status = None
+    _pin_status = None
 
     @classmethod
     def get(cls,  master_card_action_id, monetary_account_id=None, custom_headers=None):
@@ -12163,6 +12170,22 @@ class MasterCardAction(BunqModel):
 
         return self._blacklist
 
+    @property
+    def additional_authentication_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._additional_authentication_status
+
+    @property
+    def pin_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._pin_status
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -12289,6 +12312,12 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._blacklist is not None:
+            return False
+
+        if self._additional_authentication_status is not None:
+            return False
+
+        if self._pin_status is not None:
             return False
 
         return True
