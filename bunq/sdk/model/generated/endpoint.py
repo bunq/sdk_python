@@ -12438,15 +12438,16 @@ class MasterCardActionRefund(BunqModel):
     _attachment_field_for_request = None
     _terms_and_conditions_field_for_request = None
 
-    def __init__(self, type_, sub_type, amount, category=None, reason=None, comment=None, attachment=None, terms_and_conditions=None):
+    def __init__(self, sub_type, amount, type_=None, category=None, reason=None, comment=None, attachment=None, terms_and_conditions=None):
         """
-        :param type_: Type of this refund. Can de REFUND or CHARGEBACK
-        :type type_: str
         :param sub_type: The sub type of this refund indicating whether the
         chargeback will be FULL or PARTIAL.
         :type sub_type: str
         :param amount: The amount to refund.
         :type amount: object_.Amount
+        :param type_: Type of this refund. Can de REFUND or CHARGEBACK. DEPRECATED:
+        This is now determined by backend.
+        :type type_: str
         :param category: The category of the refund, required for chargeback.
         :type category: str
         :param reason: The reason to refund, required for chargeback.
@@ -12460,9 +12461,9 @@ class MasterCardActionRefund(BunqModel):
         :type terms_and_conditions: str
         """
 
-        self._type__field_for_request = type_
         self._sub_type_field_for_request = sub_type
         self._amount_field_for_request = amount
+        self._type__field_for_request = type_
         self._category_field_for_request = category
         self._reason_field_for_request = reason
         self._comment_field_for_request = comment
