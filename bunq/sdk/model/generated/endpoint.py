@@ -39852,6 +39852,11 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     :param _description: The description of the purchase. NULL if no description
     is given.
     :type _description: str
+    :param _decision_description: Textual explanation of the decision.
+    :type _decision_description: str
+    :param _decision_description_translated: Textual explanation of the decision
+    in user's language.
+    :type _decision_description_translated: str
     :param _url_merchant_app: The return url for the merchant app after the
     challenge is accepted or rejected.
     :type _url_merchant_app: str
@@ -39875,6 +39880,8 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     _expiry_time = None
     _description = None
     _status = None
+    _decision_description = None
+    _decision_description_translated = None
     _url_merchant_app = None
     _counterparty_alias = None
     _event_id = None
@@ -39976,6 +39983,22 @@ cls.FIELD_STATUS : status
         return self._status
 
     @property
+    def decision_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._decision_description
+
+    @property
+    def decision_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._decision_description_translated
+
+    @property
     def url_merchant_app(self):
         """
         :rtype: str
@@ -40014,6 +40037,12 @@ cls.FIELD_STATUS : status
             return False
 
         if self._status is not None:
+            return False
+
+        if self._decision_description is not None:
+            return False
+
+        if self._decision_description_translated is not None:
             return False
 
         if self._url_merchant_app is not None:
