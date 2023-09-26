@@ -33077,7 +33077,7 @@ class UserPerson(BunqModel):
     _display_name_field_for_request = None
     _signup_track_type_field_for_request = None
 
-    def __init__(self, document_back_attachment_id=None, display_name=None, daily_limit_without_confirmation_login=None, session_timeout=None, legal_guardian_alias=None, sub_status=None, status=None, gender=None, region=None, language=None, nationality=None, date_of_birth=None, document_front_attachment_id=None, subscription_type=None, document_country_of_issuance=None, document_number=None, document_type=None, tax_resident=None, avatar_uuid=None, address_postal=None, address_main=None, public_nick_name=None, last_name=None, middle_name=None, first_name=None, signup_track_type=None):
+    def __init__(self, subscription_type=None, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, signup_track_type=None):
         """
         :param subscription_type: The subscription type the user should start on.
         :type subscription_type: str
