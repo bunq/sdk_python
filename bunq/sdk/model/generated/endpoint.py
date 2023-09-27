@@ -8805,7 +8805,7 @@ class CurrencyConversionQuote(BunqModel):
     _counterparty_alias_field_for_request = None
     _status_field_for_request = None
 
-    def __init__(self, amount, currency_source, currency_target, counterparty_alias, order_type=None, status=None):
+    def __init__(self, amount, currency_source, currency_target, order_type, counterparty_alias, status=None):
         """
         :param amount: The amount to convert.
         :type amount: object_.Amount
@@ -8813,11 +8813,11 @@ class CurrencyConversionQuote(BunqModel):
         :type currency_source: str
         :param currency_target: The currency we are converting towards.
         :type currency_target: str
+        :param order_type: The type of the quote, SELL or BUY.
+        :type order_type: str
         :param counterparty_alias: The Alias of the party we are transferring the
         money to.
         :type counterparty_alias: object_.Pointer
-        :param order_type: The type of the quote, SELL or BUY.
-        :type order_type: str
         :param status: The status of the quote.
         :type status: str
         """
@@ -8825,12 +8825,12 @@ class CurrencyConversionQuote(BunqModel):
         self._amount_field_for_request = amount
         self._currency_source_field_for_request = currency_source
         self._currency_target_field_for_request = currency_target
-        self._counterparty_alias_field_for_request = counterparty_alias
         self._order_type_field_for_request = order_type
+        self._counterparty_alias_field_for_request = counterparty_alias
         self._status_field_for_request = status
 
     @classmethod
-    def create(cls,amount, currency_source, currency_target, counterparty_alias, monetary_account_id=None, order_type=None, status=None, custom_headers=None):
+    def create(cls,amount, currency_source, currency_target, order_type, counterparty_alias, monetary_account_id=None, status=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -8840,11 +8840,11 @@ class CurrencyConversionQuote(BunqModel):
         :type currency_source: str
         :param currency_target: The currency we are converting towards.
         :type currency_target: str
+        :param order_type: The type of the quote, SELL or BUY.
+        :type order_type: str
         :param counterparty_alias: The Alias of the party we are transferring
         the money to.
         :type counterparty_alias: object_.Pointer
-        :param order_type: The type of the quote, SELL or BUY.
-        :type order_type: str
         :param status: The status of the quote.
         :type status: str
         :type custom_headers: dict[str, str]|None
