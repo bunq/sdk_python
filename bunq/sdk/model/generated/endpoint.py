@@ -36066,57 +36066,6 @@ cls.FIELD_STATUS : status
         return converter.json_to_class(PermittedIp, json_str)
 
 
-class PlacePhotoLookupContent(BunqModel):
-    """
-    View endpoint for place opening periods.
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "place-lookup/{}/photo/{}/content"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PlacePhotoLookupContent"
-
-    @classmethod
-    def list(cls, place_lookup_id, photo_id, custom_headers=None):
-        """
-        :type place_lookup_id: int
-        :type photo_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseBytes
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(place_lookup_id, photo_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseBytes.cast_from_bunq_response(
-            BunqResponse(response_raw.body_bytes, response_raw.headers)
-        )
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PlacePhotoLookupContent
-        """
-
-        return converter.json_to_class(PlacePhotoLookupContent, json_str)
-
-
 class Reward(BunqModel):
     """
     Used to view Rewards.
