@@ -3816,6 +3816,8 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
     :type _WhitelistResult: endpoint.WhitelistResult
     :param _TransferwisePayment: 
     :type _TransferwisePayment: endpoint.TransferwiseTransfer
+    :param _CurrencyConversion: 
+    :type _CurrencyConversion: endpoint.CurrencyConversion
     """
 
     # Error constants.
@@ -3831,6 +3833,7 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
     _ScheduleInstance = None
     _WhitelistResult = None
     _TransferwisePayment = None
+    _CurrencyConversion = None
 
     @property
     def BillingInvoice(self):
@@ -3903,6 +3906,14 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
         """
 
         return self._TransferwisePayment
+
+    @property
+    def CurrencyConversion(self):
+        """
+        :rtype: endpoint.CurrencyConversion
+        """
+
+        return self._CurrencyConversion
     def get_referenced_object(self):
         """
         :rtype: BunqModel
@@ -3936,6 +3947,9 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
         if self._TransferwisePayment is not None:
             return self._TransferwisePayment
 
+        if self._CurrencyConversion is not None:
+            return self._CurrencyConversion
+
         raise BunqException(self._ERROR_NULL_FIELDS)
 
     def is_all_field_none(self):
@@ -3968,6 +3982,9 @@ class RequestReferenceSplitTheBillAnchorObject(BunqModel, AnchorObjectInterface)
             return False
 
         if self._TransferwisePayment is not None:
+            return False
+
+        if self._CurrencyConversion is not None:
             return False
 
         return True
