@@ -32211,6 +32211,12 @@ class NotificationFilterFailure(BunqModel):
     :param _object_id: The object id used to generate the body of the
     notification.
     :type _object_id: int
+    :param _exception_message: The exception bunq encountered when processing
+    the callback.
+    :type _exception_message: str
+    :param _response_code: The response code (or null) received from the
+    endpoint.
+    :type _response_code: int
     """
 
     # Endpoint constants.
@@ -32227,6 +32233,8 @@ class NotificationFilterFailure(BunqModel):
     _category = None
     _event_type = None
     _object_id = None
+    _exception_message = None
+    _response_code = None
     _notification_filter_failed_ids_field_for_request = None
 
     def __init__(self, notification_filter_failed_ids):
@@ -32322,6 +32330,22 @@ cls.FIELD_NOTIFICATION_FILTER_FAILED_IDS : notification_filter_failed_ids
 
         return self._object_id
 
+    @property
+    def exception_message(self):
+        """
+        :rtype: str
+        """
+
+        return self._exception_message
+
+    @property
+    def response_code(self):
+        """
+        :rtype: int
+        """
+
+        return self._response_code
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -32337,6 +32361,12 @@ cls.FIELD_NOTIFICATION_FILTER_FAILED_IDS : notification_filter_failed_ids
             return False
 
         if self._object_id is not None:
+            return False
+
+        if self._exception_message is not None:
+            return False
+
+        if self._response_code is not None:
             return False
 
         return True
