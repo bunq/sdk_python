@@ -113,7 +113,7 @@ class JsonAdapter(Generic[T]):
                              obj_raw: JsonValue) -> T:
         if cls._is_deserialized(cls_target, obj_raw):
             return obj_raw
-        elif type(obj_raw) == dict:
+        elif type(obj_raw) == dict and cls_target != str:
             return cls._deserialize_dict(cls_target, obj_raw)
         else:
             return cls_target(obj_raw)
