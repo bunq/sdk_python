@@ -4736,6 +4736,10 @@ class CardCredit(BunqModel):
     with each one of the monetary accounts the user has access to (including
     connected accounts).
     
+    :param _first_line: The first line of text on the card, used as
+    name/description for it. It can contain at most 17 characters and it can be
+    empty.
+    :type _first_line: str
     :param _second_line: The second line of text on the card
     :type _second_line: str
     :param _name_on_card: The user's name on the card.
@@ -4807,6 +4811,7 @@ class CardCredit(BunqModel):
     _ENDPOINT_URL_CREATE = "user/{}/card-credit"
 
     # Field constants.
+    FIELD_FIRST_LINE = "first_line"
     FIELD_SECOND_LINE = "second_line"
     FIELD_NAME_ON_CARD = "name_on_card"
     FIELD_PREFERRED_NAME_ON_CARD = "preferred_name_on_card"
@@ -4843,6 +4848,7 @@ class CardCredit(BunqModel):
     _monetary_account_id_fallback = None
     _country = None
     _card_shipment_tracking_url = None
+    _first_line_field_for_request = None
     _second_line_field_for_request = None
     _name_on_card_field_for_request = None
     _preferred_name_on_card_field_for_request = None
@@ -4853,7 +4859,7 @@ class CardCredit(BunqModel):
     _monetary_account_id_fallback_field_for_request = None
     _order_status_field_for_request = None
 
-    def __init__(self, second_line, name_on_card, type_, product_type, preferred_name_on_card=None, alias=None, pin_code_assignment=None, monetary_account_id_fallback=None, order_status=None):
+    def __init__(self, second_line, name_on_card, type_, product_type, first_line=None, preferred_name_on_card=None, alias=None, pin_code_assignment=None, monetary_account_id_fallback=None, order_status=None):
         """
         :param second_line: The second line of text on the card, used as
         name/description for it. It can contain at most 17 characters and it can be
@@ -4866,6 +4872,10 @@ class CardCredit(BunqModel):
         :type type_: str
         :param product_type: The product type of the card to order.
         :type product_type: str
+        :param first_line: The first line of text on the card, used as
+        name/description for it. It can contain at most 17 characters and it can be
+        empty.
+        :type first_line: str
         :param preferred_name_on_card: The user's preferred name that can be put on
         the card.
         :type preferred_name_on_card: str
@@ -4889,6 +4899,7 @@ class CardCredit(BunqModel):
         self._name_on_card_field_for_request = name_on_card
         self._type__field_for_request = type_
         self._product_type_field_for_request = product_type
+        self._first_line_field_for_request = first_line
         self._preferred_name_on_card_field_for_request = preferred_name_on_card
         self._alias_field_for_request = alias
         self._pin_code_assignment_field_for_request = pin_code_assignment
@@ -4896,7 +4907,7 @@ class CardCredit(BunqModel):
         self._order_status_field_for_request = order_status
 
     @classmethod
-    def create(cls,second_line, name_on_card, type_, product_type, preferred_name_on_card=None, alias=None, pin_code_assignment=None, monetary_account_id_fallback=None, order_status=None, custom_headers=None):
+    def create(cls,second_line, name_on_card, type_, product_type, first_line=None, preferred_name_on_card=None, alias=None, pin_code_assignment=None, monetary_account_id_fallback=None, order_status=None, custom_headers=None):
         """
         Create a new credit card request.
         
@@ -4912,6 +4923,10 @@ class CardCredit(BunqModel):
         :type type_: str
         :param product_type: The product type of the card to order.
         :type product_type: str
+        :param first_line: The first line of text on the card, used as
+        name/description for it. It can contain at most 17 characters and it can
+        be empty.
+        :type first_line: str
         :param preferred_name_on_card: The user's preferred name that can be put
         on the card.
         :type preferred_name_on_card: str
@@ -4938,6 +4953,7 @@ class CardCredit(BunqModel):
             custom_headers = {}
 
         request_map = {
+cls.FIELD_FIRST_LINE : first_line,
 cls.FIELD_SECOND_LINE : second_line,
 cls.FIELD_NAME_ON_CARD : name_on_card,
 cls.FIELD_PREFERRED_NAME_ON_CARD : preferred_name_on_card,
