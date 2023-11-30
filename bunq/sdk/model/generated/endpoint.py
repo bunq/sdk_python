@@ -10342,6 +10342,9 @@ class Event(BunqModel):
     :param _is_event_latest_for_object: Indicator whether this is the latest
     event for the object.
     :type _is_event_latest_for_object: bool
+    :param _is_event_reassignable: Indicator whether this is event can be
+    reassigned to another Monetary Account.
+    :type _is_event_reassignable: bool
     """
 
     # Endpoint constants.
@@ -10361,6 +10364,7 @@ class Event(BunqModel):
     _status = None
     _object_data_at_event = None
     _is_event_latest_for_object = None
+    _is_event_reassignable = None
 
     @classmethod
     def get(cls,  event_id, custom_headers=None):
@@ -10501,6 +10505,14 @@ class Event(BunqModel):
 
         return self._is_event_latest_for_object
 
+    @property
+    def is_event_reassignable(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_event_reassignable
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -10534,6 +10546,9 @@ class Event(BunqModel):
             return False
 
         if self._is_event_latest_for_object is not None:
+            return False
+
+        if self._is_event_reassignable is not None:
             return False
 
         return True
