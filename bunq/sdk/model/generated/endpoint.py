@@ -6248,6 +6248,9 @@ class Card(BunqModel):
     :param _card_shipment_tracking_url: A tracking link provided by our shipment
     provider.
     :type _card_shipment_tracking_url: str
+    :param _is_eligible_for_free_replacement: Whether this card is eligible for
+    a free replacement.
+    :type _is_eligible_for_free_replacement: bool
     """
 
     # Endpoint constants.
@@ -6296,6 +6299,7 @@ class Card(BunqModel):
     _monetary_account_id_fallback = None
     _country = None
     _card_shipment_tracking_url = None
+    _is_eligible_for_free_replacement = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -6684,6 +6688,14 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
 
         return self._card_shipment_tracking_url
 
+    @property
+    def is_eligible_for_free_replacement(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_eligible_for_free_replacement
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6759,6 +6771,9 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
             return False
 
         if self._card_shipment_tracking_url is not None:
+            return False
+
+        if self._is_eligible_for_free_replacement is not None:
             return False
 
         return True
