@@ -24000,6 +24000,541 @@ class BirdeePortfolioAllocation(BunqModel):
         return converter.json_to_class(BirdeePortfolioAllocation, json_str)
 
 
+class NoteAttachmentAdyenCardTransaction(BunqModel):
+    """
+    Used to manage attachment notes.
+    
+    :param _description: Optional description of the attachment.
+    :type _description: str
+    :param _attachment_id: The reference to the uploaded file to attach to this
+    note.
+    :type _attachment_id: int
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    :param _attachment: The attachment attached to the note.
+    :type _attachment: list[object_.AttachmentMonetaryAccountPayment]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-attachment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-attachment/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-attachment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-attachment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-attachment/{}"
+
+    # Field constants.
+    FIELD_DESCRIPTION = "description"
+    FIELD_ATTACHMENT_ID = "attachment_id"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteAttachment"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _description = None
+    _attachment = None
+    _description_field_for_request = None
+    _attachment_id_field_for_request = None
+
+    def __init__(self, attachment_id, description=None):
+        """
+        :param attachment_id: The reference to the uploaded file to attach to this
+        note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        """
+
+        self._attachment_id_field_for_request = attachment_id
+        self._description_field_for_request = description
+
+    @classmethod
+    def create(cls,adyen_card_transaction_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :param attachment_id: The reference to the uploaded file to attach to
+        this note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_ATTACHMENT_ID : attachment_id
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, adyen_card_transaction_id,  note_attachment_adyen_card_transaction_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type note_attachment_adyen_card_transaction_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id, note_attachment_adyen_card_transaction_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, adyen_card_transaction_id,  note_attachment_adyen_card_transaction_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type note_attachment_adyen_card_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id, note_attachment_adyen_card_transaction_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,adyen_card_transaction_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentAdyenCardTransactionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteAttachmentAdyenCardTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, adyen_card_transaction_id,  note_attachment_adyen_card_transaction_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type note_attachment_adyen_card_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentAdyenCardTransaction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id, note_attachment_adyen_card_transaction_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteAttachmentAdyenCardTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.AttachmentMonetaryAccountPayment]
+        """
+
+        return self._attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteAttachmentAdyenCardTransaction
+        """
+
+        return converter.json_to_class(NoteAttachmentAdyenCardTransaction, json_str)
+
+
+class NoteTextAdyenCardTransaction(BunqModel):
+    """
+    Used to manage text notes.
+    
+    :param _content: The content of the note.
+    :type _content: str
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-text"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-text/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-text/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-text"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/adyen-card-transaction/{}/note-text/{}"
+
+    # Field constants.
+    FIELD_CONTENT = "content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteText"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _content = None
+    _content_field_for_request = None
+
+    def __init__(self, content=None):
+        """
+        :param content: The content of the note.
+        :type content: str
+        """
+
+        self._content_field_for_request = content
+
+    @classmethod
+    def create(cls,adyen_card_transaction_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, adyen_card_transaction_id,  note_text_adyen_card_transaction_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type note_text_adyen_card_transaction_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id, note_text_adyen_card_transaction_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, adyen_card_transaction_id,  note_text_adyen_card_transaction_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type note_text_adyen_card_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id, note_text_adyen_card_transaction_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,adyen_card_transaction_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextAdyenCardTransactionList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteTextAdyenCardTransactionList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, adyen_card_transaction_id,  note_text_adyen_card_transaction_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type adyen_card_transaction_id: int
+        :type note_text_adyen_card_transaction_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextAdyenCardTransaction
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), adyen_card_transaction_id, note_text_adyen_card_transaction_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteTextAdyenCardTransaction.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def content(self):
+        """
+        :rtype: str
+        """
+
+        return self._content
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._content is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteTextAdyenCardTransaction
+        """
+
+        return converter.json_to_class(NoteTextAdyenCardTransaction, json_str)
+
+
 class NoteAttachmentBankSwitchServiceNetherlandsIncomingPayment(BunqModel):
     """
     Used to manage attachment notes.
@@ -41691,6 +42226,46 @@ class BunqResponseMonetaryAccountList(BunqResponse):
     def value(self):
         """
         :rtype: list[MonetaryAccount]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentAdyenCardTransactionList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteAttachmentAdyenCardTransaction]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentAdyenCardTransaction(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteAttachmentAdyenCardTransaction
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextAdyenCardTransactionList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteTextAdyenCardTransaction]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextAdyenCardTransaction(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteTextAdyenCardTransaction
         """
  
         return super().value
