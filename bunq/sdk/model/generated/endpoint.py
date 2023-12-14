@@ -6209,6 +6209,10 @@ class Card(BunqModel):
     for this card if insufficient balance. Fallback account is removed if not
     supplied.
     :type _monetary_account_id_fallback: int
+    :param _preferred_name_on_card: The user's preferred name on the card.
+    :type _preferred_name_on_card: str
+    :param _second_line: The second line of text on the card
+    :type _second_line: str
     :param _cancellation_reason: The reason for card cancellation.
     :type _cancellation_reason: str
     :param _id_: The id of the card.
@@ -6223,8 +6227,6 @@ class Card(BunqModel):
     :type _type_: str
     :param _sub_type: The sub-type of the card.
     :type _sub_type: str
-    :param _second_line: The second line of text on the card
-    :type _second_line: str
     :param _user_id: ID of the user who is owner of the card.
     :type _user_id: int
     :param _sub_status: The sub-status of the card. Can be NONE or REPLACED.
@@ -6269,6 +6271,8 @@ class Card(BunqModel):
     FIELD_PIN_CODE_ASSIGNMENT = "pin_code_assignment"
     FIELD_PRIMARY_ACCOUNT_NUMBERS = "primary_account_numbers"
     FIELD_MONETARY_ACCOUNT_ID_FALLBACK = "monetary_account_id_fallback"
+    FIELD_PREFERRED_NAME_ON_CARD = "preferred_name_on_card"
+    FIELD_SECOND_LINE = "second_line"
     FIELD_CANCELLATION_REASON = "cancellation_reason"
 
     # Object type.
@@ -6288,6 +6292,7 @@ class Card(BunqModel):
     _order_status = None
     _expiry_date = None
     _name_on_card = None
+    _preferred_name_on_card = None
     _primary_account_numbers = None
     _payment_account_reference = None
     _card_limit = None
@@ -6310,9 +6315,11 @@ class Card(BunqModel):
     _pin_code_assignment_field_for_request = None
     _primary_account_numbers_field_for_request = None
     _monetary_account_id_fallback_field_for_request = None
+    _preferred_name_on_card_field_for_request = None
+    _second_line_field_for_request = None
     _cancellation_reason_field_for_request = None
 
-    def __init__(self, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, cancellation_reason=None):
+    def __init__(self, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, preferred_name_on_card=None, second_line=None, cancellation_reason=None):
         """
         :param pin_code: The plaintext pin code. Requests require encryption to be
         enabled.
@@ -6349,6 +6356,11 @@ class Card(BunqModel):
         this card if insufficient balance. Fallback account is removed if not
         supplied.
         :type monetary_account_id_fallback: int
+        :param preferred_name_on_card: The user's preferred name as it will be on
+        the card.
+        :type preferred_name_on_card: str
+        :param second_line: The second line of text on the card
+        :type second_line: str
         :param cancellation_reason: The reason for card cancellation.
         :type cancellation_reason: str
         """
@@ -6363,10 +6375,12 @@ class Card(BunqModel):
         self._pin_code_assignment_field_for_request = pin_code_assignment
         self._primary_account_numbers_field_for_request = primary_account_numbers
         self._monetary_account_id_fallback_field_for_request = monetary_account_id_fallback
+        self._preferred_name_on_card_field_for_request = preferred_name_on_card
+        self._second_line_field_for_request = second_line
         self._cancellation_reason_field_for_request = cancellation_reason
 
     @classmethod
-    def update(cls,  card_id, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, cancellation_reason=None, custom_headers=None):
+    def update(cls,  card_id, pin_code=None, activation_code=None, status=None, order_status=None, card_limit=None, card_limit_atm=None, country_permission=None, pin_code_assignment=None, primary_account_numbers=None, monetary_account_id_fallback=None, preferred_name_on_card=None, second_line=None, cancellation_reason=None, custom_headers=None):
         """
         Update the card details. Allow to change pin code, status, limits,
         country permissions and the monetary account connected to the card. When
@@ -6410,6 +6424,11 @@ class Card(BunqModel):
         for this card if insufficient balance. Fallback account is removed if
         not supplied.
         :type monetary_account_id_fallback: int
+        :param preferred_name_on_card: The user's preferred name as it will be
+        on the card.
+        :type preferred_name_on_card: str
+        :param second_line: The second line of text on the card
+        :type second_line: str
         :param cancellation_reason: The reason for card cancellation.
         :type cancellation_reason: str
         :type custom_headers: dict[str, str]|None
@@ -6433,6 +6452,8 @@ cls.FIELD_COUNTRY_PERMISSION : country_permission,
 cls.FIELD_PIN_CODE_ASSIGNMENT : pin_code_assignment,
 cls.FIELD_PRIMARY_ACCOUNT_NUMBERS : primary_account_numbers,
 cls.FIELD_MONETARY_ACCOUNT_ID_FALLBACK : monetary_account_id_fallback,
+cls.FIELD_PREFERRED_NAME_ON_CARD : preferred_name_on_card,
+cls.FIELD_SECOND_LINE : second_line,
 cls.FIELD_CANCELLATION_REASON : cancellation_reason
 }
         request_map_string = converter.class_to_json(request_map)
@@ -6601,6 +6622,14 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         return self._name_on_card
 
     @property
+    def preferred_name_on_card(self):
+        """
+        :rtype: str
+        """
+
+        return self._preferred_name_on_card
+
+    @property
     def primary_account_numbers(self):
         """
         :rtype: list[object_.CardPrimaryAccountNumber]
@@ -6738,6 +6767,9 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
             return False
 
         if self._name_on_card is not None:
+            return False
+
+        if self._preferred_name_on_card is not None:
             return False
 
         if self._primary_account_numbers is not None:
