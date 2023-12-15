@@ -16630,6 +16630,8 @@ class MasterCardAction(BunqModel):
     :type _additional_authentication_status: str
     :param _pin_status: Status checking the provided PIN.
     :type _pin_status: str
+    :param _merchant_category_code: The MCC provided.
+    :type _merchant_category_code: str
     """
 
     # Endpoint constants.
@@ -16682,6 +16684,7 @@ class MasterCardAction(BunqModel):
     _blacklist = None
     _additional_authentication_status = None
     _pin_status = None
+    _merchant_category_code = None
 
     @classmethod
     def get(cls,  master_card_action_id, monetary_account_id=None, custom_headers=None):
@@ -17075,6 +17078,14 @@ class MasterCardAction(BunqModel):
 
         return self._pin_status
 
+    @property
+    def merchant_category_code(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_category_code
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -17207,6 +17218,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._pin_status is not None:
+            return False
+
+        if self._merchant_category_code is not None:
             return False
 
         return True
