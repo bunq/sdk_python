@@ -41230,8 +41230,10 @@ class RegistryMembership(BunqModel):
     :param _status: The status of the RegistryMembership.
     :type _status: str
     :param _auto_add_card_transaction: The setting for for adding automatically
-    card transactions to the registry.
+    card transactions to the registry. (deprecated)
     :type _auto_add_card_transaction: str
+    :param _setting: Registry membership setting.
+    :type _setting: object_.RegistryMembershipSetting
     :param _membership_ticount_id: The original TricountId of the membership for
     backwards compatibility. May be used as an alternative to the UUID to
     identify specific memberships to allow clients to sync changes made offline
@@ -41258,6 +41260,7 @@ class RegistryMembership(BunqModel):
     FIELD_ALIAS = "alias"
     FIELD_STATUS = "status"
     FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
+    FIELD_SETTING = "setting"
     FIELD_MEMBERSHIP_TICOUNT_ID = "membership_ticount_id"
 
 
@@ -41268,6 +41271,7 @@ class RegistryMembership(BunqModel):
     _status = None
     _status_settlement = None
     _auto_add_card_transaction = None
+    _setting = None
     _registry_id = None
     _registry_title = None
     _invitor = None
@@ -41275,9 +41279,10 @@ class RegistryMembership(BunqModel):
     _alias_field_for_request = None
     _status_field_for_request = None
     _auto_add_card_transaction_field_for_request = None
+    _setting_field_for_request = None
     _membership_ticount_id_field_for_request = None
 
-    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None, membership_ticount_id=None):
+    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None, setting=None, membership_ticount_id=None):
         """
         :param alias: The Alias of the party we are inviting to the Registry.
         :type alias: object_.Pointer
@@ -41287,9 +41292,11 @@ class RegistryMembership(BunqModel):
         :type uuid: str
         :param status: The status of the RegistryMembership.
         :type status: str
-        :param auto_add_card_transaction: The setting for for adding automatically
-        card transactions to the registry.
+        :param auto_add_card_transaction: The setting for adding automatically card
+        transactions to the registry. (deprecated)
         :type auto_add_card_transaction: str
+        :param setting: Registry membership setting.
+        :type setting: object_.RegistryMembershipSetting
         :param membership_ticount_id: The original TricountId of the membership for
         backwards compatibility. May be used as an alternative to the UUID to
         identify specific memberships to allow clients to sync changes made offline
@@ -41301,6 +41308,7 @@ class RegistryMembership(BunqModel):
         self._uuid_field_for_request = uuid
         self._status_field_for_request = status
         self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
+        self._setting_field_for_request = setting
         self._membership_ticount_id_field_for_request = membership_ticount_id
 
 
@@ -41362,6 +41370,14 @@ class RegistryMembership(BunqModel):
         return self._auto_add_card_transaction
 
     @property
+    def setting(self):
+        """
+        :rtype: object_.RegistryMembershipSetting
+        """
+
+        return self._setting
+
+    @property
     def registry_id(self):
         """
         :rtype: int
@@ -41409,6 +41425,9 @@ class RegistryMembership(BunqModel):
             return False
 
         if self._auto_add_card_transaction is not None:
+            return False
+
+        if self._setting is not None:
             return False
 
         if self._registry_id is not None:
