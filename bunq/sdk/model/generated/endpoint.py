@@ -17833,12 +17833,16 @@ class UserBlacklistMasterCardMerchant(BunqModel):
     """
     Fetch blacklists of merchants created by user
     
-    :param _merchant_id: The blacklisted merchant.
-    :type _merchant_id: str
     :param _merchant_name: The name of the merchant.
     :type _merchant_name: str
+    :param _merchant_id: The blacklisted merchant.
+    :type _merchant_id: str
     :param _merchant_identifier: Identifier of the merchant we are blacklisting.
     :type _merchant_identifier: str
+    :param _mastercard_merchant_id: The blacklisted merchant.
+    :type _mastercard_merchant_id: str
+    :param _external_merchant_id: Externally provided merchant identification.
+    :type _external_merchant_id: str
     :param _id_: The id of the blacklist.
     :type _id_: int
     :param _created: The timestamp of the object's creation.
@@ -17854,38 +17858,50 @@ class UserBlacklistMasterCardMerchant(BunqModel):
     """
 
     # Field constants.
-    FIELD_MERCHANT_ID = "merchant_id"
     FIELD_MERCHANT_NAME = "merchant_name"
+    FIELD_MERCHANT_ID = "merchant_id"
     FIELD_MERCHANT_IDENTIFIER = "merchant_identifier"
+    FIELD_MASTERCARD_MERCHANT_ID = "mastercard_merchant_id"
+    FIELD_EXTERNAL_MERCHANT_ID = "external_merchant_id"
 
 
     _id_ = None
     _created = None
     _updated = None
     _status = None
-    _merchant_id = None
     _merchant_name = None
+    _merchant_id = None
     _merchant_identifier = None
+    _mastercard_merchant_id = None
+    _external_merchant_id = None
     _merchant_hash = None
     _merchant_avatar = None
-    _merchant_id_field_for_request = None
     _merchant_name_field_for_request = None
+    _merchant_id_field_for_request = None
     _merchant_identifier_field_for_request = None
+    _mastercard_merchant_id_field_for_request = None
+    _external_merchant_id_field_for_request = None
 
-    def __init__(self, merchant_id, merchant_name, merchant_identifier=None):
+    def __init__(self, merchant_name, merchant_id, merchant_identifier=None, mastercard_merchant_id=None, external_merchant_id=None):
         """
-        :param merchant_id: The merchant id.
-        :type merchant_id: str
         :param merchant_name: The name of the merchant.
         :type merchant_name: str
+        :param merchant_id: The merchant id.
+        :type merchant_id: str
         :param merchant_identifier: Optional identifier of the merchant to
         blacklist.
         :type merchant_identifier: str
+        :param mastercard_merchant_id: Master card merchant id.
+        :type mastercard_merchant_id: str
+        :param external_merchant_id: Externally provided merchant id.
+        :type external_merchant_id: str
         """
 
-        self._merchant_id_field_for_request = merchant_id
         self._merchant_name_field_for_request = merchant_name
+        self._merchant_id_field_for_request = merchant_id
         self._merchant_identifier_field_for_request = merchant_identifier
+        self._mastercard_merchant_id_field_for_request = mastercard_merchant_id
+        self._external_merchant_id_field_for_request = external_merchant_id
 
 
 
@@ -17922,14 +17938,6 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         return self._status
 
     @property
-    def merchant_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_id
-
-    @property
     def merchant_name(self):
         """
         :rtype: str
@@ -17938,12 +17946,36 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         return self._merchant_name
 
     @property
+    def merchant_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_id
+
+    @property
     def merchant_identifier(self):
         """
         :rtype: str
         """
 
         return self._merchant_identifier
+
+    @property
+    def mastercard_merchant_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._mastercard_merchant_id
+
+    @property
+    def external_merchant_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._external_merchant_id
 
     @property
     def merchant_hash(self):
@@ -17978,13 +18010,19 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         if self._status is not None:
             return False
 
-        if self._merchant_id is not None:
-            return False
-
         if self._merchant_name is not None:
             return False
 
+        if self._merchant_id is not None:
+            return False
+
         if self._merchant_identifier is not None:
+            return False
+
+        if self._mastercard_merchant_id is not None:
+            return False
+
+        if self._external_merchant_id is not None:
             return False
 
         if self._merchant_hash is not None:
