@@ -41011,6 +41011,1361 @@ cls.FIELD_STATUS : status
         return converter.json_to_class(MasterCardIdentityCheckChallengeRequestUser, json_str)
 
 
+class RegistryImportSplitwiseCsv(BunqModel):
+    """
+    Used to upload a CSV export from Splitwise, and create a new Registry from
+    it.
+    
+    :param _registry: The registry details.
+    :type _registry: Registry
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "registry-import-splitwise-csv"
+
+    # Object type.
+    _OBJECT_TYPE_POST = "RegistryImport"
+
+    _registry = None
+
+    @classmethod
+    def create(cls, custom_headers=None):
+        """
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseRegistryImportSplitwiseCsv
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseRegistryImportSplitwiseCsv.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
+        )
+
+    @property
+    def registry(self):
+        """
+        :rtype: Registry
+        """
+
+        return self._registry
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._registry is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryImportSplitwiseCsv
+        """
+
+        return converter.json_to_class(RegistryImportSplitwiseCsv, json_str)
+
+
+class Registry(BunqModel):
+    """
+    Used to manage Slice groups.
+    
+    :param _updated: The timestamp of the Registry's last update.
+    :type _updated: str
+    :param _uuid: The uuid of the Registry. If it was provided by the client on
+    creation, then the client can use it to match the returned Registry to the
+    row stored locally.
+    :type _uuid: str
+    :param _public_identifier_token: Public identifier token provided by the
+    client. Will remain null if not provided in the POST call.
+    :type _public_identifier_token: str
+    :param _currency: The currency for the Registry as an ISO 4217 formatted
+    currency code.
+    :type _currency: str
+    :param _title: The title of the Registry.
+    :type _title: str
+    :param _description: A description about the Registry.
+    :type _description: str
+    :param _category: The category of the Registry. Can be one of the following
+    values: GENERAL, TRIP, SHARED_HOUSE, COUPLE, EVENT, PROJECT, OTHER
+    :type _category: str
+    :param _status: The status of the Registry.
+    :type _status: str
+    :param _last_registry_entry_seen_id: The id of the last RegistryEntry that
+    the user has seen.
+    :type _last_registry_entry_seen_id: int
+    :param _previous_updated_timestamp: The previous updated timestamp that you
+    received for this Registry.
+    :type _previous_updated_timestamp: str
+    :param _membership_uuid_active: The UUID of the membership which is
+    currently linked to the logged in user.
+    :type _membership_uuid_active: str
+    :param _memberships: List of memberships to replace the current one.
+    :type _memberships: list[RegistryMembership]
+    :param _memberships_previous: Previous list of memberships.
+    :type _memberships_previous: list[RegistryMembership]
+    :param _deleted_membership_ids: The ids of the memberships that have been
+    deleted.
+    :type _deleted_membership_ids: list[str]
+    :param _auto_add_card_transaction: The setting for adding automatically card
+    transactions to the registry for the creator. (deprecated)
+    :type _auto_add_card_transaction: str
+    :param _membership_setting: User creator registry membership setting.
+    :type _membership_setting: object_.RegistryMembershipSetting
+    :param _avatar_uuid: The UUID of the avatar. Use the calls
+    /attachment-public and /avatar to create a new Avatar and get its UUID.
+    :type _avatar_uuid: str
+    :param _setting: The settings for this Registry.
+    :type _setting: RegistrySetting
+    :param _all_registry_entry: 
+    :type _all_registry_entry: list[RegistryEntry]
+    :param _alias_creator: The alias of the creator, so we can send a
+    confirmation even when the creator doesn't yet have an alias saved for their
+    user.
+    :type _alias_creator: object_.Pointer
+    :param _id_: The id of the Registry.
+    :type _id_: int
+    :param _created: The timestamp of the Registry's creation.
+    :type _created: str
+    :param _unseen_entries_count: The number of RegistryEntries in this Registry
+    that the user has not seen.
+    :type _unseen_entries_count: int
+    :param _total_amount_spent: The total amount spent in this Registry since
+    the last settlement.
+    :type _total_amount_spent: object_.Amount
+    :param _is_previously_settled: Whether the Registry has previously been
+    settled.
+    :type _is_previously_settled: bool
+    :param _avatar: The registry's avatar.
+    :type _avatar: object_.Avatar
+    :param _last_settlement_id: The optional ID of the last settlement of this
+    activity.
+    :type _last_settlement_id: int
+    :param _last_activity_timestamp: The timestamp of the latest activity seen
+    for this registry.
+    :type _last_activity_timestamp: str
+    """
+
+    # Field constants.
+    FIELD_UPDATED = "updated"
+    FIELD_UUID = "uuid"
+    FIELD_PUBLIC_IDENTIFIER_TOKEN = "public_identifier_token"
+    FIELD_CURRENCY = "currency"
+    FIELD_TITLE = "title"
+    FIELD_DESCRIPTION = "description"
+    FIELD_CATEGORY = "category"
+    FIELD_STATUS = "status"
+    FIELD_LAST_REGISTRY_ENTRY_SEEN_ID = "last_registry_entry_seen_id"
+    FIELD_PREVIOUS_UPDATED_TIMESTAMP = "previous_updated_timestamp"
+    FIELD_MEMBERSHIP_UUID_ACTIVE = "membership_uuid_active"
+    FIELD_MEMBERSHIPS = "memberships"
+    FIELD_MEMBERSHIPS_PREVIOUS = "memberships_previous"
+    FIELD_DELETED_MEMBERSHIP_IDS = "deleted_membership_ids"
+    FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
+    FIELD_MEMBERSHIP_SETTING = "membership_setting"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_SETTING = "setting"
+    FIELD_ALL_REGISTRY_ENTRY = "all_registry_entry"
+    FIELD_ALIAS_CREATOR = "alias_creator"
+
+
+    _id_ = None
+    _uuid = None
+    _public_identifier_token = None
+    _created = None
+    _updated = None
+    _currency = None
+    _title = None
+    _description = None
+    _category = None
+    _status = None
+    _unseen_entries_count = None
+    _total_amount_spent = None
+    _is_previously_settled = None
+    _membership_uuid_active = None
+    _memberships = None
+    _setting = None
+    _avatar = None
+    _last_settlement_id = None
+    _last_activity_timestamp = None
+    _all_registry_entry = None
+    _updated_field_for_request = None
+    _uuid_field_for_request = None
+    _public_identifier_token_field_for_request = None
+    _currency_field_for_request = None
+    _title_field_for_request = None
+    _description_field_for_request = None
+    _category_field_for_request = None
+    _status_field_for_request = None
+    _last_registry_entry_seen_id_field_for_request = None
+    _previous_updated_timestamp_field_for_request = None
+    _membership_uuid_active_field_for_request = None
+    _memberships_field_for_request = None
+    _memberships_previous_field_for_request = None
+    _deleted_membership_ids_field_for_request = None
+    _auto_add_card_transaction_field_for_request = None
+    _membership_setting_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _setting_field_for_request = None
+    _all_registry_entry_field_for_request = None
+    _alias_creator_field_for_request = None
+
+    def __init__(self, currency, updated=None, uuid=None, public_identifier_token=None, title=None, description=None, category=None, status=None, last_registry_entry_seen_id=None, previous_updated_timestamp=None, membership_uuid_active=None, memberships=None, memberships_previous=None, deleted_membership_ids=None, auto_add_card_transaction=None, membership_setting=None, avatar_uuid=None, setting=None, all_registry_entry=None, alias_creator=None):
+        """
+        :param currency: The currency for the Registry as an ISO 4217 formatted
+        currency code.
+        :type currency: str
+        :param updated: The timestamp of the Registry's last update.
+        :type updated: str
+        :param uuid: An optional uuid of the Registry. Can be provided by the client
+        on POST to allow clients to later match returned Registries to the row
+        stored locally. If none is provided, the backend will generate it.
+        :type uuid: str
+        :param public_identifier_token: Public identifier token provided by the
+        client.
+        :type public_identifier_token: str
+        :param title: The title of the Registry.
+        :type title: str
+        :param description: A description about the Registry.
+        :type description: str
+        :param category: The category of the Registry. Can be one of the following
+        values: GENERAL, TRIP, SHARED_HOUSE, COUPLE, EVENT, PROJECT, OTHER
+        :type category: str
+        :param status: The status of the Registry.
+        :type status: str
+        :param last_registry_entry_seen_id: The id of the last RegistryEntry that
+        the user has seen.
+        :type last_registry_entry_seen_id: int
+        :param previous_updated_timestamp: The previous updated timestamp that you
+        received for this Registry.
+        :type previous_updated_timestamp: str
+        :param membership_uuid_active: The UUID of the membership to set as the
+        active one.
+        :type membership_uuid_active: str
+        :param memberships: New list of memberships.
+        :type memberships: list[RegistryMembership]
+        :param memberships_previous: Previous list of memberships.
+        :type memberships_previous: list[RegistryMembership]
+        :param deleted_membership_ids: The ids of the memberships that have been
+        deleted.
+        :type deleted_membership_ids: list[str]
+        :param auto_add_card_transaction: The setting for adding automatically card
+        transactions to the registry for the creator. (deprecated)
+        :type auto_add_card_transaction: str
+        :param membership_setting: User creator registry membership setting.
+        :type membership_setting: object_.RegistryMembershipSetting
+        :param avatar_uuid: The UUID of the avatar. Use the calls /attachment-public
+        and /avatar to create a new Avatar and get its UUID.
+        :type avatar_uuid: str
+        :param setting: The settings of the Registry.
+        :type setting: RegistrySetting
+        :param all_registry_entry: 
+        :type all_registry_entry: list[RegistryEntry]
+        :param alias_creator: The alias of the creator, so we can send a
+        confirmation even when the creator doesn't yet have an alias saved for their
+        user.
+        :type alias_creator: object_.Pointer
+        """
+
+        self._currency_field_for_request = currency
+        self._updated_field_for_request = updated
+        self._uuid_field_for_request = uuid
+        self._public_identifier_token_field_for_request = public_identifier_token
+        self._title_field_for_request = title
+        self._description_field_for_request = description
+        self._category_field_for_request = category
+        self._status_field_for_request = status
+        self._last_registry_entry_seen_id_field_for_request = last_registry_entry_seen_id
+        self._previous_updated_timestamp_field_for_request = previous_updated_timestamp
+        self._membership_uuid_active_field_for_request = membership_uuid_active
+        self._memberships_field_for_request = memberships
+        self._memberships_previous_field_for_request = memberships_previous
+        self._deleted_membership_ids_field_for_request = deleted_membership_ids
+        self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
+        self._membership_setting_field_for_request = membership_setting
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._setting_field_for_request = setting
+        self._all_registry_entry_field_for_request = all_registry_entry
+        self._alias_creator_field_for_request = alias_creator
+
+
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def public_identifier_token(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_identifier_token
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def title(self):
+        """
+        :rtype: str
+        """
+
+        return self._title
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def unseen_entries_count(self):
+        """
+        :rtype: int
+        """
+
+        return self._unseen_entries_count
+
+    @property
+    def total_amount_spent(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._total_amount_spent
+
+    @property
+    def is_previously_settled(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_previously_settled
+
+    @property
+    def membership_uuid_active(self):
+        """
+        :rtype: str
+        """
+
+        return self._membership_uuid_active
+
+    @property
+    def memberships(self):
+        """
+        :rtype: list[RegistryMembership]
+        """
+
+        return self._memberships
+
+    @property
+    def setting(self):
+        """
+        :rtype: RegistrySetting
+        """
+
+        return self._setting
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def last_settlement_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._last_settlement_id
+
+    @property
+    def last_activity_timestamp(self):
+        """
+        :rtype: str
+        """
+
+        return self._last_activity_timestamp
+
+    @property
+    def all_registry_entry(self):
+        """
+        :rtype: list[RegistryEntry]
+        """
+
+        return self._all_registry_entry
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._uuid is not None:
+            return False
+
+        if self._public_identifier_token is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._title is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._category is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._unseen_entries_count is not None:
+            return False
+
+        if self._total_amount_spent is not None:
+            return False
+
+        if self._is_previously_settled is not None:
+            return False
+
+        if self._membership_uuid_active is not None:
+            return False
+
+        if self._memberships is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._last_settlement_id is not None:
+            return False
+
+        if self._last_activity_timestamp is not None:
+            return False
+
+        if self._all_registry_entry is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Registry
+        """
+
+        return converter.json_to_class(Registry, json_str)
+
+
+class RegistryMembership(BunqModel):
+    """
+    View for RegistryMembership.
+    
+    :param _uuid: The UUID of the membership.
+    :type _uuid: str
+    :param _alias: The LabelMonetaryAccount of the user who belongs to this
+    RegistryMembership.
+    :type _alias: object_.MonetaryAccountReference
+    :param _status: The status of the RegistryMembership.
+    :type _status: str
+    :param _auto_add_card_transaction: The setting for for adding automatically
+    card transactions to the registry. (deprecated)
+    :type _auto_add_card_transaction: str
+    :param _setting: Registry membership setting.
+    :type _setting: object_.RegistryMembershipSetting
+    :param _membership_ticount_id: The original TricountId of the membership for
+    backwards compatibility. May be used as an alternative to the UUID to
+    identify specific memberships to allow clients to sync changes made offline
+    before the Tricount migration.
+    :type _membership_ticount_id: int
+    :param _balance: The balance of this RegistryMembership.
+    :type _balance: object_.Amount
+    :param _total_amount_spent: The total amount spent of this
+    RegistryMembership.
+    :type _total_amount_spent: object_.Amount
+    :param _status_settlement: The status of the settlement of the Registry. Can
+    be PENDING or SETTLED.
+    :type _status_settlement: str
+    :param _registry_id: The registry id.
+    :type _registry_id: int
+    :param _registry_title: The registry title.
+    :type _registry_title: str
+    :param _invitor: The label of the user that sent the invite.
+    :type _invitor: object_.LabelUser
+    """
+
+    # Field constants.
+    FIELD_UUID = "uuid"
+    FIELD_ALIAS = "alias"
+    FIELD_STATUS = "status"
+    FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
+    FIELD_SETTING = "setting"
+    FIELD_MEMBERSHIP_TICOUNT_ID = "membership_ticount_id"
+
+
+    _uuid = None
+    _alias = None
+    _balance = None
+    _total_amount_spent = None
+    _status = None
+    _status_settlement = None
+    _auto_add_card_transaction = None
+    _setting = None
+    _registry_id = None
+    _registry_title = None
+    _invitor = None
+    _uuid_field_for_request = None
+    _alias_field_for_request = None
+    _status_field_for_request = None
+    _auto_add_card_transaction_field_for_request = None
+    _setting_field_for_request = None
+    _membership_ticount_id_field_for_request = None
+
+    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None, setting=None, membership_ticount_id=None):
+        """
+        :param alias: The Alias of the party we are inviting to the Registry.
+        :type alias: object_.Pointer
+        :param uuid: The UUID of the membership. May be used as an alternative to
+        the alias field to identify specific memberships, as the alias may be
+        updated server-side, whereas the UUID will remain consistent.
+        :type uuid: str
+        :param status: The status of the RegistryMembership.
+        :type status: str
+        :param auto_add_card_transaction: The setting for adding automatically card
+        transactions to the registry. (deprecated)
+        :type auto_add_card_transaction: str
+        :param setting: Registry membership setting.
+        :type setting: object_.RegistryMembershipSetting
+        :param membership_ticount_id: The original TricountId of the membership for
+        backwards compatibility. May be used as an alternative to the UUID to
+        identify specific memberships to allow clients to sync changes made offline
+        before the Tricount migration.
+        :type membership_ticount_id: int
+        """
+
+        self._alias_field_for_request = alias
+        self._uuid_field_for_request = uuid
+        self._status_field_for_request = status
+        self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
+        self._setting_field_for_request = setting
+        self._membership_ticount_id_field_for_request = membership_ticount_id
+
+
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def total_amount_spent(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._total_amount_spent
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def status_settlement(self):
+        """
+        :rtype: str
+        """
+
+        return self._status_settlement
+
+    @property
+    def auto_add_card_transaction(self):
+        """
+        :rtype: str
+        """
+
+        return self._auto_add_card_transaction
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.RegistryMembershipSetting
+        """
+
+        return self._setting
+
+    @property
+    def registry_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._registry_id
+
+    @property
+    def registry_title(self):
+        """
+        :rtype: str
+        """
+
+        return self._registry_title
+
+    @property
+    def invitor(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._invitor
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._uuid is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._total_amount_spent is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._status_settlement is not None:
+            return False
+
+        if self._auto_add_card_transaction is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._registry_id is not None:
+            return False
+
+        if self._registry_title is not None:
+            return False
+
+        if self._invitor is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryMembership
+        """
+
+        return converter.json_to_class(RegistryMembership, json_str)
+
+
+class RegistrySetting(BunqModel):
+    """
+    Used to manage Slice group settings.
+    
+    :param _color: The color chosen for the Registry.
+    :type _color: str
+    :param _icon: The icon chosen for the Registry.
+    :type _icon: str
+    :param _default_avatar_status: The status of the avatar. Can be either
+    AVATAR_DEFAULT, AVATAR_CUSTOM, AVATAR_ICON or AVATAR_UNDETERMINED.
+    :type _default_avatar_status: str
+    :param _sdd_expiration_action: A monetaryAccountSetting field that should
+    not be here, added for app support.
+    :type _sdd_expiration_action: str
+    """
+
+    # Field constants.
+    FIELD_COLOR = "color"
+    FIELD_ICON = "icon"
+    FIELD_DEFAULT_AVATAR_STATUS = "default_avatar_status"
+    FIELD_SDD_EXPIRATION_ACTION = "sdd_expiration_action"
+
+
+    _color = None
+    _icon = None
+    _default_avatar_status = None
+    _color_field_for_request = None
+    _icon_field_for_request = None
+    _default_avatar_status_field_for_request = None
+    _sdd_expiration_action_field_for_request = None
+
+    def __init__(self, color=None, icon=None, default_avatar_status=None, sdd_expiration_action=None):
+        """
+        :param color: The color chosen for the Registry in hexadecimal format.
+        :type color: str
+        :param icon: The icon chosen for the Registry.
+        :type icon: str
+        :param default_avatar_status: The status of the avatar.
+        :type default_avatar_status: str
+        :param sdd_expiration_action: A monetaryAccountSetting field that should not
+        be here, added for app support.
+        :type sdd_expiration_action: str
+        """
+
+        self._color_field_for_request = color
+        self._icon_field_for_request = icon
+        self._default_avatar_status_field_for_request = default_avatar_status
+        self._sdd_expiration_action_field_for_request = sdd_expiration_action
+
+
+
+    @property
+    def color(self):
+        """
+        :rtype: str
+        """
+
+        return self._color
+
+    @property
+    def icon(self):
+        """
+        :rtype: str
+        """
+
+        return self._icon
+
+    @property
+    def default_avatar_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._default_avatar_status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._color is not None:
+            return False
+
+        if self._icon is not None:
+            return False
+
+        if self._default_avatar_status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistrySetting
+        """
+
+        return converter.json_to_class(RegistrySetting, json_str)
+
+
+class RegistryEntry(BunqModel):
+    """
+    Used to manage Slice group payment.
+    
+    :param _id_: The id of the RegistryEntry.
+    :type _id_: int
+    :param _uuid: The uuid of the RegistryEntry. If it was provided by the
+    client on creation, then the client can use it to match the returned
+    RegistryEntry to the row stored locally.
+    :type _uuid: str
+    :param _updated: The timestamp of the RegistryEntry's last update.
+    :type _updated: str
+    :param _status: The status of the RegistryEntry.
+    :type _status: str
+    :param _membership_uuid_owner: The UUID of the RegistryMembership of the
+    party we are allocating money for. Can be provided instead of the
+    "alias_owner" field.
+    :type _membership_uuid_owner: str
+    :param _membership_tricount_id_owner: The original tricount id of the
+    membership for backwards compatibility, to ensure clients are able to sync
+    updates to transactions made offline before the Tricount migration to the
+    bunq backend.
+    :type _membership_tricount_id_owner: int
+    :param _alias_owner: The Alias of the party we are allocating money for.
+    :type _alias_owner: object_.Pointer
+    :param _amount: The Amount of the RegistryEntry.
+    :type _amount: object_.Amount
+    :param _amount_local: The Amount of the RegistryEntry in a local currency.
+    :type _amount_local: object_.Amount
+    :param _exchange_rate: The exchange rate used to convert between amount and
+    amount_local.
+    :type _exchange_rate: str
+    :param _object_reference: The object linked to the RegistryEntry.
+    :type _object_reference: object_.RegistryEntryReference
+    :param _description: A description about the RegistryEntry.
+    :type _description: str
+    :param _allocations: An array of AllocationItems.
+    :type _allocations: list[object_.AllocationItem]
+    :param _attachment: The attachments attached to the payment.
+    :type _attachment: list[object_.RegistryEntryAttachment]
+    :param _category: The category of this RegistryEntry. Supported values:
+    UNCATEGORIZED, OTHER, ACCOMODATION, ENTERTAINMENT, GROCERIES, HEALTHCARE,
+    INSURANCE, RENT, RESTAURANTS, SHOPPING, TRANSPORT
+    :type _category: str
+    :param _category_custom: A custom user-provided category description for
+    this RegistryEntry. Only allowed if `category` is set to "OTHER".
+    :type _category_custom: str
+    :param _date: A user provided date for this RegistryEntry. Returns a full
+    timestamp to allow apps to also use this to sort transactions client-side.
+    :type _date: str
+    :param _type_transaction: The RegistryEntry transaction type. NORMAL,
+    INCOME, or BALANCE.
+    :type _type_transaction: str
+    :param _tricount_id: The original tricount id for backwards compatibility,
+    to ensure clients are able to sync updates to transactions made offline
+    before the Tricount migration to the bunq backend.
+    :type _tricount_id: int
+    :param _created: The timestamp of the RegistryEntry's creation.
+    :type _created: str
+    :param _registry_id: The id of the Registry.
+    :type _registry_id: int
+    :param _type_: The RegistryEntry type. AUTO if created by Auto Slice, MANUAL
+    for manually added entries.
+    :type _type_: str
+    :param _alias: The LabelUser with the public information of the party of
+    this RegistryEntry.
+    :type _alias: object_.LabelUser
+    :param _counterparty_alias: The LabelUser with the public information of the
+    counter party of this RegistryEntry.
+    :type _counterparty_alias: object_.LabelUser
+    :param _user_alias_created: The LabelUser with the public information of the
+    User that created the RegistryEntry.
+    :type _user_alias_created: object_.LabelUser
+    :param _membership_created: The membership of the creator.
+    :type _membership_created: RegistryMembership
+    :param _membership_owned: The membership of the owner.
+    :type _membership_owned: RegistryMembership
+    """
+
+    # Field constants.
+    FIELD_ID = "id"
+    FIELD_UUID = "uuid"
+    FIELD_UPDATED = "updated"
+    FIELD_STATUS = "status"
+    FIELD_MEMBERSHIP_UUID_OWNER = "membership_uuid_owner"
+    FIELD_MEMBERSHIP_TRICOUNT_ID_OWNER = "membership_tricount_id_owner"
+    FIELD_ALIAS_OWNER = "alias_owner"
+    FIELD_AMOUNT = "amount"
+    FIELD_AMOUNT_LOCAL = "amount_local"
+    FIELD_EXCHANGE_RATE = "exchange_rate"
+    FIELD_OBJECT_REFERENCE = "object_reference"
+    FIELD_DESCRIPTION = "description"
+    FIELD_ALLOCATIONS = "allocations"
+    FIELD_ATTACHMENT = "attachment"
+    FIELD_CATEGORY = "category"
+    FIELD_CATEGORY_CUSTOM = "category_custom"
+    FIELD_DATE = "date"
+    FIELD_TYPE_TRANSACTION = "type_transaction"
+    FIELD_TRICOUNT_ID = "tricount_id"
+
+
+    _id_ = None
+    _uuid = None
+    _created = None
+    _updated = None
+    _registry_id = None
+    _status = None
+    _amount = None
+    _amount_local = None
+    _exchange_rate = None
+    _description = None
+    _type_ = None
+    _type_transaction = None
+    _alias = None
+    _counterparty_alias = None
+    _user_alias_created = None
+    _membership_created = None
+    _membership_owned = None
+    _allocations = None
+    _attachment = None
+    _category = None
+    _category_custom = None
+    _date = None
+    _id__field_for_request = None
+    _uuid_field_for_request = None
+    _updated_field_for_request = None
+    _status_field_for_request = None
+    _membership_uuid_owner_field_for_request = None
+    _membership_tricount_id_owner_field_for_request = None
+    _alias_owner_field_for_request = None
+    _amount_field_for_request = None
+    _amount_local_field_for_request = None
+    _exchange_rate_field_for_request = None
+    _object_reference_field_for_request = None
+    _description_field_for_request = None
+    _allocations_field_for_request = None
+    _attachment_field_for_request = None
+    _category_field_for_request = None
+    _category_custom_field_for_request = None
+    _date_field_for_request = None
+    _type_transaction_field_for_request = None
+    _tricount_id_field_for_request = None
+
+    def __init__(self, amount=None, allocations=None, id_=None, uuid=None, updated=None, status=None, membership_uuid_owner=None, membership_tricount_id_owner=None, alias_owner=None, amount_local=None, exchange_rate=None, object_reference=None, description=None, attachment=None, category=None, category_custom=None, date=None, type_transaction=None, tricount_id=None):
+        """
+        :param amount: The Amount of the RegistryEntry.
+        :type amount: object_.Amount
+        :param allocations: An array of AllocationItems.
+        :type allocations: list[object_.AllocationItem]
+        :param id_: An optional id of the RegistryEntry. Only relevant when doing a
+        batch update of RegistryEntries when updating a Registry.
+        :type id_: int
+        :param uuid: An optional uuid of the RegistryEntry. Can be provided by the
+        client on POST to allow clients to later match returned RegistryEntries to
+        the row stored locally. If none is provided, the backend will generate it.
+        :type uuid: str
+        :param updated: An optional updated timestamp of the RegistryEntry. Used
+        during sync to determine if the version on the client or server is newest.
+        :type updated: str
+        :param status: The status of the RegistryEntry.
+        :type status: str
+        :param membership_uuid_owner: The UUID of the RegistryMembership of the
+        party we are allocating money for. Can be provided instead of the
+        "alias_owner" field.
+        :type membership_uuid_owner: str
+        :param membership_tricount_id_owner: The original tricount id of the
+        membership for backwards compatibility, to ensure clients are able to sync
+        updates to transactions made offline before the Tricount migration to the
+        bunq backend.
+        :type membership_tricount_id_owner: int
+        :param alias_owner: The Alias of the party we are allocating money for.
+        :type alias_owner: object_.Pointer
+        :param amount_local: The Amount of the RegistryEntry in a local currency.
+        :type amount_local: object_.Amount
+        :param exchange_rate: The exchange rate used to convert between amount and
+        amount_local.
+        :type exchange_rate: str
+        :param object_reference: The object linked to the RegistryEntry.
+        :type object_reference: object_.RegistryEntryReference
+        :param description: A description about the RegistryEntry.
+        :type description: str
+        :param attachment: The attachments attached to the payment.
+        :type attachment: list[object_.RegistryEntryAttachment]
+        :param category: The category of this RegistryEntry. Supported values:
+        UNCATEGORIZED, OTHER, ACCOMODATION, ENTERTAINMENT, GROCERIES, HEALTHCARE,
+        INSURANCE, RENT, RESTAURANTS, SHOPPING, TRANSPORT
+        :type category: str
+        :param category_custom: A custom user-provided category description for this
+        RegistryEntry. Only allowed if `category` is set to "OTHER".
+        :type category_custom: str
+        :param date: A user provided date for this RegistryEntry. Accepts full
+        timestamps to assist with client-side sorting of transactions created while
+        the app was offline.
+        :type date: str
+        :param type_transaction: The RegistryEntry transaction type. NORMAL, INCOME,
+        or BALANCE.
+        :type type_transaction: str
+        :param tricount_id: The original tricount id for backwards compatibility, to
+        ensure clients are able to sync updates to transactions made offline before
+        the Tricount migration to the bunq backend.
+        :type tricount_id: int
+        """
+
+        self._amount_field_for_request = amount
+        self._allocations_field_for_request = allocations
+        self._id__field_for_request = id_
+        self._uuid_field_for_request = uuid
+        self._updated_field_for_request = updated
+        self._status_field_for_request = status
+        self._membership_uuid_owner_field_for_request = membership_uuid_owner
+        self._membership_tricount_id_owner_field_for_request = membership_tricount_id_owner
+        self._alias_owner_field_for_request = alias_owner
+        self._amount_local_field_for_request = amount_local
+        self._exchange_rate_field_for_request = exchange_rate
+        self._object_reference_field_for_request = object_reference
+        self._description_field_for_request = description
+        self._attachment_field_for_request = attachment
+        self._category_field_for_request = category
+        self._category_custom_field_for_request = category_custom
+        self._date_field_for_request = date
+        self._type_transaction_field_for_request = type_transaction
+        self._tricount_id_field_for_request = tricount_id
+
+
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def registry_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._registry_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def amount_local(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_local
+
+    @property
+    def exchange_rate(self):
+        """
+        :rtype: str
+        """
+
+        return self._exchange_rate
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def type_transaction(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_transaction
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def user_alias_created(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._user_alias_created
+
+    @property
+    def membership_created(self):
+        """
+        :rtype: RegistryMembership
+        """
+
+        return self._membership_created
+
+    @property
+    def membership_owned(self):
+        """
+        :rtype: RegistryMembership
+        """
+
+        return self._membership_owned
+
+    @property
+    def allocations(self):
+        """
+        :rtype: list[object_.AllocationItem]
+        """
+
+        return self._allocations
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.RegistryEntryAttachment]
+        """
+
+        return self._attachment
+
+    @property
+    def category(self):
+        """
+        :rtype: str
+        """
+
+        return self._category
+
+    @property
+    def category_custom(self):
+        """
+        :rtype: str
+        """
+
+        return self._category_custom
+
+    @property
+    def date(self):
+        """
+        :rtype: str
+        """
+
+        return self._date
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._uuid is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._registry_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._amount_local is not None:
+            return False
+
+        if self._exchange_rate is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._type_transaction is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._user_alias_created is not None:
+            return False
+
+        if self._membership_created is not None:
+            return False
+
+        if self._membership_owned is not None:
+            return False
+
+        if self._allocations is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._category is not None:
+            return False
+
+        if self._category_custom is not None:
+            return False
+
+        if self._date is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryEntry
+        """
+
+        return converter.json_to_class(RegistryEntry, json_str)
+
+
 class RegistrySettlement(BunqModel):
     """
     Used to settle a Slice group.
@@ -41254,240 +42609,6 @@ class RegistrySettlement(BunqModel):
         """
 
         return converter.json_to_class(RegistrySettlement, json_str)
-
-
-class RegistryMembership(BunqModel):
-    """
-    View for RegistryMembership.
-    
-    :param _uuid: The UUID of the membership.
-    :type _uuid: str
-    :param _alias: The LabelMonetaryAccount of the user who belongs to this
-    RegistryMembership.
-    :type _alias: object_.MonetaryAccountReference
-    :param _status: The status of the RegistryMembership.
-    :type _status: str
-    :param _auto_add_card_transaction: The setting for for adding automatically
-    card transactions to the registry. (deprecated)
-    :type _auto_add_card_transaction: str
-    :param _setting: Registry membership setting.
-    :type _setting: object_.RegistryMembershipSetting
-    :param _membership_ticount_id: The original TricountId of the membership for
-    backwards compatibility. May be used as an alternative to the UUID to
-    identify specific memberships to allow clients to sync changes made offline
-    before the Tricount migration.
-    :type _membership_ticount_id: int
-    :param _balance: The balance of this RegistryMembership.
-    :type _balance: object_.Amount
-    :param _total_amount_spent: The total amount spent of this
-    RegistryMembership.
-    :type _total_amount_spent: object_.Amount
-    :param _status_settlement: The status of the settlement of the Registry. Can
-    be PENDING or SETTLED.
-    :type _status_settlement: str
-    :param _registry_id: The registry id.
-    :type _registry_id: int
-    :param _registry_title: The registry title.
-    :type _registry_title: str
-    :param _invitor: The label of the user that sent the invite.
-    :type _invitor: object_.LabelUser
-    """
-
-    # Field constants.
-    FIELD_UUID = "uuid"
-    FIELD_ALIAS = "alias"
-    FIELD_STATUS = "status"
-    FIELD_AUTO_ADD_CARD_TRANSACTION = "auto_add_card_transaction"
-    FIELD_SETTING = "setting"
-    FIELD_MEMBERSHIP_TICOUNT_ID = "membership_ticount_id"
-
-
-    _uuid = None
-    _alias = None
-    _balance = None
-    _total_amount_spent = None
-    _status = None
-    _status_settlement = None
-    _auto_add_card_transaction = None
-    _setting = None
-    _registry_id = None
-    _registry_title = None
-    _invitor = None
-    _uuid_field_for_request = None
-    _alias_field_for_request = None
-    _status_field_for_request = None
-    _auto_add_card_transaction_field_for_request = None
-    _setting_field_for_request = None
-    _membership_ticount_id_field_for_request = None
-
-    def __init__(self, alias=None, uuid=None, status=None, auto_add_card_transaction=None, setting=None, membership_ticount_id=None):
-        """
-        :param alias: The Alias of the party we are inviting to the Registry.
-        :type alias: object_.Pointer
-        :param uuid: The UUID of the membership. May be used as an alternative to
-        the alias field to identify specific memberships, as the alias may be
-        updated server-side, whereas the UUID will remain consistent.
-        :type uuid: str
-        :param status: The status of the RegistryMembership.
-        :type status: str
-        :param auto_add_card_transaction: The setting for adding automatically card
-        transactions to the registry. (deprecated)
-        :type auto_add_card_transaction: str
-        :param setting: Registry membership setting.
-        :type setting: object_.RegistryMembershipSetting
-        :param membership_ticount_id: The original TricountId of the membership for
-        backwards compatibility. May be used as an alternative to the UUID to
-        identify specific memberships to allow clients to sync changes made offline
-        before the Tricount migration.
-        :type membership_ticount_id: int
-        """
-
-        self._alias_field_for_request = alias
-        self._uuid_field_for_request = uuid
-        self._status_field_for_request = status
-        self._auto_add_card_transaction_field_for_request = auto_add_card_transaction
-        self._setting_field_for_request = setting
-        self._membership_ticount_id_field_for_request = membership_ticount_id
-
-
-
-    @property
-    def uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._uuid
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._alias
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def total_amount_spent(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._total_amount_spent
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def status_settlement(self):
-        """
-        :rtype: str
-        """
-
-        return self._status_settlement
-
-    @property
-    def auto_add_card_transaction(self):
-        """
-        :rtype: str
-        """
-
-        return self._auto_add_card_transaction
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.RegistryMembershipSetting
-        """
-
-        return self._setting
-
-    @property
-    def registry_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._registry_id
-
-    @property
-    def registry_title(self):
-        """
-        :rtype: str
-        """
-
-        return self._registry_title
-
-    @property
-    def invitor(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._invitor
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._uuid is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._total_amount_spent is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._status_settlement is not None:
-            return False
-
-        if self._auto_add_card_transaction is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._registry_id is not None:
-            return False
-
-        if self._registry_title is not None:
-            return False
-
-        if self._invitor is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: RegistryMembership
-        """
-
-        return converter.json_to_class(RegistryMembership, json_str)
     
 class BunqResponseBillingContractSubscriptionList(BunqResponse):
     @property
@@ -43844,6 +44965,16 @@ class BunqResponseMasterCardIdentityCheckChallengeRequestUser(BunqResponse):
     def value(self):
         """
         :rtype: MasterCardIdentityCheckChallengeRequestUser
+        """
+ 
+        return super().value
+
+    
+class BunqResponseRegistryImportSplitwiseCsv(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: RegistryImportSplitwiseCsv
         """
  
         return super().value

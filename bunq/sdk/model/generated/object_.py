@@ -6555,6 +6555,250 @@ class RegistryMembershipSetting(BunqModel):
         return converter.json_to_class(RegistryMembershipSetting, json_str)
 
 
+class AllocationItem(BunqModel):
+    """
+    :param _membership_uuid: The UUID of the RegistryMembership we are
+    allocating money for. Can be provided instead of the "alias" field.
+    :type _membership_uuid: str
+    :param _membership_tricount_id: The Tricount ID of the membership for
+    backwards compatibility, to be able to handle changed made offline before
+    the Tricount migration, but synced to the backend after the Tricount
+    migration.
+    :type _membership_tricount_id: int
+    :param _alias: The Alias of the party we are allocating money for.
+    :type _alias: Pointer
+    :param _type_: The type of the AllocationItem.
+    :type _type_: str
+    :param _amount: The Amount of the AllocationItem.
+    :type _amount: Amount
+    :param _amount_local: The Amount of the AllocationItem in the local
+    currency.
+    :type _amount_local: Amount
+    :param _share_ratio: The share ratio of the AllocationItem.
+    :type _share_ratio: int
+    :param _membership: The membership.
+    :type _membership: endpoint.RegistryMembership
+    """
+
+    _type_ = None
+    _membership = None
+    _amount = None
+    _amount_local = None
+    _share_ratio = None
+    _membership_uuid_field_for_request = None
+    _membership_tricount_id_field_for_request = None
+    _alias_field_for_request = None
+    _type__field_for_request = None
+    _amount_field_for_request = None
+    _amount_local_field_for_request = None
+    _share_ratio_field_for_request = None
+
+    def __init__(self, type_=None, membership_uuid=None, membership_tricount_id=None, alias=None, amount=None, amount_local=None, share_ratio=None):
+        """
+        :param type_: The type of the AllocationItem.
+        :type type_: str
+        :param membership_uuid: The UUID of the RegistryMembership we are allocating
+        money for. Can be provided instead of the "alias" field.
+        :type membership_uuid: str
+        :param membership_tricount_id: The Tricount ID of the membership for
+        backwards compatibility, to be able to handle changed made offline before
+        the Tricount migration, but synced to the backend after the Tricount
+        migration.
+        :type membership_tricount_id: int
+        :param alias: The Alias of the party we are allocating money for.
+        :type alias: Pointer
+        :param amount: The Amount of the AllocationItem. Required when type is
+        AMOUNT. For type RATIO either provide it for all (preferred) or none.
+        :type amount: Amount
+        :param amount_local: The Amount of the AllocationItem in the local currency.
+        :type amount_local: Amount
+        :param share_ratio: The share ratio of the AllocationItem.
+        :type share_ratio: int
+        """
+
+        self._type__field_for_request = type_
+        self._membership_uuid_field_for_request = membership_uuid
+        self._membership_tricount_id_field_for_request = membership_tricount_id
+        self._alias_field_for_request = alias
+        self._amount_field_for_request = amount
+        self._amount_local_field_for_request = amount_local
+        self._share_ratio_field_for_request = share_ratio
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def membership(self):
+        """
+        :rtype: endpoint.RegistryMembership
+        """
+
+        return self._membership
+
+    @property
+    def amount(self):
+        """
+        :rtype: Amount
+        """
+
+        return self._amount
+
+    @property
+    def amount_local(self):
+        """
+        :rtype: Amount
+        """
+
+        return self._amount_local
+
+    @property
+    def share_ratio(self):
+        """
+        :rtype: int
+        """
+
+        return self._share_ratio
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._membership is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._amount_local is not None:
+            return False
+
+        if self._share_ratio is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AllocationItem
+        """
+
+        return converter.json_to_class(AllocationItem, json_str)
+
+
+class RegistryEntryAttachment(BunqModel):
+    """
+    :param _id_: The id of the attachment.
+    :type _id_: int
+    :param _monetary_account_id: The id of the monetary account to which the
+    attachment belongs.
+    :type _monetary_account_id: int
+    """
+
+    _id_ = None
+    _monetary_account_id = None
+    _id__field_for_request = None
+
+    def __init__(self, id_=None):
+        """
+        :param id_: The id of the attachment we are attaching.
+        :type id_: int
+        """
+
+        self._id__field_for_request = id_
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryEntryAttachment
+        """
+
+        return converter.json_to_class(RegistryEntryAttachment, json_str)
+
+
+class RegistryEntryReference(BunqModel):
+    """
+    :param _type_: The object type that will be linked to the RegistryEntry.
+    :type _type_: str
+    :param _id_: The ID of the object that will be used for the RegistryEntry.
+    :type _id_: int
+    """
+
+    _type__field_for_request = None
+    _id__field_for_request = None
+
+    def __init__(self, type_=None, id_=None):
+        """
+        :param type_: The object type that will be linked to the RegistryEntry.
+        :type type_: str
+        :param id_: The ID of the object that will be used for the RegistryEntry.
+        :type id_: int
+        """
+
+        self._type__field_for_request = type_
+        self._id__field_for_request = id_
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryEntryReference
+        """
+
+        return converter.json_to_class(RegistryEntryReference, json_str)
+
+
 class RegistrySettlementItem(BunqModel):
     """
     :param _amount: The amount of the RegistrySettlementItem.
