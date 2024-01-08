@@ -35650,9 +35650,15 @@ class PaymentAutoAllocate(BunqModel):
     :param _trigger_amount: The amount on which this payment auto allocate will
     be triggered.
     :type _trigger_amount: object_.Amount
-    :param _payment: The payment that was used to define the triggers for this
-    payment auto allocate.
+    :param _payment: DEPRECATED: superseded by `payment_original` and
+    `payment_latest`
     :type _payment: Payment
+    :param _payment_original: The payment that was used to define the triggers
+    for this payment auto allocate.
+    :type _payment_original: Payment
+    :param _payment_latest: The latest payment allocated using this payment auto
+    allocate.
+    :type _payment_latest: Payment
     """
 
     # Endpoint constants.
@@ -35677,6 +35683,8 @@ class PaymentAutoAllocate(BunqModel):
     _status = None
     _trigger_amount = None
     _payment = None
+    _payment_original = None
+    _payment_latest = None
     _payment_id_field_for_request = None
     _type__field_for_request = None
     _definition_field_for_request = None
@@ -35891,6 +35899,22 @@ cls.FIELD_DEFINITION : definition
 
         return self._payment
 
+    @property
+    def payment_original(self):
+        """
+        :rtype: Payment
+        """
+
+        return self._payment_original
+
+    @property
+    def payment_latest(self):
+        """
+        :rtype: Payment
+        """
+
+        return self._payment_latest
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -35915,6 +35939,12 @@ cls.FIELD_DEFINITION : definition
             return False
 
         if self._payment is not None:
+            return False
+
+        if self._payment_original is not None:
+            return False
+
+        if self._payment_latest is not None:
             return False
 
         return True
