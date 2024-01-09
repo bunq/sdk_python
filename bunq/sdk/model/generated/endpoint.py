@@ -41586,8 +41586,8 @@ class RegistryMembership(BunqModel):
     :type _alias: object_.MonetaryAccountReference
     :param _status: The status of the RegistryMembership.
     :type _status: str
-    :param _auto_add_card_transaction: The setting for for adding automatically
-    card transactions to the registry. (deprecated)
+    :param _auto_add_card_transaction: The setting for adding automatically card
+    transactions to the registry. (deprecated)
     :type _auto_add_card_transaction: str
     :param _setting: Registry membership setting.
     :type _setting: object_.RegistryMembershipSetting
@@ -41608,6 +41608,8 @@ class RegistryMembership(BunqModel):
     :type _registry_id: int
     :param _registry_title: The registry title.
     :type _registry_title: str
+    :param _registry_description: For dinner and grocery expenses.
+    :type _registry_description: str
     :param _invitor: The label of the user that sent the invite.
     :type _invitor: object_.LabelUser
     """
@@ -41631,6 +41633,7 @@ class RegistryMembership(BunqModel):
     _setting = None
     _registry_id = None
     _registry_title = None
+    _registry_description = None
     _invitor = None
     _uuid_field_for_request = None
     _alias_field_for_request = None
@@ -41751,6 +41754,14 @@ class RegistryMembership(BunqModel):
         return self._registry_title
 
     @property
+    def registry_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._registry_description
+
+    @property
     def invitor(self):
         """
         :rtype: object_.LabelUser
@@ -41791,6 +41802,9 @@ class RegistryMembership(BunqModel):
             return False
 
         if self._registry_title is not None:
+            return False
+
+        if self._registry_description is not None:
             return False
 
         if self._invitor is not None:

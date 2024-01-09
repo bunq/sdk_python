@@ -6814,6 +6814,9 @@ class RegistrySettlementItem(BunqModel):
     :param _receiving_user_alias: The LabelMonetaryAccount of the user that will
     receive the amount.
     :type _receiving_user_alias: MonetaryAccountReference
+    :param _payment_status: The status of the RequestInquiry or DraftPayment for
+    this settlement item.
+    :type _payment_status: str
     """
 
     _amount = None
@@ -6821,6 +6824,7 @@ class RegistrySettlementItem(BunqModel):
     _membership_receiving = None
     _paying_user_alias = None
     _receiving_user_alias = None
+    _payment_status = None
 
     @property
     def amount(self):
@@ -6862,6 +6866,14 @@ class RegistrySettlementItem(BunqModel):
 
         return self._receiving_user_alias
 
+    @property
+    def payment_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._payment_status
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6880,6 +6892,9 @@ class RegistrySettlementItem(BunqModel):
             return False
 
         if self._receiving_user_alias is not None:
+            return False
+
+        if self._payment_status is not None:
             return False
 
         return True
