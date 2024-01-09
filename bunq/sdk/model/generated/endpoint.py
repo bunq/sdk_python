@@ -16620,8 +16620,6 @@ class MasterCardAction(BunqModel):
     :param _cashback_payout_item: The cashback payout item for this action or
     null
     :type _cashback_payout_item: CashbackPayoutItem
-    :param _mastercard_action_report: The report for this transaction
-    :type _mastercard_action_report: MasterCardActionReport
     :param _blacklist: The blacklist enabled for the merchant of this
     transaction
     :type _blacklist: UserBlacklistMasterCardMerchant
@@ -16630,6 +16628,8 @@ class MasterCardAction(BunqModel):
     :type _additional_authentication_status: str
     :param _pin_status: Status checking the provided PIN.
     :type _pin_status: str
+    :param _mastercard_action_report: The report for this transaction
+    :type _mastercard_action_report: MasterCardActionReport
     :param _merchant_category_code: The MCC provided.
     :type _merchant_category_code: str
     """
@@ -16680,10 +16680,10 @@ class MasterCardAction(BunqModel):
     _pos_card_holder_presence = None
     _eligible_whitelist_id = None
     _cashback_payout_item = None
-    _mastercard_action_report = None
     _blacklist = None
     _additional_authentication_status = None
     _pin_status = None
+    _mastercard_action_report = None
     _merchant_category_code = None
 
     @classmethod
@@ -17047,14 +17047,6 @@ class MasterCardAction(BunqModel):
         return self._cashback_payout_item
 
     @property
-    def mastercard_action_report(self):
-        """
-        :rtype: MasterCardActionReport
-        """
-
-        return self._mastercard_action_report
-
-    @property
     def blacklist(self):
         """
         :rtype: UserBlacklistMasterCardMerchant
@@ -17077,6 +17069,14 @@ class MasterCardAction(BunqModel):
         """
 
         return self._pin_status
+
+    @property
+    def mastercard_action_report(self):
+        """
+        :rtype: MasterCardActionReport
+        """
+
+        return self._mastercard_action_report
 
     @property
     def merchant_category_code(self):
@@ -17208,9 +17208,6 @@ class MasterCardAction(BunqModel):
         if self._cashback_payout_item is not None:
             return False
 
-        if self._mastercard_action_report is not None:
-            return False
-
         if self._blacklist is not None:
             return False
 
@@ -17218,6 +17215,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._pin_status is not None:
+            return False
+
+        if self._mastercard_action_report is not None:
             return False
 
         if self._merchant_category_code is not None:
@@ -17695,140 +17695,6 @@ class CashbackPayoutItem(BunqModel):
         return converter.json_to_class(CashbackPayoutItem, json_str)
 
 
-class MasterCardActionReport(BunqModel):
-    """
-    MasterCard report view.
-    
-    :param _mastercard_action_id: The id of mastercard action being reported.
-    :type _mastercard_action_id: int
-    :param _type_: The id of mastercard action being reported.
-    :type _type_: str
-    :param _status: The id of mastercard action being reported.
-    :type _status: str
-    :param _merchant_id: The reported merchant.
-    :type _merchant_id: str
-    :param _merchant_name: The name of the merchant.
-    :type _merchant_name: str
-    :param _counterparty_alias: The monetary account label of the merchant.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    """
-
-    # Field constants.
-    FIELD_MASTERCARD_ACTION_ID = "mastercard_action_id"
-    FIELD_TYPE = "type"
-    FIELD_STATUS = "status"
-
-
-    _mastercard_action_id = None
-    _type_ = None
-    _status = None
-    _merchant_id = None
-    _merchant_name = None
-    _counterparty_alias = None
-    _mastercard_action_id_field_for_request = None
-    _type__field_for_request = None
-    _status_field_for_request = None
-
-    def __init__(self, mastercard_action_id, type_, status=None):
-        """
-        :param mastercard_action_id: The id of mastercard action being reported.
-        :type mastercard_action_id: int
-        :param type_: The type of report. Can be 'FRAUD' or 'MERCHANT_BLOCKED'.
-        :type type_: str
-        :param status: The id of mastercard action being reported.
-        :type status: str
-        """
-
-        self._mastercard_action_id_field_for_request = mastercard_action_id
-        self._type__field_for_request = type_
-        self._status_field_for_request = status
-
-
-
-    @property
-    def mastercard_action_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._mastercard_action_id
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def merchant_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_id
-
-    @property
-    def merchant_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_name
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._mastercard_action_id is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._merchant_id is not None:
-            return False
-
-        if self._merchant_name is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MasterCardActionReport
-        """
-
-        return converter.json_to_class(MasterCardActionReport, json_str)
-
-
 class UserBlacklistMasterCardMerchant(BunqModel):
     """
     Fetch blacklists of merchants created by user
@@ -18042,6 +17908,140 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         """
 
         return converter.json_to_class(UserBlacklistMasterCardMerchant, json_str)
+
+
+class MasterCardActionReport(BunqModel):
+    """
+    MasterCard report view.
+    
+    :param _mastercard_action_id: The id of mastercard action being reported.
+    :type _mastercard_action_id: int
+    :param _type_: The id of mastercard action being reported.
+    :type _type_: str
+    :param _status: The id of mastercard action being reported.
+    :type _status: str
+    :param _merchant_id: The reported merchant.
+    :type _merchant_id: str
+    :param _merchant_name: The name of the merchant.
+    :type _merchant_name: str
+    :param _counterparty_alias: The monetary account label of the merchant.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    """
+
+    # Field constants.
+    FIELD_MASTERCARD_ACTION_ID = "mastercard_action_id"
+    FIELD_TYPE = "type"
+    FIELD_STATUS = "status"
+
+
+    _mastercard_action_id = None
+    _type_ = None
+    _status = None
+    _merchant_id = None
+    _merchant_name = None
+    _counterparty_alias = None
+    _mastercard_action_id_field_for_request = None
+    _type__field_for_request = None
+    _status_field_for_request = None
+
+    def __init__(self, mastercard_action_id, type_, status=None):
+        """
+        :param mastercard_action_id: The id of mastercard action being reported.
+        :type mastercard_action_id: int
+        :param type_: The type of report. Can be 'FRAUD' or 'MERCHANT_BLOCKED'.
+        :type type_: str
+        :param status: The id of mastercard action being reported.
+        :type status: str
+        """
+
+        self._mastercard_action_id_field_for_request = mastercard_action_id
+        self._type__field_for_request = type_
+        self._status_field_for_request = status
+
+
+
+    @property
+    def mastercard_action_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._mastercard_action_id
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def merchant_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_id
+
+    @property
+    def merchant_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._merchant_name
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._mastercard_action_id is not None:
+            return False
+
+        if self._type_ is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._merchant_id is not None:
+            return False
+
+        if self._merchant_name is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MasterCardActionReport
+        """
+
+        return converter.json_to_class(MasterCardActionReport, json_str)
 
 
 class RequestInquiryBatch(BunqModel):
