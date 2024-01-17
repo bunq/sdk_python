@@ -17748,7 +17748,7 @@ class UserBlacklistMasterCardMerchant(BunqModel):
     _mastercard_merchant_id_field_for_request = None
     _external_merchant_id_field_for_request = None
 
-    def __init__(self, merchant_name, merchant_id=None, merchant_identifier=None, mastercard_merchant_id=None, external_merchant_id=None):
+    def __init__(self, merchant_name, merchant_id, merchant_identifier=None, mastercard_merchant_id=None, external_merchant_id=None):
         """
         :param merchant_name: The name of the merchant.
         :type merchant_name: str
