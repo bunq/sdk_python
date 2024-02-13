@@ -36571,6 +36571,8 @@ class PaymentServiceProviderIssuerTransaction(BunqModel):
     :type _updated: str
     :param _public_uuid: The public uuid used to identify this transaction.
     :type _public_uuid: str
+    :param _alias: The monetary account this transaction is made from.
+    :type _alias: object_.MonetaryAccountReference
     """
 
     # Endpoint constants.
@@ -36600,6 +36602,7 @@ class PaymentServiceProviderIssuerTransaction(BunqModel):
     _url_redirect = None
     _time_expiry = None
     _status = None
+    _alias = None
     _counterparty_alias_field_for_request = None
     _amount_field_for_request = None
     _description_field_for_request = None
@@ -36842,6 +36845,14 @@ cls.FIELD_STATUS : status
 
         return self._status
 
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -36875,6 +36886,9 @@ cls.FIELD_STATUS : status
             return False
 
         if self._status is not None:
+            return False
+
+        if self._alias is not None:
             return False
 
         return True
