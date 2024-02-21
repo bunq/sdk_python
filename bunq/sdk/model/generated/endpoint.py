@@ -3989,6 +3989,9 @@ class BunqMeTab(BunqModel):
     :param _status: The status of the bunq.me. Can be WAITING_FOR_PAYMENT,
     CANCELLED or EXPIRED.
     :type _status: str
+    :param _event_id: The ID of the related event if the bunqMeTab made by
+    'split' functionality.
+    :type _event_id: int
     :param _id_: The id of the created bunq.me.
     :type _id_: int
     :param _created: The timestamp when the bunq.me was created.
@@ -4026,6 +4029,7 @@ class BunqMeTab(BunqModel):
     # Field constants.
     FIELD_BUNQME_TAB_ENTRY = "bunqme_tab_entry"
     FIELD_STATUS = "status"
+    FIELD_EVENT_ID = "event_id"
 
     # Object type.
     _OBJECT_TYPE_GET = "BunqMeTab"
@@ -4044,8 +4048,9 @@ class BunqMeTab(BunqModel):
     _result_inquiries = None
     _bunqme_tab_entry_field_for_request = None
     _status_field_for_request = None
+    _event_id_field_for_request = None
 
-    def __init__(self, bunqme_tab_entry, status=None):
+    def __init__(self, bunqme_tab_entry, status=None, event_id=None):
         """
         :param bunqme_tab_entry: The bunq.me entry containing the payment
         information.
@@ -4054,13 +4059,17 @@ class BunqMeTab(BunqModel):
         be used for cancelling the bunq.me by setting status as CANCELLED with a PUT
         request.
         :type status: str
+        :param event_id: The ID of the related event if the bunqMeTab made by
+        'split' functionality.
+        :type event_id: int
         """
 
         self._bunqme_tab_entry_field_for_request = bunqme_tab_entry
         self._status_field_for_request = status
+        self._event_id_field_for_request = event_id
 
     @classmethod
-    def create(cls,bunqme_tab_entry, monetary_account_id=None, status=None, custom_headers=None):
+    def create(cls,bunqme_tab_entry, monetary_account_id=None, status=None, event_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -4071,6 +4080,9 @@ class BunqMeTab(BunqModel):
         can be used for cancelling the bunq.me by setting status as CANCELLED
         with a PUT request.
         :type status: str
+        :param event_id: The ID of the related event if the bunqMeTab made by
+        'split' functionality.
+        :type event_id: int
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -4081,7 +4093,8 @@ class BunqMeTab(BunqModel):
 
         request_map = {
 cls.FIELD_BUNQME_TAB_ENTRY : bunqme_tab_entry,
-cls.FIELD_STATUS : status
+cls.FIELD_STATUS : status,
+cls.FIELD_EVENT_ID : event_id
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
