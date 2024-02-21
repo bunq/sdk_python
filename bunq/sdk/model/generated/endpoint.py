@@ -6256,6 +6256,8 @@ class Card(BunqModel):
     :param _is_eligible_for_free_replacement: Whether this card is eligible for
     a free replacement.
     :type _is_eligible_for_free_replacement: bool
+    :param _card_replacement: The card replacement for this card.
+    :type _card_replacement: CardReplacement
     """
 
     # Endpoint constants.
@@ -6309,6 +6311,7 @@ class Card(BunqModel):
     _country = None
     _card_shipment_tracking_url = None
     _is_eligible_for_free_replacement = None
+    _card_replacement = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -6737,6 +6740,14 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
 
         return self._is_eligible_for_free_replacement
 
+    @property
+    def card_replacement(self):
+        """
+        :rtype: CardReplacement
+        """
+
+        return self._card_replacement
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6821,6 +6832,9 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
             return False
 
         if self._is_eligible_for_free_replacement is not None:
+            return False
+
+        if self._card_replacement is not None:
             return False
 
         return True
@@ -11630,6 +11644,103 @@ cls.FIELD_SAVINGS_GOAL : savings_goal
         """
 
         return converter.json_to_class(MonetaryAccountExternalSavings, json_str)
+
+
+class CardReplacement(BunqModel):
+    """
+    Endpoint for getting the Card Replacement of a card.
+    
+    :param _status: The status of the CardReplacement.
+    :type _status: str
+    :param _address_main: The user's main address.
+    :type _address_main: object_.Address
+    :param _address_postal: The user's postal address.
+    :type _address_postal: object_.Address
+    :param _card_id: The original card that belongs to the CardReplacement.
+    :type _card_id: int
+    :param _card_new_id: The new card that replaces the original card in the
+    CardReplacement.
+    :type _card_new_id: int
+    """
+
+    # Field constants.
+    FIELD_STATUS = "status"
+    FIELD_ADDRESS_MAIN = "address_main"
+    FIELD_ADDRESS_POSTAL = "address_postal"
+
+
+    _status = None
+    _card_id = None
+    _card_new_id = None
+    _status_field_for_request = None
+    _address_main_field_for_request = None
+    _address_postal_field_for_request = None
+
+    def __init__(self, status=None, address_main=None, address_postal=None):
+        """
+        :param status: The status of the CardReplacement.
+        :type status: str
+        :param address_main: The user's main address.
+        :type address_main: object_.Address
+        :param address_postal: The user's postal address.
+        :type address_postal: object_.Address
+        """
+
+        self._status_field_for_request = status
+        self._address_main_field_for_request = address_main
+        self._address_postal_field_for_request = address_postal
+
+
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def card_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._card_id
+
+    @property
+    def card_new_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._card_new_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._card_id is not None:
+            return False
+
+        if self._card_new_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CardReplacement
+        """
+
+        return converter.json_to_class(CardReplacement, json_str)
 
 
 class CertificatePinned(BunqModel):
