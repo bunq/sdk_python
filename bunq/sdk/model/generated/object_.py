@@ -3389,10 +3389,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
     :type _RequestInquiry: endpoint.RequestInquiry
     :param _RequestResponse: 
     :type _RequestResponse: endpoint.RequestResponse
-    :param _RewardRecipient: 
-    :type _RewardRecipient: endpoint.RewardRecipient
-    :param _RewardSender: 
-    :type _RewardSender: endpoint.RewardSender
     :param _ShareInviteBankInquiry: 
     :type _ShareInviteBankInquiry: endpoint.ShareInviteMonetaryAccountInquiry
     :param _ShareInviteBankResponse: 
@@ -3426,8 +3422,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
     _RequestInquiryBatch = None
     _RequestInquiry = None
     _RequestResponse = None
-    _RewardRecipient = None
-    _RewardSender = None
     _ShareInviteBankInquiry = None
     _ShareInviteBankResponse = None
     _SofortMerchantTransaction = None
@@ -3586,22 +3580,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         return self._RequestResponse
 
     @property
-    def RewardRecipient(self):
-        """
-        :rtype: endpoint.RewardRecipient
-        """
-
-        return self._RewardRecipient
-
-    @property
-    def RewardSender(self):
-        """
-        :rtype: endpoint.RewardSender
-        """
-
-        return self._RewardSender
-
-    @property
     def ShareInviteBankInquiry(self):
         """
         :rtype: endpoint.ShareInviteMonetaryAccountInquiry
@@ -3695,12 +3673,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
         if self._RequestResponse is not None:
             return self._RequestResponse
 
-        if self._RewardRecipient is not None:
-            return self._RewardRecipient
-
-        if self._RewardSender is not None:
-            return self._RewardSender
-
         if self._ShareInviteBankInquiry is not None:
             return self._ShareInviteBankInquiry
 
@@ -3775,12 +3747,6 @@ class EventObject(BunqModel, AnchorObjectInterface):
             return False
 
         if self._RequestResponse is not None:
-            return False
-
-        if self._RewardRecipient is not None:
-            return False
-
-        if self._RewardSender is not None:
             return False
 
         if self._ShareInviteBankInquiry is not None:
