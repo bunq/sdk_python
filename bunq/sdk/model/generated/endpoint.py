@@ -1133,6 +1133,212 @@ class InvoiceByUser(BunqModel):
         return converter.json_to_class(InvoiceByUser, json_str)
 
 
+class ActivityMapPlacePublic(BunqModel):
+    """
+    Public endpoint for getting the place info.
+    
+    :param _name: The name of the place.
+    :type _name: str
+    :param _public_uuid: The public uuid of the place.
+    :type _public_uuid: str
+    :param _geolocation: The geolocation of this place.
+    :type _geolocation: object_.Geolocation
+    :param _address: The address of this place.
+    :type _address: object_.Address
+    :param _phone_number: The phone number of this place.
+    :type _phone_number: str
+    :param _url_merchant: The URL to this place's merchant website.
+    :type _url_merchant: str
+    :param _url_google_maps: The URL to the place's Google maps location.
+    :type _url_google_maps: str
+    :param _all_attachment_photo: The attachments for the place's photos.
+    :type _all_attachment_photo: list[object_.AttachmentPublic]
+    :param _all_type: The google types of the place.
+    :type _all_type: list[str]
+    :param _all_opening_period: The opening periods of the place.
+    :type _all_opening_period: list[str]
+    :param _number_of_recommendation_total: The total number of recommendations.
+    :type _number_of_recommendation_total: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "activity-map-place-public/{}"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "ActivityMapPlace"
+
+    _name = None
+    _public_uuid = None
+    _geolocation = None
+    _address = None
+    _phone_number = None
+    _url_merchant = None
+    _url_google_maps = None
+    _all_attachment_photo = None
+    _all_type = None
+    _all_opening_period = None
+    _number_of_recommendation_total = None
+
+    @classmethod
+    def get(cls,  activity_map_place_public_uuid, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type activity_map_place_public_uuid: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseActivityMapPlacePublic
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(activity_map_place_public_uuid)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseActivityMapPlacePublic.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def geolocation(self):
+        """
+        :rtype: object_.Geolocation
+        """
+
+        return self._geolocation
+
+    @property
+    def address(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address
+
+    @property
+    def phone_number(self):
+        """
+        :rtype: str
+        """
+
+        return self._phone_number
+
+    @property
+    def url_merchant(self):
+        """
+        :rtype: str
+        """
+
+        return self._url_merchant
+
+    @property
+    def url_google_maps(self):
+        """
+        :rtype: str
+        """
+
+        return self._url_google_maps
+
+    @property
+    def all_attachment_photo(self):
+        """
+        :rtype: list[object_.AttachmentPublic]
+        """
+
+        return self._all_attachment_photo
+
+    @property
+    def all_type(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_type
+
+    @property
+    def all_opening_period(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_opening_period
+
+    @property
+    def number_of_recommendation_total(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_recommendation_total
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._name is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._geolocation is not None:
+            return False
+
+        if self._address is not None:
+            return False
+
+        if self._phone_number is not None:
+            return False
+
+        if self._url_merchant is not None:
+            return False
+
+        if self._url_google_maps is not None:
+            return False
+
+        if self._all_attachment_photo is not None:
+            return False
+
+        if self._all_type is not None:
+            return False
+
+        if self._all_opening_period is not None:
+            return False
+
+        if self._number_of_recommendation_total is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: ActivityMapPlacePublic
+        """
+
+        return converter.json_to_class(ActivityMapPlacePublic, json_str)
+
+
 class AdditionalTransactionInformationCategory(BunqModel):
     """
     Get the available categories.
@@ -42281,6 +42487,16 @@ class BunqResponseInvoiceByUser(BunqResponse):
     def value(self):
         """
         :rtype: InvoiceByUser
+        """
+ 
+        return super().value
+
+    
+class BunqResponseActivityMapPlacePublic(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: ActivityMapPlacePublic
         """
  
         return super().value
