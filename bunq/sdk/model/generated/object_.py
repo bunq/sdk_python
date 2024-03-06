@@ -1181,6 +1181,171 @@ class RequestInquiryReference(BunqModel):
         return converter.json_to_class(RequestInquiryReference, json_str)
 
 
+class Geolocation(BunqModel):
+    """
+    :param _latitude: The latitude for a geolocation restriction.
+    :type _latitude: float
+    :param _longitude: The longitude for a geolocation restriction.
+    :type _longitude: float
+    :param _altitude: The altitude for a geolocation restriction.
+    :type _altitude: float
+    :param _radius: The radius for a geolocation restriction.
+    :type _radius: float
+    """
+
+    _latitude = None
+    _longitude = None
+    _altitude = None
+    _radius = None
+    _latitude_field_for_request = None
+    _longitude_field_for_request = None
+    _altitude_field_for_request = None
+    _radius_field_for_request = None
+
+    def __init__(self, latitude=None, longitude=None, altitude=None, radius=None):
+        """
+        :param latitude: The latitude for a geolocation restriction.
+        :type latitude: str
+        :param longitude: The longitude for a geolocation restriction.
+        :type longitude: str
+        :param altitude: The altitude for a geolocation restriction.
+        :type altitude: str
+        :param radius: The radius for a geolocation restriction.
+        :type radius: str
+        """
+
+        self._latitude_field_for_request = latitude
+        self._longitude_field_for_request = longitude
+        self._altitude_field_for_request = altitude
+        self._radius_field_for_request = radius
+
+    @property
+    def latitude(self):
+        """
+        :rtype: float
+        """
+
+        return self._latitude
+
+    @property
+    def longitude(self):
+        """
+        :rtype: float
+        """
+
+        return self._longitude
+
+    @property
+    def altitude(self):
+        """
+        :rtype: float
+        """
+
+        return self._altitude
+
+    @property
+    def radius(self):
+        """
+        :rtype: float
+        """
+
+        return self._radius
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._latitude is not None:
+            return False
+
+        if self._longitude is not None:
+            return False
+
+        if self._altitude is not None:
+            return False
+
+        if self._radius is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Geolocation
+        """
+
+        return converter.json_to_class(Geolocation, json_str)
+
+
+class AttachmentPublic(BunqModel):
+    """
+    :param _uuid: The uuid of the attachment.
+    :type _uuid: str
+    :param _description: The description of the attachment.
+    :type _description: str
+    :param _content_type: The content type of the attachment's file.
+    :type _content_type: str
+    """
+
+    _uuid = None
+    _description = None
+    _content_type = None
+
+    @property
+    def uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._uuid
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def content_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._content_type
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._uuid is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._content_type is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: AttachmentPublic
+        """
+
+        return converter.json_to_class(AttachmentPublic, json_str)
+
+
 class Attachment(BunqModel):
     """
     :param _description: The description of the attachment.
@@ -1358,106 +1523,6 @@ class AttachmentMonetaryAccountPayment(BunqModel):
         return converter.json_to_class(AttachmentMonetaryAccountPayment, json_str)
 
 
-class Geolocation(BunqModel):
-    """
-    :param _latitude: The latitude for a geolocation restriction.
-    :type _latitude: float
-    :param _longitude: The longitude for a geolocation restriction.
-    :type _longitude: float
-    :param _altitude: The altitude for a geolocation restriction.
-    :type _altitude: float
-    :param _radius: The radius for a geolocation restriction.
-    :type _radius: float
-    """
-
-    _latitude = None
-    _longitude = None
-    _altitude = None
-    _radius = None
-    _latitude_field_for_request = None
-    _longitude_field_for_request = None
-    _altitude_field_for_request = None
-    _radius_field_for_request = None
-
-    def __init__(self, latitude=None, longitude=None, altitude=None, radius=None):
-        """
-        :param latitude: The latitude for a geolocation restriction.
-        :type latitude: str
-        :param longitude: The longitude for a geolocation restriction.
-        :type longitude: str
-        :param altitude: The altitude for a geolocation restriction.
-        :type altitude: str
-        :param radius: The radius for a geolocation restriction.
-        :type radius: str
-        """
-
-        self._latitude_field_for_request = latitude
-        self._longitude_field_for_request = longitude
-        self._altitude_field_for_request = altitude
-        self._radius_field_for_request = radius
-
-    @property
-    def latitude(self):
-        """
-        :rtype: float
-        """
-
-        return self._latitude
-
-    @property
-    def longitude(self):
-        """
-        :rtype: float
-        """
-
-        return self._longitude
-
-    @property
-    def altitude(self):
-        """
-        :rtype: float
-        """
-
-        return self._altitude
-
-    @property
-    def radius(self):
-        """
-        :rtype: float
-        """
-
-        return self._radius
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._latitude is not None:
-            return False
-
-        if self._longitude is not None:
-            return False
-
-        if self._altitude is not None:
-            return False
-
-        if self._radius is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Geolocation
-        """
-
-        return converter.json_to_class(Geolocation, json_str)
-
-
 class Error(BunqModel):
     """
     :param _error_description: The error description (in English).
@@ -1545,71 +1610,6 @@ class PaymentBatchAnchoredPayment(BunqModel):
         """
 
         return converter.json_to_class(PaymentBatchAnchoredPayment, json_str)
-
-
-class AttachmentPublic(BunqModel):
-    """
-    :param _uuid: The uuid of the attachment.
-    :type _uuid: str
-    :param _description: The description of the attachment.
-    :type _description: str
-    :param _content_type: The content type of the attachment's file.
-    :type _content_type: str
-    """
-
-    _uuid = None
-    _description = None
-    _content_type = None
-
-    @property
-    def uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._uuid
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def content_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._content_type
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._uuid is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._content_type is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: AttachmentPublic
-        """
-
-        return converter.json_to_class(AttachmentPublic, json_str)
 
 
 class BunqMeMerchantAvailable(BunqModel):
