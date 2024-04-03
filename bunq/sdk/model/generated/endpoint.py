@@ -16203,8 +16203,8 @@ class SchedulePayment(BunqModel):
     FIELD_SCHEDULE = "schedule"
 
     # Object type.
-    _OBJECT_TYPE_GET = "ScheduledPayment"
-    _OBJECT_TYPE_PUT = "ScheduledPayment"
+    _OBJECT_TYPE_GET = "SchedulePayment"
+    _OBJECT_TYPE_PUT = "SchedulePayment"
 
     _payment = None
     _schedule = None
