@@ -23816,7 +23816,7 @@ class InsightPreferenceDate(BunqModel):
         response_raw = api_client.get(endpoint_url, params, custom_headers)
 
         return BunqResponseInsightPreferenceDateList.cast_from_bunq_response(
-            cls._from_json_list(response_raw)
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
         )
 
     @property
