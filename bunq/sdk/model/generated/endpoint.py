@@ -16950,9 +16950,12 @@ class MasterCardAction(BunqModel):
     :param _cashback_payout_item: The cashback payout item for this action or
     null
     :type _cashback_payout_item: CashbackPayoutItem
-    :param _blacklist: The blacklist enabled for the merchant of this
+    :param _blacklist: DEPRECATED. The blacklist enabled for the merchant of
+    this transaction
+    :type _blacklist: UserBlocklistMasterCardMerchant
+    :param _blocklist: The blocklist enabled for the merchant of this
     transaction
-    :type _blacklist: UserBlacklistMasterCardMerchant
+    :type _blocklist: UserBlocklistMasterCardMerchant
     :param _additional_authentication_status: The status of the additional
     authentication performed (3ds) by the user for this transaction.
     :type _additional_authentication_status: str
@@ -17011,6 +17014,7 @@ class MasterCardAction(BunqModel):
     _eligible_whitelist_id = None
     _cashback_payout_item = None
     _blacklist = None
+    _blocklist = None
     _additional_authentication_status = None
     _pin_status = None
     _mastercard_action_report = None
@@ -17379,10 +17383,18 @@ class MasterCardAction(BunqModel):
     @property
     def blacklist(self):
         """
-        :rtype: UserBlacklistMasterCardMerchant
+        :rtype: UserBlocklistMasterCardMerchant
         """
 
         return self._blacklist
+
+    @property
+    def blocklist(self):
+        """
+        :rtype: UserBlocklistMasterCardMerchant
+        """
+
+        return self._blocklist
 
     @property
     def additional_authentication_status(self):
@@ -17539,6 +17551,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._blacklist is not None:
+            return False
+
+        if self._blocklist is not None:
             return False
 
         if self._additional_authentication_status is not None:
@@ -18025,29 +18040,29 @@ class CashbackPayoutItem(BunqModel):
         return converter.json_to_class(CashbackPayoutItem, json_str)
 
 
-class UserBlacklistMasterCardMerchant(BunqModel):
+class UserBlocklistMasterCardMerchant(BunqModel):
     """
-    Fetch blacklists of merchants created by user
+    Fetch blocklists of merchants created by user
     
     :param _merchant_name: The name of the merchant.
     :type _merchant_name: str
-    :param _merchant_id: The blacklisted merchant.
+    :param _merchant_id: The blocklisted merchant.
     :type _merchant_id: str
-    :param _merchant_identifier: Identifier of the merchant we are blacklisting.
+    :param _merchant_identifier: Identifier of the merchant we are blocklisting.
     :type _merchant_identifier: str
-    :param _mastercard_merchant_id: The blacklisted merchant.
+    :param _mastercard_merchant_id: The blocklisted merchant.
     :type _mastercard_merchant_id: str
     :param _external_merchant_id: Externally provided merchant identification.
     :type _external_merchant_id: str
-    :param _id_: The id of the blacklist.
+    :param _id_: The id of the blocklist.
     :type _id_: int
     :param _created: The timestamp of the object's creation.
     :type _created: str
     :param _updated: The timestamp of the object's last update.
     :type _updated: str
-    :param _status: The status of the the blacklist.
+    :param _status: The status of the the blocklist.
     :type _status: str
-    :param _merchant_hash: Hash of the merchant we are blacklisting.
+    :param _merchant_hash: Hash of the merchant we are blocklisting.
     :type _merchant_hash: str
     :param _merchant_avatar: 
     :type _merchant_avatar: Avatar
@@ -18085,7 +18100,7 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         :param merchant_id: The merchant id.
         :type merchant_id: str
         :param merchant_identifier: Optional identifier of the merchant to
-        blacklist.
+        blocklist.
         :type merchant_identifier: str
         :param mastercard_merchant_id: Master card merchant id.
         :type mastercard_merchant_id: str
@@ -18234,10 +18249,10 @@ class UserBlacklistMasterCardMerchant(BunqModel):
         """
         :type json_str: str
         
-        :rtype: UserBlacklistMasterCardMerchant
+        :rtype: UserBlocklistMasterCardMerchant
         """
 
-        return converter.json_to_class(UserBlacklistMasterCardMerchant, json_str)
+        return converter.json_to_class(UserBlocklistMasterCardMerchant, json_str)
 
 
 class MasterCardActionReport(BunqModel):
