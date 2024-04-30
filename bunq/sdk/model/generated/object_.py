@@ -2753,8 +2753,11 @@ class TaxResident(BunqModel):
     :param _status: The status of the tax number. Either CONFIRMED or
     UNCONFIRMED.
     :type _status: str
+    :param _id_: The id of the tax resident.
+    :type _id_: int
     """
 
+    _id_ = None
     _country = None
     _tax_number = None
     _status = None
@@ -2776,6 +2779,14 @@ class TaxResident(BunqModel):
         self._country_field_for_request = country
         self._tax_number_field_for_request = tax_number
         self._status_field_for_request = status
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
 
     @property
     def country(self):
@@ -2805,6 +2816,9 @@ class TaxResident(BunqModel):
         """
         :rtype: bool
         """
+
+        if self._id_ is not None:
+            return False
 
         if self._country is not None:
             return False
