@@ -9684,7 +9684,8 @@ class MonetaryAccountExternal(BunqModel):
     :param _currency: The currency of the MonetaryAccountExternal as an ISO 4217
     formatted currency code.
     :type _currency: str
-    :param _service: The service the MonetaryAccountExternal is connected with.
+    :param _service: The external service the Monetary Account is connected
+    with.
     :type _service: str
     :param _description: The description of the MonetaryAccountExternal.
     Defaults to 'bunq account'.
@@ -9783,6 +9784,7 @@ class MonetaryAccountExternal(BunqModel):
     _display_name = None
     _setting = None
     _all_auto_save_id = None
+    _service = None
     _currency_field_for_request = None
     _service_field_for_request = None
     _description_field_for_request = None
@@ -10211,6 +10213,14 @@ cls.FIELD_SETTING : setting
 
         return self._all_auto_save_id
 
+    @property
+    def service(self):
+        """
+        :rtype: str
+        """
+
+        return self._service
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -10274,6 +10284,9 @@ cls.FIELD_SETTING : setting
             return False
 
         if self._all_auto_save_id is not None:
+            return False
+
+        if self._service is not None:
             return False
 
         return True
