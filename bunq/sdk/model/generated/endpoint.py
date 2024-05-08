@@ -31949,6 +31949,1084 @@ cls.FIELD_CONTENT : content
         return converter.json_to_class(NoteTextSchedulePayment, json_str)
 
 
+class NoteAttachmentScheduleRequestBatch(BunqModel):
+    """
+    Used to manage attachment notes for a scheduled request.
+    
+    :param _description: Optional description of the attachment.
+    :type _description: str
+    :param _attachment_id: The reference to the uploaded file to attach to this
+    note.
+    :type _attachment_id: int
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    :param _attachment: The attachment attached to the note.
+    :type _attachment: list[object_.AttachmentMonetaryAccountPayment]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-attachment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-attachment/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-attachment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-attachment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-attachment/{}"
+
+    # Field constants.
+    FIELD_DESCRIPTION = "description"
+    FIELD_ATTACHMENT_ID = "attachment_id"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteAttachment"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _description = None
+    _attachment = None
+    _description_field_for_request = None
+    _attachment_id_field_for_request = None
+
+    def __init__(self, attachment_id, description=None):
+        """
+        :param attachment_id: The reference to the uploaded file to attach to this
+        note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        """
+
+        self._attachment_id_field_for_request = attachment_id
+        self._description_field_for_request = description
+
+    @classmethod
+    def create(cls,schedule_request_inquiry_batch_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :param attachment_id: The reference to the uploaded file to attach to
+        this note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_ATTACHMENT_ID : attachment_id
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, schedule_request_inquiry_batch_id,  note_attachment_schedule_request_batch_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type note_attachment_schedule_request_batch_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id, note_attachment_schedule_request_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, schedule_request_inquiry_batch_id,  note_attachment_schedule_request_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type note_attachment_schedule_request_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id, note_attachment_schedule_request_batch_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,schedule_request_inquiry_batch_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Manage the notes for a scheduled request.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentScheduleRequestBatchList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteAttachmentScheduleRequestBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, schedule_request_inquiry_batch_id,  note_attachment_schedule_request_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type note_attachment_schedule_request_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentScheduleRequestBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id, note_attachment_schedule_request_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteAttachmentScheduleRequestBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.AttachmentMonetaryAccountPayment]
+        """
+
+        return self._attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteAttachmentScheduleRequestBatch
+        """
+
+        return converter.json_to_class(NoteAttachmentScheduleRequestBatch, json_str)
+
+
+class NoteTextScheduleRequestBatch(BunqModel):
+    """
+    Used to manage text notes for a scheduled request.
+    
+    :param _content: The content of the note.
+    :type _content: str
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-text"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-text/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-text/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-text"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-request-inquiry-batch/{}/note-text/{}"
+
+    # Field constants.
+    FIELD_CONTENT = "content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteText"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _content = None
+    _content_field_for_request = None
+
+    def __init__(self, content=None):
+        """
+        :param content: The content of the note.
+        :type content: str
+        """
+
+        self._content_field_for_request = content
+
+    @classmethod
+    def create(cls,schedule_request_inquiry_batch_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, schedule_request_inquiry_batch_id,  note_text_schedule_request_batch_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type note_text_schedule_request_batch_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id, note_text_schedule_request_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, schedule_request_inquiry_batch_id,  note_text_schedule_request_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type note_text_schedule_request_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id, note_text_schedule_request_batch_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,schedule_request_inquiry_batch_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Manage the notes for a given schedule request.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextScheduleRequestBatchList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteTextScheduleRequestBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, schedule_request_inquiry_batch_id,  note_text_schedule_request_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_batch_id: int
+        :type note_text_schedule_request_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextScheduleRequestBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_batch_id, note_text_schedule_request_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteTextScheduleRequestBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def content(self):
+        """
+        :rtype: str
+        """
+
+        return self._content
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._content is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteTextScheduleRequestBatch
+        """
+
+        return converter.json_to_class(NoteTextScheduleRequestBatch, json_str)
+
+
+class NoteAttachmentScheduleRequest(BunqModel):
+    """
+    Used to manage attachment notes for a scheduled request.
+    
+    :param _description: Optional description of the attachment.
+    :type _description: str
+    :param _attachment_id: The reference to the uploaded file to attach to this
+    note.
+    :type _attachment_id: int
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    :param _attachment: The attachment attached to the note.
+    :type _attachment: list[object_.AttachmentMonetaryAccountPayment]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-attachment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-attachment/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-attachment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-attachment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-attachment/{}"
+
+    # Field constants.
+    FIELD_DESCRIPTION = "description"
+    FIELD_ATTACHMENT_ID = "attachment_id"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteAttachment"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _description = None
+    _attachment = None
+    _description_field_for_request = None
+    _attachment_id_field_for_request = None
+
+    def __init__(self, attachment_id, description=None):
+        """
+        :param attachment_id: The reference to the uploaded file to attach to this
+        note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        """
+
+        self._attachment_id_field_for_request = attachment_id
+        self._description_field_for_request = description
+
+    @classmethod
+    def create(cls,schedule_request_inquiry_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :param attachment_id: The reference to the uploaded file to attach to
+        this note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_ATTACHMENT_ID : attachment_id
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, schedule_request_inquiry_id,  note_attachment_schedule_request_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type note_attachment_schedule_request_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id, note_attachment_schedule_request_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, schedule_request_inquiry_id,  note_attachment_schedule_request_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type note_attachment_schedule_request_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id, note_attachment_schedule_request_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,schedule_request_inquiry_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Manage the notes for a scheduled request.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentScheduleRequestList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteAttachmentScheduleRequestList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, schedule_request_inquiry_id,  note_attachment_schedule_request_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type note_attachment_schedule_request_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentScheduleRequest
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id, note_attachment_schedule_request_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteAttachmentScheduleRequest.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.AttachmentMonetaryAccountPayment]
+        """
+
+        return self._attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteAttachmentScheduleRequest
+        """
+
+        return converter.json_to_class(NoteAttachmentScheduleRequest, json_str)
+
+
+class NoteTextScheduleRequest(BunqModel):
+    """
+    Used to manage text notes for a scheduled request.
+    
+    :param _content: The content of the note.
+    :type _content: str
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-text"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-text/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-text/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-text"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/schedule-request-inquiry/{}/note-text/{}"
+
+    # Field constants.
+    FIELD_CONTENT = "content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteText"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _content = None
+    _content_field_for_request = None
+
+    def __init__(self, content=None):
+        """
+        :param content: The content of the note.
+        :type content: str
+        """
+
+        self._content_field_for_request = content
+
+    @classmethod
+    def create(cls,schedule_request_inquiry_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, schedule_request_inquiry_id,  note_text_schedule_request_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type note_text_schedule_request_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id, note_text_schedule_request_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, schedule_request_inquiry_id,  note_text_schedule_request_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type note_text_schedule_request_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id, note_text_schedule_request_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,schedule_request_inquiry_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Manage the notes for a given schedule request.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextScheduleRequestList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteTextScheduleRequestList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, schedule_request_inquiry_id,  note_text_schedule_request_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type schedule_request_inquiry_id: int
+        :type note_text_schedule_request_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextScheduleRequest
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), schedule_request_inquiry_id, note_text_schedule_request_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteTextScheduleRequest.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def content(self):
+        """
+        :rtype: str
+        """
+
+        return self._content
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._content is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteTextScheduleRequest
+        """
+
+        return converter.json_to_class(NoteTextScheduleRequest, json_str)
+
+
 class NoteAttachmentSofortMerchantTransaction(BunqModel):
     """
     Used to manage attachment notes.
@@ -44173,6 +45251,86 @@ class BunqResponseNoteTextSchedulePayment(BunqResponse):
     def value(self):
         """
         :rtype: NoteTextSchedulePayment
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentScheduleRequestBatchList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteAttachmentScheduleRequestBatch]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentScheduleRequestBatch(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteAttachmentScheduleRequestBatch
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextScheduleRequestBatchList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteTextScheduleRequestBatch]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextScheduleRequestBatch(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteTextScheduleRequestBatch
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentScheduleRequestList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteAttachmentScheduleRequest]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentScheduleRequest(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteAttachmentScheduleRequest
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextScheduleRequestList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteTextScheduleRequest]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextScheduleRequest(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteTextScheduleRequest
         """
  
         return super().value
