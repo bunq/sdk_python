@@ -10343,6 +10343,12 @@ class MonetaryAccountInvestment(BunqModel):
     :type _setting: object_.MonetaryAccountSetting
     :param _birdee_investment_portfolio: The Birdee investment portfolio.
     :type _birdee_investment_portfolio: BirdeeInvestmentPortfolio
+    :param _monetary_account_deposit_initial_id: ID of the MA to be used for the
+    initial deposit to the investment account.
+    :type _monetary_account_deposit_initial_id: int
+    :param _amount_deposit_initial: The amount to be transferred to the
+    investment account as the initial deposit.
+    :type _amount_deposit_initial: object_.Amount
     :param _id_: The id of the MonetaryAccountInvestment.
     :type _id_: int
     :param _created: The timestamp of the MonetaryAccountInvestment's creation.
@@ -10380,6 +10386,8 @@ class MonetaryAccountInvestment(BunqModel):
     FIELD_DISPLAY_NAME = "display_name"
     FIELD_SETTING = "setting"
     FIELD_BIRDEE_INVESTMENT_PORTFOLIO = "birdee_investment_portfolio"
+    FIELD_MONETARY_ACCOUNT_DEPOSIT_INITIAL_ID = "monetary_account_deposit_initial_id"
+    FIELD_AMOUNT_DEPOSIT_INITIAL = "amount_deposit_initial"
 
 
     _id_ = None
@@ -10413,8 +10421,10 @@ class MonetaryAccountInvestment(BunqModel):
     _display_name_field_for_request = None
     _setting_field_for_request = None
     _birdee_investment_portfolio_field_for_request = None
+    _monetary_account_deposit_initial_id_field_for_request = None
+    _amount_deposit_initial_field_for_request = None
 
-    def __init__(self, currency, provider, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, birdee_investment_portfolio=None):
+    def __init__(self, currency, provider, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, birdee_investment_portfolio=None, monetary_account_deposit_initial_id=None, amount_deposit_initial=None):
         """
         :param currency: The currency of the MonetaryAccountInvestment as an ISO
         4217 formatted currency code.
@@ -10458,6 +10468,12 @@ class MonetaryAccountInvestment(BunqModel):
         :type setting: object_.MonetaryAccountSetting
         :param birdee_investment_portfolio: The Birdee investment portfolio.
         :type birdee_investment_portfolio: BirdeeInvestmentPortfolio
+        :param monetary_account_deposit_initial_id: ID of the MA to be used for the
+        initial deposit to the investment account.
+        :type monetary_account_deposit_initial_id: int
+        :param amount_deposit_initial: The amount to be transferred to the
+        investment account as the initial deposit.
+        :type amount_deposit_initial: object_.Amount
         """
 
         self._currency_field_for_request = currency
@@ -10472,6 +10488,8 @@ class MonetaryAccountInvestment(BunqModel):
         self._display_name_field_for_request = display_name
         self._setting_field_for_request = setting
         self._birdee_investment_portfolio_field_for_request = birdee_investment_portfolio
+        self._monetary_account_deposit_initial_id_field_for_request = monetary_account_deposit_initial_id
+        self._amount_deposit_initial_field_for_request = amount_deposit_initial
 
 
 
