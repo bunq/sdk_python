@@ -9740,6 +9740,9 @@ class MonetaryAccountExternal(BunqModel):
     :type _monetary_account_profile: MonetaryAccountProfile
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
+    :param _open_banking_account: The open banking account for information about
+    the external account.
+    :type _open_banking_account: OpenBankingAccount
     """
 
     # Endpoint constants.
@@ -9785,6 +9788,7 @@ class MonetaryAccountExternal(BunqModel):
     _setting = None
     _all_auto_save_id = None
     _service = None
+    _open_banking_account = None
     _currency_field_for_request = None
     _service_field_for_request = None
     _description_field_for_request = None
@@ -10221,6 +10225,14 @@ cls.FIELD_SETTING : setting
 
         return self._service
 
+    @property
+    def open_banking_account(self):
+        """
+        :rtype: OpenBankingAccount
+        """
+
+        return self._open_banking_account
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -10289,6 +10301,9 @@ cls.FIELD_SETTING : setting
         if self._service is not None:
             return False
 
+        if self._open_banking_account is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -10300,6 +10315,245 @@ cls.FIELD_SETTING : setting
         """
 
         return converter.json_to_class(MonetaryAccountExternal, json_str)
+
+
+class OpenBankingAccount(BunqModel):
+    """
+    Post processor for open banking account to be returned in the monetary
+    account external post processor.
+    
+    :param _iban: The iban of this account.
+    :type _iban: str
+    :param _time_synced_last: The timestamp of the last time the account was
+    synced with our open banking partner.
+    :type _time_synced_last: str
+    :param _provider_bank: The bank provider the account comes from.
+    :type _provider_bank: OpenBankingProviderBank
+    """
+
+    _iban = None
+    _time_synced_last = None
+    _provider_bank = None
+
+    @property
+    def iban(self):
+        """
+        :rtype: str
+        """
+
+        return self._iban
+
+    @property
+    def time_synced_last(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_synced_last
+
+    @property
+    def provider_bank(self):
+        """
+        :rtype: OpenBankingProviderBank
+        """
+
+        return self._provider_bank
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._iban is not None:
+            return False
+
+        if self._time_synced_last is not None:
+            return False
+
+        if self._provider_bank is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: OpenBankingAccount
+        """
+
+        return converter.json_to_class(OpenBankingAccount, json_str)
+
+
+class OpenBankingProviderBank(BunqModel):
+    """
+    Lists open banking provider banks.
+    
+    :param _status: Provider's status.
+    :type _status: str
+    :param _name: The name of the bank provider.
+    :type _name: str
+    :param _aiia_provider_id: The external identifier for this bank.
+    :type _aiia_provider_id: str
+    :param _country: Country of provider
+    :type _country: str
+    :param _all_payment_method_allowed_sepa: All payment methods allowed for
+    Sepa payments.
+    :type _all_payment_method_allowed_sepa: list[str]
+    :param _all_payment_method_allowed_domestic: All payment methods allowed for
+    Domestic payments.
+    :type _all_payment_method_allowed_domestic: list[str]
+    :param _is_audience_business_supported: Whether this provider supports
+    business banking.
+    :type _is_audience_business_supported: bool
+    :param _is_audience_private_supported: Whether this provider supports
+    brivate banking.
+    :type _is_audience_private_supported: bool
+    :param _avatar: The avatar of the bank.
+    :type _avatar: object_.Avatar
+    """
+
+    # Field constants.
+    FIELD_STATUS = "status"
+
+
+    _name = None
+    _status = None
+    _aiia_provider_id = None
+    _country = None
+    _all_payment_method_allowed_sepa = None
+    _all_payment_method_allowed_domestic = None
+    _is_audience_business_supported = None
+    _is_audience_private_supported = None
+    _avatar = None
+    _status_field_for_request = None
+
+    def __init__(self, status=None):
+        """
+        :param status: Provider's status.
+        :type status: str
+        """
+
+        self._status_field_for_request = status
+
+
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def aiia_provider_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._aiia_provider_id
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
+    def all_payment_method_allowed_sepa(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_payment_method_allowed_sepa
+
+    @property
+    def all_payment_method_allowed_domestic(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_payment_method_allowed_domestic
+
+    @property
+    def is_audience_business_supported(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_audience_business_supported
+
+    @property
+    def is_audience_private_supported(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_audience_private_supported
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._name is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._aiia_provider_id is not None:
+            return False
+
+        if self._country is not None:
+            return False
+
+        if self._all_payment_method_allowed_sepa is not None:
+            return False
+
+        if self._all_payment_method_allowed_domestic is not None:
+            return False
+
+        if self._is_audience_business_supported is not None:
+            return False
+
+        if self._is_audience_private_supported is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: OpenBankingProviderBank
+        """
+
+        return converter.json_to_class(OpenBankingProviderBank, json_str)
 
 
 class MonetaryAccountInvestment(BunqModel):
