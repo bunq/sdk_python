@@ -10322,6 +10322,8 @@ class OpenBankingAccount(BunqModel):
     Post processor for open banking account to be returned in the monetary
     account external post processor.
     
+    :param _status: The status of this account.
+    :type _status: str
     :param _iban: The iban of this account.
     :type _iban: str
     :param _time_synced_last: The timestamp of the last time the account was
@@ -10329,11 +10331,27 @@ class OpenBankingAccount(BunqModel):
     :type _time_synced_last: str
     :param _provider_bank: The bank provider the account comes from.
     :type _provider_bank: OpenBankingProviderBank
+    :param _balance_booked: The booked balance of the account.
+    :type _balance_booked: object_.Amount
+    :param _balance_available: The available balance of the account, if provided
+    by the other bank.
+    :type _balance_available: object_.Amount
     """
 
+    _status = None
     _iban = None
     _time_synced_last = None
     _provider_bank = None
+    _balance_booked = None
+    _balance_available = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
 
     @property
     def iban(self):
@@ -10359,10 +10377,29 @@ class OpenBankingAccount(BunqModel):
 
         return self._provider_bank
 
+    @property
+    def balance_booked(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_booked
+
+    @property
+    def balance_available(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_available
+
     def is_all_field_none(self):
         """
         :rtype: bool
         """
+
+        if self._status is not None:
+            return False
 
         if self._iban is not None:
             return False
@@ -10371,6 +10408,12 @@ class OpenBankingAccount(BunqModel):
             return False
 
         if self._provider_bank is not None:
+            return False
+
+        if self._balance_booked is not None:
+            return False
+
+        if self._balance_available is not None:
             return False
 
         return True
