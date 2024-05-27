@@ -1462,6 +1462,57 @@ class AttachmentUrl(BunqModel):
         return converter.json_to_class(AttachmentUrl, json_str)
 
 
+class PaymentArrivalExpected(BunqModel):
+    """
+    :param _status: Indicates when we expect the payment to arrive.
+    :type _status: str
+    :param _time: The time when the payment is expected to arrive.
+    :type _time: str
+    """
+
+    _status = None
+    _time = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def time(self):
+        """
+        :rtype: str
+        """
+
+        return self._time
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._time is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentArrivalExpected
+        """
+
+        return converter.json_to_class(PaymentArrivalExpected, json_str)
+
+
 class AttachmentMonetaryAccountPayment(BunqModel):
     """
     :param _id_: The id of the attached Attachment.
