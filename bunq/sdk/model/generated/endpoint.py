@@ -2629,6 +2629,9 @@ class Payment(BunqModel):
     :param _sub_type: The sub-type of the Payment, can be PAYMENT, WITHDRAWAL,
     REVERSAL, REQUEST, BILLING, SCT, SDD or NLO.
     :type _sub_type: str
+    :param _payment_arrival_expected: Information about the expected arrival of
+    the payment.
+    :type _payment_arrival_expected: object_.PaymentArrivalExpected
     :param _bunqto_status: The status of the bunq.to payment.
     :type _bunqto_status: str
     :param _bunqto_sub_status: The sub status of the bunq.to payment.
@@ -2692,6 +2695,7 @@ class Payment(BunqModel):
     _description = None
     _type_ = None
     _sub_type = None
+    _payment_arrival_expected = None
     _bunqto_status = None
     _bunqto_sub_status = None
     _bunqto_share_url = None
@@ -2933,6 +2937,14 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
         return self._sub_type
 
     @property
+    def payment_arrival_expected(self):
+        """
+        :rtype: object_.PaymentArrivalExpected
+        """
+
+        return self._payment_arrival_expected
+
+    @property
     def bunqto_status(self):
         """
         :rtype: str
@@ -3085,6 +3097,9 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
             return False
 
         if self._sub_type is not None:
+            return False
+
+        if self._payment_arrival_expected is not None:
             return False
 
         if self._bunqto_status is not None:
