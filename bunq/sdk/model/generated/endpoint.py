@@ -28478,6 +28478,541 @@ cls.FIELD_CONTENT : content
         return converter.json_to_class(NoteTextPaymentBatch, json_str)
 
 
+class NoteAttachmentPaymentDelayed(BunqModel):
+    """
+    Used to manage attachment notes.
+    
+    :param _description: Optional description of the attachment.
+    :type _description: str
+    :param _attachment_id: The reference to the uploaded file to attach to this
+    note.
+    :type _attachment_id: int
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    :param _attachment: The attachment attached to the note.
+    :type _attachment: list[object_.AttachmentMonetaryAccountPayment]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-delayed/{}/note-attachment"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-delayed/{}/note-attachment/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/payment-delayed/{}/note-attachment/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-delayed/{}/note-attachment"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-delayed/{}/note-attachment/{}"
+
+    # Field constants.
+    FIELD_DESCRIPTION = "description"
+    FIELD_ATTACHMENT_ID = "attachment_id"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteAttachment"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _description = None
+    _attachment = None
+    _description_field_for_request = None
+    _attachment_id_field_for_request = None
+
+    def __init__(self, attachment_id, description=None):
+        """
+        :param attachment_id: The reference to the uploaded file to attach to this
+        note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        """
+
+        self._attachment_id_field_for_request = attachment_id
+        self._description_field_for_request = description
+
+    @classmethod
+    def create(cls,payment_delayed_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :param attachment_id: The reference to the uploaded file to attach to
+        this note.
+        :type attachment_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_ATTACHMENT_ID : attachment_id
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, payment_delayed_id,  note_attachment_payment_delayed_id, monetary_account_id=None, description=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type note_attachment_payment_delayed_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id, note_attachment_payment_delayed_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, payment_delayed_id,  note_attachment_payment_delayed_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type note_attachment_payment_delayed_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id, note_attachment_payment_delayed_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,payment_delayed_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentPaymentDelayedList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteAttachmentPaymentDelayedList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, payment_delayed_id,  note_attachment_payment_delayed_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type note_attachment_payment_delayed_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteAttachmentPaymentDelayed
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id, note_attachment_payment_delayed_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteAttachmentPaymentDelayed.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def attachment(self):
+        """
+        :rtype: list[object_.AttachmentMonetaryAccountPayment]
+        """
+
+        return self._attachment
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteAttachmentPaymentDelayed
+        """
+
+        return converter.json_to_class(NoteAttachmentPaymentDelayed, json_str)
+
+
+class NoteTextPaymentDelayed(BunqModel):
+    """
+    Used to manage text notes.
+    
+    :param _content: The content of the note.
+    :type _content: str
+    :param _id_: The id of the note.
+    :type _id_: int
+    :param _created: The timestamp of the note's creation.
+    :type _created: str
+    :param _updated: The timestamp of the note's last update.
+    :type _updated: str
+    :param _label_user_creator: The label of the user who created this note.
+    :type _label_user_creator: object_.LabelUser
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-delayed/{}/note-text"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-delayed/{}/note-text/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/monetary-account/{}/payment-delayed/{}/note-text/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-delayed/{}/note-text"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-delayed/{}/note-text/{}"
+
+    # Field constants.
+    FIELD_CONTENT = "content"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "NoteText"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _label_user_creator = None
+    _content = None
+    _content_field_for_request = None
+
+    def __init__(self, content=None):
+        """
+        :param content: The content of the note.
+        :type content: str
+        """
+
+        self._content_field_for_request = content
+
+    @classmethod
+    def create(cls,payment_delayed_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, payment_delayed_id,  note_text_payment_delayed_id, monetary_account_id=None, content=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type note_text_payment_delayed_id: int
+        :param content: The content of the note.
+        :type content: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_CONTENT : content
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id, note_text_payment_delayed_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, payment_delayed_id,  note_text_payment_delayed_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type note_text_payment_delayed_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id, note_text_payment_delayed_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @classmethod
+    def list(cls,payment_delayed_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextPaymentDelayedList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseNoteTextPaymentDelayedList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, payment_delayed_id,  note_text_payment_delayed_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type note_text_payment_delayed_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNoteTextPaymentDelayed
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id, note_text_payment_delayed_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseNoteTextPaymentDelayed.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def label_user_creator(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user_creator
+
+    @property
+    def content(self):
+        """
+        :rtype: str
+        """
+
+        return self._content
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._label_user_creator is not None:
+            return False
+
+        if self._content is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: NoteTextPaymentDelayed
+        """
+
+        return converter.json_to_class(NoteTextPaymentDelayed, json_str)
+
+
 class NoteAttachmentPayment(BunqModel):
     """
     Used to manage attachment notes.
@@ -37424,6 +37959,227 @@ class PaymentAutoAllocateUser(BunqModel, AnchorObjectInterface):
         return converter.json_to_class(PaymentAutoAllocateUser, json_str)
 
 
+class PaymentDelayed(BunqModel, AnchorObjectInterface):
+    """
+    Payments that are not processed yet.
+    
+    :param _PaymentDelayedIncoming: 
+    :type _PaymentDelayedIncoming: PaymentDelayedIncoming
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-delayed/{}"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentDelayed"
+
+    _PaymentDelayedIncoming = None
+
+    @classmethod
+    def get(cls,  payment_delayed_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_delayed_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentDelayed
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_delayed_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentDelayed.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
+
+    @property
+    def PaymentDelayedIncoming(self):
+        """
+        :rtype: PaymentDelayedIncoming
+        """
+
+        return self._PaymentDelayedIncoming
+    def get_referenced_object(self):
+        """
+        :rtype: BunqModel
+        :raise: BunqException
+        """
+
+        if self._PaymentDelayedIncoming is not None:
+            return self._PaymentDelayedIncoming
+
+        raise BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._PaymentDelayedIncoming is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentDelayed
+        """
+
+        return converter.json_to_class(PaymentDelayed, json_str)
+
+
+class PaymentDelayedIncoming(BunqModel):
+    """
+    Payments that are not processed yet.
+    
+    :param _status: The status of the delayed payment.
+    :type _status: str
+    :param _monetary_account_id: The id of the monetary account.
+    :type _monetary_account_id: int
+    :param _amount: The amount of the payment.
+    :type _amount: object_.Amount
+    :param _alias: The LabelMonetaryAccount containing the public information of
+    'this' (party) side of the payment.
+    :type _alias: object_.MonetaryAccountReference
+    :param _counterparty_alias: The LabelMonetaryAccount containing the public
+    information of the other (counterparty) side of the payment.
+    :type _counterparty_alias: object_.MonetaryAccountReference
+    :param _description: The description of the payment.
+    :type _description: str
+    :param _payment_arrival_expected: Information about the expected arrival of
+    the payment.
+    :type _payment_arrival_expected: object_.PaymentArrivalExpected
+    :param _payment_result: The resulting payment, only when it’s successful.
+    :type _payment_result: Payment
+    """
+
+    _status = None
+    _monetary_account_id = None
+    _amount = None
+    _alias = None
+    _counterparty_alias = None
+    _description = None
+    _payment_arrival_expected = None
+    _payment_result = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._alias
+
+    @property
+    def counterparty_alias(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counterparty_alias
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def payment_arrival_expected(self):
+        """
+        :rtype: object_.PaymentArrivalExpected
+        """
+
+        return self._payment_arrival_expected
+
+    @property
+    def payment_result(self):
+        """
+        :rtype: Payment
+        """
+
+        return self._payment_result
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._counterparty_alias is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._payment_arrival_expected is not None:
+            return False
+
+        if self._payment_result is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentDelayedIncoming
+        """
+
+        return converter.json_to_class(PaymentDelayedIncoming, json_str)
+
+
 class PaymentServiceProviderCredential(BunqModel):
     """
     Register a Payment Service Provider and provide credentials
@@ -45288,6 +46044,46 @@ class BunqResponseNoteTextPaymentBatch(BunqResponse):
         return super().value
 
     
+class BunqResponseNoteAttachmentPaymentDelayedList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteAttachmentPaymentDelayed]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteAttachmentPaymentDelayed(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteAttachmentPaymentDelayed
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextPaymentDelayedList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[NoteTextPaymentDelayed]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNoteTextPaymentDelayed(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: NoteTextPaymentDelayed
+        """
+ 
+        return super().value
+
+    
 class BunqResponseNoteAttachmentPaymentList(BunqResponse):
     @property
     def value(self):
@@ -45913,6 +46709,16 @@ class BunqResponsePaymentAutoAllocateUserList(BunqResponse):
     def value(self):
         """
         :rtype: list[PaymentAutoAllocateUser]
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentDelayed(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentDelayed
         """
  
         return super().value
