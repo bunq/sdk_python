@@ -10448,8 +10448,12 @@ class OpenBankingProviderBank(BunqModel):
     """
     Lists open banking provider banks.
     
-    :param _status: Provider's status.
-    :type _status: str
+    :param _account_information_service_status: Whether we support Open Banking
+    budgeting using the bank provider.
+    :type _account_information_service_status: str
+    :param _payment_information_service_status: Whether we support top ups using
+    the bank provider.
+    :type _payment_information_service_status: str
     :param _name: The name of the bank provider.
     :type _name: str
     :param _aiia_provider_id: The external identifier for this bank.
@@ -10462,38 +10466,46 @@ class OpenBankingProviderBank(BunqModel):
     :param _all_payment_method_allowed_domestic: All payment methods allowed for
     Domestic payments.
     :type _all_payment_method_allowed_domestic: list[str]
-    :param _is_audience_business_supported: Whether this provider supports
-    business banking.
-    :type _is_audience_business_supported: bool
-    :param _is_audience_private_supported: Whether this provider supports
-    brivate banking.
-    :type _is_audience_private_supported: bool
+    :param _audience_business_status: Whether business banking is supported by
+    the provider.
+    :type _audience_business_status: bool
+    :param _audience_private_status: Whether personal banking is supported by
+    the provider.
+    :type _audience_private_status: bool
     :param _avatar: The avatar of the bank.
     :type _avatar: object_.Avatar
     """
 
     # Field constants.
-    FIELD_STATUS = "status"
+    FIELD_ACCOUNT_INFORMATION_SERVICE_STATUS = "account_information_service_status"
+    FIELD_PAYMENT_INFORMATION_SERVICE_STATUS = "payment_information_service_status"
 
 
     _name = None
-    _status = None
+    _account_information_service_status = None
+    _payment_information_service_status = None
     _aiia_provider_id = None
     _country = None
     _all_payment_method_allowed_sepa = None
     _all_payment_method_allowed_domestic = None
-    _is_audience_business_supported = None
-    _is_audience_private_supported = None
+    _audience_business_status = None
+    _audience_private_status = None
     _avatar = None
-    _status_field_for_request = None
+    _account_information_service_status_field_for_request = None
+    _payment_information_service_status_field_for_request = None
 
-    def __init__(self, status=None):
+    def __init__(self, account_information_service_status=None, payment_information_service_status=None):
         """
-        :param status: Provider's status.
-        :type status: str
+        :param account_information_service_status: Whether we want to activate the
+        account information service for the bank provider.
+        :type account_information_service_status: str
+        :param payment_information_service_status: Whether we want to activate the
+        payment information service for the bank provider.
+        :type payment_information_service_status: str
         """
 
-        self._status_field_for_request = status
+        self._account_information_service_status_field_for_request = account_information_service_status
+        self._payment_information_service_status_field_for_request = payment_information_service_status
 
 
 
@@ -10506,12 +10518,20 @@ class OpenBankingProviderBank(BunqModel):
         return self._name
 
     @property
-    def status(self):
+    def account_information_service_status(self):
         """
         :rtype: str
         """
 
-        return self._status
+        return self._account_information_service_status
+
+    @property
+    def payment_information_service_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._payment_information_service_status
 
     @property
     def aiia_provider_id(self):
@@ -10546,20 +10566,20 @@ class OpenBankingProviderBank(BunqModel):
         return self._all_payment_method_allowed_domestic
 
     @property
-    def is_audience_business_supported(self):
+    def audience_business_status(self):
         """
         :rtype: bool
         """
 
-        return self._is_audience_business_supported
+        return self._audience_business_status
 
     @property
-    def is_audience_private_supported(self):
+    def audience_private_status(self):
         """
         :rtype: bool
         """
 
-        return self._is_audience_private_supported
+        return self._audience_private_status
 
     @property
     def avatar(self):
@@ -10577,7 +10597,10 @@ class OpenBankingProviderBank(BunqModel):
         if self._name is not None:
             return False
 
-        if self._status is not None:
+        if self._account_information_service_status is not None:
+            return False
+
+        if self._payment_information_service_status is not None:
             return False
 
         if self._aiia_provider_id is not None:
@@ -10592,10 +10615,10 @@ class OpenBankingProviderBank(BunqModel):
         if self._all_payment_method_allowed_domestic is not None:
             return False
 
-        if self._is_audience_business_supported is not None:
+        if self._audience_business_status is not None:
             return False
 
-        if self._is_audience_private_supported is not None:
+        if self._audience_private_status is not None:
             return False
 
         if self._avatar is not None:
