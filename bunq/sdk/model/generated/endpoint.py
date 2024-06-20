@@ -42821,6 +42821,9 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     :type _counterparty_alias: object_.MonetaryAccountReference
     :param _event_id: The ID of the latest event for the identity check.
     :type _event_id: int
+    :param _card_id: The ID of the card used for the authentication request of
+    the identity check.
+    :type _card_id: int
     """
 
     # Endpoint constants.
@@ -42842,6 +42845,7 @@ class MasterCardIdentityCheckChallengeRequestUser(BunqModel):
     _url_merchant_app = None
     _counterparty_alias = None
     _event_id = None
+    _card_id = None
     _status_field_for_request = None
 
     def __init__(self, status=None):
@@ -42979,6 +42983,14 @@ cls.FIELD_STATUS : status
 
         return self._event_id
 
+    @property
+    def card_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._card_id
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -43009,6 +43021,9 @@ cls.FIELD_STATUS : status
             return False
 
         if self._event_id is not None:
+            return False
+
+        if self._card_id is not None:
             return False
 
         return True
