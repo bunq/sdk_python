@@ -2667,6 +2667,9 @@ class Payment(BunqModel):
     :param _payment_auto_allocate_instance: A reference to the
     PaymentAutoAllocateInstance if it exists.
     :type _payment_auto_allocate_instance: PaymentAutoAllocateInstance
+    :param _payment_suspended_outgoing: A reference to the
+    PaymentSuspendedOutgoing if it exists.
+    :type _payment_suspended_outgoing: PaymentSuspendedOutgoing
     """
 
     # Endpoint constants.
@@ -2711,6 +2714,7 @@ class Payment(BunqModel):
     _request_reference_split_the_bill = None
     _balance_after_mutation = None
     _payment_auto_allocate_instance = None
+    _payment_suspended_outgoing = None
     _amount_field_for_request = None
     _counterparty_alias_field_for_request = None
     _description_field_for_request = None
@@ -3064,6 +3068,14 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
 
         return self._payment_auto_allocate_instance
 
+    @property
+    def payment_suspended_outgoing(self):
+        """
+        :rtype: PaymentSuspendedOutgoing
+        """
+
+        return self._payment_suspended_outgoing
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -3145,6 +3157,9 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
             return False
 
         if self._payment_auto_allocate_instance is not None:
+            return False
+
+        if self._payment_suspended_outgoing is not None:
             return False
 
         return True
@@ -3536,6 +3551,89 @@ cls.FIELD_PAYMENTS : payments
         """
 
         return converter.json_to_class(PaymentBatch, json_str)
+
+
+class PaymentSuspendedOutgoing(BunqModel):
+    """
+    Suspended outgoing payments.
+    
+    :param _status: The status of the payment.
+    :type _status: str
+    :param _monetary_account_id: The ID of the monetary account the payment was
+    sent from.
+    :type _monetary_account_id: str
+    :param _time_execution: The time this payment should be executed.
+    :type _time_execution: str
+    """
+
+    # Field constants.
+    FIELD_STATUS = "status"
+
+
+    _monetary_account_id = None
+    _status = None
+    _time_execution = None
+    _status_field_for_request = None
+
+    def __init__(self, status=None):
+        """
+        :param status: The status to update to.
+        :type status: str
+        """
+
+        self._status_field_for_request = status
+
+
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def time_execution(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_execution
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._time_execution is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentSuspendedOutgoing
+        """
+
+        return converter.json_to_class(PaymentSuspendedOutgoing, json_str)
 
 
 class BunqMeFundraiserProfileUser(BunqModel):
