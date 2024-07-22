@@ -17402,6 +17402,9 @@ class MasterCardAction(BunqModel):
     for split the bill. Can be RequestInquiry or RequestInquiryBatch
     :type _request_reference_split_the_bill:
     list[object_.RequestInquiryReference]
+    :param _card_tokenization_event: The cardTokenization event awaiting
+    acceptance by the user
+    :type _card_tokenization_event: list[str]
     :param _all_mastercard_action_refund: A reference to the Refunds if they
     exist.
     :type _all_mastercard_action_refund: list[MasterCardActionRefund]
@@ -17472,6 +17475,7 @@ class MasterCardAction(BunqModel):
     _secure_code_id = None
     _wallet_provider_id = None
     _request_reference_split_the_bill = None
+    _card_tokenization_event = None
     _all_mastercard_action_refund = None
     _pos_card_presence = None
     _pos_card_holder_presence = None
@@ -17805,6 +17809,14 @@ class MasterCardAction(BunqModel):
         return self._request_reference_split_the_bill
 
     @property
+    def card_tokenization_event(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._card_tokenization_event
+
+    @property
     def all_mastercard_action_refund(self):
         """
         :rtype: list[MasterCardActionRefund]
@@ -17997,6 +18009,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._request_reference_split_the_bill is not None:
+            return False
+
+        if self._card_tokenization_event is not None:
             return False
 
         if self._all_mastercard_action_refund is not None:
