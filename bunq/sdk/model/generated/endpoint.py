@@ -36510,6 +36510,8 @@ class UserPerson(BunqModel):
     :param _nationality: The person's nationality. Formatted as a SO 3166-1
     alpha-2 country code.
     :type _nationality: str
+    :param _all_nationality: All of the person's nationalities.
+    :type _all_nationality: list[str]
     :param _language: The person's preferred language. Formatted as a ISO 639-1
     language code plus a ISO 3166-1 alpha-2 country code, seperated by an
     underscore.
@@ -36590,6 +36592,7 @@ class UserPerson(BunqModel):
     FIELD_DOCUMENT_BACK_ATTACHMENT_ID = "document_back_attachment_id"
     FIELD_DATE_OF_BIRTH = "date_of_birth"
     FIELD_NATIONALITY = "nationality"
+    FIELD_ALL_NATIONALITY = "all_nationality"
     FIELD_LANGUAGE = "language"
     FIELD_REGION = "region"
     FIELD_GENDER = "gender"
@@ -36622,6 +36625,7 @@ class UserPerson(BunqModel):
     _place_of_birth = None
     _country_of_birth = None
     _nationality = None
+    _all_nationality = None
     _language = None
     _region = None
     _gender = None
@@ -36649,6 +36653,7 @@ class UserPerson(BunqModel):
     _document_back_attachment_id_field_for_request = None
     _date_of_birth_field_for_request = None
     _nationality_field_for_request = None
+    _all_nationality_field_for_request = None
     _language_field_for_request = None
     _region_field_for_request = None
     _gender_field_for_request = None
@@ -36660,7 +36665,7 @@ class UserPerson(BunqModel):
     _display_name_field_for_request = None
     _signup_track_type_field_for_request = None
 
-    def __init__(self, subscription_type=None, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, signup_track_type=None):
+    def __init__(self, subscription_type=None, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, nationality=None, all_nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, signup_track_type=None):
         """
         :param subscription_type: The subscription type the user should start on.
         :type subscription_type: str
@@ -36699,9 +36704,11 @@ class UserPerson(BunqModel):
         :param date_of_birth: The person's date of birth. Accepts ISO8601 date
         formats.
         :type date_of_birth: str
-        :param nationality: The person's nationality. Formatted as a SO 3166-1
-        alpha-2 country code.
+        :param nationality: DEPRECATED. The person's nationality. Formatted as a SO
+        3166-1 alpha-2 country code.
         :type nationality: str
+        :param all_nationality: All of the person's nationalities.
+        :type all_nationality: list[str]
         :param language: The person's preferred language. Formatted as a ISO 639-1
         language code plus a ISO 3166-1 alpha-2 country code, seperated by an
         underscore.
@@ -36750,6 +36757,7 @@ class UserPerson(BunqModel):
         self._document_back_attachment_id_field_for_request = document_back_attachment_id
         self._date_of_birth_field_for_request = date_of_birth
         self._nationality_field_for_request = nationality
+        self._all_nationality_field_for_request = all_nationality
         self._language_field_for_request = language
         self._region_field_for_request = region
         self._gender_field_for_request = gender
@@ -36785,7 +36793,7 @@ class UserPerson(BunqModel):
         )
 
     @classmethod
-    def update(cls, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, custom_headers=None):
+    def update(cls, first_name=None, middle_name=None, last_name=None, public_nick_name=None, address_main=None, address_postal=None, avatar_uuid=None, tax_resident=None, document_type=None, document_number=None, document_country_of_issuance=None, document_front_attachment_id=None, document_back_attachment_id=None, date_of_birth=None, nationality=None, all_nationality=None, language=None, region=None, gender=None, status=None, sub_status=None, legal_guardian_alias=None, session_timeout=None, daily_limit_without_confirmation_login=None, display_name=None, custom_headers=None):
         """
         Modify a specific person object's data.
         
@@ -36825,9 +36833,11 @@ class UserPerson(BunqModel):
         :param date_of_birth: The person's date of birth. Accepts ISO8601 date
         formats.
         :type date_of_birth: str
-        :param nationality: The person's nationality. Formatted as a SO 3166-1
-        alpha-2 country code.
+        :param nationality: DEPRECATED. The person's nationality. Formatted as a
+        SO 3166-1 alpha-2 country code.
         :type nationality: str
+        :param all_nationality: All of the person's nationalities.
+        :type all_nationality: list[str]
         :param language: The person's preferred language. Formatted as a ISO
         639-1 language code plus a ISO 3166-1 alpha-2 country code, seperated by
         an underscore.
@@ -36882,6 +36892,7 @@ cls.FIELD_DOCUMENT_FRONT_ATTACHMENT_ID : document_front_attachment_id,
 cls.FIELD_DOCUMENT_BACK_ATTACHMENT_ID : document_back_attachment_id,
 cls.FIELD_DATE_OF_BIRTH : date_of_birth,
 cls.FIELD_NATIONALITY : nationality,
+cls.FIELD_ALL_NATIONALITY : all_nationality,
 cls.FIELD_LANGUAGE : language,
 cls.FIELD_REGION : region,
 cls.FIELD_GENDER : gender,
@@ -37048,6 +37059,14 @@ cls.FIELD_DISPLAY_NAME : display_name
         return self._nationality
 
     @property
+    def all_nationality(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_nationality
+
+    @property
     def language(self):
         """
         :rtype: str
@@ -37192,6 +37211,9 @@ cls.FIELD_DISPLAY_NAME : display_name
             return False
 
         if self._nationality is not None:
+            return False
+
+        if self._all_nationality is not None:
             return False
 
         if self._language is not None:
