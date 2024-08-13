@@ -7465,6 +7465,9 @@ class MonetaryAccountBank(BunqModel):
     :type _monetary_account_profile: MonetaryAccountProfile
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
+    :param _credit_line: The credit line attached to this monetary
+    MonetaryAccountBank, if available.
+    :type _credit_line: CreditLine
     """
 
     # Endpoint constants.
@@ -7509,6 +7512,7 @@ class MonetaryAccountBank(BunqModel):
     _display_name = None
     _setting = None
     _all_auto_save_id = None
+    _credit_line = None
     _currency_field_for_request = None
     _description_field_for_request = None
     _daily_limit_field_for_request = None
@@ -7940,6 +7944,14 @@ cls.FIELD_SETTING : setting
 
         return self._all_auto_save_id
 
+    @property
+    def credit_line(self):
+        """
+        :rtype: CreditLine
+        """
+
+        return self._credit_line
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -8003,6 +8015,9 @@ cls.FIELD_SETTING : setting
             return False
 
         if self._all_auto_save_id is not None:
+            return False
+
+        if self._credit_line is not None:
             return False
 
         return True
@@ -8096,6 +8111,349 @@ class MonetaryAccountProfile(BunqModel):
         return converter.json_to_class(MonetaryAccountProfile, json_str)
 
 
+class CreditLine(BunqModel):
+    """
+    Manage credit lines for a user.
+    
+    :param _credit_line_offer_id: The ID of the pending credit line offer
+    extended to the user.
+    :type _credit_line_offer_id: int
+    :param _monetary_account_repayment_id: The ID of the monetary account this
+    credit line repays from.
+    :type _monetary_account_repayment_id: int
+    :param _user_id: The ID of the user this credit line belongs to.
+    :type _user_id: int
+    :param _monetary_account_id: The ID of the monetary account this credit line
+    withdraws credit from.
+    :type _monetary_account_id: int
+    :param _status: The status of the credit line.
+    :type _status: str
+    :param _amount: The amount of the credit line.
+    :type _amount: object_.Amount
+    :param _interest_rate: The interest rate on overdue repayments of the credit
+    line.
+    :type _interest_rate: str
+    :param _time_repayment_next: The next time a repayment will be made.
+    :type _time_repayment_next: str
+    :param _pending_repayments: The pending repayments for this credit line.
+    :type _pending_repayments: list[CreditLineRepayment]
+    """
+
+    # Field constants.
+    FIELD_CREDIT_LINE_OFFER_ID = "credit_line_offer_id"
+    FIELD_MONETARY_ACCOUNT_REPAYMENT_ID = "monetary_account_repayment_id"
+
+
+    _user_id = None
+    _monetary_account_id = None
+    _monetary_account_repayment_id = None
+    _status = None
+    _amount = None
+    _interest_rate = None
+    _time_repayment_next = None
+    _pending_repayments = None
+    _credit_line_offer_id_field_for_request = None
+    _monetary_account_repayment_id_field_for_request = None
+
+    def __init__(self, credit_line_offer_id, monetary_account_repayment_id=None):
+        """
+        :param credit_line_offer_id: The ID of the pending credit line offer
+        extended to the user.
+        :type credit_line_offer_id: int
+        :param monetary_account_repayment_id: The ID of the monetary account to
+        repay the credit line from.
+        :type monetary_account_repayment_id: int
+        """
+
+        self._credit_line_offer_id_field_for_request = credit_line_offer_id
+        self._monetary_account_repayment_id_field_for_request = monetary_account_repayment_id
+
+
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_id
+
+    @property
+    def monetary_account_repayment_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_repayment_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    @property
+    def interest_rate(self):
+        """
+        :rtype: str
+        """
+
+        return self._interest_rate
+
+    @property
+    def time_repayment_next(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_repayment_next
+
+    @property
+    def pending_repayments(self):
+        """
+        :rtype: list[CreditLineRepayment]
+        """
+
+        return self._pending_repayments
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_id is not None:
+            return False
+
+        if self._monetary_account_repayment_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        if self._interest_rate is not None:
+            return False
+
+        if self._time_repayment_next is not None:
+            return False
+
+        if self._pending_repayments is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CreditLine
+        """
+
+        return converter.json_to_class(CreditLine, json_str)
+
+
+class CreditLineRepayment(BunqModel):
+    """
+    Manage repayments for a credit line.
+    
+    :param _monetary_account_credit_line_id: The ID of the monetary account the
+    repayment is made on.
+    :type _monetary_account_credit_line_id: int
+    :param _amount_balance_due_original: The original balance that was due,
+    regardless of how much has been paid or how much interest has accrued.
+    :type _amount_balance_due_original: object_.Amount
+    :param _amount_due: The total amount due.
+    :type _amount_due: object_.Amount
+    :param _amount_balance_due: The current balance due.
+    :type _amount_balance_due: object_.Amount
+    :param _amount_interest_due: The amount of interest due.
+    :type _amount_interest_due: object_.Amount
+    :param _amount_fee_due: The amount of the fee due.
+    :type _amount_fee_due: object_.Amount
+    :param _status: The status of the repayment.
+    :type _status: str
+    :param _items: The items of the repayment.
+    :type _items: list[CreditLineRepaymentItem]
+    """
+
+    _monetary_account_credit_line_id = None
+    _amount_balance_due_original = None
+    _amount_due = None
+    _amount_balance_due = None
+    _amount_interest_due = None
+    _amount_fee_due = None
+    _status = None
+    _items = None
+
+    @property
+    def monetary_account_credit_line_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._monetary_account_credit_line_id
+
+    @property
+    def amount_balance_due_original(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_balance_due_original
+
+    @property
+    def amount_due(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_due
+
+    @property
+    def amount_balance_due(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_balance_due
+
+    @property
+    def amount_interest_due(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_interest_due
+
+    @property
+    def amount_fee_due(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_fee_due
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def items(self):
+        """
+        :rtype: list[CreditLineRepaymentItem]
+        """
+
+        return self._items
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._monetary_account_credit_line_id is not None:
+            return False
+
+        if self._amount_balance_due_original is not None:
+            return False
+
+        if self._amount_due is not None:
+            return False
+
+        if self._amount_balance_due is not None:
+            return False
+
+        if self._amount_interest_due is not None:
+            return False
+
+        if self._amount_fee_due is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._items is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CreditLineRepayment
+        """
+
+        return converter.json_to_class(CreditLineRepayment, json_str)
+
+
+class CreditLineRepaymentItem(BunqModel):
+    """
+    Line items in a credit line repayment.
+    
+    :param _amount: The amount.
+    :type _amount: object_.Amount
+    """
+
+    _amount = None
+
+    @property
+    def amount(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CreditLineRepaymentItem
+        """
+
+        return converter.json_to_class(CreditLineRepaymentItem, json_str)
+
+
 class MonetaryAccountJoint(BunqModel):
     """
     The endpoint for joint monetary accounts.
@@ -8155,6 +8513,9 @@ class MonetaryAccountJoint(BunqModel):
     :type _monetary_account_profile: MonetaryAccountProfile
     :param _all_auto_save_id: The ids of the AutoSave.
     :type _all_auto_save_id: list[object_.BunqId]
+    :param _credit_line: The credit line attached to this monetary
+    MonetaryAccountJoint, if available.
+    :type _credit_line: CreditLine
     """
 
     # Endpoint constants.
@@ -8200,6 +8561,7 @@ class MonetaryAccountJoint(BunqModel):
     _monetary_account_profile = None
     _setting = None
     _all_auto_save_id = None
+    _credit_line = None
     _currency_field_for_request = None
     _description_field_for_request = None
     _daily_limit_field_for_request = None
@@ -8628,6 +8990,14 @@ cls.FIELD_SETTING : setting
 
         return self._all_auto_save_id
 
+    @property
+    def credit_line(self):
+        """
+        :rtype: CreditLine
+        """
+
+        return self._credit_line
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -8691,6 +9061,9 @@ cls.FIELD_SETTING : setting
             return False
 
         if self._all_auto_save_id is not None:
+            return False
+
+        if self._credit_line is not None:
             return False
 
         return True
@@ -9856,6 +10229,9 @@ class MonetaryAccountExternal(BunqModel):
     :param _open_banking_account: The open banking account for information about
     the external account.
     :type _open_banking_account: OpenBankingAccount
+    :param _credit_line: The credit line attached to this monetary
+    MonetaryAccountExternal, if available.
+    :type _credit_line: CreditLine
     """
 
     # Endpoint constants.
@@ -9902,6 +10278,7 @@ class MonetaryAccountExternal(BunqModel):
     _all_auto_save_id = None
     _service = None
     _open_banking_account = None
+    _credit_line = None
     _currency_field_for_request = None
     _service_field_for_request = None
     _description_field_for_request = None
@@ -10346,6 +10723,14 @@ cls.FIELD_SETTING : setting
 
         return self._open_banking_account
 
+    @property
+    def credit_line(self):
+        """
+        :rtype: CreditLine
+        """
+
+        return self._credit_line
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -10415,6 +10800,9 @@ cls.FIELD_SETTING : setting
             return False
 
         if self._open_banking_account is not None:
+            return False
+
+        if self._credit_line is not None:
             return False
 
         return True
@@ -24571,9 +24959,15 @@ class MonetaryAccountCard(BunqModel):
     :param _daily_limit: The daily spending limit Amount of the
     MonetaryAccountCard.
     :type _daily_limit: object_.Amount
+    :param _overdraft_limit: The maximum Amount the MonetaryAccountCard can be
+    'in the red'.
+    :type _overdraft_limit: object_.Amount
     :param _balance: The current available balance Amount of the
     MonetaryAccountCard.
     :type _balance: object_.Amount
+    :param _balance_real: The current real balance Amount of the
+    MonetaryAccountCard.
+    :type _balance_real: object_.Amount
     :param _alias: The Aliases for the MonetaryAccountCard.
     :type _alias: list[object_.Pointer]
     :param _public_uuid: The MonetaryAccountCard's public UUID.
@@ -24585,6 +24979,9 @@ class MonetaryAccountCard(BunqModel):
     :type _sub_status: str
     :param _user_id: The id of the User who owns the MonetaryAccountCard.
     :type _user_id: int
+    :param _credit_line: The credit line attached to this monetary
+    MonetaryAccountCard, if available.
+    :type _credit_line: CreditLine
     """
 
     # Endpoint constants.
@@ -24601,12 +24998,15 @@ class MonetaryAccountCard(BunqModel):
     _currency = None
     _description = None
     _daily_limit = None
+    _overdraft_limit = None
     _balance = None
+    _balance_real = None
     _alias = None
     _public_uuid = None
     _status = None
     _sub_status = None
     _user_id = None
+    _credit_line = None
 
     @classmethod
     def get(cls,  monetary_account_card_id, custom_headers=None):
@@ -24738,12 +25138,28 @@ class MonetaryAccountCard(BunqModel):
         return self._daily_limit
 
     @property
+    def overdraft_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._overdraft_limit
+
+    @property
     def balance(self):
         """
         :rtype: object_.Amount
         """
 
         return self._balance
+
+    @property
+    def balance_real(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_real
 
     @property
     def alias(self):
@@ -24785,6 +25201,14 @@ class MonetaryAccountCard(BunqModel):
 
         return self._user_id
 
+    @property
+    def credit_line(self):
+        """
+        :rtype: CreditLine
+        """
+
+        return self._credit_line
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -24808,7 +25232,13 @@ class MonetaryAccountCard(BunqModel):
         if self._daily_limit is not None:
             return False
 
+        if self._overdraft_limit is not None:
+            return False
+
         if self._balance is not None:
+            return False
+
+        if self._balance_real is not None:
             return False
 
         if self._alias is not None:
@@ -24824,6 +25254,9 @@ class MonetaryAccountCard(BunqModel):
             return False
 
         if self._user_id is not None:
+            return False
+
+        if self._credit_line is not None:
             return False
 
         return True
