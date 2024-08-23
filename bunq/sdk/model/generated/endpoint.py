@@ -2425,6 +2425,16 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
     :param _attachment: Reference to the bank transfer form for this
     switch-service.
     :type _attachment: object_.Attachment
+    :param _rejection_reason: Rejection reason enum.
+    :type _rejection_reason: str
+    :param _rejection_reason_description: Rejection reason description to be
+    shown to the user.
+    :type _rejection_reason_description: str
+    :param _rejection_reason_description_translated: Rejection reason
+    description to be shown to the user, translated.
+    :type _rejection_reason_description_translated: str
+    :param _rejection_reason_together_url: Rejection reason together URL.
+    :type _rejection_reason_together_url: str
     """
 
     # Field constants.
@@ -2442,6 +2452,10 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
     _time_start_actual = None
     _time_end = None
     _attachment = None
+    _rejection_reason = None
+    _rejection_reason_description = None
+    _rejection_reason_description_translated = None
+    _rejection_reason_together_url = None
     _alias_field_for_request = None
     _counterparty_alias_field_for_request = None
     _status_field_for_request = None
@@ -2537,6 +2551,38 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
 
         return self._attachment
 
+    @property
+    def rejection_reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._rejection_reason
+
+    @property
+    def rejection_reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._rejection_reason_description
+
+    @property
+    def rejection_reason_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._rejection_reason_description_translated
+
+    @property
+    def rejection_reason_together_url(self):
+        """
+        :rtype: str
+        """
+
+        return self._rejection_reason_together_url
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -2567,6 +2613,18 @@ class BankSwitchServiceNetherlandsIncoming(BunqModel):
             return False
 
         if self._attachment is not None:
+            return False
+
+        if self._rejection_reason is not None:
+            return False
+
+        if self._rejection_reason_description is not None:
+            return False
+
+        if self._rejection_reason_description_translated is not None:
+            return False
+
+        if self._rejection_reason_together_url is not None:
             return False
 
         return True
