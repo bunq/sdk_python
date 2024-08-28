@@ -42053,6 +42053,8 @@ class WhitelistSddOneOff(BunqModel):
     :param _maximum_amount_per_payment: The maximum amount per payment that can
     be deducted from the target account.
     :type _maximum_amount_per_payment: object_.Amount
+    :param _routing_type: The type of routing for this whitelist.
+    :type _routing_type: str
     :param _id_: The ID of the whitelist entry.
     :type _id_: int
     :param _monetary_account_incoming_id: The account to which payments will
@@ -42083,6 +42085,7 @@ class WhitelistSddOneOff(BunqModel):
     FIELD_REQUEST_ID = "request_id"
     FIELD_MAXIMUM_AMOUNT_PER_MONTH = "maximum_amount_per_month"
     FIELD_MAXIMUM_AMOUNT_PER_PAYMENT = "maximum_amount_per_payment"
+    FIELD_ROUTING_TYPE = "routing_type"
 
     # Object type.
     _OBJECT_TYPE_GET = "WhitelistSddOneOff"
@@ -42097,12 +42100,14 @@ class WhitelistSddOneOff(BunqModel):
     _maximum_amount_per_month = None
     _maximum_amount_per_payment = None
     _user_alias_created = None
+    _routing_type = None
     _monetary_account_paying_id_field_for_request = None
     _request_id_field_for_request = None
     _maximum_amount_per_month_field_for_request = None
     _maximum_amount_per_payment_field_for_request = None
+    _routing_type_field_for_request = None
 
-    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None):
+    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, routing_type=None):
         """
         :param monetary_account_paying_id: ID of the monetary account of which you
         want to pay from.
@@ -42116,12 +42121,16 @@ class WhitelistSddOneOff(BunqModel):
         :param maximum_amount_per_payment: The maximum amount of money that is
         allowed to be deducted per payment based on the whitelist.
         :type maximum_amount_per_payment: object_.Amount
+        :param routing_type: The type of routing for this whitelist. Should be
+        changed to non-optional CIT/technical#12806.
+        :type routing_type: str
         """
 
         self._monetary_account_paying_id_field_for_request = monetary_account_paying_id
         self._request_id_field_for_request = request_id
         self._maximum_amount_per_month_field_for_request = maximum_amount_per_month
         self._maximum_amount_per_payment_field_for_request = maximum_amount_per_payment
+        self._routing_type_field_for_request = routing_type
 
     @classmethod
     def get(cls,  whitelist_sdd_one_off_id, custom_headers=None):
@@ -42148,7 +42157,7 @@ class WhitelistSddOneOff(BunqModel):
         )
 
     @classmethod
-    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
+    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, maximum_amount_per_payment=None, routing_type=None, custom_headers=None):
         """
         Create a new one off SDD whitelist entry.
         
@@ -42165,6 +42174,9 @@ class WhitelistSddOneOff(BunqModel):
         :param maximum_amount_per_payment: The maximum amount of money that is
         allowed to be deducted per payment based on the whitelist.
         :type maximum_amount_per_payment: object_.Amount
+        :param routing_type: The type of routing for this whitelist. Should be
+        changed to non-optional CIT/technical#12806.
+        :type routing_type: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -42177,7 +42189,8 @@ class WhitelistSddOneOff(BunqModel):
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
 cls.FIELD_REQUEST_ID : request_id,
 cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
-cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment,
+cls.FIELD_ROUTING_TYPE : routing_type
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -42192,7 +42205,7 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         )
 
     @classmethod
-    def update(cls,  whitelist_sdd_one_off_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
+    def update(cls,  whitelist_sdd_one_off_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, routing_type=None, custom_headers=None):
         """
         :type user_id: int
         :type whitelist_sdd_one_off_id: int
@@ -42205,6 +42218,9 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         :param maximum_amount_per_payment: The maximum amount of money that is
         allowed to be deducted per payment based on the whitelist.
         :type maximum_amount_per_payment: object_.Amount
+        :param routing_type: The type of routing for this whitelist. Should be
+        changed to non-optional CIT/technical#12806.
+        :type routing_type: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -42218,7 +42234,8 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         request_map = {
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
 cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
-cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment,
+cls.FIELD_ROUTING_TYPE : routing_type
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -42359,6 +42376,14 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
 
         return self._user_alias_created
 
+    @property
+    def routing_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._routing_type
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -42394,6 +42419,9 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         if self._user_alias_created is not None:
             return False
 
+        if self._routing_type is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -42424,6 +42452,8 @@ class WhitelistSddRecurring(BunqModel):
     :param _maximum_amount_per_payment: The maximum amount per payment that can
     be deducted from the target account.
     :type _maximum_amount_per_payment: object_.Amount
+    :param _routing_type: The type of routing for this whitelist.
+    :type _routing_type: str
     :param _id_: The ID of the whitelist entry.
     :type _id_: int
     :param _monetary_account_incoming_id: The account to which payments will
@@ -42456,6 +42486,7 @@ class WhitelistSddRecurring(BunqModel):
     FIELD_REQUEST_ID = "request_id"
     FIELD_MAXIMUM_AMOUNT_PER_MONTH = "maximum_amount_per_month"
     FIELD_MAXIMUM_AMOUNT_PER_PAYMENT = "maximum_amount_per_payment"
+    FIELD_ROUTING_TYPE = "routing_type"
 
     # Object type.
     _OBJECT_TYPE_GET = "WhitelistSddRecurring"
@@ -42471,12 +42502,14 @@ class WhitelistSddRecurring(BunqModel):
     _maximum_amount_per_month = None
     _maximum_amount_per_payment = None
     _user_alias_created = None
+    _routing_type = None
     _monetary_account_paying_id_field_for_request = None
     _request_id_field_for_request = None
     _maximum_amount_per_month_field_for_request = None
     _maximum_amount_per_payment_field_for_request = None
+    _routing_type_field_for_request = None
 
-    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None):
+    def __init__(self, request_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, routing_type=None):
         """
         :param monetary_account_paying_id: ID of the monetary account of which you
         want to pay from.
@@ -42490,12 +42523,16 @@ class WhitelistSddRecurring(BunqModel):
         :param maximum_amount_per_payment: The maximum amount of money that is
         allowed to be deducted per payment based on the whitelist.
         :type maximum_amount_per_payment: object_.Amount
+        :param routing_type: The type of routing for this whitelist. Should be
+        changed to non-optional CIT/technical#12806.
+        :type routing_type: str
         """
 
         self._monetary_account_paying_id_field_for_request = monetary_account_paying_id
         self._request_id_field_for_request = request_id
         self._maximum_amount_per_month_field_for_request = maximum_amount_per_month
         self._maximum_amount_per_payment_field_for_request = maximum_amount_per_payment
+        self._routing_type_field_for_request = routing_type
 
     @classmethod
     def get(cls,  whitelist_sdd_recurring_id, custom_headers=None):
@@ -42522,7 +42559,7 @@ class WhitelistSddRecurring(BunqModel):
         )
 
     @classmethod
-    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
+    def create(cls,monetary_account_paying_id, request_id, maximum_amount_per_month=None, maximum_amount_per_payment=None, routing_type=None, custom_headers=None):
         """
         Create a new recurring SDD whitelist entry.
         
@@ -42539,6 +42576,9 @@ class WhitelistSddRecurring(BunqModel):
         :param maximum_amount_per_payment: The maximum amount of money that is
         allowed to be deducted per payment based on the whitelist.
         :type maximum_amount_per_payment: object_.Amount
+        :param routing_type: The type of routing for this whitelist. Should be
+        changed to non-optional CIT/technical#12806.
+        :type routing_type: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -42551,7 +42591,8 @@ class WhitelistSddRecurring(BunqModel):
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
 cls.FIELD_REQUEST_ID : request_id,
 cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
-cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment,
+cls.FIELD_ROUTING_TYPE : routing_type
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -42566,7 +42607,7 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         )
 
     @classmethod
-    def update(cls,  whitelist_sdd_recurring_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, custom_headers=None):
+    def update(cls,  whitelist_sdd_recurring_id, monetary_account_paying_id=None, maximum_amount_per_month=None, maximum_amount_per_payment=None, routing_type=None, custom_headers=None):
         """
         :type user_id: int
         :type whitelist_sdd_recurring_id: int
@@ -42579,6 +42620,9 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         :param maximum_amount_per_payment: The maximum amount of money that is
         allowed to be deducted per payment based on the whitelist.
         :type maximum_amount_per_payment: object_.Amount
+        :param routing_type: The type of routing for this whitelist. Should be
+        changed to non-optional CIT/technical#12806.
+        :type routing_type: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -42592,7 +42636,8 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
         request_map = {
 cls.FIELD_MONETARY_ACCOUNT_PAYING_ID : monetary_account_paying_id,
 cls.FIELD_MAXIMUM_AMOUNT_PER_MONTH : maximum_amount_per_month,
-cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
+cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment,
+cls.FIELD_ROUTING_TYPE : routing_type
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -42741,6 +42786,14 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
 
         return self._user_alias_created
 
+    @property
+    def routing_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._routing_type
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -42777,6 +42830,9 @@ cls.FIELD_MAXIMUM_AMOUNT_PER_PAYMENT : maximum_amount_per_payment
             return False
 
         if self._user_alias_created is not None:
+            return False
+
+        if self._routing_type is not None:
             return False
 
         return True
