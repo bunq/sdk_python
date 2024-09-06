@@ -44295,6 +44295,8 @@ class Registry(BunqModel):
     :param _last_activity_timestamp: The timestamp of the latest activity seen
     for this registry.
     :type _last_activity_timestamp: str
+    :param _all_registry_gallery_attachment: 
+    :type _all_registry_gallery_attachment: list[RegistryGalleryAttachment]
     """
 
     # Field constants.
@@ -44340,6 +44342,7 @@ class Registry(BunqModel):
     _last_settlement_id = None
     _last_activity_timestamp = None
     _all_registry_entry = None
+    _all_registry_gallery_attachment = None
     _updated_field_for_request = None
     _uuid_field_for_request = None
     _public_identifier_token_field_for_request = None
@@ -44601,6 +44604,14 @@ class Registry(BunqModel):
 
         return self._all_registry_entry
 
+    @property
+    def all_registry_gallery_attachment(self):
+        """
+        :rtype: list[RegistryGalleryAttachment]
+        """
+
+        return self._all_registry_gallery_attachment
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -44664,6 +44675,9 @@ class Registry(BunqModel):
             return False
 
         if self._all_registry_entry is not None:
+            return False
+
+        if self._all_registry_gallery_attachment is not None:
             return False
 
         return True
@@ -45512,6 +45526,74 @@ class RegistryEntry(BunqModel):
         """
 
         return converter.json_to_class(RegistryEntry, json_str)
+
+
+class RegistryGalleryAttachment(BunqModel):
+    """
+    This call is used to upload an photo that is accessible by all members of a
+    registry.
+    
+    :param _user_id: The id of the user owner.
+    :type _user_id: int
+    :param _attachment: The attachment.
+    :type _attachment: object_.Attachment
+    :param _membership_uuid: The membership of the owner uuid.
+    :type _membership_uuid: str
+    """
+
+    _user_id = None
+    _attachment = None
+    _membership_uuid = None
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def attachment(self):
+        """
+        :rtype: object_.Attachment
+        """
+
+        return self._attachment
+
+    @property
+    def membership_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._membership_uuid
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._user_id is not None:
+            return False
+
+        if self._attachment is not None:
+            return False
+
+        if self._membership_uuid is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: RegistryGalleryAttachment
+        """
+
+        return converter.json_to_class(RegistryGalleryAttachment, json_str)
 
 
 class RegistrySettlement(BunqModel):
