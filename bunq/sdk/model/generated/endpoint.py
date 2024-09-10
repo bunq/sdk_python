@@ -3233,467 +3233,6 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
         return converter.json_to_class(Payment, json_str)
 
 
-class PaymentAutoAllocateInstance(BunqModel):
-    """
-    List all the times a users payment was automatically allocated.
-    
-    :param _id_: The id of the PaymentAutoAllocateInstance.
-    :type _id_: int
-    :param _created: The timestamp when the PaymentAutoAllocateInstance was
-    created.
-    :type _created: str
-    :param _updated: The timestamp when the PaymentAutoAllocateInstance was last
-    updated.
-    :type _updated: str
-    :param _payment_auto_allocate_id: The ID of the payment auto allocate this
-    instance belongs to.
-    :type _payment_auto_allocate_id: int
-    :param _status: The status of the payment auto allocate instance. SUCCEEDED
-    or FAILED.
-    :type _status: str
-    :param _error_message: The error message, if the payment auto allocating
-    failed.
-    :type _error_message: list[object_.Error]
-    :param _payment_batch: The payment batch allocating all the payments.
-    :type _payment_batch: PaymentBatch
-    :param _payment_id: The ID of the payment that triggered the allocating of
-    the payments.
-    :type _payment_id: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance/{}"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PaymentAutoAllocateInstance"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _payment_auto_allocate_id = None
-    _status = None
-    _error_message = None
-    _payment_batch = None
-    _payment_id = None
-
-    @classmethod
-    def list(cls,payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_auto_allocate_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentAutoAllocateInstanceList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_auto_allocate_id)
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentAutoAllocateInstanceList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def get(cls, payment_auto_allocate_id,  payment_auto_allocate_instance_id, monetary_account_id=None, custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_auto_allocate_id: int
-        :type payment_auto_allocate_instance_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentAutoAllocateInstance
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_auto_allocate_id, payment_auto_allocate_instance_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePaymentAutoAllocateInstance.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def payment_auto_allocate_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._payment_auto_allocate_id
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def error_message(self):
-        """
-        :rtype: list[object_.Error]
-        """
-
-        return self._error_message
-
-    @property
-    def payment_batch(self):
-        """
-        :rtype: PaymentBatch
-        """
-
-        return self._payment_batch
-
-    @property
-    def payment_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._payment_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._payment_auto_allocate_id is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._error_message is not None:
-            return False
-
-        if self._payment_batch is not None:
-            return False
-
-        if self._payment_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentAutoAllocateInstance
-        """
-
-        return converter.json_to_class(PaymentAutoAllocateInstance, json_str)
-
-
-class PaymentBatch(BunqModel):
-    """
-    Create a payment batch, or show the payment batches of a monetary account.
-    
-    :param _payments: The list of mutations that were made.
-    :type _payments: object_.PaymentBatchAnchoredPayment
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-batch"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-batch/{}"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-batch/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-batch"
-
-    # Field constants.
-    FIELD_PAYMENTS = "payments"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "PaymentBatch"
-
-    _payments = None
-    _payments_field_for_request = None
-
-    def __init__(self, payments):
-        """
-        :param payments: The list of payments we want to send in a single batch.
-        :type payments: list[Payment]
-        """
-
-        self._payments_field_for_request = payments
-
-    @classmethod
-    def create(cls,payments, monetary_account_id=None, custom_headers=None):
-        """
-        Create a payment batch by sending an array of single payment objects,
-        that will become part of the batch.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :param payments: The list of payments we want to send in a single batch.
-        :type payments: list[Payment]
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_PAYMENTS : payments
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def update(cls,  payment_batch_id, monetary_account_id=None, custom_headers=None):
-        """
-        Revoke a bunq.to payment batch. The status of all the payments will be
-        set to REVOKED.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_batch_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  payment_batch_id, monetary_account_id=None, custom_headers=None):
-        """
-        Return the details of a specific payment batch.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type payment_batch_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentBatch
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_batch_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponsePaymentBatch.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def list(cls,monetary_account_id=None, params=None, custom_headers=None):
-        """
-        Return all the payment batches for a monetary account.
-        
-        :type user_id: int
-        :type monetary_account_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponsePaymentBatchList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponsePaymentBatchList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def payments(self):
-        """
-        :rtype: object_.PaymentBatchAnchoredPayment
-        """
-
-        return self._payments
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._payments is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentBatch
-        """
-
-        return converter.json_to_class(PaymentBatch, json_str)
-
-
-class PaymentSuspendedOutgoing(BunqModel):
-    """
-    Suspended outgoing payments.
-    
-    :param _status: The status of the payment.
-    :type _status: str
-    :param _monetary_account_id: The ID of the monetary account the payment was
-    sent from.
-    :type _monetary_account_id: str
-    :param _time_execution: The time this payment should be executed.
-    :type _time_execution: str
-    """
-
-    # Field constants.
-    FIELD_STATUS = "status"
-
-
-    _monetary_account_id = None
-    _status = None
-    _time_execution = None
-    _status_field_for_request = None
-
-    def __init__(self, status=None):
-        """
-        :param status: The status to update to.
-        :type status: str
-        """
-
-        self._status_field_for_request = status
-
-
-
-    @property
-    def monetary_account_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._monetary_account_id
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def time_execution(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_execution
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._monetary_account_id is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._time_execution is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: PaymentSuspendedOutgoing
-        """
-
-        return converter.json_to_class(PaymentSuspendedOutgoing, json_str)
-
-
 class BunqMeFundraiserProfileUser(BunqModel):
     """
     bunq.me public profile of the user.
@@ -6648,6 +6187,8 @@ class Card(BunqModel):
     :type _is_eligible_for_free_replacement: bool
     :param _card_replacement: The card replacement for this card.
     :type _card_replacement: CardReplacement
+    :param _card_generated_cvc2: The generated CVC2 code for this card.
+    :type _card_generated_cvc2: CardGeneratedCvc2
     """
 
     # Endpoint constants.
@@ -6671,8 +6212,8 @@ class Card(BunqModel):
     FIELD_CANCELLATION_REASON = "cancellation_reason"
 
     # Object type.
-    _OBJECT_TYPE_PUT = "CardDebit"
-    _OBJECT_TYPE_GET = "CardDebit"
+    _OBJECT_TYPE_PUT = "Card"
+    _OBJECT_TYPE_GET = "Card"
 
     _id_ = None
     _created = None
@@ -6702,6 +6243,7 @@ class Card(BunqModel):
     _card_shipment_tracking_url = None
     _is_eligible_for_free_replacement = None
     _card_replacement = None
+    _card_generated_cvc2 = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -7138,6 +6680,14 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
 
         return self._card_replacement
 
+    @property
+    def card_generated_cvc2(self):
+        """
+        :rtype: CardGeneratedCvc2
+        """
+
+        return self._card_generated_cvc2
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -7227,6 +6777,9 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         if self._card_replacement is not None:
             return False
 
+        if self._card_generated_cvc2 is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -7238,5981 +6791,6 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         """
 
         return converter.json_to_class(Card, json_str)
-
-
-class MonetaryAccount(BunqModel):
-    """
-    Used to show the MonetaryAccounts that you can access. Currently the only
-    MonetaryAccount type is MonetaryAccountBank. See also:
-    monetary-account-bank.<br/><br/>Notification filters can be set on a
-    monetary account level to receive callbacks. For more information check the
-    <a href="/api/2/page/callbacks">dedicated callbacks page</a>.
-    
-    :param _alias: The aliases for the MonetaryAccount.
-    :type _alias: list[object_.Pointer]
-    :param _balance: The current available balance amount of the
-    MonetaryAccount.
-    :type _balance: object_.Amount
-    :param _monetary_account_profile: The profiles of the account.
-    :type _monetary_account_profile: list[MonetaryAccountProfile]
-    :param _setting: The settings of the MonetaryAccount.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _budget: The budgets of the MonetaryAccount.
-    :type _budget: list[MonetaryAccountBudget]
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccount.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccount. Can be any user provided message.
-    :type _reason_description: str
-    :param _share: The ShareInviteBankResponse when the MonetaryAccount is
-    accessed by the User via a share/connect.
-    :type _share: ShareInviteMonetaryAccountResponse
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    :param _fulfillments: The fulfillments for this MonetaryAccount.
-    :type _fulfillments: list[Fulfillment]
-    :param _relation_user: The RelationUser when the MonetaryAccount is accessed
-    by the User via a share/connect.
-    :type _relation_user: RelationUser
-    :param _all_co_owner: The users the account will be joint with.
-    :type _all_co_owner: list[object_.CoOwner]
-    :param _co_owner_invite: The CoOwnerInvite when the MonetaryAccount is
-    accessed by the User via a CoOwnerInvite.
-    :type _co_owner_invite: CoOwnerInviteResponse
-    :param _open_banking_account: The open banking account for information about
-    the external account.
-    :type _open_banking_account: OpenBankingAccount
-    :param _birdee_investment_portfolio: The Birdee investment portfolio.
-    :type _birdee_investment_portfolio: BirdeeInvestmentPortfolio
-    :param _MonetaryAccountLight: 
-    :type _MonetaryAccountLight: MonetaryAccountLight
-    :param _MonetaryAccountBank: 
-    :type _MonetaryAccountBank: MonetaryAccountBank
-    :param _MonetaryAccountExternal: 
-    :type _MonetaryAccountExternal: MonetaryAccountExternal
-    :param _MonetaryAccountInvestment: 
-    :type _MonetaryAccountInvestment: MonetaryAccountInvestment
-    :param _MonetaryAccountJoint: 
-    :type _MonetaryAccountJoint: MonetaryAccountJoint
-    :param _MonetaryAccountSavings: 
-    :type _MonetaryAccountSavings: MonetaryAccountSavings
-    :param _MonetaryAccountSwitchService: 
-    :type _MonetaryAccountSwitchService: MonetaryAccountSwitchService
-    :param _MonetaryAccountExternalSavings: 
-    :type _MonetaryAccountExternalSavings: MonetaryAccountExternalSavings
-    :param _MonetaryAccountCard: 
-    :type _MonetaryAccountCard: MonetaryAccountCard
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccount"
-
-    _alias = None
-    _balance = None
-    _monetary_account_profile = None
-    _setting = None
-    _budget = None
-    _reason = None
-    _reason_description = None
-    _share = None
-    _all_auto_save_id = None
-    _fulfillments = None
-    _relation_user = None
-    _all_co_owner = None
-    _co_owner_invite = None
-    _open_banking_account = None
-    _birdee_investment_portfolio = None
-    _MonetaryAccountLight = None
-    _MonetaryAccountBank = None
-    _MonetaryAccountExternal = None
-    _MonetaryAccountInvestment = None
-    _MonetaryAccountJoint = None
-    _MonetaryAccountSavings = None
-    _MonetaryAccountSwitchService = None
-    _MonetaryAccountExternalSavings = None
-    _MonetaryAccountCard = None
-
-    @classmethod
-    def get(cls,  monetary_account_id, custom_headers=None):
-        """
-        Get a specific MonetaryAccount.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccount
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccount.cast_from_bunq_response(
-            cls._from_json(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        Get a collection of all your MonetaryAccounts.
-        
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountList.cast_from_bunq_response(
-            cls._from_json_list(response_raw)
-        )
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: list[MonetaryAccountProfile]
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def budget(self):
-        """
-        :rtype: list[MonetaryAccountBudget]
-        """
-
-        return self._budget
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def share(self):
-        """
-        :rtype: ShareInviteMonetaryAccountResponse
-        """
-
-        return self._share
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    @property
-    def fulfillments(self):
-        """
-        :rtype: list[Fulfillment]
-        """
-
-        return self._fulfillments
-
-    @property
-    def relation_user(self):
-        """
-        :rtype: RelationUser
-        """
-
-        return self._relation_user
-
-    @property
-    def all_co_owner(self):
-        """
-        :rtype: list[object_.CoOwner]
-        """
-
-        return self._all_co_owner
-
-    @property
-    def co_owner_invite(self):
-        """
-        :rtype: CoOwnerInviteResponse
-        """
-
-        return self._co_owner_invite
-
-    @property
-    def open_banking_account(self):
-        """
-        :rtype: OpenBankingAccount
-        """
-
-        return self._open_banking_account
-
-    @property
-    def birdee_investment_portfolio(self):
-        """
-        :rtype: BirdeeInvestmentPortfolio
-        """
-
-        return self._birdee_investment_portfolio
-
-    @property
-    def MonetaryAccountLight(self):
-        """
-        :rtype: MonetaryAccountLight
-        """
-
-        return self._MonetaryAccountLight
-
-    @property
-    def MonetaryAccountBank(self):
-        """
-        :rtype: MonetaryAccountBank
-        """
-
-        return self._MonetaryAccountBank
-
-    @property
-    def MonetaryAccountExternal(self):
-        """
-        :rtype: MonetaryAccountExternal
-        """
-
-        return self._MonetaryAccountExternal
-
-    @property
-    def MonetaryAccountInvestment(self):
-        """
-        :rtype: MonetaryAccountInvestment
-        """
-
-        return self._MonetaryAccountInvestment
-
-    @property
-    def MonetaryAccountJoint(self):
-        """
-        :rtype: MonetaryAccountJoint
-        """
-
-        return self._MonetaryAccountJoint
-
-    @property
-    def MonetaryAccountSavings(self):
-        """
-        :rtype: MonetaryAccountSavings
-        """
-
-        return self._MonetaryAccountSavings
-
-    @property
-    def MonetaryAccountSwitchService(self):
-        """
-        :rtype: MonetaryAccountSwitchService
-        """
-
-        return self._MonetaryAccountSwitchService
-
-    @property
-    def MonetaryAccountExternalSavings(self):
-        """
-        :rtype: MonetaryAccountExternalSavings
-        """
-
-        return self._MonetaryAccountExternalSavings
-
-    @property
-    def MonetaryAccountCard(self):
-        """
-        :rtype: MonetaryAccountCard
-        """
-
-        return self._MonetaryAccountCard
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._alias is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._budget is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._share is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        if self._fulfillments is not None:
-            return False
-
-        if self._relation_user is not None:
-            return False
-
-        if self._all_co_owner is not None:
-            return False
-
-        if self._co_owner_invite is not None:
-            return False
-
-        if self._open_banking_account is not None:
-            return False
-
-        if self._birdee_investment_portfolio is not None:
-            return False
-
-        if self._MonetaryAccountLight is not None:
-            return False
-
-        if self._MonetaryAccountBank is not None:
-            return False
-
-        if self._MonetaryAccountExternal is not None:
-            return False
-
-        if self._MonetaryAccountInvestment is not None:
-            return False
-
-        if self._MonetaryAccountJoint is not None:
-            return False
-
-        if self._MonetaryAccountSavings is not None:
-            return False
-
-        if self._MonetaryAccountSwitchService is not None:
-            return False
-
-        if self._MonetaryAccountExternalSavings is not None:
-            return False
-
-        if self._MonetaryAccountCard is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccount
-        """
-
-        return converter.json_to_class(MonetaryAccount, json_str)
-
-
-class MonetaryAccountProfile(BunqModel):
-    """
-    Used to update and read up monetary account profiles, to keep the balance
-    between specific thresholds.
-    
-    :param _profile_fill: The profile settings for triggering the fill of a
-    monetary account.
-    :type _profile_fill: object_.MonetaryAccountProfileFill
-    :param _profile_drain: The profile settings for moving excesses to a savings
-    account
-    :type _profile_drain: object_.MonetaryAccountProfileDrain
-    """
-
-    # Field constants.
-    FIELD_PROFILE_FILL = "profile_fill"
-    FIELD_PROFILE_DRAIN = "profile_drain"
-
-
-    _profile_fill = None
-    _profile_drain = None
-    _profile_fill_field_for_request = None
-    _profile_drain_field_for_request = None
-
-    def __init__(self, profile_fill=None, profile_drain=None):
-        """
-        :param profile_fill: The profile settings for triggering the fill of a
-        monetary account.
-        :type profile_fill: object_.MonetaryAccountProfileFill
-        :param profile_drain: The profile settings for moving excesses to a savings
-        account
-        :type profile_drain: object_.MonetaryAccountProfileDrain
-        """
-
-        self._profile_fill_field_for_request = profile_fill
-        self._profile_drain_field_for_request = profile_drain
-
-
-
-    @property
-    def profile_fill(self):
-        """
-        :rtype: object_.MonetaryAccountProfileFill
-        """
-
-        return self._profile_fill
-
-    @property
-    def profile_drain(self):
-        """
-        :rtype: object_.MonetaryAccountProfileDrain
-        """
-
-        return self._profile_drain
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._profile_fill is not None:
-            return False
-
-        if self._profile_drain is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountProfile
-        """
-
-        return converter.json_to_class(MonetaryAccountProfile, json_str)
-
-
-class MonetaryAccountBudget(BunqModel):
-    """
-    Endpoint to read, list, or delete the budget for a monetary account.
-    
-    :param _all_category: DEPRECATED. The list of categories on which the user
-    wants to set the budget.
-    :type _all_category: list[str]
-    :param _amount: DEPRECATED. The amount for the budget.
-    :type _amount: object_.Amount
-    :param _recurrence_type: DEPRECATED. The recurrence type for the automatic
-    top-up.
-    :type _recurrence_type: str
-    :param _monetary_account_source_funding_id: DEPRECATED. The monetary
-    account's ID from/to which the missing/exceeding funds will be transferred.
-    :type _monetary_account_source_funding_id: int
-    :param _payment_day_of_month: DEPRECATED. The day of the month for the
-    automatic top-up.
-    :type _payment_day_of_month: int
-    """
-
-    # Field constants.
-    FIELD_ALL_CATEGORY = "all_category"
-    FIELD_AMOUNT = "amount"
-    FIELD_RECURRENCE_TYPE = "recurrence_type"
-    FIELD_MONETARY_ACCOUNT_SOURCE_FUNDING_ID = "monetary_account_source_funding_id"
-    FIELD_PAYMENT_DAY_OF_MONTH = "payment_day_of_month"
-
-
-    _all_category_field_for_request = None
-    _amount_field_for_request = None
-    _recurrence_type_field_for_request = None
-    _monetary_account_source_funding_id_field_for_request = None
-    _payment_day_of_month_field_for_request = None
-
-    def __init__(self, all_category=None, amount=None, recurrence_type=None, monetary_account_source_funding_id=None, payment_day_of_month=None):
-        """
-        :param all_category: DEPRECATED. The list of categories on which the user
-        wants to set the budget.
-        :type all_category: list[str]
-        :param amount: DEPRECATED. The amount for the budget.
-        :type amount: object_.Amount
-        :param recurrence_type: DEPRECATED. The recurrence type for the automatic
-        top-up.
-        :type recurrence_type: str
-        :param monetary_account_source_funding_id: DEPRECATED. The monetary
-        account's ID from/to which the missing/exceeding funds will be transferred.
-        :type monetary_account_source_funding_id: int
-        :param payment_day_of_month: DEPRECATED. The day of the month for the
-        automatic top-up.
-        :type payment_day_of_month: int
-        """
-
-        self._all_category_field_for_request = all_category
-        self._amount_field_for_request = amount
-        self._recurrence_type_field_for_request = recurrence_type
-        self._monetary_account_source_funding_id_field_for_request = monetary_account_source_funding_id
-        self._payment_day_of_month_field_for_request = payment_day_of_month
-
-
-
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountBudget
-        """
-
-        return converter.json_to_class(MonetaryAccountBudget, json_str)
-
-
-class Fulfillment(BunqModel):
-    """
-    Endpoint for getting information fulfillments for a user.
-    
-    :param _type_: Type of the information fulfillment.
-    :type _type_: str
-    :param _reason: The reason why this fulfillment is requested.
-    :type _reason: str
-    :param _reason_translated: The translated reason why this fulfillment is
-    requested.
-    :type _reason_translated: str
-    :param _status: Status of this fulfillment.
-    :type _status: str
-    :param _time_mandatory: Time when the information fulfillment becomes
-    mandatory.
-    :type _time_mandatory: str
-    :param _user_id: The user id this fulfillment is required for.
-    :type _user_id: int
-    :param _all_status_allowed: The allowed statusses for this fulfillment.
-    :type _all_status_allowed: list[str]
-    """
-
-    _type_ = None
-    _reason = None
-    _reason_translated = None
-    _status = None
-    _time_mandatory = None
-    _user_id = None
-    _all_status_allowed = None
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_translated(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_translated
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def time_mandatory(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_mandatory
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def all_status_allowed(self):
-        """
-        :rtype: list[str]
-        """
-
-        return self._all_status_allowed
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._type_ is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_translated is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._time_mandatory is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._all_status_allowed is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: Fulfillment
-        """
-
-        return converter.json_to_class(Fulfillment, json_str)
-
-
-class MonetaryAccountLight(BunqModel):
-    """
-    With MonetaryAccountLight is a monetary account for bunq light users.
-    Through this endpoint you can retrieve information regarding your existing
-    MonetaryAccountLights and update specific fields of an existing
-    MonetaryAccountLight. Examples of fields that can be updated are the
-    description, the daily limit and the avatar of the account.
-    
-    :param _currency: The currency of the MonetaryAccountLight as an ISO 4217
-    formatted currency code.
-    :type _currency: str
-    :param _description: The description of the MonetaryAccountLight. Defaults
-    to 'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountLight. Defaults to 1000 EUR. Currency must match the
-    MonetaryAccountLight's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountLight.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountLight. Can be: ACTIVE,
-    BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountLight providing
-    extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountBank, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountBank. Can be any user provided
-    message.
-    :type _reason_description: str
-    :param _setting: The settings of the MonetaryAccountLight.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _id_: The id of the MonetaryAccountLight.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountLight's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountLight's last update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountLight.
-    :type _avatar: object_.Avatar
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountLight.
-    :type _balance: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountLight.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountLight's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the MonetaryAccountLight.
-    :type _user_id: int
-    :param _balance_maximum: The maximum balance Amount of the
-    MonetaryAccountLight.
-    :type _balance_maximum: object_.Amount
-    :param _budget_month_used: The amount of the monthly budget used.
-    :type _budget_month_used: object_.Amount
-    :param _budget_month_maximum: The total amount of the monthly budget.
-    :type _budget_month_maximum: object_.Amount
-    :param _budget_year_used: The amount of the yearly budget used.
-    :type _budget_year_used: object_.Amount
-    :param _budget_year_maximum: The total amount of the yearly budget.
-    :type _budget_year_maximum: object_.Amount
-    :param _budget_withdrawal_year_used: The amount of the yearly withdrawal
-    budget used.
-    :type _budget_withdrawal_year_used: object_.Amount
-    :param _budget_withdrawal_year_maximum: The total amount of the yearly
-    withdrawal budget.
-    :type _budget_withdrawal_year_maximum: object_.Amount
-    """
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_SETTING = "setting"
-
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _user_id = None
-    _balance_maximum = None
-    _budget_month_used = None
-    _budget_month_maximum = None
-    _budget_year_used = None
-    _budget_year_maximum = None
-    _budget_withdrawal_year_used = None
-    _budget_withdrawal_year_maximum = None
-    _setting = None
-    _currency_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _setting_field_for_request = None
-
-    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None):
-        """
-        :param currency: The currency of the MonetaryAccountLight as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param description: The description of the MonetaryAccountLight. Defaults to
-        'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountLight. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountLight's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountLight.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountLight. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
-        requests to cancel (close) or reopen the MonetaryAccountLight. When updating
-        the status and/or sub_status no other fields can be updated in the same
-        request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountLight providing
-        extra information regarding the status. Should be ignored for POST requests
-        and can only be REDEMPTION_VOLUNTARY for PUT requests with status CANCELLED.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountBank, can only be OTHER. Should only be specified if updating
-        the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountBank. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param setting: The settings of the MonetaryAccountLight.
-        :type setting: object_.MonetaryAccountSetting
-        """
-
-        self._currency_field_for_request = currency
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._setting_field_for_request = setting
-
-
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def balance_maximum(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance_maximum
-
-    @property
-    def budget_month_used(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._budget_month_used
-
-    @property
-    def budget_month_maximum(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._budget_month_maximum
-
-    @property
-    def budget_year_used(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._budget_year_used
-
-    @property
-    def budget_year_maximum(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._budget_year_maximum
-
-    @property
-    def budget_withdrawal_year_used(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._budget_withdrawal_year_used
-
-    @property
-    def budget_withdrawal_year_maximum(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._budget_withdrawal_year_maximum
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._balance_maximum is not None:
-            return False
-
-        if self._budget_month_used is not None:
-            return False
-
-        if self._budget_month_maximum is not None:
-            return False
-
-        if self._budget_year_used is not None:
-            return False
-
-        if self._budget_year_maximum is not None:
-            return False
-
-        if self._budget_withdrawal_year_used is not None:
-            return False
-
-        if self._budget_withdrawal_year_maximum is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountLight
-        """
-
-        return converter.json_to_class(MonetaryAccountLight, json_str)
-
-
-class MonetaryAccountBank(BunqModel):
-    """
-    With MonetaryAccountBank you can create a new bank account, retrieve
-    information regarding your existing MonetaryAccountBanks and update specific
-    fields of an existing MonetaryAccountBank. Examples of fields that can be
-    updated are the description, the daily limit and the avatar of the
-    account.<br/><br/>Notification filters can be set on a monetary account
-    level to receive callbacks. For more information check the <a
-    href="/api/1/page/callbacks">dedicated callbacks page</a>.
-    
-    :param _currency: The currency of the MonetaryAccountBank as an ISO 4217
-    formatted currency code.
-    :type _currency: str
-    :param _description: The description of the MonetaryAccountBank. Defaults to
-    'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
-    MonetaryAccountBank's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountBank. Can be: ACTIVE,
-    BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountBank providing
-    extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountBank, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountBank. Can be any user provided
-    message.
-    :type _reason_description: str
-    :param _display_name: The legal name of the user / company using this
-    monetary account.
-    :type _display_name: str
-    :param _setting: The settings of the MonetaryAccountBank.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _country_iban: The country of the monetary account IBAN.
-    :type _country_iban: str
-    :param _id_: The id of the MonetaryAccountBank.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountBank's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountBank's last update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountBank.
-    :type _avatar: object_.Avatar
-    :param _overdraft_limit: The maximum Amount the MonetaryAccountBank can be
-    'in the red'.
-    :type _overdraft_limit: object_.Amount
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountBank.
-    :type _balance: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountBank.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountBank's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the MonetaryAccountBank.
-    :type _user_id: int
-    :param _monetary_account_profile: The profile of the account.
-    :type _monetary_account_profile: MonetaryAccountProfile
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-bank"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account-bank/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-bank/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-bank"
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_DISPLAY_NAME = "display_name"
-    FIELD_SETTING = "setting"
-    FIELD_COUNTRY_IBAN = "country_iban"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccountBank"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _overdraft_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _user_id = None
-    _monetary_account_profile = None
-    _display_name = None
-    _setting = None
-    _all_auto_save_id = None
-    _currency_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _display_name_field_for_request = None
-    _setting_field_for_request = None
-    _country_iban_field_for_request = None
-
-    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, country_iban=None):
-        """
-        :param currency: The currency of the MonetaryAccountBank as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param description: The description of the MonetaryAccountBank. Defaults to
-        'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountBank's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountBank. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
-        requests to cancel (close) or reopen the MonetaryAccountBank. When updating
-        the status and/or sub_status no other fields can be updated in the same
-        request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountBank providing extra
-        information regarding the status. Should be ignored for POST requests. In
-        case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountBank, can only be OTHER. Should only be specified if updating
-        the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountBank. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountBank.
-        :type setting: object_.MonetaryAccountSetting
-        :param country_iban: The country of the monetary account IBAN.
-        :type country_iban: str
-        """
-
-        self._currency_field_for_request = currency
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._display_name_field_for_request = display_name
-        self._setting_field_for_request = setting
-        self._country_iban_field_for_request = country_iban
-
-    @classmethod
-    def create(cls,currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, country_iban=None, custom_headers=None):
-        """
-        Create new MonetaryAccountBank.
-        
-        :type user_id: int
-        :param currency: The currency of the MonetaryAccountBank as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param description: The description of the MonetaryAccountBank. Defaults
-        to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountBank's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountBank. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountBank. When
-        updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountBank providing
-        extra information regarding the status. Should be ignored for POST
-        requests. In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountBank, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountBank. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountBank.
-        :type setting: object_.MonetaryAccountSetting
-        :param country_iban: The country of the monetary account IBAN.
-        :type country_iban: str
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_CURRENCY : currency,
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_DISPLAY_NAME : display_name,
-cls.FIELD_SETTING : setting,
-cls.FIELD_COUNTRY_IBAN : country_iban
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  monetary_account_bank_id, custom_headers=None):
-        """
-        Get a specific MonetaryAccountBank.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_bank_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountBank
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_bank_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccountBank.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  monetary_account_bank_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
-        """
-        Update a specific existing MonetaryAccountBank.
-        
-        :type user_id: int
-        :type monetary_account_bank_id: int
-        :param description: The description of the MonetaryAccountBank. Defaults
-        to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountBank's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountBank. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountBank. When
-        updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountBank providing
-        extra information regarding the status. Should be ignored for POST
-        requests. In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountBank, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountBank. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountBank.
-        :type setting: object_.MonetaryAccountSetting
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_DISPLAY_NAME : display_name,
-cls.FIELD_SETTING : setting
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_bank_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        Gets a listing of all MonetaryAccountBanks of a given user.
-        
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountBankList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountBankList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def overdraft_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._overdraft_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: MonetaryAccountProfile
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def display_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._display_name
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._overdraft_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._display_name is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountBank
-        """
-
-        return converter.json_to_class(MonetaryAccountBank, json_str)
-
-
-class MonetaryAccountExternal(BunqModel):
-    """
-    Endpoint for managing monetary accounts which are connected to external
-    services.
-    
-    :param _currency: The currency of the MonetaryAccountExternal as an ISO 4217
-    formatted currency code.
-    :type _currency: str
-    :param _service: The external service the Monetary Account is connected
-    with.
-    :type _service: str
-    :param _description: The description of the MonetaryAccountExternal.
-    Defaults to 'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
-    MonetaryAccountExternal's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountExternal.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountExternal. Can be: ACTIVE,
-    BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountExternal providing
-    extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountExternal, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountExternal. Can be any user provided
-    message.
-    :type _reason_description: str
-    :param _display_name: The legal name of the user / company using this
-    monetary account.
-    :type _display_name: str
-    :param _setting: The settings of the MonetaryAccountExternal.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _id_: The id of the MonetaryAccountExternal.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountExternal's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountExternal's last update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountExternal.
-    :type _avatar: object_.Avatar
-    :param _overdraft_limit: The maximum Amount the MonetaryAccountExternal can
-    be 'in the red'.
-    :type _overdraft_limit: object_.Amount
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountExternal.
-    :type _balance: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountExternal.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountExternal's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the MonetaryAccountExternal.
-    :type _user_id: int
-    :param _monetary_account_profile: The profile of the account.
-    :type _monetary_account_profile: MonetaryAccountProfile
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    :param _open_banking_account: The open banking account for information about
-    the external account.
-    :type _open_banking_account: OpenBankingAccount
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-external"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account-external/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-external/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-external"
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_SERVICE = "service"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_DISPLAY_NAME = "display_name"
-    FIELD_SETTING = "setting"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccountExternal"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _overdraft_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _user_id = None
-    _monetary_account_profile = None
-    _display_name = None
-    _setting = None
-    _all_auto_save_id = None
-    _service = None
-    _open_banking_account = None
-    _currency_field_for_request = None
-    _service_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _display_name_field_for_request = None
-    _setting_field_for_request = None
-
-    def __init__(self, currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None):
-        """
-        :param currency: The currency of the MonetaryAccountExternal as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param service: The service the MonetaryAccountExternal is connected with.
-        :type service: str
-        :param description: The description of the MonetaryAccountExternal. Defaults
-        to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountExternal's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountExternal.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountExternal. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
-        requests to cancel (close) or reopen the MonetaryAccountExternal. When
-        updating the status and/or sub_status no other fields can be updated in the
-        same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountExternal providing
-        extra information regarding the status. Should be ignored for POST requests.
-        In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountExternal, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountExternal. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountExternal.
-        :type setting: object_.MonetaryAccountSetting
-        """
-
-        self._currency_field_for_request = currency
-        self._service_field_for_request = service
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._display_name_field_for_request = display_name
-        self._setting_field_for_request = setting
-
-    @classmethod
-    def create(cls,currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
-        """
-        :type user_id: int
-        :param currency: The currency of the MonetaryAccountExternal as an ISO
-        4217 formatted currency code.
-        :type currency: str
-        :param service: The service the MonetaryAccountExternal is connected
-        with.
-        :type service: str
-        :param description: The description of the MonetaryAccountExternal.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountExternal's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountExternal.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountExternal. Ignored in
-        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN
-        in PUT requests to cancel (close) or reopen the MonetaryAccountExternal.
-        When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountExternal
-        providing extra information regarding the status. Should be ignored for
-        POST requests. In case of PUT requests with status CANCELLED it can only
-        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountExternal, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountExternal. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountExternal.
-        :type setting: object_.MonetaryAccountSetting
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_CURRENCY : currency,
-cls.FIELD_SERVICE : service,
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_DISPLAY_NAME : display_name,
-cls.FIELD_SETTING : setting
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  monetary_account_external_id, custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_external_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountExternal
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_external_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccountExternal.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  monetary_account_external_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_external_id: int
-        :param description: The description of the MonetaryAccountExternal.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountExternal's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountExternal.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountExternal. Ignored in
-        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN
-        in PUT requests to cancel (close) or reopen the MonetaryAccountExternal.
-        When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountExternal
-        providing extra information regarding the status. Should be ignored for
-        POST requests. In case of PUT requests with status CANCELLED it can only
-        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountExternal, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountExternal. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountExternal.
-        :type setting: object_.MonetaryAccountSetting
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_DISPLAY_NAME : display_name,
-cls.FIELD_SETTING : setting
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_external_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountExternalList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountExternalList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def overdraft_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._overdraft_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: MonetaryAccountProfile
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def display_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._display_name
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    @property
-    def service(self):
-        """
-        :rtype: str
-        """
-
-        return self._service
-
-    @property
-    def open_banking_account(self):
-        """
-        :rtype: OpenBankingAccount
-        """
-
-        return self._open_banking_account
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._overdraft_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._display_name is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        if self._service is not None:
-            return False
-
-        if self._open_banking_account is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountExternal
-        """
-
-        return converter.json_to_class(MonetaryAccountExternal, json_str)
-
-
-class OpenBankingAccount(BunqModel):
-    """
-    Post processor for open banking account to be returned in the monetary
-    account external post processor.
-    
-    :param _status: The status of this account.
-    :type _status: str
-    :param _iban: The iban of this account.
-    :type _iban: str
-    :param _time_synced_last: The timestamp of the last time the account was
-    synced with our open banking partner.
-    :type _time_synced_last: str
-    :param _provider_bank: The bank provider the account comes from.
-    :type _provider_bank: OpenBankingProviderBank
-    :param _balance_booked: The booked balance of the account.
-    :type _balance_booked: object_.Amount
-    :param _balance_available: The available balance of the account, if provided
-    by the other bank.
-    :type _balance_available: object_.Amount
-    """
-
-    _status = None
-    _iban = None
-    _time_synced_last = None
-    _provider_bank = None
-    _balance_booked = None
-    _balance_available = None
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def iban(self):
-        """
-        :rtype: str
-        """
-
-        return self._iban
-
-    @property
-    def time_synced_last(self):
-        """
-        :rtype: str
-        """
-
-        return self._time_synced_last
-
-    @property
-    def provider_bank(self):
-        """
-        :rtype: OpenBankingProviderBank
-        """
-
-        return self._provider_bank
-
-    @property
-    def balance_booked(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance_booked
-
-    @property
-    def balance_available(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance_available
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._status is not None:
-            return False
-
-        if self._iban is not None:
-            return False
-
-        if self._time_synced_last is not None:
-            return False
-
-        if self._provider_bank is not None:
-            return False
-
-        if self._balance_booked is not None:
-            return False
-
-        if self._balance_available is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: OpenBankingAccount
-        """
-
-        return converter.json_to_class(OpenBankingAccount, json_str)
-
-
-class OpenBankingProviderBank(BunqModel):
-    """
-    Lists open banking provider banks.
-    
-    :param _account_information_service_status: Whether we support Open Banking
-    budgeting using the bank provider.
-    :type _account_information_service_status: str
-    :param _payment_information_service_status: Whether we support top ups using
-    the bank provider.
-    :type _payment_information_service_status: str
-    :param _name: The name of the bank provider.
-    :type _name: str
-    :param _aiia_provider_id: The external identifier for this bank.
-    :type _aiia_provider_id: str
-    :param _country: Country of provider
-    :type _country: str
-    :param _all_payment_method_allowed_sepa: All payment methods allowed for
-    Sepa payments.
-    :type _all_payment_method_allowed_sepa: list[str]
-    :param _all_payment_method_allowed_domestic: All payment methods allowed for
-    Domestic payments.
-    :type _all_payment_method_allowed_domestic: list[str]
-    :param _audience_business_status: Whether business banking is supported by
-    the provider.
-    :type _audience_business_status: bool
-    :param _audience_private_status: Whether personal banking is supported by
-    the provider.
-    :type _audience_private_status: bool
-    :param _avatar: The avatar of the bank.
-    :type _avatar: object_.Avatar
-    """
-
-    # Field constants.
-    FIELD_ACCOUNT_INFORMATION_SERVICE_STATUS = "account_information_service_status"
-    FIELD_PAYMENT_INFORMATION_SERVICE_STATUS = "payment_information_service_status"
-
-
-    _name = None
-    _account_information_service_status = None
-    _payment_information_service_status = None
-    _aiia_provider_id = None
-    _country = None
-    _all_payment_method_allowed_sepa = None
-    _all_payment_method_allowed_domestic = None
-    _audience_business_status = None
-    _audience_private_status = None
-    _avatar = None
-    _account_information_service_status_field_for_request = None
-    _payment_information_service_status_field_for_request = None
-
-    def __init__(self, account_information_service_status=None, payment_information_service_status=None):
-        """
-        :param account_information_service_status: Whether we want to activate the
-        account information service for the bank provider.
-        :type account_information_service_status: str
-        :param payment_information_service_status: Whether we want to activate the
-        payment information service for the bank provider.
-        :type payment_information_service_status: str
-        """
-
-        self._account_information_service_status_field_for_request = account_information_service_status
-        self._payment_information_service_status_field_for_request = payment_information_service_status
-
-
-
-    @property
-    def name(self):
-        """
-        :rtype: str
-        """
-
-        return self._name
-
-    @property
-    def account_information_service_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._account_information_service_status
-
-    @property
-    def payment_information_service_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._payment_information_service_status
-
-    @property
-    def aiia_provider_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._aiia_provider_id
-
-    @property
-    def country(self):
-        """
-        :rtype: str
-        """
-
-        return self._country
-
-    @property
-    def all_payment_method_allowed_sepa(self):
-        """
-        :rtype: list[str]
-        """
-
-        return self._all_payment_method_allowed_sepa
-
-    @property
-    def all_payment_method_allowed_domestic(self):
-        """
-        :rtype: list[str]
-        """
-
-        return self._all_payment_method_allowed_domestic
-
-    @property
-    def audience_business_status(self):
-        """
-        :rtype: bool
-        """
-
-        return self._audience_business_status
-
-    @property
-    def audience_private_status(self):
-        """
-        :rtype: bool
-        """
-
-        return self._audience_private_status
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._name is not None:
-            return False
-
-        if self._account_information_service_status is not None:
-            return False
-
-        if self._payment_information_service_status is not None:
-            return False
-
-        if self._aiia_provider_id is not None:
-            return False
-
-        if self._country is not None:
-            return False
-
-        if self._all_payment_method_allowed_sepa is not None:
-            return False
-
-        if self._all_payment_method_allowed_domestic is not None:
-            return False
-
-        if self._audience_business_status is not None:
-            return False
-
-        if self._audience_private_status is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: OpenBankingProviderBank
-        """
-
-        return converter.json_to_class(OpenBankingProviderBank, json_str)
-
-
-class MonetaryAccountInvestment(BunqModel):
-    """
-    Endpoint for managing investment monetary accounts.
-    
-    :param _currency: The currency of the MonetaryAccountInvestment as an ISO
-    4217 formatted currency code.
-    :type _currency: str
-    :param _provider: The provider of the investment service.
-    :type _provider: str
-    :param _description: The description of the MonetaryAccountInvestment.
-    Defaults to 'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountInvestment. Defaults to 1000 EUR. Currency must match the
-    MonetaryAccountInvestment's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _avatar_uuid: The UUID of the Avatar of the
-    MonetaryAccountInvestment.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountInvestment. Can be: ACTIVE,
-    BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountInvestment
-    providing extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountInvestment, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountInvestment. Can be any user provided
-    message.
-    :type _reason_description: str
-    :param _display_name: The legal name of the user / company using this
-    monetary account.
-    :type _display_name: str
-    :param _setting: The settings of the MonetaryAccountInvestment.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _birdee_investment_portfolio: The Birdee investment portfolio.
-    :type _birdee_investment_portfolio: BirdeeInvestmentPortfolio
-    :param _monetary_account_deposit_initial_id: ID of the MA to be used for the
-    initial deposit to the investment account.
-    :type _monetary_account_deposit_initial_id: int
-    :param _amount_deposit_initial: The amount to be transferred to the
-    investment account as the initial deposit.
-    :type _amount_deposit_initial: object_.Amount
-    :param _id_: The id of the MonetaryAccountInvestment.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountInvestment's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountInvestment's last
-    update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountInvestment.
-    :type _avatar: object_.Avatar
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountInvestment.
-    :type _balance: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountInvestment.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountInvestment's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the MonetaryAccountInvestment.
-    :type _user_id: int
-    :param _monetary_account_profile: The profile of the account.
-    :type _monetary_account_profile: MonetaryAccountProfile
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    """
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_PROVIDER = "provider"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_DISPLAY_NAME = "display_name"
-    FIELD_SETTING = "setting"
-    FIELD_BIRDEE_INVESTMENT_PORTFOLIO = "birdee_investment_portfolio"
-    FIELD_MONETARY_ACCOUNT_DEPOSIT_INITIAL_ID = "monetary_account_deposit_initial_id"
-    FIELD_AMOUNT_DEPOSIT_INITIAL = "amount_deposit_initial"
-
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _user_id = None
-    _monetary_account_profile = None
-    _display_name = None
-    _setting = None
-    _all_auto_save_id = None
-    _currency_field_for_request = None
-    _provider_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _display_name_field_for_request = None
-    _setting_field_for_request = None
-    _birdee_investment_portfolio_field_for_request = None
-    _monetary_account_deposit_initial_id_field_for_request = None
-    _amount_deposit_initial_field_for_request = None
-
-    def __init__(self, currency, provider, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, birdee_investment_portfolio=None, monetary_account_deposit_initial_id=None, amount_deposit_initial=None):
-        """
-        :param currency: The currency of the MonetaryAccountInvestment as an ISO
-        4217 formatted currency code.
-        :type currency: str
-        :param provider: The provider of the investment service.
-        :type provider: str
-        :param description: The description of the MonetaryAccountInvestment.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountInvestment. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountInvestment's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountInvestment.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountInvestment. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
-        requests to cancel (close) or reopen the MonetaryAccountInvestment. When
-        updating the status and/or sub_status no other fields can be updated in the
-        same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountInvestment providing
-        extra information regarding the status. Should be ignored for POST requests.
-        In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountInvestment, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountInvestment. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountInvestment.
-        :type setting: object_.MonetaryAccountSetting
-        :param birdee_investment_portfolio: The Birdee investment portfolio.
-        :type birdee_investment_portfolio: BirdeeInvestmentPortfolio
-        :param monetary_account_deposit_initial_id: ID of the MA to be used for the
-        initial deposit to the investment account.
-        :type monetary_account_deposit_initial_id: int
-        :param amount_deposit_initial: The amount to be transferred to the
-        investment account as the initial deposit.
-        :type amount_deposit_initial: object_.Amount
-        """
-
-        self._currency_field_for_request = currency
-        self._provider_field_for_request = provider
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._display_name_field_for_request = display_name
-        self._setting_field_for_request = setting
-        self._birdee_investment_portfolio_field_for_request = birdee_investment_portfolio
-        self._monetary_account_deposit_initial_id_field_for_request = monetary_account_deposit_initial_id
-        self._amount_deposit_initial_field_for_request = amount_deposit_initial
-
-
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: MonetaryAccountProfile
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def display_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._display_name
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._display_name is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountInvestment
-        """
-
-        return converter.json_to_class(MonetaryAccountInvestment, json_str)
-
-
-class BirdeeInvestmentPortfolio(BunqModel):
-    """
-    Endpoint for interacting with the investment portfolio opened at Birdee.
-    
-    :param _risk_profile_type: The type of risk profile associated with the
-    portfolio.
-    :type _risk_profile_type: str
-    :param _investment_theme: The investment theme.
-    :type _investment_theme: str
-    :param _name: The name associated with the investment portfolio.
-    :type _name: str
-    :param _goal: The investment goal.
-    :type _goal: object_.BirdeeInvestmentPortfolioGoal
-    :param _status: Status of the portfolio.
-    :type _status: str
-    :param _number_of_strategy_change_annual_maximum: Maximum number of strategy
-    changes in a year.
-    :type _number_of_strategy_change_annual_maximum: int
-    :param _number_of_strategy_change_annual_used: Maximum number of strategy
-    changes used.
-    :type _number_of_strategy_change_annual_used: int
-    :param _external_identifier: The external identifier of the portfolio.
-    :type _external_identifier: str
-    :param _balance: The investment portfolio balance.
-    :type _balance: BirdeeInvestmentPortfolioBalance
-    :param _allocations: The allocations of the investment portfolio.
-    :type _allocations: list[BirdeePortfolioAllocation]
-    """
-
-    # Field constants.
-    FIELD_RISK_PROFILE_TYPE = "risk_profile_type"
-    FIELD_INVESTMENT_THEME = "investment_theme"
-    FIELD_NAME = "name"
-    FIELD_GOAL = "goal"
-
-
-    _status = None
-    _risk_profile_type = None
-    _investment_theme = None
-    _number_of_strategy_change_annual_maximum = None
-    _number_of_strategy_change_annual_used = None
-    _name = None
-    _external_identifier = None
-    _goal = None
-    _balance = None
-    _allocations = None
-    _risk_profile_type_field_for_request = None
-    _investment_theme_field_for_request = None
-    _name_field_for_request = None
-    _goal_field_for_request = None
-
-    def __init__(self, risk_profile_type=None, investment_theme=None, name=None, goal=None):
-        """
-        :param risk_profile_type: The type of risk profile associated with the
-        portfolio.
-        :type risk_profile_type: str
-        :param investment_theme: The investment theme.
-        :type investment_theme: str
-        :param name: The name associated with the investment portfolio.
-        :type name: str
-        :param goal: The investment goal.
-        :type goal: object_.BirdeeInvestmentPortfolioGoal
-        """
-
-        self._risk_profile_type_field_for_request = risk_profile_type
-        self._investment_theme_field_for_request = investment_theme
-        self._name_field_for_request = name
-        self._goal_field_for_request = goal
-
-
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def risk_profile_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._risk_profile_type
-
-    @property
-    def investment_theme(self):
-        """
-        :rtype: str
-        """
-
-        return self._investment_theme
-
-    @property
-    def number_of_strategy_change_annual_maximum(self):
-        """
-        :rtype: int
-        """
-
-        return self._number_of_strategy_change_annual_maximum
-
-    @property
-    def number_of_strategy_change_annual_used(self):
-        """
-        :rtype: int
-        """
-
-        return self._number_of_strategy_change_annual_used
-
-    @property
-    def name(self):
-        """
-        :rtype: str
-        """
-
-        return self._name
-
-    @property
-    def external_identifier(self):
-        """
-        :rtype: str
-        """
-
-        return self._external_identifier
-
-    @property
-    def goal(self):
-        """
-        :rtype: object_.BirdeeInvestmentPortfolioGoal
-        """
-
-        return self._goal
-
-    @property
-    def balance(self):
-        """
-        :rtype: BirdeeInvestmentPortfolioBalance
-        """
-
-        return self._balance
-
-    @property
-    def allocations(self):
-        """
-        :rtype: list[BirdeePortfolioAllocation]
-        """
-
-        return self._allocations
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._status is not None:
-            return False
-
-        if self._risk_profile_type is not None:
-            return False
-
-        if self._investment_theme is not None:
-            return False
-
-        if self._number_of_strategy_change_annual_maximum is not None:
-            return False
-
-        if self._number_of_strategy_change_annual_used is not None:
-            return False
-
-        if self._name is not None:
-            return False
-
-        if self._external_identifier is not None:
-            return False
-
-        if self._goal is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._allocations is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BirdeeInvestmentPortfolio
-        """
-
-        return converter.json_to_class(BirdeeInvestmentPortfolio, json_str)
-
-
-class BirdeeInvestmentPortfolioBalance(BunqModel):
-    """
-    Endpoint for interacting with the birdee investment portfolio balance..
-    
-    :param _amount_available: The current valuation of the portfolio, minus any
-    amount pending withdrawal.
-    :type _amount_available: object_.Amount
-    :param _amount_deposit_total: The total amount deposited.
-    :type _amount_deposit_total: object_.Amount
-    :param _amount_withdrawal_total: The total amount withdrawn.
-    :type _amount_withdrawal_total: object_.Amount
-    :param _amount_fee_total: The total fee amount.
-    :type _amount_fee_total: object_.Amount
-    :param _amount_profit: The difference between the netto deposited amount and
-    the current valuation.
-    :type _amount_profit: object_.Amount
-    :param _amount_deposit_pending: The amount that's sent to Birdee, but
-    pending investment on the portfolio.
-    :type _amount_deposit_pending: object_.Amount
-    :param _amount_withdrawal_pending: The amount that's sent to Birdee, but
-    pending withdrawal.
-    :type _amount_withdrawal_pending: object_.Amount
-    """
-
-    _amount_available = None
-    _amount_deposit_total = None
-    _amount_withdrawal_total = None
-    _amount_fee_total = None
-    _amount_profit = None
-    _amount_deposit_pending = None
-    _amount_withdrawal_pending = None
-
-    @property
-    def amount_available(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_available
-
-    @property
-    def amount_deposit_total(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_deposit_total
-
-    @property
-    def amount_withdrawal_total(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_withdrawal_total
-
-    @property
-    def amount_fee_total(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_fee_total
-
-    @property
-    def amount_profit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_profit
-
-    @property
-    def amount_deposit_pending(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_deposit_pending
-
-    @property
-    def amount_withdrawal_pending(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount_withdrawal_pending
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._amount_available is not None:
-            return False
-
-        if self._amount_deposit_total is not None:
-            return False
-
-        if self._amount_withdrawal_total is not None:
-            return False
-
-        if self._amount_fee_total is not None:
-            return False
-
-        if self._amount_profit is not None:
-            return False
-
-        if self._amount_deposit_pending is not None:
-            return False
-
-        if self._amount_withdrawal_pending is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BirdeeInvestmentPortfolioBalance
-        """
-
-        return converter.json_to_class(BirdeeInvestmentPortfolioBalance, json_str)
-
-
-class BirdeePortfolioAllocation(BunqModel):
-    """
-    Endpoint for viewing the allocations of the model portfolios Birdee offers.
-    
-    :param _instrument_currency: Currency of the instrument.
-    :type _instrument_currency: str
-    :param _instrument_asset_class: Asset Class of the instrument.
-    :type _instrument_asset_class: str
-    :param _instrument_asset_class_name: Name of the asset class.
-    :type _instrument_asset_class_name: str
-    :param _instrument_isin: ISIN code of the instrument.
-    :type _instrument_isin: str
-    :param _instrument_name: Name of the instrument.
-    :type _instrument_name: str
-    :param _instrument_region_name: Name of the geographical region covered by
-    the instrument
-    :type _instrument_region_name: str
-    :param _instrument_key_information_document_uri: Key Information Document of
-    the instrument.
-    :type _instrument_key_information_document_uri: str
-    :param _weight: Weight of the financial instrument in the model portfolio.
-    :type _weight: str
-    :param _quantity: Quantity of the financial instrument in the portfolio.
-    :type _quantity: str
-    :param _price: Unit price of the financial instrument.
-    :type _price: str
-    :param _amount: Monetary amount of the financial instrument in the
-    portfolio.
-    :type _amount: str
-    """
-
-    _instrument_currency = None
-    _instrument_asset_class = None
-    _instrument_asset_class_name = None
-    _instrument_isin = None
-    _instrument_name = None
-    _instrument_region_name = None
-    _instrument_key_information_document_uri = None
-    _weight = None
-    _quantity = None
-    _price = None
-    _amount = None
-
-    @property
-    def instrument_currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_currency
-
-    @property
-    def instrument_asset_class(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_asset_class
-
-    @property
-    def instrument_asset_class_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_asset_class_name
-
-    @property
-    def instrument_isin(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_isin
-
-    @property
-    def instrument_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_name
-
-    @property
-    def instrument_region_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_region_name
-
-    @property
-    def instrument_key_information_document_uri(self):
-        """
-        :rtype: str
-        """
-
-        return self._instrument_key_information_document_uri
-
-    @property
-    def weight(self):
-        """
-        :rtype: str
-        """
-
-        return self._weight
-
-    @property
-    def quantity(self):
-        """
-        :rtype: str
-        """
-
-        return self._quantity
-
-    @property
-    def price(self):
-        """
-        :rtype: str
-        """
-
-        return self._price
-
-    @property
-    def amount(self):
-        """
-        :rtype: str
-        """
-
-        return self._amount
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._instrument_currency is not None:
-            return False
-
-        if self._instrument_asset_class is not None:
-            return False
-
-        if self._instrument_asset_class_name is not None:
-            return False
-
-        if self._instrument_isin is not None:
-            return False
-
-        if self._instrument_name is not None:
-            return False
-
-        if self._instrument_region_name is not None:
-            return False
-
-        if self._instrument_key_information_document_uri is not None:
-            return False
-
-        if self._weight is not None:
-            return False
-
-        if self._quantity is not None:
-            return False
-
-        if self._price is not None:
-            return False
-
-        if self._amount is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: BirdeePortfolioAllocation
-        """
-
-        return converter.json_to_class(BirdeePortfolioAllocation, json_str)
-
-
-class MonetaryAccountJoint(BunqModel):
-    """
-    The endpoint for joint monetary accounts.
-    
-    :param _currency: The currency of the MonetaryAccountJoint as an ISO 4217
-    formatted currency code.
-    :type _currency: str
-    :param _description: The description of the MonetaryAccountJoint. Defaults
-    to 'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
-    MonetaryAccountJoint's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _overdraft_limit: The maximum Amount the MonetaryAccountJoint can be
-    'in the red'.
-    :type _overdraft_limit: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountJoint.
-    :type _alias: list[object_.Pointer]
-    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountJoint. Can be: ACTIVE,
-    BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountJoint providing
-    extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountJoint, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountJoint. Can be any user provided
-    message.
-    :type _reason_description: str
-    :param _all_co_owner: The users the account will be joint with.
-    :type _all_co_owner: list[object_.CoOwner]
-    :param _setting: The settings of the MonetaryAccountJoint.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _id_: The id of the MonetaryAccountJoint.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountJoint's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountJoint's last update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountJoint.
-    :type _avatar: object_.Avatar
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountJoint.
-    :type _balance: object_.Amount
-    :param _public_uuid: The MonetaryAccountJoint's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the MonetaryAccountJoint.
-    :type _user_id: int
-    :param _monetary_account_profile: The profile of the account.
-    :type _monetary_account_profile: MonetaryAccountProfile
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-joint"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account-joint/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-joint/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-joint"
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_OVERDRAFT_LIMIT = "overdraft_limit"
-    FIELD_ALIAS = "alias"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_ALL_CO_OWNER = "all_co_owner"
-    FIELD_SETTING = "setting"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccountJoint"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _overdraft_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _all_co_owner = None
-    _user_id = None
-    _monetary_account_profile = None
-    _setting = None
-    _all_auto_save_id = None
-    _currency_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _overdraft_limit_field_for_request = None
-    _alias_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _all_co_owner_field_for_request = None
-    _setting_field_for_request = None
-
-    def __init__(self, currency, all_co_owner, description=None, daily_limit=None, overdraft_limit=None, alias=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None):
-        """
-        :param currency: The currency of the MonetaryAccountJoint as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param all_co_owner: The users the account will be joint with.
-        :type all_co_owner: list[object_.CoOwner]
-        :param description: The description of the MonetaryAccountJoint. Defaults to
-        'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountJoint's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param overdraft_limit: The maximum Amount the MonetaryAccountJoint can be
-        'in the red'. Must be 0 EUR or omitted.
-        :type overdraft_limit: object_.Amount
-        :param alias: The Aliases to add to MonetaryAccountJoint. Must all be
-        confirmed first. Can mostly be ignored.
-        :type alias: list[object_.Pointer]
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountJoint. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
-        requests to cancel (close) or reopen the MonetaryAccountJoint. When updating
-        the status and/or sub_status no other fields can be updated in the same
-        request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountJoint providing
-        extra information regarding the status. Should be ignored for POST requests.
-        In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountJoint, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountJoint. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param setting: The settings of the MonetaryAccountJoint.
-        :type setting: object_.MonetaryAccountSetting
-        """
-
-        self._currency_field_for_request = currency
-        self._all_co_owner_field_for_request = all_co_owner
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._overdraft_limit_field_for_request = overdraft_limit
-        self._alias_field_for_request = alias
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._setting_field_for_request = setting
-
-    @classmethod
-    def create(cls,currency, all_co_owner, description=None, daily_limit=None, overdraft_limit=None, alias=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None, custom_headers=None):
-        """
-        :type user_id: int
-        :param currency: The currency of the MonetaryAccountJoint as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param all_co_owner: The users the account will be joint with.
-        :type all_co_owner: list[object_.CoOwner]
-        :param description: The description of the MonetaryAccountJoint.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountJoint's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param overdraft_limit: The maximum Amount the MonetaryAccountJoint can
-        be 'in the red'. Must be 0 EUR or omitted.
-        :type overdraft_limit: object_.Amount
-        :param alias: The Aliases to add to MonetaryAccountJoint. Must all be
-        confirmed first. Can mostly be ignored.
-        :type alias: list[object_.Pointer]
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountJoint. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountJoint. When
-        updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountJoint providing
-        extra information regarding the status. Should be ignored for POST
-        requests. In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountJoint, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountJoint. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param setting: The settings of the MonetaryAccountJoint.
-        :type setting: object_.MonetaryAccountSetting
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_CURRENCY : currency,
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_OVERDRAFT_LIMIT : overdraft_limit,
-cls.FIELD_ALIAS : alias,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_ALL_CO_OWNER : all_co_owner,
-cls.FIELD_SETTING : setting
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  monetary_account_joint_id, custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_joint_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountJoint
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_joint_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccountJoint.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  monetary_account_joint_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_joint_id: int
-        :param description: The description of the MonetaryAccountJoint.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountJoint's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountJoint. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountJoint. When
-        updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountJoint providing
-        extra information regarding the status. Should be ignored for POST
-        requests. In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountJoint, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountJoint. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param setting: The settings of the MonetaryAccountJoint.
-        :type setting: object_.MonetaryAccountSetting
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_SETTING : setting
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_joint_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountJointList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountJointList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def overdraft_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._overdraft_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def all_co_owner(self):
-        """
-        :rtype: list[object_.CoOwner]
-        """
-
-        return self._all_co_owner
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: MonetaryAccountProfile
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._overdraft_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._all_co_owner is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountJoint
-        """
-
-        return converter.json_to_class(MonetaryAccountJoint, json_str)
-
-
-class MonetaryAccountSavings(BunqModel):
-    """
-    With MonetaryAccountSavings you can create a new savings account.
-    
-    :param _currency: The currency of the MonetaryAccountSavings as an ISO 4217
-    formatted currency code.
-    :type _currency: str
-    :param _description: The description of the MonetaryAccountSavings. Defaults
-    to 'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
-    MonetaryAccountSavings's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountSavings.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountSavings. Can be: ACTIVE,
-    BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountSavings providing
-    extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountSavings, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountSavings. Can be any user provided
-    message.
-    :type _reason_description: str
-    :param _all_co_owner: The users the account will be joint with.
-    :type _all_co_owner: list[object_.CoOwner]
-    :param _setting: The settings of the MonetaryAccountSavings.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _savings_goal: The Savings Goal set for this MonetaryAccountSavings.
-    :type _savings_goal: object_.Amount
-    :param _id_: The id of the MonetaryAccountSavings.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountSavings's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountSavings's last update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountSavings.
-    :type _avatar: object_.Avatar
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountSavings.
-    :type _balance: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountSavings.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountSavings's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the MonetaryAccountSavings.
-    :type _user_id: int
-    :param _monetary_account_profile: The profile of the account.
-    :type _monetary_account_profile: MonetaryAccountProfile
-    :param _savings_goal_progress: The progress in percentages for the Savings
-    Goal set for this MonetaryAccountSavings.
-    :type _savings_goal_progress: float
-    :param _number_of_payment_remaining: The number of payments that can be made
-    from this savings account
-    :type _number_of_payment_remaining: str
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-savings"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account-savings/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-savings/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-savings"
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_ALL_CO_OWNER = "all_co_owner"
-    FIELD_SETTING = "setting"
-    FIELD_SAVINGS_GOAL = "savings_goal"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccountSavings"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _all_co_owner = None
-    _user_id = None
-    _monetary_account_profile = None
-    _setting = None
-    _savings_goal = None
-    _savings_goal_progress = None
-    _number_of_payment_remaining = None
-    _all_auto_save_id = None
-    _currency_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _all_co_owner_field_for_request = None
-    _setting_field_for_request = None
-    _savings_goal_field_for_request = None
-
-    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, all_co_owner=None, setting=None, savings_goal=None):
-        """
-        :param currency: The currency of the MonetaryAccountSavings as an ISO 4217
-        formatted currency code.
-        :type currency: str
-        :param description: The description of the MonetaryAccountSavings. Defaults
-        to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountSavings's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountSavings.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountSavings. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
-        requests to cancel (close) or reopen the MonetaryAccountSavings. When
-        updating the status and/or sub_status no other fields can be updated in the
-        same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountSavings providing
-        extra information regarding the status. Should be ignored for POST requests.
-        In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountSavings, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountSavings. Can be any user provided
-        message. Should only be specified if updating the status to CANCELLED.
-        :type reason_description: str
-        :param all_co_owner: The users the account will be joint with.
-        :type all_co_owner: list[object_.CoOwner]
-        :param setting: The settings of the MonetaryAccountSavings.
-        :type setting: object_.MonetaryAccountSetting
-        :param savings_goal: The Savings Goal set for this MonetaryAccountSavings.
-        :type savings_goal: object_.Amount
-        """
-
-        self._currency_field_for_request = currency
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._all_co_owner_field_for_request = all_co_owner
-        self._setting_field_for_request = setting
-        self._savings_goal_field_for_request = savings_goal
-
-    @classmethod
-    def create(cls,currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, all_co_owner=None, setting=None, savings_goal=None, custom_headers=None):
-        """
-        Create new MonetaryAccountSavings.
-        
-        :type user_id: int
-        :param currency: The currency of the MonetaryAccountSavings as an ISO
-        4217 formatted currency code.
-        :type currency: str
-        :param description: The description of the MonetaryAccountSavings.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountSavings's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountSavings.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountSavings. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountSavings.
-        When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountSavings
-        providing extra information regarding the status. Should be ignored for
-        POST requests. In case of PUT requests with status CANCELLED it can only
-        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountSavings, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountSavings. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param all_co_owner: The users the account will be joint with.
-        :type all_co_owner: list[object_.CoOwner]
-        :param setting: The settings of the MonetaryAccountSavings.
-        :type setting: object_.MonetaryAccountSetting
-        :param savings_goal: The Savings Goal set for this
-        MonetaryAccountSavings.
-        :type savings_goal: object_.Amount
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_CURRENCY : currency,
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_ALL_CO_OWNER : all_co_owner,
-cls.FIELD_SETTING : setting,
-cls.FIELD_SAVINGS_GOAL : savings_goal
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  monetary_account_savings_id, custom_headers=None):
-        """
-        Get a specific MonetaryAccountSavings.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_savings_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountSavings
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_savings_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccountSavings.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  monetary_account_savings_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None, savings_goal=None, custom_headers=None):
-        """
-        Update a specific existing MonetaryAccountSavings.
-        
-        :type user_id: int
-        :type monetary_account_savings_id: int
-        :param description: The description of the MonetaryAccountSavings.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
-        MonetaryAccountSavings's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountSavings.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountSavings. Ignored in POST
-        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountSavings.
-        When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountSavings
-        providing extra information regarding the status. Should be ignored for
-        POST requests. In case of PUT requests with status CANCELLED it can only
-        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountSavings, can only be OTHER. Should only be specified if
-        updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountSavings. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param setting: The settings of the MonetaryAccountSavings.
-        :type setting: object_.MonetaryAccountSetting
-        :param savings_goal: The Savings Goal set for this
-        MonetaryAccountSavings.
-        :type savings_goal: object_.Amount
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_SETTING : setting,
-cls.FIELD_SAVINGS_GOAL : savings_goal
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_savings_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        Gets a listing of all MonetaryAccountSavingss of a given user.
-        
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountSavingsList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountSavingsList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def all_co_owner(self):
-        """
-        :rtype: list[object_.CoOwner]
-        """
-
-        return self._all_co_owner
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: MonetaryAccountProfile
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def savings_goal(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._savings_goal
-
-    @property
-    def savings_goal_progress(self):
-        """
-        :rtype: float
-        """
-
-        return self._savings_goal_progress
-
-    @property
-    def number_of_payment_remaining(self):
-        """
-        :rtype: str
-        """
-
-        return self._number_of_payment_remaining
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._all_co_owner is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._savings_goal is not None:
-            return False
-
-        if self._savings_goal_progress is not None:
-            return False
-
-        if self._number_of_payment_remaining is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountSavings
-        """
-
-        return converter.json_to_class(MonetaryAccountSavings, json_str)
-
-
-class MonetaryAccountSwitchService(BunqModel):
-    """
-    View for MonetaryAccountSwitchService
-    
-    :param _id_: The id of the monetary account.
-    :type _id_: int
-    :param _created: The timestamp of the monetary account's creation.
-    :type _created: str
-    :param _description: The description for the bank account.
-    :type _description: str
-    :param _status: The status of the account.
-    :type _status: str
-    :param _sub_status: The sub-status of the account.
-    :type _sub_status: str
-    """
-
-    _id_ = None
-    _created = None
-    _description = None
-    _status = None
-    _sub_status = None
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountSwitchService
-        """
-
-        return converter.json_to_class(MonetaryAccountSwitchService, json_str)
-
-
-class MonetaryAccountExternalSavings(BunqModel):
-    """
-    Endpoint for managing monetary account savings which are connected to
-    external services.
-    
-    :param _currency: The currency of the MonetaryAccountExternalSavings as an
-    ISO 4217 formatted currency code.
-    :type _currency: str
-    :param _service: The service the MonetaryAccountExternalSavings is connected
-    with.
-    :type _service: str
-    :param _description: The description of the MonetaryAccountExternalSavings.
-    Defaults to 'bunq account'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must match
-    the MonetaryAccountExternalSavings's currency. Limited to 10000 EUR.
-    :type _daily_limit: object_.Amount
-    :param _avatar_uuid: The UUID of the Avatar of the
-    MonetaryAccountExternalSavings.
-    :type _avatar_uuid: str
-    :param _status: The status of the MonetaryAccountExternalSavings. Can be:
-    ACTIVE, BLOCKED, CANCELLED or PENDING_REOPEN
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountExternalSavings
-    providing extra information regarding the status. Will be NONE for ACTIVE or
-    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
-    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
-    :type _sub_status: str
-    :param _reason: The reason for voluntarily cancelling (closing) the
-    MonetaryAccountExternalSavings, can only be OTHER.
-    :type _reason: str
-    :param _reason_description: The optional free-form reason for voluntarily
-    cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
-    provided message.
-    :type _reason_description: str
-    :param _display_name: The legal name of the user / company using this
-    monetary account.
-    :type _display_name: str
-    :param _setting: The settings of the MonetaryAccountExternalSavings.
-    :type _setting: object_.MonetaryAccountSetting
-    :param _savings_goal: The Savings Goal set for this
-    MonetaryAccountExternalSavings.
-    :type _savings_goal: object_.Amount
-    :param _id_: The id of the MonetaryAccountExternalSavings.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountExternalSavings's
-    creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountExternalSavings's last
-    update.
-    :type _updated: str
-    :param _avatar: The Avatar of the MonetaryAccountExternalSavings.
-    :type _avatar: object_.Avatar
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountExternalSavings.
-    :type _balance: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountExternalSavings.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountExternalSavings's public UUID.
-    :type _public_uuid: str
-    :param _user_id: The id of the User who owns the
-    MonetaryAccountExternalSavings.
-    :type _user_id: int
-    :param _monetary_account_profile: The profile of the account.
-    :type _monetary_account_profile: MonetaryAccountProfile
-    :param _all_auto_save_id: The ids of the AutoSave.
-    :type _all_auto_save_id: list[object_.BunqId]
-    :param _savings_goal_progress: The progress in percentages for the Savings
-    Goal set for this MonetaryAccountExternalSavings.
-    :type _savings_goal_progress: float
-    :param _number_of_payment_remaining: The number of payments that can be made
-    from this savings account
-    :type _number_of_payment_remaining: str
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-external-savings"
-    _ENDPOINT_URL_READ = "user/{}/monetary-account-external-savings/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-external-savings/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-external-savings"
-
-    # Field constants.
-    FIELD_CURRENCY = "currency"
-    FIELD_SERVICE = "service"
-    FIELD_DESCRIPTION = "description"
-    FIELD_DAILY_LIMIT = "daily_limit"
-    FIELD_AVATAR_UUID = "avatar_uuid"
-    FIELD_STATUS = "status"
-    FIELD_SUB_STATUS = "sub_status"
-    FIELD_REASON = "reason"
-    FIELD_REASON_DESCRIPTION = "reason_description"
-    FIELD_DISPLAY_NAME = "display_name"
-    FIELD_SETTING = "setting"
-    FIELD_SAVINGS_GOAL = "savings_goal"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccountExternalSavings"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _avatar = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _balance = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _reason = None
-    _reason_description = None
-    _user_id = None
-    _monetary_account_profile = None
-    _display_name = None
-    _setting = None
-    _all_auto_save_id = None
-    _savings_goal = None
-    _savings_goal_progress = None
-    _number_of_payment_remaining = None
-    _currency_field_for_request = None
-    _service_field_for_request = None
-    _description_field_for_request = None
-    _daily_limit_field_for_request = None
-    _avatar_uuid_field_for_request = None
-    _status_field_for_request = None
-    _sub_status_field_for_request = None
-    _reason_field_for_request = None
-    _reason_description_field_for_request = None
-    _display_name_field_for_request = None
-    _setting_field_for_request = None
-    _savings_goal_field_for_request = None
-
-    def __init__(self, currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None):
-        """
-        :param currency: The currency of the MonetaryAccountExternalSavings as an
-        ISO 4217 formatted currency code.
-        :type currency: str
-        :param service: The service the MonetaryAccountExternalSavings is connected
-        with.
-        :type service: str
-        :param description: The description of the MonetaryAccountExternalSavings.
-        Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must match
-        the MonetaryAccountExternalSavings's currency. Limited to 10000 EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountExternalSavings.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountExternalSavings. Ignored in
-        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
-        PUT requests to cancel (close) or reopen the MonetaryAccountExternalSavings.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
-        providing extra information regarding the status. Should be ignored for POST
-        requests. In case of PUT requests with status CANCELLED it can only be
-        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
-        When updating the status and/or sub_status no other fields can be updated in
-        the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountExternalSavings, can only be OTHER. Should only be specified
-        if updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountExternalSavings.
-        :type setting: object_.MonetaryAccountSetting
-        :param savings_goal: The Savings Goal set for this MonetaryAccountSavings.
-        :type savings_goal: object_.Amount
-        """
-
-        self._currency_field_for_request = currency
-        self._service_field_for_request = service
-        self._description_field_for_request = description
-        self._daily_limit_field_for_request = daily_limit
-        self._avatar_uuid_field_for_request = avatar_uuid
-        self._status_field_for_request = status
-        self._sub_status_field_for_request = sub_status
-        self._reason_field_for_request = reason
-        self._reason_description_field_for_request = reason_description
-        self._display_name_field_for_request = display_name
-        self._setting_field_for_request = setting
-        self._savings_goal_field_for_request = savings_goal
-
-    @classmethod
-    def create(cls,currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None, custom_headers=None):
-        """
-        :type user_id: int
-        :param currency: The currency of the MonetaryAccountExternalSavings as
-        an ISO 4217 formatted currency code.
-        :type currency: str
-        :param service: The service the MonetaryAccountExternalSavings is
-        connected with.
-        :type service: str
-        :param description: The description of the
-        MonetaryAccountExternalSavings. Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must
-        match the MonetaryAccountExternalSavings's currency. Limited to 10000
-        EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountExternalSavings.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountExternalSavings. Ignored
-        in POST requests (always set to ACTIVE) can be CANCELLED or
-        PENDING_REOPEN in PUT requests to cancel (close) or reopen the
-        MonetaryAccountExternalSavings. When updating the status and/or
-        sub_status no other fields can be updated in the same request (and vice
-        versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
-        providing extra information regarding the status. Should be ignored for
-        POST requests. In case of PUT requests with status CANCELLED it can only
-        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountExternalSavings, can only be OTHER. Should only be
-        specified if updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountExternalSavings.
-        :type setting: object_.MonetaryAccountSetting
-        :param savings_goal: The Savings Goal set for this
-        MonetaryAccountSavings.
-        :type savings_goal: object_.Amount
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        request_map = {
-cls.FIELD_CURRENCY : currency,
-cls.FIELD_SERVICE : service,
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_DISPLAY_NAME : display_name,
-cls.FIELD_SETTING : setting,
-cls.FIELD_SAVINGS_GOAL : savings_goal
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        api_client = ApiClient(cls._get_api_context())
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
-        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def get(cls,  monetary_account_external_savings_id, custom_headers=None):
-        """
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_external_savings_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountExternalSavings
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_external_savings_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccountExternalSavings.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  monetary_account_external_savings_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type monetary_account_external_savings_id: int
-        :param description: The description of the
-        MonetaryAccountExternalSavings. Defaults to 'bunq account'.
-        :type description: str
-        :param daily_limit: The daily spending limit Amount of the
-        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must
-        match the MonetaryAccountExternalSavings's currency. Limited to 10000
-        EUR.
-        :type daily_limit: object_.Amount
-        :param avatar_uuid: The UUID of the Avatar of the
-        MonetaryAccountExternalSavings.
-        :type avatar_uuid: str
-        :param status: The status of the MonetaryAccountExternalSavings. Ignored
-        in POST requests (always set to ACTIVE) can be CANCELLED or
-        PENDING_REOPEN in PUT requests to cancel (close) or reopen the
-        MonetaryAccountExternalSavings. When updating the status and/or
-        sub_status no other fields can be updated in the same request (and vice
-        versa).
-        :type status: str
-        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
-        providing extra information regarding the status. Should be ignored for
-        POST requests. In case of PUT requests with status CANCELLED it can only
-        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
-        NONE. When updating the status and/or sub_status no other fields can be
-        updated in the same request (and vice versa).
-        :type sub_status: str
-        :param reason: The reason for voluntarily cancelling (closing) the
-        MonetaryAccountExternalSavings, can only be OTHER. Should only be
-        specified if updating the status to CANCELLED.
-        :type reason: str
-        :param reason_description: The optional free-form reason for voluntarily
-        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
-        provided message. Should only be specified if updating the status to
-        CANCELLED.
-        :type reason_description: str
-        :param display_name: The legal name of the user / company using this
-        monetary account.
-        :type display_name: str
-        :param setting: The settings of the MonetaryAccountExternalSavings.
-        :type setting: object_.MonetaryAccountSetting
-        :param savings_goal: The Savings Goal set for this
-        MonetaryAccountSavings.
-        :type savings_goal: object_.Amount
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-cls.FIELD_DESCRIPTION : description,
-cls.FIELD_DAILY_LIMIT : daily_limit,
-cls.FIELD_AVATAR_UUID : avatar_uuid,
-cls.FIELD_STATUS : status,
-cls.FIELD_SUB_STATUS : sub_status,
-cls.FIELD_REASON : reason,
-cls.FIELD_REASON_DESCRIPTION : reason_description,
-cls.FIELD_DISPLAY_NAME : display_name,
-cls.FIELD_SETTING : setting,
-cls.FIELD_SAVINGS_GOAL : savings_goal
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_external_savings_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountExternalSavingsList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountExternalSavingsList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def avatar(self):
-        """
-        :rtype: object_.Avatar
-        """
-
-        return self._avatar
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def reason(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason
-
-    @property
-    def reason_description(self):
-        """
-        :rtype: str
-        """
-
-        return self._reason_description
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    @property
-    def monetary_account_profile(self):
-        """
-        :rtype: MonetaryAccountProfile
-        """
-
-        return self._monetary_account_profile
-
-    @property
-    def display_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._display_name
-
-    @property
-    def setting(self):
-        """
-        :rtype: object_.MonetaryAccountSetting
-        """
-
-        return self._setting
-
-    @property
-    def all_auto_save_id(self):
-        """
-        :rtype: list[object_.BunqId]
-        """
-
-        return self._all_auto_save_id
-
-    @property
-    def savings_goal(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._savings_goal
-
-    @property
-    def savings_goal_progress(self):
-        """
-        :rtype: float
-        """
-
-        return self._savings_goal_progress
-
-    @property
-    def number_of_payment_remaining(self):
-        """
-        :rtype: str
-        """
-
-        return self._number_of_payment_remaining
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._avatar is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._reason is not None:
-            return False
-
-        if self._reason_description is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        if self._monetary_account_profile is not None:
-            return False
-
-        if self._display_name is not None:
-            return False
-
-        if self._setting is not None:
-            return False
-
-        if self._all_auto_save_id is not None:
-            return False
-
-        if self._savings_goal is not None:
-            return False
-
-        if self._savings_goal_progress is not None:
-            return False
-
-        if self._number_of_payment_remaining is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountExternalSavings
-        """
-
-        return converter.json_to_class(MonetaryAccountExternalSavings, json_str)
-
-
-class MonetaryAccountCard(BunqModel):
-    """
-    :param _id_: The id of the MonetaryAccountCard.
-    :type _id_: int
-    :param _created: The timestamp of the MonetaryAccountCard's creation.
-    :type _created: str
-    :param _updated: The timestamp of the MonetaryAccountCard's last update.
-    :type _updated: str
-    :param _currency: The currency of the MonetaryAccountCard as an ISO 4217
-    formatted currency code.
-    :type _currency: str
-    :param _description: The description of the MonetaryAccountCard. Defaults to
-    'prepaid credit card'.
-    :type _description: str
-    :param _daily_limit: The daily spending limit Amount of the
-    MonetaryAccountCard.
-    :type _daily_limit: object_.Amount
-    :param _overdraft_limit: The maximum Amount the MonetaryAccountCard can be
-    'in the red'.
-    :type _overdraft_limit: object_.Amount
-    :param _balance: The current available balance Amount of the
-    MonetaryAccountCard.
-    :type _balance: object_.Amount
-    :param _balance_real: The current real balance Amount of the
-    MonetaryAccountCard.
-    :type _balance_real: object_.Amount
-    :param _alias: The Aliases for the MonetaryAccountCard.
-    :type _alias: list[object_.Pointer]
-    :param _public_uuid: The MonetaryAccountCard's public UUID.
-    :type _public_uuid: str
-    :param _status: The status of the MonetaryAccountCard.
-    :type _status: str
-    :param _sub_status: The sub-status of the MonetaryAccountCard providing
-    extra information regarding the status.
-    :type _sub_status: str
-    :param _user_id: The id of the User who owns the MonetaryAccountCard.
-    :type _user_id: int
-    """
-
-    # Endpoint constants.
-    _ENDPOINT_URL_READ = "user/{}/monetary-account-card/{}"
-    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-card/{}"
-    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-card"
-
-    # Object type.
-    _OBJECT_TYPE_GET = "MonetaryAccountCard"
-
-    _id_ = None
-    _created = None
-    _updated = None
-    _currency = None
-    _description = None
-    _daily_limit = None
-    _overdraft_limit = None
-    _balance = None
-    _balance_real = None
-    _alias = None
-    _public_uuid = None
-    _status = None
-    _sub_status = None
-    _user_id = None
-
-    @classmethod
-    def get(cls,  monetary_account_card_id, custom_headers=None):
-        """
-        Get a specific MonetaryAccountCard.
-        
-        :type api_context: ApiContext
-        :type user_id: int
-        :type monetary_account_card_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountCard
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_card_id)
-        response_raw = api_client.get(endpoint_url, {}, custom_headers)
-
-        return BunqResponseMonetaryAccountCard.cast_from_bunq_response(
-            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @classmethod
-    def update(cls,  monetary_account_card_id, custom_headers=None):
-        """
-        Update a specific existing MonetaryAccountCard.
-        
-        :type user_id: int
-        :type monetary_account_card_id: int
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseInt
-        """
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-
-        request_map = {
-
-}
-        request_map_string = converter.class_to_json(request_map)
-        request_map_string = cls._remove_field_for_request(request_map_string)
-
-        request_bytes = request_map_string.encode()
-        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_card_id)
-        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
-
-        return BunqResponseInt.cast_from_bunq_response(
-            cls._process_for_id(response_raw)
-        )
-
-    @classmethod
-    def list(cls, params=None, custom_headers=None):
-        """
-        Gets a listing of all MonetaryAccountCard of a given user.
-        
-        :type user_id: int
-        :type params: dict[str, str]|None
-        :type custom_headers: dict[str, str]|None
-        
-        :rtype: BunqResponseMonetaryAccountCardList
-        """
-
-        if params is None:
-            params = {}
-
-        if custom_headers is None:
-            custom_headers = {}
-
-        api_client = ApiClient(cls._get_api_context())
-        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
-        response_raw = api_client.get(endpoint_url, params, custom_headers)
-
-        return BunqResponseMonetaryAccountCardList.cast_from_bunq_response(
-            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
-        )
-
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def currency(self):
-        """
-        :rtype: str
-        """
-
-        return self._currency
-
-    @property
-    def description(self):
-        """
-        :rtype: str
-        """
-
-        return self._description
-
-    @property
-    def daily_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._daily_limit
-
-    @property
-    def overdraft_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._overdraft_limit
-
-    @property
-    def balance(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance
-
-    @property
-    def balance_real(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._balance_real
-
-    @property
-    def alias(self):
-        """
-        :rtype: list[object_.Pointer]
-        """
-
-        return self._alias
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._currency is not None:
-            return False
-
-        if self._description is not None:
-            return False
-
-        if self._daily_limit is not None:
-            return False
-
-        if self._overdraft_limit is not None:
-            return False
-
-        if self._balance is not None:
-            return False
-
-        if self._balance_real is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._user_id is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MonetaryAccountCard
-        """
-
-        return converter.json_to_class(MonetaryAccountCard, json_str)
 
 
 class CardReplacement(BunqModel):
@@ -16588,6 +10166,184 @@ cls.FIELD_SCHEDULE : schedule
         return converter.json_to_class(DraftPayment, json_str)
 
 
+class PaymentBatch(BunqModel):
+    """
+    Create a payment batch, or show the payment batches of a monetary account.
+    
+    :param _payments: The list of mutations that were made.
+    :type _payments: object_.PaymentBatchAnchoredPayment
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account/{}/payment-batch"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account/{}/payment-batch/{}"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-batch/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-batch"
+
+    # Field constants.
+    FIELD_PAYMENTS = "payments"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentBatch"
+
+    _payments = None
+    _payments_field_for_request = None
+
+    def __init__(self, payments):
+        """
+        :param payments: The list of payments we want to send in a single batch.
+        :type payments: list[Payment]
+        """
+
+        self._payments_field_for_request = payments
+
+    @classmethod
+    def create(cls,payments, monetary_account_id=None, custom_headers=None):
+        """
+        Create a payment batch by sending an array of single payment objects,
+        that will become part of the batch.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :param payments: The list of payments we want to send in a single batch.
+        :type payments: list[Payment]
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_PAYMENTS : payments
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls,  payment_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        Revoke a bunq.to payment batch. The status of all the payments will be
+        set to REVOKED.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_batch_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  payment_batch_id, monetary_account_id=None, custom_headers=None):
+        """
+        Return the details of a specific payment batch.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_batch_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentBatch
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_batch_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentBatch.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def list(cls,monetary_account_id=None, params=None, custom_headers=None):
+        """
+        Return all the payment batches for a monetary account.
+        
+        :type user_id: int
+        :type monetary_account_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentBatchList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentBatchList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def payments(self):
+        """
+        :rtype: object_.PaymentBatchAnchoredPayment
+        """
+
+        return self._payments
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._payments is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentBatch
+        """
+
+        return converter.json_to_class(PaymentBatch, json_str)
+
+
 class Schedule(BunqModel):
     """
     view for reading the scheduled definitions.
@@ -18290,7 +12046,7 @@ class MasterCardAction(BunqModel):
     list[object_.RequestInquiryReference]
     :param _card_tokenization_event: The cardTokenization event awaiting
     acceptance by the user
-    :type _card_tokenization_event: list[str]
+    :type _card_tokenization_event: Event
     :param _all_mastercard_action_refund: A reference to the Refunds if they
     exist.
     :type _all_mastercard_action_refund: list[MasterCardActionRefund]
@@ -18697,7 +12453,7 @@ class MasterCardAction(BunqModel):
     @property
     def card_tokenization_event(self):
         """
-        :rtype: list[str]
+        :rtype: Event
         """
 
         return self._card_tokenization_event
@@ -19323,88 +13079,6 @@ class MasterCardActionRefund(BunqModel):
         return converter.json_to_class(MasterCardActionRefund, json_str)
 
 
-class CashbackPayoutItem(BunqModel):
-    """
-    Cashback payout item details.
-    
-    :param _status: The status of the cashback payout item.
-    :type _status: str
-    :param _amount: The amount of cashback earned.
-    :type _amount: object_.Amount
-    :param _rate_applied: The cashback rate.
-    :type _rate_applied: str
-    :param _transaction_category: The transaction category that this cashback is
-    for.
-    :type _transaction_category: AdditionalTransactionInformationCategory
-    """
-
-    _status = None
-    _amount = None
-    _rate_applied = None
-    _transaction_category = None
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def amount(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._amount
-
-    @property
-    def rate_applied(self):
-        """
-        :rtype: str
-        """
-
-        return self._rate_applied
-
-    @property
-    def transaction_category(self):
-        """
-        :rtype: AdditionalTransactionInformationCategory
-        """
-
-        return self._transaction_category
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._status is not None:
-            return False
-
-        if self._amount is not None:
-            return False
-
-        if self._rate_applied is not None:
-            return False
-
-        if self._transaction_category is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: CashbackPayoutItem
-        """
-
-        return converter.json_to_class(CashbackPayoutItem, json_str)
-
-
 class UserBlocklistMasterCardMerchant(BunqModel):
     """
     Fetch blocklists of merchants created by user
@@ -19618,140 +13292,6 @@ class UserBlocklistMasterCardMerchant(BunqModel):
         """
 
         return converter.json_to_class(UserBlocklistMasterCardMerchant, json_str)
-
-
-class MasterCardActionReport(BunqModel):
-    """
-    MasterCard report view.
-    
-    :param _mastercard_action_id: The id of mastercard action being reported.
-    :type _mastercard_action_id: int
-    :param _type_: The id of mastercard action being reported.
-    :type _type_: str
-    :param _status: The id of mastercard action being reported.
-    :type _status: str
-    :param _merchant_id: The reported merchant.
-    :type _merchant_id: str
-    :param _merchant_name: The name of the merchant.
-    :type _merchant_name: str
-    :param _counterparty_alias: The monetary account label of the merchant.
-    :type _counterparty_alias: object_.MonetaryAccountReference
-    """
-
-    # Field constants.
-    FIELD_MASTERCARD_ACTION_ID = "mastercard_action_id"
-    FIELD_TYPE = "type"
-    FIELD_STATUS = "status"
-
-
-    _mastercard_action_id = None
-    _type_ = None
-    _status = None
-    _merchant_id = None
-    _merchant_name = None
-    _counterparty_alias = None
-    _mastercard_action_id_field_for_request = None
-    _type__field_for_request = None
-    _status_field_for_request = None
-
-    def __init__(self, mastercard_action_id, type_, status=None):
-        """
-        :param mastercard_action_id: The id of mastercard action being reported.
-        :type mastercard_action_id: int
-        :param type_: The type of report. Can be 'FRAUD' or 'MERCHANT_BLOCKED'.
-        :type type_: str
-        :param status: The id of mastercard action being reported.
-        :type status: str
-        """
-
-        self._mastercard_action_id_field_for_request = mastercard_action_id
-        self._type__field_for_request = type_
-        self._status_field_for_request = status
-
-
-
-    @property
-    def mastercard_action_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._mastercard_action_id
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def merchant_id(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_id
-
-    @property
-    def merchant_name(self):
-        """
-        :rtype: str
-        """
-
-        return self._merchant_name
-
-    @property
-    def counterparty_alias(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._counterparty_alias
-
-    def is_all_field_none(self):
-        """
-        :rtype: bool
-        """
-
-        if self._mastercard_action_id is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._merchant_id is not None:
-            return False
-
-        if self._merchant_name is not None:
-            return False
-
-        if self._counterparty_alias is not None:
-            return False
-
-        return True
-
-    @staticmethod
-    def from_json(json_str):
-        """
-        :type json_str: str
-        
-        :rtype: MasterCardActionReport
-        """
-
-        return converter.json_to_class(MasterCardActionReport, json_str)
 
 
 class RequestInquiryBatch(BunqModel):
@@ -25438,6 +18978,5981 @@ class InstallationServerPublicKey(BunqModel):
         """
 
         return converter.json_to_class(InstallationServerPublicKey, json_str)
+
+
+class MonetaryAccountBank(BunqModel):
+    """
+    With MonetaryAccountBank you can create a new bank account, retrieve
+    information regarding your existing MonetaryAccountBanks and update specific
+    fields of an existing MonetaryAccountBank. Examples of fields that can be
+    updated are the description, the daily limit and the avatar of the
+    account.<br/><br/>Notification filters can be set on a monetary account
+    level to receive callbacks. For more information check the <a
+    href="/api/1/page/callbacks">dedicated callbacks page</a>.
+    
+    :param _currency: The currency of the MonetaryAccountBank as an ISO 4217
+    formatted currency code.
+    :type _currency: str
+    :param _description: The description of the MonetaryAccountBank. Defaults to
+    'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
+    MonetaryAccountBank's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountBank. Can be: ACTIVE,
+    BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountBank providing
+    extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountBank, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountBank. Can be any user provided
+    message.
+    :type _reason_description: str
+    :param _display_name: The legal name of the user / company using this
+    monetary account.
+    :type _display_name: str
+    :param _setting: The settings of the MonetaryAccountBank.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _country_iban: The country of the monetary account IBAN.
+    :type _country_iban: str
+    :param _id_: The id of the MonetaryAccountBank.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountBank's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountBank's last update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountBank.
+    :type _avatar: object_.Avatar
+    :param _overdraft_limit: The maximum Amount the MonetaryAccountBank can be
+    'in the red'.
+    :type _overdraft_limit: object_.Amount
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountBank.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountBank.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountBank's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the MonetaryAccountBank.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-bank"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-bank/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-bank/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-bank"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_DISPLAY_NAME = "display_name"
+    FIELD_SETTING = "setting"
+    FIELD_COUNTRY_IBAN = "country_iban"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountBank"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _overdraft_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _user_id = None
+    _monetary_account_profile = None
+    _display_name = None
+    _setting = None
+    _all_auto_save_id = None
+    _currency_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _display_name_field_for_request = None
+    _setting_field_for_request = None
+    _country_iban_field_for_request = None
+
+    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, country_iban=None):
+        """
+        :param currency: The currency of the MonetaryAccountBank as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param description: The description of the MonetaryAccountBank. Defaults to
+        'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountBank's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountBank. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
+        requests to cancel (close) or reopen the MonetaryAccountBank. When updating
+        the status and/or sub_status no other fields can be updated in the same
+        request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountBank providing extra
+        information regarding the status. Should be ignored for POST requests. In
+        case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountBank, can only be OTHER. Should only be specified if updating
+        the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountBank. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountBank.
+        :type setting: object_.MonetaryAccountSetting
+        :param country_iban: The country of the monetary account IBAN.
+        :type country_iban: str
+        """
+
+        self._currency_field_for_request = currency
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._display_name_field_for_request = display_name
+        self._setting_field_for_request = setting
+        self._country_iban_field_for_request = country_iban
+
+    @classmethod
+    def create(cls,currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, country_iban=None, custom_headers=None):
+        """
+        Create new MonetaryAccountBank.
+        
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountBank as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param description: The description of the MonetaryAccountBank. Defaults
+        to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountBank's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountBank. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountBank. When
+        updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountBank providing
+        extra information regarding the status. Should be ignored for POST
+        requests. In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountBank, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountBank. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountBank.
+        :type setting: object_.MonetaryAccountSetting
+        :param country_iban: The country of the monetary account IBAN.
+        :type country_iban: str
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting,
+cls.FIELD_COUNTRY_IBAN : country_iban
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  monetary_account_bank_id, custom_headers=None):
+        """
+        Get a specific MonetaryAccountBank.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_bank_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountBank
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_bank_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountBank.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_bank_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
+        """
+        Update a specific existing MonetaryAccountBank.
+        
+        :type user_id: int
+        :type monetary_account_bank_id: int
+        :param description: The description of the MonetaryAccountBank. Defaults
+        to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountBank. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountBank's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountBank.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountBank. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountBank. When
+        updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountBank providing
+        extra information regarding the status. Should be ignored for POST
+        requests. In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountBank, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountBank. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountBank.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_bank_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        Gets a listing of all MonetaryAccountBanks of a given user.
+        
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountBankList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountBankList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def overdraft_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._overdraft_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def display_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_name
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._overdraft_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._display_name is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountBank
+        """
+
+        return converter.json_to_class(MonetaryAccountBank, json_str)
+
+
+class MonetaryAccountProfile(BunqModel):
+    """
+    Used to update and read up monetary account profiles, to keep the balance
+    between specific thresholds.
+    
+    :param _profile_fill: The profile settings for triggering the fill of a
+    monetary account.
+    :type _profile_fill: object_.MonetaryAccountProfileFill
+    :param _profile_drain: The profile settings for moving excesses to a savings
+    account
+    :type _profile_drain: object_.MonetaryAccountProfileDrain
+    """
+
+    # Field constants.
+    FIELD_PROFILE_FILL = "profile_fill"
+    FIELD_PROFILE_DRAIN = "profile_drain"
+
+
+    _profile_fill = None
+    _profile_drain = None
+    _profile_fill_field_for_request = None
+    _profile_drain_field_for_request = None
+
+    def __init__(self, profile_fill=None, profile_drain=None):
+        """
+        :param profile_fill: The profile settings for triggering the fill of a
+        monetary account.
+        :type profile_fill: object_.MonetaryAccountProfileFill
+        :param profile_drain: The profile settings for moving excesses to a savings
+        account
+        :type profile_drain: object_.MonetaryAccountProfileDrain
+        """
+
+        self._profile_fill_field_for_request = profile_fill
+        self._profile_drain_field_for_request = profile_drain
+
+
+
+    @property
+    def profile_fill(self):
+        """
+        :rtype: object_.MonetaryAccountProfileFill
+        """
+
+        return self._profile_fill
+
+    @property
+    def profile_drain(self):
+        """
+        :rtype: object_.MonetaryAccountProfileDrain
+        """
+
+        return self._profile_drain
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._profile_fill is not None:
+            return False
+
+        if self._profile_drain is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountProfile
+        """
+
+        return converter.json_to_class(MonetaryAccountProfile, json_str)
+
+
+class MonetaryAccountCard(BunqModel):
+    """
+    :param _id_: The id of the MonetaryAccountCard.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountCard's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountCard's last update.
+    :type _updated: str
+    :param _currency: The currency of the MonetaryAccountCard as an ISO 4217
+    formatted currency code.
+    :type _currency: str
+    :param _description: The description of the MonetaryAccountCard. Defaults to
+    'prepaid credit card'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountCard.
+    :type _daily_limit: object_.Amount
+    :param _overdraft_limit: The maximum Amount the MonetaryAccountCard can be
+    'in the red'.
+    :type _overdraft_limit: object_.Amount
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountCard.
+    :type _balance: object_.Amount
+    :param _balance_real: The current real balance Amount of the
+    MonetaryAccountCard.
+    :type _balance_real: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountCard.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountCard's public UUID.
+    :type _public_uuid: str
+    :param _status: The status of the MonetaryAccountCard.
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountCard providing
+    extra information regarding the status.
+    :type _sub_status: str
+    :param _user_id: The id of the User who owns the MonetaryAccountCard.
+    :type _user_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-card/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-card/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-card"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountCard"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _overdraft_limit = None
+    _balance = None
+    _balance_real = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _user_id = None
+
+    @classmethod
+    def get(cls,  monetary_account_card_id, custom_headers=None):
+        """
+        Get a specific MonetaryAccountCard.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_card_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountCard
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_card_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountCard.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_card_id, custom_headers=None):
+        """
+        Update a specific existing MonetaryAccountCard.
+        
+        :type user_id: int
+        :type monetary_account_card_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_card_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        Gets a listing of all MonetaryAccountCard of a given user.
+        
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountCardList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountCardList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def overdraft_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._overdraft_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def balance_real(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_real
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._overdraft_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._balance_real is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountCard
+        """
+
+        return converter.json_to_class(MonetaryAccountCard, json_str)
+
+
+class MonetaryAccountExternalSavings(BunqModel):
+    """
+    Endpoint for managing monetary account savings which are connected to
+    external services.
+    
+    :param _currency: The currency of the MonetaryAccountExternalSavings as an
+    ISO 4217 formatted currency code.
+    :type _currency: str
+    :param _service: The service the MonetaryAccountExternalSavings is connected
+    with.
+    :type _service: str
+    :param _description: The description of the MonetaryAccountExternalSavings.
+    Defaults to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must match
+    the MonetaryAccountExternalSavings's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the
+    MonetaryAccountExternalSavings.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountExternalSavings. Can be:
+    ACTIVE, BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountExternalSavings
+    providing extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountExternalSavings, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+    provided message.
+    :type _reason_description: str
+    :param _display_name: The legal name of the user / company using this
+    monetary account.
+    :type _display_name: str
+    :param _setting: The settings of the MonetaryAccountExternalSavings.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _savings_goal: The Savings Goal set for this
+    MonetaryAccountExternalSavings.
+    :type _savings_goal: object_.Amount
+    :param _id_: The id of the MonetaryAccountExternalSavings.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountExternalSavings's
+    creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountExternalSavings's last
+    update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountExternalSavings.
+    :type _avatar: object_.Avatar
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountExternalSavings.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountExternalSavings.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountExternalSavings's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the
+    MonetaryAccountExternalSavings.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    :param _savings_goal_progress: The progress in percentages for the Savings
+    Goal set for this MonetaryAccountExternalSavings.
+    :type _savings_goal_progress: float
+    :param _number_of_payment_remaining: The number of payments that can be made
+    from this savings account
+    :type _number_of_payment_remaining: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-external-savings"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-external-savings/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-external-savings/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-external-savings"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_SERVICE = "service"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_DISPLAY_NAME = "display_name"
+    FIELD_SETTING = "setting"
+    FIELD_SAVINGS_GOAL = "savings_goal"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountExternalSavings"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _user_id = None
+    _monetary_account_profile = None
+    _display_name = None
+    _setting = None
+    _all_auto_save_id = None
+    _savings_goal = None
+    _savings_goal_progress = None
+    _number_of_payment_remaining = None
+    _currency_field_for_request = None
+    _service_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _display_name_field_for_request = None
+    _setting_field_for_request = None
+    _savings_goal_field_for_request = None
+
+    def __init__(self, currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None):
+        """
+        :param currency: The currency of the MonetaryAccountExternalSavings as an
+        ISO 4217 formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternalSavings is connected
+        with.
+        :type service: str
+        :param description: The description of the MonetaryAccountExternalSavings.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must match
+        the MonetaryAccountExternalSavings's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternalSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternalSavings. Ignored in
+        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountExternalSavings.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
+        providing extra information regarding the status. Should be ignored for POST
+        requests. In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternalSavings, can only be OTHER. Should only be specified
+        if updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternalSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        """
+
+        self._currency_field_for_request = currency
+        self._service_field_for_request = service
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._display_name_field_for_request = display_name
+        self._setting_field_for_request = setting
+        self._savings_goal_field_for_request = savings_goal
+
+    @classmethod
+    def create(cls,currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountExternalSavings as
+        an ISO 4217 formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternalSavings is
+        connected with.
+        :type service: str
+        :param description: The description of the
+        MonetaryAccountExternalSavings. Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must
+        match the MonetaryAccountExternalSavings's currency. Limited to 10000
+        EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternalSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternalSavings. Ignored
+        in POST requests (always set to ACTIVE) can be CANCELLED or
+        PENDING_REOPEN in PUT requests to cancel (close) or reopen the
+        MonetaryAccountExternalSavings. When updating the status and/or
+        sub_status no other fields can be updated in the same request (and vice
+        versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternalSavings, can only be OTHER. Should only be
+        specified if updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternalSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this
+        MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_SERVICE : service,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting,
+cls.FIELD_SAVINGS_GOAL : savings_goal
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  monetary_account_external_savings_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_external_savings_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountExternalSavings
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_external_savings_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountExternalSavings.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_external_savings_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, savings_goal=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_external_savings_id: int
+        :param description: The description of the
+        MonetaryAccountExternalSavings. Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternalSavings. Defaults to 1000 EUR. Currency must
+        match the MonetaryAccountExternalSavings's currency. Limited to 10000
+        EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternalSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternalSavings. Ignored
+        in POST requests (always set to ACTIVE) can be CANCELLED or
+        PENDING_REOPEN in PUT requests to cancel (close) or reopen the
+        MonetaryAccountExternalSavings. When updating the status and/or
+        sub_status no other fields can be updated in the same request (and vice
+        versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternalSavings
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternalSavings, can only be OTHER. Should only be
+        specified if updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternalSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternalSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this
+        MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting,
+cls.FIELD_SAVINGS_GOAL : savings_goal
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_external_savings_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountExternalSavingsList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountExternalSavingsList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def display_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_name
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    @property
+    def savings_goal(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._savings_goal
+
+    @property
+    def savings_goal_progress(self):
+        """
+        :rtype: float
+        """
+
+        return self._savings_goal_progress
+
+    @property
+    def number_of_payment_remaining(self):
+        """
+        :rtype: str
+        """
+
+        return self._number_of_payment_remaining
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._display_name is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        if self._savings_goal is not None:
+            return False
+
+        if self._savings_goal_progress is not None:
+            return False
+
+        if self._number_of_payment_remaining is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountExternalSavings
+        """
+
+        return converter.json_to_class(MonetaryAccountExternalSavings, json_str)
+
+
+class MonetaryAccountExternal(BunqModel):
+    """
+    Endpoint for managing monetary accounts which are connected to external
+    services.
+    
+    :param _currency: The currency of the MonetaryAccountExternal as an ISO 4217
+    formatted currency code.
+    :type _currency: str
+    :param _service: The external service the Monetary Account is connected
+    with.
+    :type _service: str
+    :param _description: The description of the MonetaryAccountExternal.
+    Defaults to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
+    MonetaryAccountExternal's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountExternal.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountExternal. Can be: ACTIVE,
+    BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountExternal providing
+    extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountExternal, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountExternal. Can be any user provided
+    message.
+    :type _reason_description: str
+    :param _display_name: The legal name of the user / company using this
+    monetary account.
+    :type _display_name: str
+    :param _setting: The settings of the MonetaryAccountExternal.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _id_: The id of the MonetaryAccountExternal.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountExternal's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountExternal's last update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountExternal.
+    :type _avatar: object_.Avatar
+    :param _overdraft_limit: The maximum Amount the MonetaryAccountExternal can
+    be 'in the red'.
+    :type _overdraft_limit: object_.Amount
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountExternal.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountExternal.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountExternal's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the MonetaryAccountExternal.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    :param _open_banking_account: The open banking account for information about
+    the external account.
+    :type _open_banking_account: OpenBankingAccount
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-external"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-external/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-external/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-external"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_SERVICE = "service"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_DISPLAY_NAME = "display_name"
+    FIELD_SETTING = "setting"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountExternal"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _overdraft_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _user_id = None
+    _monetary_account_profile = None
+    _display_name = None
+    _setting = None
+    _all_auto_save_id = None
+    _service = None
+    _open_banking_account = None
+    _currency_field_for_request = None
+    _service_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _display_name_field_for_request = None
+    _setting_field_for_request = None
+
+    def __init__(self, currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None):
+        """
+        :param currency: The currency of the MonetaryAccountExternal as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternal is connected with.
+        :type service: str
+        :param description: The description of the MonetaryAccountExternal. Defaults
+        to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountExternal's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountExternal.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternal. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
+        requests to cancel (close) or reopen the MonetaryAccountExternal. When
+        updating the status and/or sub_status no other fields can be updated in the
+        same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternal providing
+        extra information regarding the status. Should be ignored for POST requests.
+        In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternal, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternal. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternal.
+        :type setting: object_.MonetaryAccountSetting
+        """
+
+        self._currency_field_for_request = currency
+        self._service_field_for_request = service
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._display_name_field_for_request = display_name
+        self._setting_field_for_request = setting
+
+    @classmethod
+    def create(cls,currency, service, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountExternal as an ISO
+        4217 formatted currency code.
+        :type currency: str
+        :param service: The service the MonetaryAccountExternal is connected
+        with.
+        :type service: str
+        :param description: The description of the MonetaryAccountExternal.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountExternal's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternal.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternal. Ignored in
+        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN
+        in PUT requests to cancel (close) or reopen the MonetaryAccountExternal.
+        When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternal
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternal, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternal. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternal.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_SERVICE : service,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  monetary_account_external_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_external_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountExternal
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_external_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountExternal.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_external_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_external_id: int
+        :param description: The description of the MonetaryAccountExternal.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountExternal. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountExternal's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountExternal.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountExternal. Ignored in
+        POST requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN
+        in PUT requests to cancel (close) or reopen the MonetaryAccountExternal.
+        When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountExternal
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountExternal, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountExternal. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountExternal.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_DISPLAY_NAME : display_name,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_external_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountExternalList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountExternalList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def overdraft_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._overdraft_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def display_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_name
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    @property
+    def service(self):
+        """
+        :rtype: str
+        """
+
+        return self._service
+
+    @property
+    def open_banking_account(self):
+        """
+        :rtype: OpenBankingAccount
+        """
+
+        return self._open_banking_account
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._overdraft_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._display_name is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        if self._service is not None:
+            return False
+
+        if self._open_banking_account is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountExternal
+        """
+
+        return converter.json_to_class(MonetaryAccountExternal, json_str)
+
+
+class OpenBankingAccount(BunqModel):
+    """
+    Post processor for open banking account to be returned in the monetary
+    account external post processor.
+    
+    :param _status: The status of this account.
+    :type _status: str
+    :param _iban: The iban of this account.
+    :type _iban: str
+    :param _time_synced_last: The timestamp of the last time the account was
+    synced with our open banking partner.
+    :type _time_synced_last: str
+    :param _provider_bank: The bank provider the account comes from.
+    :type _provider_bank: OpenBankingProviderBank
+    :param _balance_booked: The booked balance of the account.
+    :type _balance_booked: object_.Amount
+    :param _balance_available: The available balance of the account, if provided
+    by the other bank.
+    :type _balance_available: object_.Amount
+    """
+
+    _status = None
+    _iban = None
+    _time_synced_last = None
+    _provider_bank = None
+    _balance_booked = None
+    _balance_available = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def iban(self):
+        """
+        :rtype: str
+        """
+
+        return self._iban
+
+    @property
+    def time_synced_last(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_synced_last
+
+    @property
+    def provider_bank(self):
+        """
+        :rtype: OpenBankingProviderBank
+        """
+
+        return self._provider_bank
+
+    @property
+    def balance_booked(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_booked
+
+    @property
+    def balance_available(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_available
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._iban is not None:
+            return False
+
+        if self._time_synced_last is not None:
+            return False
+
+        if self._provider_bank is not None:
+            return False
+
+        if self._balance_booked is not None:
+            return False
+
+        if self._balance_available is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: OpenBankingAccount
+        """
+
+        return converter.json_to_class(OpenBankingAccount, json_str)
+
+
+class OpenBankingProviderBank(BunqModel):
+    """
+    Lists open banking provider banks.
+    
+    :param _account_information_service_status: Whether we support Open Banking
+    budgeting using the bank provider.
+    :type _account_information_service_status: str
+    :param _payment_information_service_status: Whether we support top ups using
+    the bank provider.
+    :type _payment_information_service_status: str
+    :param _name: The name of the bank provider.
+    :type _name: str
+    :param _aiia_provider_id: The external identifier for this bank.
+    :type _aiia_provider_id: str
+    :param _country: Country of provider
+    :type _country: str
+    :param _all_payment_method_allowed_sepa: All payment methods allowed for
+    Sepa payments.
+    :type _all_payment_method_allowed_sepa: list[str]
+    :param _all_payment_method_allowed_domestic: All payment methods allowed for
+    Domestic payments.
+    :type _all_payment_method_allowed_domestic: list[str]
+    :param _audience_business_status: Whether business banking is supported by
+    the provider.
+    :type _audience_business_status: bool
+    :param _audience_private_status: Whether personal banking is supported by
+    the provider.
+    :type _audience_private_status: bool
+    :param _avatar: The avatar of the bank.
+    :type _avatar: object_.Avatar
+    """
+
+    # Field constants.
+    FIELD_ACCOUNT_INFORMATION_SERVICE_STATUS = "account_information_service_status"
+    FIELD_PAYMENT_INFORMATION_SERVICE_STATUS = "payment_information_service_status"
+
+
+    _name = None
+    _account_information_service_status = None
+    _payment_information_service_status = None
+    _aiia_provider_id = None
+    _country = None
+    _all_payment_method_allowed_sepa = None
+    _all_payment_method_allowed_domestic = None
+    _audience_business_status = None
+    _audience_private_status = None
+    _avatar = None
+    _account_information_service_status_field_for_request = None
+    _payment_information_service_status_field_for_request = None
+
+    def __init__(self, account_information_service_status=None, payment_information_service_status=None):
+        """
+        :param account_information_service_status: Whether we want to activate the
+        account information service for the bank provider.
+        :type account_information_service_status: str
+        :param payment_information_service_status: Whether we want to activate the
+        payment information service for the bank provider.
+        :type payment_information_service_status: str
+        """
+
+        self._account_information_service_status_field_for_request = account_information_service_status
+        self._payment_information_service_status_field_for_request = payment_information_service_status
+
+
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def account_information_service_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._account_information_service_status
+
+    @property
+    def payment_information_service_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._payment_information_service_status
+
+    @property
+    def aiia_provider_id(self):
+        """
+        :rtype: str
+        """
+
+        return self._aiia_provider_id
+
+    @property
+    def country(self):
+        """
+        :rtype: str
+        """
+
+        return self._country
+
+    @property
+    def all_payment_method_allowed_sepa(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_payment_method_allowed_sepa
+
+    @property
+    def all_payment_method_allowed_domestic(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_payment_method_allowed_domestic
+
+    @property
+    def audience_business_status(self):
+        """
+        :rtype: bool
+        """
+
+        return self._audience_business_status
+
+    @property
+    def audience_private_status(self):
+        """
+        :rtype: bool
+        """
+
+        return self._audience_private_status
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._name is not None:
+            return False
+
+        if self._account_information_service_status is not None:
+            return False
+
+        if self._payment_information_service_status is not None:
+            return False
+
+        if self._aiia_provider_id is not None:
+            return False
+
+        if self._country is not None:
+            return False
+
+        if self._all_payment_method_allowed_sepa is not None:
+            return False
+
+        if self._all_payment_method_allowed_domestic is not None:
+            return False
+
+        if self._audience_business_status is not None:
+            return False
+
+        if self._audience_private_status is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: OpenBankingProviderBank
+        """
+
+        return converter.json_to_class(OpenBankingProviderBank, json_str)
+
+
+class MonetaryAccountJoint(BunqModel):
+    """
+    The endpoint for joint monetary accounts.
+    
+    :param _currency: The currency of the MonetaryAccountJoint as an ISO 4217
+    formatted currency code.
+    :type _currency: str
+    :param _description: The description of the MonetaryAccountJoint. Defaults
+    to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
+    MonetaryAccountJoint's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _overdraft_limit: The maximum Amount the MonetaryAccountJoint can be
+    'in the red'.
+    :type _overdraft_limit: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountJoint.
+    :type _alias: list[object_.Pointer]
+    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountJoint. Can be: ACTIVE,
+    BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountJoint providing
+    extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountJoint, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountJoint. Can be any user provided
+    message.
+    :type _reason_description: str
+    :param _all_co_owner: The users the account will be joint with.
+    :type _all_co_owner: list[object_.CoOwner]
+    :param _setting: The settings of the MonetaryAccountJoint.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _id_: The id of the MonetaryAccountJoint.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountJoint's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountJoint's last update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountJoint.
+    :type _avatar: object_.Avatar
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountJoint.
+    :type _balance: object_.Amount
+    :param _public_uuid: The MonetaryAccountJoint's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the MonetaryAccountJoint.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-joint"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-joint/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-joint/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-joint"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_OVERDRAFT_LIMIT = "overdraft_limit"
+    FIELD_ALIAS = "alias"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_ALL_CO_OWNER = "all_co_owner"
+    FIELD_SETTING = "setting"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountJoint"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _overdraft_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _all_co_owner = None
+    _user_id = None
+    _monetary_account_profile = None
+    _setting = None
+    _all_auto_save_id = None
+    _currency_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _overdraft_limit_field_for_request = None
+    _alias_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _all_co_owner_field_for_request = None
+    _setting_field_for_request = None
+
+    def __init__(self, currency, all_co_owner, description=None, daily_limit=None, overdraft_limit=None, alias=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None):
+        """
+        :param currency: The currency of the MonetaryAccountJoint as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param all_co_owner: The users the account will be joint with.
+        :type all_co_owner: list[object_.CoOwner]
+        :param description: The description of the MonetaryAccountJoint. Defaults to
+        'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountJoint's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param overdraft_limit: The maximum Amount the MonetaryAccountJoint can be
+        'in the red'. Must be 0 EUR or omitted.
+        :type overdraft_limit: object_.Amount
+        :param alias: The Aliases to add to MonetaryAccountJoint. Must all be
+        confirmed first. Can mostly be ignored.
+        :type alias: list[object_.Pointer]
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountJoint. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
+        requests to cancel (close) or reopen the MonetaryAccountJoint. When updating
+        the status and/or sub_status no other fields can be updated in the same
+        request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountJoint providing
+        extra information regarding the status. Should be ignored for POST requests.
+        In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountJoint, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountJoint. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param setting: The settings of the MonetaryAccountJoint.
+        :type setting: object_.MonetaryAccountSetting
+        """
+
+        self._currency_field_for_request = currency
+        self._all_co_owner_field_for_request = all_co_owner
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._overdraft_limit_field_for_request = overdraft_limit
+        self._alias_field_for_request = alias
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._setting_field_for_request = setting
+
+    @classmethod
+    def create(cls,currency, all_co_owner, description=None, daily_limit=None, overdraft_limit=None, alias=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None, custom_headers=None):
+        """
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountJoint as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param all_co_owner: The users the account will be joint with.
+        :type all_co_owner: list[object_.CoOwner]
+        :param description: The description of the MonetaryAccountJoint.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountJoint's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param overdraft_limit: The maximum Amount the MonetaryAccountJoint can
+        be 'in the red'. Must be 0 EUR or omitted.
+        :type overdraft_limit: object_.Amount
+        :param alias: The Aliases to add to MonetaryAccountJoint. Must all be
+        confirmed first. Can mostly be ignored.
+        :type alias: list[object_.Pointer]
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountJoint. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountJoint. When
+        updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountJoint providing
+        extra information regarding the status. Should be ignored for POST
+        requests. In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountJoint, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountJoint. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param setting: The settings of the MonetaryAccountJoint.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_OVERDRAFT_LIMIT : overdraft_limit,
+cls.FIELD_ALIAS : alias,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_ALL_CO_OWNER : all_co_owner,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  monetary_account_joint_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_joint_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountJoint
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_joint_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountJoint.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_joint_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_joint_id: int
+        :param description: The description of the MonetaryAccountJoint.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountJoint. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountJoint's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountJoint.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountJoint. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountJoint. When
+        updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountJoint providing
+        extra information regarding the status. Should be ignored for POST
+        requests. In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountJoint, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountJoint. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param setting: The settings of the MonetaryAccountJoint.
+        :type setting: object_.MonetaryAccountSetting
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_SETTING : setting
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_joint_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountJointList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountJointList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def overdraft_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._overdraft_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def all_co_owner(self):
+        """
+        :rtype: list[object_.CoOwner]
+        """
+
+        return self._all_co_owner
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._overdraft_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._all_co_owner is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountJoint
+        """
+
+        return converter.json_to_class(MonetaryAccountJoint, json_str)
+
+
+class MonetaryAccountSavings(BunqModel):
+    """
+    With MonetaryAccountSavings you can create a new savings account.
+    
+    :param _currency: The currency of the MonetaryAccountSavings as an ISO 4217
+    formatted currency code.
+    :type _currency: str
+    :param _description: The description of the MonetaryAccountSavings. Defaults
+    to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
+    MonetaryAccountSavings's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountSavings.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountSavings. Can be: ACTIVE,
+    BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountSavings providing
+    extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountSavings, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountSavings. Can be any user provided
+    message.
+    :type _reason_description: str
+    :param _all_co_owner: The users the account will be joint with.
+    :type _all_co_owner: list[object_.CoOwner]
+    :param _setting: The settings of the MonetaryAccountSavings.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _savings_goal: The Savings Goal set for this MonetaryAccountSavings.
+    :type _savings_goal: object_.Amount
+    :param _id_: The id of the MonetaryAccountSavings.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountSavings's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountSavings's last update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountSavings.
+    :type _avatar: object_.Avatar
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountSavings.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountSavings.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountSavings's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the MonetaryAccountSavings.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _savings_goal_progress: The progress in percentages for the Savings
+    Goal set for this MonetaryAccountSavings.
+    :type _savings_goal_progress: float
+    :param _number_of_payment_remaining: The number of payments that can be made
+    from this savings account
+    :type _number_of_payment_remaining: str
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_CREATE = "user/{}/monetary-account-savings"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account-savings/{}"
+    _ENDPOINT_URL_UPDATE = "user/{}/monetary-account-savings/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account-savings"
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_ALL_CO_OWNER = "all_co_owner"
+    FIELD_SETTING = "setting"
+    FIELD_SAVINGS_GOAL = "savings_goal"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccountSavings"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _all_co_owner = None
+    _user_id = None
+    _monetary_account_profile = None
+    _setting = None
+    _savings_goal = None
+    _savings_goal_progress = None
+    _number_of_payment_remaining = None
+    _all_auto_save_id = None
+    _currency_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _all_co_owner_field_for_request = None
+    _setting_field_for_request = None
+    _savings_goal_field_for_request = None
+
+    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, all_co_owner=None, setting=None, savings_goal=None):
+        """
+        :param currency: The currency of the MonetaryAccountSavings as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param description: The description of the MonetaryAccountSavings. Defaults
+        to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountSavings's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountSavings. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
+        requests to cancel (close) or reopen the MonetaryAccountSavings. When
+        updating the status and/or sub_status no other fields can be updated in the
+        same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountSavings providing
+        extra information regarding the status. Should be ignored for POST requests.
+        In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountSavings, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountSavings. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param all_co_owner: The users the account will be joint with.
+        :type all_co_owner: list[object_.CoOwner]
+        :param setting: The settings of the MonetaryAccountSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        """
+
+        self._currency_field_for_request = currency
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._all_co_owner_field_for_request = all_co_owner
+        self._setting_field_for_request = setting
+        self._savings_goal_field_for_request = savings_goal
+
+    @classmethod
+    def create(cls,currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, all_co_owner=None, setting=None, savings_goal=None, custom_headers=None):
+        """
+        Create new MonetaryAccountSavings.
+        
+        :type user_id: int
+        :param currency: The currency of the MonetaryAccountSavings as an ISO
+        4217 formatted currency code.
+        :type currency: str
+        :param description: The description of the MonetaryAccountSavings.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountSavings's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountSavings. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountSavings.
+        When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountSavings
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountSavings, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param all_co_owner: The users the account will be joint with.
+        :type all_co_owner: list[object_.CoOwner]
+        :param setting: The settings of the MonetaryAccountSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this
+        MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+cls.FIELD_CURRENCY : currency,
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_ALL_CO_OWNER : all_co_owner,
+cls.FIELD_SETTING : setting,
+cls.FIELD_SAVINGS_GOAL : savings_goal
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id())
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def get(cls,  monetary_account_savings_id, custom_headers=None):
+        """
+        Get a specific MonetaryAccountSavings.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_savings_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountSavings
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), monetary_account_savings_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccountSavings.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def update(cls,  monetary_account_savings_id, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None, savings_goal=None, custom_headers=None):
+        """
+        Update a specific existing MonetaryAccountSavings.
+        
+        :type user_id: int
+        :type monetary_account_savings_id: int
+        :param description: The description of the MonetaryAccountSavings.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountSavings. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountSavings's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the
+        MonetaryAccountSavings.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountSavings. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in
+        PUT requests to cancel (close) or reopen the MonetaryAccountSavings.
+        When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountSavings
+        providing extra information regarding the status. Should be ignored for
+        POST requests. In case of PUT requests with status CANCELLED it can only
+        be REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be
+        NONE. When updating the status and/or sub_status no other fields can be
+        updated in the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountSavings, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountSavings. Can be any user
+        provided message. Should only be specified if updating the status to
+        CANCELLED.
+        :type reason_description: str
+        :param setting: The settings of the MonetaryAccountSavings.
+        :type setting: object_.MonetaryAccountSetting
+        :param savings_goal: The Savings Goal set for this
+        MonetaryAccountSavings.
+        :type savings_goal: object_.Amount
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+cls.FIELD_DESCRIPTION : description,
+cls.FIELD_DAILY_LIMIT : daily_limit,
+cls.FIELD_AVATAR_UUID : avatar_uuid,
+cls.FIELD_STATUS : status,
+cls.FIELD_SUB_STATUS : sub_status,
+cls.FIELD_REASON : reason,
+cls.FIELD_REASON_DESCRIPTION : reason_description,
+cls.FIELD_SETTING : setting,
+cls.FIELD_SAVINGS_GOAL : savings_goal
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), monetary_account_savings_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        Gets a listing of all MonetaryAccountSavingss of a given user.
+        
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountSavingsList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountSavingsList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def all_co_owner(self):
+        """
+        :rtype: list[object_.CoOwner]
+        """
+
+        return self._all_co_owner
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def savings_goal(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._savings_goal
+
+    @property
+    def savings_goal_progress(self):
+        """
+        :rtype: float
+        """
+
+        return self._savings_goal_progress
+
+    @property
+    def number_of_payment_remaining(self):
+        """
+        :rtype: str
+        """
+
+        return self._number_of_payment_remaining
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._all_co_owner is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._savings_goal is not None:
+            return False
+
+        if self._savings_goal_progress is not None:
+            return False
+
+        if self._number_of_payment_remaining is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountSavings
+        """
+
+        return converter.json_to_class(MonetaryAccountSavings, json_str)
+
+
+class MonetaryAccount(BunqModel):
+    """
+    Used to show the MonetaryAccounts that you can access. Currently the only
+    MonetaryAccount type is MonetaryAccountBank. See also:
+    monetary-account-bank.<br/><br/>Notification filters can be set on a
+    monetary account level to receive callbacks. For more information check the
+    <a href="/api/2/page/callbacks">dedicated callbacks page</a>.
+    
+    :param _alias: The aliases for the MonetaryAccount.
+    :type _alias: list[object_.Pointer]
+    :param _balance: The current available balance amount of the
+    MonetaryAccount.
+    :type _balance: object_.Amount
+    :param _monetary_account_profile: The profiles of the account.
+    :type _monetary_account_profile: list[MonetaryAccountProfile]
+    :param _setting: The settings of the MonetaryAccount.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _budget: The budgets of the MonetaryAccount.
+    :type _budget: list[MonetaryAccountBudget]
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccount.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccount. Can be any user provided message.
+    :type _reason_description: str
+    :param _share: The ShareInviteBankResponse when the MonetaryAccount is
+    accessed by the User via a share/connect.
+    :type _share: ShareInviteMonetaryAccountResponse
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    :param _fulfillments: The fulfillments for this MonetaryAccount.
+    :type _fulfillments: list[Fulfillment]
+    :param _relation_user: The RelationUser when the MonetaryAccount is accessed
+    by the User via a share/connect.
+    :type _relation_user: RelationUser
+    :param _all_co_owner: The users the account will be joint with.
+    :type _all_co_owner: list[object_.CoOwner]
+    :param _co_owner_invite: The CoOwnerInvite when the MonetaryAccount is
+    accessed by the User via a CoOwnerInvite.
+    :type _co_owner_invite: CoOwnerInviteResponse
+    :param _open_banking_account: The open banking account for information about
+    the external account.
+    :type _open_banking_account: OpenBankingAccount
+    :param _birdee_investment_portfolio: The Birdee investment portfolio.
+    :type _birdee_investment_portfolio: BirdeeInvestmentPortfolio
+    :param _MonetaryAccountLight: 
+    :type _MonetaryAccountLight: MonetaryAccountLight
+    :param _MonetaryAccountBank: 
+    :type _MonetaryAccountBank: MonetaryAccountBank
+    :param _MonetaryAccountExternal: 
+    :type _MonetaryAccountExternal: MonetaryAccountExternal
+    :param _MonetaryAccountInvestment: 
+    :type _MonetaryAccountInvestment: MonetaryAccountInvestment
+    :param _MonetaryAccountJoint: 
+    :type _MonetaryAccountJoint: MonetaryAccountJoint
+    :param _MonetaryAccountSavings: 
+    :type _MonetaryAccountSavings: MonetaryAccountSavings
+    :param _MonetaryAccountSwitchService: 
+    :type _MonetaryAccountSwitchService: MonetaryAccountSwitchService
+    :param _MonetaryAccountExternalSavings: 
+    :type _MonetaryAccountExternalSavings: MonetaryAccountExternalSavings
+    :param _MonetaryAccountCard: 
+    :type _MonetaryAccountCard: MonetaryAccountCard
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}"
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "MonetaryAccount"
+
+    _alias = None
+    _balance = None
+    _monetary_account_profile = None
+    _setting = None
+    _budget = None
+    _reason = None
+    _reason_description = None
+    _share = None
+    _all_auto_save_id = None
+    _fulfillments = None
+    _relation_user = None
+    _all_co_owner = None
+    _co_owner_invite = None
+    _open_banking_account = None
+    _birdee_investment_portfolio = None
+    _MonetaryAccountLight = None
+    _MonetaryAccountBank = None
+    _MonetaryAccountExternal = None
+    _MonetaryAccountInvestment = None
+    _MonetaryAccountJoint = None
+    _MonetaryAccountSavings = None
+    _MonetaryAccountSwitchService = None
+    _MonetaryAccountExternalSavings = None
+    _MonetaryAccountCard = None
+
+    @classmethod
+    def get(cls,  monetary_account_id, custom_headers=None):
+        """
+        Get a specific MonetaryAccount.
+        
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccount
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id))
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseMonetaryAccount.cast_from_bunq_response(
+            cls._from_json(response_raw)
+        )
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        Get a collection of all your MonetaryAccounts.
+        
+        :type user_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseMonetaryAccountList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id())
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseMonetaryAccountList.cast_from_bunq_response(
+            cls._from_json_list(response_raw)
+        )
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: list[MonetaryAccountProfile]
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def budget(self):
+        """
+        :rtype: list[MonetaryAccountBudget]
+        """
+
+        return self._budget
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def share(self):
+        """
+        :rtype: ShareInviteMonetaryAccountResponse
+        """
+
+        return self._share
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    @property
+    def fulfillments(self):
+        """
+        :rtype: list[Fulfillment]
+        """
+
+        return self._fulfillments
+
+    @property
+    def relation_user(self):
+        """
+        :rtype: RelationUser
+        """
+
+        return self._relation_user
+
+    @property
+    def all_co_owner(self):
+        """
+        :rtype: list[object_.CoOwner]
+        """
+
+        return self._all_co_owner
+
+    @property
+    def co_owner_invite(self):
+        """
+        :rtype: CoOwnerInviteResponse
+        """
+
+        return self._co_owner_invite
+
+    @property
+    def open_banking_account(self):
+        """
+        :rtype: OpenBankingAccount
+        """
+
+        return self._open_banking_account
+
+    @property
+    def birdee_investment_portfolio(self):
+        """
+        :rtype: BirdeeInvestmentPortfolio
+        """
+
+        return self._birdee_investment_portfolio
+
+    @property
+    def MonetaryAccountLight(self):
+        """
+        :rtype: MonetaryAccountLight
+        """
+
+        return self._MonetaryAccountLight
+
+    @property
+    def MonetaryAccountBank(self):
+        """
+        :rtype: MonetaryAccountBank
+        """
+
+        return self._MonetaryAccountBank
+
+    @property
+    def MonetaryAccountExternal(self):
+        """
+        :rtype: MonetaryAccountExternal
+        """
+
+        return self._MonetaryAccountExternal
+
+    @property
+    def MonetaryAccountInvestment(self):
+        """
+        :rtype: MonetaryAccountInvestment
+        """
+
+        return self._MonetaryAccountInvestment
+
+    @property
+    def MonetaryAccountJoint(self):
+        """
+        :rtype: MonetaryAccountJoint
+        """
+
+        return self._MonetaryAccountJoint
+
+    @property
+    def MonetaryAccountSavings(self):
+        """
+        :rtype: MonetaryAccountSavings
+        """
+
+        return self._MonetaryAccountSavings
+
+    @property
+    def MonetaryAccountSwitchService(self):
+        """
+        :rtype: MonetaryAccountSwitchService
+        """
+
+        return self._MonetaryAccountSwitchService
+
+    @property
+    def MonetaryAccountExternalSavings(self):
+        """
+        :rtype: MonetaryAccountExternalSavings
+        """
+
+        return self._MonetaryAccountExternalSavings
+
+    @property
+    def MonetaryAccountCard(self):
+        """
+        :rtype: MonetaryAccountCard
+        """
+
+        return self._MonetaryAccountCard
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._alias is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._budget is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._share is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        if self._fulfillments is not None:
+            return False
+
+        if self._relation_user is not None:
+            return False
+
+        if self._all_co_owner is not None:
+            return False
+
+        if self._co_owner_invite is not None:
+            return False
+
+        if self._open_banking_account is not None:
+            return False
+
+        if self._birdee_investment_portfolio is not None:
+            return False
+
+        if self._MonetaryAccountLight is not None:
+            return False
+
+        if self._MonetaryAccountBank is not None:
+            return False
+
+        if self._MonetaryAccountExternal is not None:
+            return False
+
+        if self._MonetaryAccountInvestment is not None:
+            return False
+
+        if self._MonetaryAccountJoint is not None:
+            return False
+
+        if self._MonetaryAccountSavings is not None:
+            return False
+
+        if self._MonetaryAccountSwitchService is not None:
+            return False
+
+        if self._MonetaryAccountExternalSavings is not None:
+            return False
+
+        if self._MonetaryAccountCard is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccount
+        """
+
+        return converter.json_to_class(MonetaryAccount, json_str)
+
+
+class MonetaryAccountBudget(BunqModel):
+    """
+    Endpoint to read, list, or delete the budget for a monetary account.
+    
+    :param _all_category: DEPRECATED. The list of categories on which the user
+    wants to set the budget.
+    :type _all_category: list[str]
+    :param _amount: DEPRECATED. The amount for the budget.
+    :type _amount: object_.Amount
+    :param _recurrence_type: DEPRECATED. The recurrence type for the automatic
+    top-up.
+    :type _recurrence_type: str
+    :param _monetary_account_source_funding_id: DEPRECATED. The monetary
+    account's ID from/to which the missing/exceeding funds will be transferred.
+    :type _monetary_account_source_funding_id: int
+    :param _payment_day_of_month: DEPRECATED. The day of the month for the
+    automatic top-up.
+    :type _payment_day_of_month: int
+    """
+
+    # Field constants.
+    FIELD_ALL_CATEGORY = "all_category"
+    FIELD_AMOUNT = "amount"
+    FIELD_RECURRENCE_TYPE = "recurrence_type"
+    FIELD_MONETARY_ACCOUNT_SOURCE_FUNDING_ID = "monetary_account_source_funding_id"
+    FIELD_PAYMENT_DAY_OF_MONTH = "payment_day_of_month"
+
+
+    _all_category_field_for_request = None
+    _amount_field_for_request = None
+    _recurrence_type_field_for_request = None
+    _monetary_account_source_funding_id_field_for_request = None
+    _payment_day_of_month_field_for_request = None
+
+    def __init__(self, all_category=None, amount=None, recurrence_type=None, monetary_account_source_funding_id=None, payment_day_of_month=None):
+        """
+        :param all_category: DEPRECATED. The list of categories on which the user
+        wants to set the budget.
+        :type all_category: list[str]
+        :param amount: DEPRECATED. The amount for the budget.
+        :type amount: object_.Amount
+        :param recurrence_type: DEPRECATED. The recurrence type for the automatic
+        top-up.
+        :type recurrence_type: str
+        :param monetary_account_source_funding_id: DEPRECATED. The monetary
+        account's ID from/to which the missing/exceeding funds will be transferred.
+        :type monetary_account_source_funding_id: int
+        :param payment_day_of_month: DEPRECATED. The day of the month for the
+        automatic top-up.
+        :type payment_day_of_month: int
+        """
+
+        self._all_category_field_for_request = all_category
+        self._amount_field_for_request = amount
+        self._recurrence_type_field_for_request = recurrence_type
+        self._monetary_account_source_funding_id_field_for_request = monetary_account_source_funding_id
+        self._payment_day_of_month_field_for_request = payment_day_of_month
+
+
+
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountBudget
+        """
+
+        return converter.json_to_class(MonetaryAccountBudget, json_str)
+
+
+class Fulfillment(BunqModel):
+    """
+    Endpoint for getting information fulfillments for a user.
+    
+    :param _type_: Type of the information fulfillment.
+    :type _type_: str
+    :param _reason: The reason why this fulfillment is requested.
+    :type _reason: str
+    :param _reason_translated: The translated reason why this fulfillment is
+    requested.
+    :type _reason_translated: str
+    :param _status: Status of this fulfillment.
+    :type _status: str
+    :param _time_mandatory: Time when the information fulfillment becomes
+    mandatory.
+    :type _time_mandatory: str
+    :param _user_id: The user id this fulfillment is required for.
+    :type _user_id: int
+    :param _all_status_allowed: The allowed statusses for this fulfillment.
+    :type _all_status_allowed: list[str]
+    """
+
+    _type_ = None
+    _reason = None
+    _reason_translated = None
+    _status = None
+    _time_mandatory = None
+    _user_id = None
+    _all_status_allowed = None
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_translated
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def time_mandatory(self):
+        """
+        :rtype: str
+        """
+
+        return self._time_mandatory
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def all_status_allowed(self):
+        """
+        :rtype: list[str]
+        """
+
+        return self._all_status_allowed
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_translated is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._time_mandatory is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._all_status_allowed is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: Fulfillment
+        """
+
+        return converter.json_to_class(Fulfillment, json_str)
+
+
+class MonetaryAccountLight(BunqModel):
+    """
+    With MonetaryAccountLight is a monetary account for bunq light users.
+    Through this endpoint you can retrieve information regarding your existing
+    MonetaryAccountLights and update specific fields of an existing
+    MonetaryAccountLight. Examples of fields that can be updated are the
+    description, the daily limit and the avatar of the account.
+    
+    :param _currency: The currency of the MonetaryAccountLight as an ISO 4217
+    formatted currency code.
+    :type _currency: str
+    :param _description: The description of the MonetaryAccountLight. Defaults
+    to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountLight. Defaults to 1000 EUR. Currency must match the
+    MonetaryAccountLight's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the MonetaryAccountLight.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountLight. Can be: ACTIVE,
+    BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountLight providing
+    extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountBank, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountBank. Can be any user provided
+    message.
+    :type _reason_description: str
+    :param _setting: The settings of the MonetaryAccountLight.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _id_: The id of the MonetaryAccountLight.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountLight's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountLight's last update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountLight.
+    :type _avatar: object_.Avatar
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountLight.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountLight.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountLight's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the MonetaryAccountLight.
+    :type _user_id: int
+    :param _balance_maximum: The maximum balance Amount of the
+    MonetaryAccountLight.
+    :type _balance_maximum: object_.Amount
+    :param _budget_month_used: The amount of the monthly budget used.
+    :type _budget_month_used: object_.Amount
+    :param _budget_month_maximum: The total amount of the monthly budget.
+    :type _budget_month_maximum: object_.Amount
+    :param _budget_year_used: The amount of the yearly budget used.
+    :type _budget_year_used: object_.Amount
+    :param _budget_year_maximum: The total amount of the yearly budget.
+    :type _budget_year_maximum: object_.Amount
+    :param _budget_withdrawal_year_used: The amount of the yearly withdrawal
+    budget used.
+    :type _budget_withdrawal_year_used: object_.Amount
+    :param _budget_withdrawal_year_maximum: The total amount of the yearly
+    withdrawal budget.
+    :type _budget_withdrawal_year_maximum: object_.Amount
+    """
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_SETTING = "setting"
+
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _user_id = None
+    _balance_maximum = None
+    _budget_month_used = None
+    _budget_month_maximum = None
+    _budget_year_used = None
+    _budget_year_maximum = None
+    _budget_withdrawal_year_used = None
+    _budget_withdrawal_year_maximum = None
+    _setting = None
+    _currency_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _setting_field_for_request = None
+
+    def __init__(self, currency, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, setting=None):
+        """
+        :param currency: The currency of the MonetaryAccountLight as an ISO 4217
+        formatted currency code.
+        :type currency: str
+        :param description: The description of the MonetaryAccountLight. Defaults to
+        'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountLight. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountLight's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountLight.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountLight. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
+        requests to cancel (close) or reopen the MonetaryAccountLight. When updating
+        the status and/or sub_status no other fields can be updated in the same
+        request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountLight providing
+        extra information regarding the status. Should be ignored for POST requests
+        and can only be REDEMPTION_VOLUNTARY for PUT requests with status CANCELLED.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountBank, can only be OTHER. Should only be specified if updating
+        the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountBank. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param setting: The settings of the MonetaryAccountLight.
+        :type setting: object_.MonetaryAccountSetting
+        """
+
+        self._currency_field_for_request = currency
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._setting_field_for_request = setting
+
+
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def balance_maximum(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance_maximum
+
+    @property
+    def budget_month_used(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._budget_month_used
+
+    @property
+    def budget_month_maximum(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._budget_month_maximum
+
+    @property
+    def budget_year_used(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._budget_year_used
+
+    @property
+    def budget_year_maximum(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._budget_year_maximum
+
+    @property
+    def budget_withdrawal_year_used(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._budget_withdrawal_year_used
+
+    @property
+    def budget_withdrawal_year_maximum(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._budget_withdrawal_year_maximum
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._balance_maximum is not None:
+            return False
+
+        if self._budget_month_used is not None:
+            return False
+
+        if self._budget_month_maximum is not None:
+            return False
+
+        if self._budget_year_used is not None:
+            return False
+
+        if self._budget_year_maximum is not None:
+            return False
+
+        if self._budget_withdrawal_year_used is not None:
+            return False
+
+        if self._budget_withdrawal_year_maximum is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountLight
+        """
+
+        return converter.json_to_class(MonetaryAccountLight, json_str)
+
+
+class MonetaryAccountInvestment(BunqModel):
+    """
+    Endpoint for managing investment monetary accounts.
+    
+    :param _currency: The currency of the MonetaryAccountInvestment as an ISO
+    4217 formatted currency code.
+    :type _currency: str
+    :param _provider: The provider of the investment service.
+    :type _provider: str
+    :param _description: The description of the MonetaryAccountInvestment.
+    Defaults to 'bunq account'.
+    :type _description: str
+    :param _daily_limit: The daily spending limit Amount of the
+    MonetaryAccountInvestment. Defaults to 1000 EUR. Currency must match the
+    MonetaryAccountInvestment's currency. Limited to 10000 EUR.
+    :type _daily_limit: object_.Amount
+    :param _avatar_uuid: The UUID of the Avatar of the
+    MonetaryAccountInvestment.
+    :type _avatar_uuid: str
+    :param _status: The status of the MonetaryAccountInvestment. Can be: ACTIVE,
+    BLOCKED, CANCELLED or PENDING_REOPEN
+    :type _status: str
+    :param _sub_status: The sub-status of the MonetaryAccountInvestment
+    providing extra information regarding the status. Will be NONE for ACTIVE or
+    PENDING_REOPEN, COMPLETELY or ONLY_ACCEPTING_INCOMING for BLOCKED and
+    REDEMPTION_INVOLUNTARY, REDEMPTION_VOLUNTARY or PERMANENT for CANCELLED.
+    :type _sub_status: str
+    :param _reason: The reason for voluntarily cancelling (closing) the
+    MonetaryAccountInvestment, can only be OTHER.
+    :type _reason: str
+    :param _reason_description: The optional free-form reason for voluntarily
+    cancelling (closing) the MonetaryAccountInvestment. Can be any user provided
+    message.
+    :type _reason_description: str
+    :param _display_name: The legal name of the user / company using this
+    monetary account.
+    :type _display_name: str
+    :param _setting: The settings of the MonetaryAccountInvestment.
+    :type _setting: object_.MonetaryAccountSetting
+    :param _birdee_investment_portfolio: The Birdee investment portfolio.
+    :type _birdee_investment_portfolio: BirdeeInvestmentPortfolio
+    :param _monetary_account_deposit_initial_id: ID of the MA to be used for the
+    initial deposit to the investment account.
+    :type _monetary_account_deposit_initial_id: int
+    :param _amount_deposit_initial: The amount to be transferred to the
+    investment account as the initial deposit.
+    :type _amount_deposit_initial: object_.Amount
+    :param _id_: The id of the MonetaryAccountInvestment.
+    :type _id_: int
+    :param _created: The timestamp of the MonetaryAccountInvestment's creation.
+    :type _created: str
+    :param _updated: The timestamp of the MonetaryAccountInvestment's last
+    update.
+    :type _updated: str
+    :param _avatar: The Avatar of the MonetaryAccountInvestment.
+    :type _avatar: object_.Avatar
+    :param _balance: The current available balance Amount of the
+    MonetaryAccountInvestment.
+    :type _balance: object_.Amount
+    :param _alias: The Aliases for the MonetaryAccountInvestment.
+    :type _alias: list[object_.Pointer]
+    :param _public_uuid: The MonetaryAccountInvestment's public UUID.
+    :type _public_uuid: str
+    :param _user_id: The id of the User who owns the MonetaryAccountInvestment.
+    :type _user_id: int
+    :param _monetary_account_profile: The profile of the account.
+    :type _monetary_account_profile: MonetaryAccountProfile
+    :param _all_auto_save_id: The ids of the AutoSave.
+    :type _all_auto_save_id: list[object_.BunqId]
+    """
+
+    # Field constants.
+    FIELD_CURRENCY = "currency"
+    FIELD_PROVIDER = "provider"
+    FIELD_DESCRIPTION = "description"
+    FIELD_DAILY_LIMIT = "daily_limit"
+    FIELD_AVATAR_UUID = "avatar_uuid"
+    FIELD_STATUS = "status"
+    FIELD_SUB_STATUS = "sub_status"
+    FIELD_REASON = "reason"
+    FIELD_REASON_DESCRIPTION = "reason_description"
+    FIELD_DISPLAY_NAME = "display_name"
+    FIELD_SETTING = "setting"
+    FIELD_BIRDEE_INVESTMENT_PORTFOLIO = "birdee_investment_portfolio"
+    FIELD_MONETARY_ACCOUNT_DEPOSIT_INITIAL_ID = "monetary_account_deposit_initial_id"
+    FIELD_AMOUNT_DEPOSIT_INITIAL = "amount_deposit_initial"
+
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _avatar = None
+    _currency = None
+    _description = None
+    _daily_limit = None
+    _balance = None
+    _alias = None
+    _public_uuid = None
+    _status = None
+    _sub_status = None
+    _reason = None
+    _reason_description = None
+    _user_id = None
+    _monetary_account_profile = None
+    _display_name = None
+    _setting = None
+    _all_auto_save_id = None
+    _currency_field_for_request = None
+    _provider_field_for_request = None
+    _description_field_for_request = None
+    _daily_limit_field_for_request = None
+    _avatar_uuid_field_for_request = None
+    _status_field_for_request = None
+    _sub_status_field_for_request = None
+    _reason_field_for_request = None
+    _reason_description_field_for_request = None
+    _display_name_field_for_request = None
+    _setting_field_for_request = None
+    _birdee_investment_portfolio_field_for_request = None
+    _monetary_account_deposit_initial_id_field_for_request = None
+    _amount_deposit_initial_field_for_request = None
+
+    def __init__(self, currency, provider, description=None, daily_limit=None, avatar_uuid=None, status=None, sub_status=None, reason=None, reason_description=None, display_name=None, setting=None, birdee_investment_portfolio=None, monetary_account_deposit_initial_id=None, amount_deposit_initial=None):
+        """
+        :param currency: The currency of the MonetaryAccountInvestment as an ISO
+        4217 formatted currency code.
+        :type currency: str
+        :param provider: The provider of the investment service.
+        :type provider: str
+        :param description: The description of the MonetaryAccountInvestment.
+        Defaults to 'bunq account'.
+        :type description: str
+        :param daily_limit: The daily spending limit Amount of the
+        MonetaryAccountInvestment. Defaults to 1000 EUR. Currency must match the
+        MonetaryAccountInvestment's currency. Limited to 10000 EUR.
+        :type daily_limit: object_.Amount
+        :param avatar_uuid: The UUID of the Avatar of the MonetaryAccountInvestment.
+        :type avatar_uuid: str
+        :param status: The status of the MonetaryAccountInvestment. Ignored in POST
+        requests (always set to ACTIVE) can be CANCELLED or PENDING_REOPEN in PUT
+        requests to cancel (close) or reopen the MonetaryAccountInvestment. When
+        updating the status and/or sub_status no other fields can be updated in the
+        same request (and vice versa).
+        :type status: str
+        :param sub_status: The sub-status of the MonetaryAccountInvestment providing
+        extra information regarding the status. Should be ignored for POST requests.
+        In case of PUT requests with status CANCELLED it can only be
+        REDEMPTION_VOLUNTARY, while with status PENDING_REOPEN it can only be NONE.
+        When updating the status and/or sub_status no other fields can be updated in
+        the same request (and vice versa).
+        :type sub_status: str
+        :param reason: The reason for voluntarily cancelling (closing) the
+        MonetaryAccountInvestment, can only be OTHER. Should only be specified if
+        updating the status to CANCELLED.
+        :type reason: str
+        :param reason_description: The optional free-form reason for voluntarily
+        cancelling (closing) the MonetaryAccountInvestment. Can be any user provided
+        message. Should only be specified if updating the status to CANCELLED.
+        :type reason_description: str
+        :param display_name: The legal name of the user / company using this
+        monetary account.
+        :type display_name: str
+        :param setting: The settings of the MonetaryAccountInvestment.
+        :type setting: object_.MonetaryAccountSetting
+        :param birdee_investment_portfolio: The Birdee investment portfolio.
+        :type birdee_investment_portfolio: BirdeeInvestmentPortfolio
+        :param monetary_account_deposit_initial_id: ID of the MA to be used for the
+        initial deposit to the investment account.
+        :type monetary_account_deposit_initial_id: int
+        :param amount_deposit_initial: The amount to be transferred to the
+        investment account as the initial deposit.
+        :type amount_deposit_initial: object_.Amount
+        """
+
+        self._currency_field_for_request = currency
+        self._provider_field_for_request = provider
+        self._description_field_for_request = description
+        self._daily_limit_field_for_request = daily_limit
+        self._avatar_uuid_field_for_request = avatar_uuid
+        self._status_field_for_request = status
+        self._sub_status_field_for_request = sub_status
+        self._reason_field_for_request = reason
+        self._reason_description_field_for_request = reason_description
+        self._display_name_field_for_request = display_name
+        self._setting_field_for_request = setting
+        self._birdee_investment_portfolio_field_for_request = birdee_investment_portfolio
+        self._monetary_account_deposit_initial_id_field_for_request = monetary_account_deposit_initial_id
+        self._amount_deposit_initial_field_for_request = amount_deposit_initial
+
+
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def avatar(self):
+        """
+        :rtype: object_.Avatar
+        """
+
+        return self._avatar
+
+    @property
+    def currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._currency
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def daily_limit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._daily_limit
+
+    @property
+    def balance(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._balance
+
+    @property
+    def alias(self):
+        """
+        :rtype: list[object_.Pointer]
+        """
+
+        return self._alias
+
+    @property
+    def public_uuid(self):
+        """
+        :rtype: str
+        """
+
+        return self._public_uuid
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    @property
+    def reason(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason
+
+    @property
+    def reason_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._reason_description
+
+    @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def monetary_account_profile(self):
+        """
+        :rtype: MonetaryAccountProfile
+        """
+
+        return self._monetary_account_profile
+
+    @property
+    def display_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._display_name
+
+    @property
+    def setting(self):
+        """
+        :rtype: object_.MonetaryAccountSetting
+        """
+
+        return self._setting
+
+    @property
+    def all_auto_save_id(self):
+        """
+        :rtype: list[object_.BunqId]
+        """
+
+        return self._all_auto_save_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._avatar is not None:
+            return False
+
+        if self._currency is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._daily_limit is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._alias is not None:
+            return False
+
+        if self._public_uuid is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        if self._reason is not None:
+            return False
+
+        if self._reason_description is not None:
+            return False
+
+        if self._user_id is not None:
+            return False
+
+        if self._monetary_account_profile is not None:
+            return False
+
+        if self._display_name is not None:
+            return False
+
+        if self._setting is not None:
+            return False
+
+        if self._all_auto_save_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountInvestment
+        """
+
+        return converter.json_to_class(MonetaryAccountInvestment, json_str)
+
+
+class BirdeeInvestmentPortfolio(BunqModel):
+    """
+    Endpoint for interacting with the investment portfolio opened at Birdee.
+    
+    :param _risk_profile_type: The type of risk profile associated with the
+    portfolio.
+    :type _risk_profile_type: str
+    :param _investment_theme: The investment theme.
+    :type _investment_theme: str
+    :param _name: The name associated with the investment portfolio.
+    :type _name: str
+    :param _goal: The investment goal.
+    :type _goal: object_.BirdeeInvestmentPortfolioGoal
+    :param _status: Status of the portfolio.
+    :type _status: str
+    :param _number_of_strategy_change_annual_maximum: Maximum number of strategy
+    changes in a year.
+    :type _number_of_strategy_change_annual_maximum: int
+    :param _number_of_strategy_change_annual_used: Maximum number of strategy
+    changes used.
+    :type _number_of_strategy_change_annual_used: int
+    :param _external_identifier: The external identifier of the portfolio.
+    :type _external_identifier: str
+    :param _balance: The investment portfolio balance.
+    :type _balance: BirdeeInvestmentPortfolioBalance
+    :param _allocations: The allocations of the investment portfolio.
+    :type _allocations: list[BirdeePortfolioAllocation]
+    """
+
+    # Field constants.
+    FIELD_RISK_PROFILE_TYPE = "risk_profile_type"
+    FIELD_INVESTMENT_THEME = "investment_theme"
+    FIELD_NAME = "name"
+    FIELD_GOAL = "goal"
+
+
+    _status = None
+    _risk_profile_type = None
+    _investment_theme = None
+    _number_of_strategy_change_annual_maximum = None
+    _number_of_strategy_change_annual_used = None
+    _name = None
+    _external_identifier = None
+    _goal = None
+    _balance = None
+    _allocations = None
+    _risk_profile_type_field_for_request = None
+    _investment_theme_field_for_request = None
+    _name_field_for_request = None
+    _goal_field_for_request = None
+
+    def __init__(self, risk_profile_type=None, investment_theme=None, name=None, goal=None):
+        """
+        :param risk_profile_type: The type of risk profile associated with the
+        portfolio.
+        :type risk_profile_type: str
+        :param investment_theme: The investment theme.
+        :type investment_theme: str
+        :param name: The name associated with the investment portfolio.
+        :type name: str
+        :param goal: The investment goal.
+        :type goal: object_.BirdeeInvestmentPortfolioGoal
+        """
+
+        self._risk_profile_type_field_for_request = risk_profile_type
+        self._investment_theme_field_for_request = investment_theme
+        self._name_field_for_request = name
+        self._goal_field_for_request = goal
+
+
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def risk_profile_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._risk_profile_type
+
+    @property
+    def investment_theme(self):
+        """
+        :rtype: str
+        """
+
+        return self._investment_theme
+
+    @property
+    def number_of_strategy_change_annual_maximum(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_strategy_change_annual_maximum
+
+    @property
+    def number_of_strategy_change_annual_used(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_strategy_change_annual_used
+
+    @property
+    def name(self):
+        """
+        :rtype: str
+        """
+
+        return self._name
+
+    @property
+    def external_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._external_identifier
+
+    @property
+    def goal(self):
+        """
+        :rtype: object_.BirdeeInvestmentPortfolioGoal
+        """
+
+        return self._goal
+
+    @property
+    def balance(self):
+        """
+        :rtype: BirdeeInvestmentPortfolioBalance
+        """
+
+        return self._balance
+
+    @property
+    def allocations(self):
+        """
+        :rtype: list[BirdeePortfolioAllocation]
+        """
+
+        return self._allocations
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._risk_profile_type is not None:
+            return False
+
+        if self._investment_theme is not None:
+            return False
+
+        if self._number_of_strategy_change_annual_maximum is not None:
+            return False
+
+        if self._number_of_strategy_change_annual_used is not None:
+            return False
+
+        if self._name is not None:
+            return False
+
+        if self._external_identifier is not None:
+            return False
+
+        if self._goal is not None:
+            return False
+
+        if self._balance is not None:
+            return False
+
+        if self._allocations is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeeInvestmentPortfolio
+        """
+
+        return converter.json_to_class(BirdeeInvestmentPortfolio, json_str)
+
+
+class BirdeeInvestmentPortfolioBalance(BunqModel):
+    """
+    Endpoint for interacting with the birdee investment portfolio balance..
+    
+    :param _amount_available: The current valuation of the portfolio, minus any
+    amount pending withdrawal.
+    :type _amount_available: object_.Amount
+    :param _amount_deposit_total: The total amount deposited.
+    :type _amount_deposit_total: object_.Amount
+    :param _amount_withdrawal_total: The total amount withdrawn.
+    :type _amount_withdrawal_total: object_.Amount
+    :param _amount_fee_total: The total fee amount.
+    :type _amount_fee_total: object_.Amount
+    :param _amount_profit: The difference between the netto deposited amount and
+    the current valuation.
+    :type _amount_profit: object_.Amount
+    :param _amount_deposit_pending: The amount that's sent to Birdee, but
+    pending investment on the portfolio.
+    :type _amount_deposit_pending: object_.Amount
+    :param _amount_withdrawal_pending: The amount that's sent to Birdee, but
+    pending withdrawal.
+    :type _amount_withdrawal_pending: object_.Amount
+    """
+
+    _amount_available = None
+    _amount_deposit_total = None
+    _amount_withdrawal_total = None
+    _amount_fee_total = None
+    _amount_profit = None
+    _amount_deposit_pending = None
+    _amount_withdrawal_pending = None
+
+    @property
+    def amount_available(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_available
+
+    @property
+    def amount_deposit_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_deposit_total
+
+    @property
+    def amount_withdrawal_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_withdrawal_total
+
+    @property
+    def amount_fee_total(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_fee_total
+
+    @property
+    def amount_profit(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_profit
+
+    @property
+    def amount_deposit_pending(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_deposit_pending
+
+    @property
+    def amount_withdrawal_pending(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_withdrawal_pending
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._amount_available is not None:
+            return False
+
+        if self._amount_deposit_total is not None:
+            return False
+
+        if self._amount_withdrawal_total is not None:
+            return False
+
+        if self._amount_fee_total is not None:
+            return False
+
+        if self._amount_profit is not None:
+            return False
+
+        if self._amount_deposit_pending is not None:
+            return False
+
+        if self._amount_withdrawal_pending is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeeInvestmentPortfolioBalance
+        """
+
+        return converter.json_to_class(BirdeeInvestmentPortfolioBalance, json_str)
+
+
+class BirdeePortfolioAllocation(BunqModel):
+    """
+    Endpoint for viewing the allocations of the model portfolios Birdee offers.
+    
+    :param _instrument_currency: Currency of the instrument.
+    :type _instrument_currency: str
+    :param _instrument_asset_class: Asset Class of the instrument.
+    :type _instrument_asset_class: str
+    :param _instrument_asset_class_name: Name of the asset class.
+    :type _instrument_asset_class_name: str
+    :param _instrument_isin: ISIN code of the instrument.
+    :type _instrument_isin: str
+    :param _instrument_name: Name of the instrument.
+    :type _instrument_name: str
+    :param _instrument_region_name: Name of the geographical region covered by
+    the instrument
+    :type _instrument_region_name: str
+    :param _instrument_key_information_document_uri: Key Information Document of
+    the instrument.
+    :type _instrument_key_information_document_uri: str
+    :param _weight: Weight of the financial instrument in the model portfolio.
+    :type _weight: str
+    :param _quantity: Quantity of the financial instrument in the portfolio.
+    :type _quantity: str
+    :param _price: Unit price of the financial instrument.
+    :type _price: str
+    :param _amount: Monetary amount of the financial instrument in the
+    portfolio.
+    :type _amount: str
+    """
+
+    _instrument_currency = None
+    _instrument_asset_class = None
+    _instrument_asset_class_name = None
+    _instrument_isin = None
+    _instrument_name = None
+    _instrument_region_name = None
+    _instrument_key_information_document_uri = None
+    _weight = None
+    _quantity = None
+    _price = None
+    _amount = None
+
+    @property
+    def instrument_currency(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_currency
+
+    @property
+    def instrument_asset_class(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_asset_class
+
+    @property
+    def instrument_asset_class_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_asset_class_name
+
+    @property
+    def instrument_isin(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_isin
+
+    @property
+    def instrument_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_name
+
+    @property
+    def instrument_region_name(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_region_name
+
+    @property
+    def instrument_key_information_document_uri(self):
+        """
+        :rtype: str
+        """
+
+        return self._instrument_key_information_document_uri
+
+    @property
+    def weight(self):
+        """
+        :rtype: str
+        """
+
+        return self._weight
+
+    @property
+    def quantity(self):
+        """
+        :rtype: str
+        """
+
+        return self._quantity
+
+    @property
+    def price(self):
+        """
+        :rtype: str
+        """
+
+        return self._price
+
+    @property
+    def amount(self):
+        """
+        :rtype: str
+        """
+
+        return self._amount
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._instrument_currency is not None:
+            return False
+
+        if self._instrument_asset_class is not None:
+            return False
+
+        if self._instrument_asset_class_name is not None:
+            return False
+
+        if self._instrument_isin is not None:
+            return False
+
+        if self._instrument_name is not None:
+            return False
+
+        if self._instrument_region_name is not None:
+            return False
+
+        if self._instrument_key_information_document_uri is not None:
+            return False
+
+        if self._weight is not None:
+            return False
+
+        if self._quantity is not None:
+            return False
+
+        if self._price is not None:
+            return False
+
+        if self._amount is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: BirdeePortfolioAllocation
+        """
+
+        return converter.json_to_class(BirdeePortfolioAllocation, json_str)
+
+
+class MonetaryAccountSwitchService(BunqModel):
+    """
+    View for MonetaryAccountSwitchService
+    
+    :param _id_: The id of the monetary account.
+    :type _id_: int
+    :param _created: The timestamp of the monetary account's creation.
+    :type _created: str
+    :param _description: The description for the bank account.
+    :type _description: str
+    :param _status: The status of the account.
+    :type _status: str
+    :param _sub_status: The sub-status of the account.
+    :type _sub_status: str
+    """
+
+    _id_ = None
+    _created = None
+    _description = None
+    _status = None
+    _sub_status = None
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def description(self):
+        """
+        :rtype: str
+        """
+
+        return self._description
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def sub_status(self):
+        """
+        :rtype: str
+        """
+
+        return self._sub_status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._description is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._sub_status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: MonetaryAccountSwitchService
+        """
+
+        return converter.json_to_class(MonetaryAccountSwitchService, json_str)
 
 
 class NoteAttachmentAdyenCardTransaction(BunqModel):
@@ -38838,6 +38353,206 @@ class PaymentAutoAllocateDefinition(BunqModel):
         return converter.json_to_class(PaymentAutoAllocateDefinition, json_str)
 
 
+class PaymentAutoAllocateInstance(BunqModel):
+    """
+    List all the times a users payment was automatically allocated.
+    
+    :param _id_: The id of the PaymentAutoAllocateInstance.
+    :type _id_: int
+    :param _created: The timestamp when the PaymentAutoAllocateInstance was
+    created.
+    :type _created: str
+    :param _updated: The timestamp when the PaymentAutoAllocateInstance was last
+    updated.
+    :type _updated: str
+    :param _payment_auto_allocate_id: The ID of the payment auto allocate this
+    instance belongs to.
+    :type _payment_auto_allocate_id: int
+    :param _status: The status of the payment auto allocate instance. SUCCEEDED
+    or FAILED.
+    :type _status: str
+    :param _error_message: The error message, if the payment auto allocating
+    failed.
+    :type _error_message: list[object_.Error]
+    :param _payment_batch: The payment batch allocating all the payments.
+    :type _payment_batch: PaymentBatch
+    :param _payment_id: The ID of the payment that triggered the allocating of
+    the payments.
+    :type _payment_id: int
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance"
+    _ENDPOINT_URL_READ = "user/{}/monetary-account/{}/payment-auto-allocate/{}/instance/{}"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "PaymentAutoAllocateInstance"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _payment_auto_allocate_id = None
+    _status = None
+    _error_message = None
+    _payment_batch = None
+    _payment_id = None
+
+    @classmethod
+    def list(cls,payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
+        """
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_auto_allocate_id: int
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentAutoAllocateInstanceList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_auto_allocate_id)
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponsePaymentAutoAllocateInstanceList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def get(cls, payment_auto_allocate_id,  payment_auto_allocate_instance_id, monetary_account_id=None, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type monetary_account_id: int
+        :type payment_auto_allocate_id: int
+        :type payment_auto_allocate_instance_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponsePaymentAutoAllocateInstance
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), cls._determine_monetary_account_id(monetary_account_id), payment_auto_allocate_id, payment_auto_allocate_instance_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponsePaymentAutoAllocateInstance.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def payment_auto_allocate_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._payment_auto_allocate_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def error_message(self):
+        """
+        :rtype: list[object_.Error]
+        """
+
+        return self._error_message
+
+    @property
+    def payment_batch(self):
+        """
+        :rtype: PaymentBatch
+        """
+
+        return self._payment_batch
+
+    @property
+    def payment_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._payment_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._payment_auto_allocate_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._error_message is not None:
+            return False
+
+        if self._payment_batch is not None:
+            return False
+
+        if self._payment_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: PaymentAutoAllocateInstance
+        """
+
+        return converter.json_to_class(PaymentAutoAllocateInstance, json_str)
+
+
 class PaymentAutoAllocate(BunqModel):
     """
     Manage a users automatic payment auto allocated settings.
@@ -46010,46 +45725,6 @@ class BunqResponsePaymentList(BunqResponse):
         return super().value
 
     
-class BunqResponsePaymentAutoAllocateInstanceList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[PaymentAutoAllocateInstance]
-        """
- 
-        return super().value
-
-    
-class BunqResponsePaymentAutoAllocateInstance(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: PaymentAutoAllocateInstance
-        """
- 
-        return super().value
-
-    
-class BunqResponsePaymentBatch(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: PaymentBatch
-        """
- 
-        return super().value
-
-    
-class BunqResponsePaymentBatchList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[PaymentBatch]
-        """
- 
-        return super().value
-
-    
 class BunqResponseBunqMeFundraiserProfileUser(BunqResponse):
     @property
     def value(self):
@@ -46195,146 +45870,6 @@ class BunqResponseCardList(BunqResponse):
     def value(self):
         """
         :rtype: list[Card]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccount(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccount
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccount]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountBank(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccountBank
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountBankList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccountBank]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountExternal(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccountExternal
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountExternalList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccountExternal]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountJoint(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccountJoint
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountJointList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccountJoint]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountSavings(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccountSavings
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountSavingsList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccountSavings]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountExternalSavings(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccountExternalSavings
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountExternalSavingsList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccountExternalSavings]
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountCard(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: MonetaryAccountCard
-        """
- 
-        return super().value
-
-    
-class BunqResponseMonetaryAccountCardList(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: list[MonetaryAccountCard]
         """
  
         return super().value
@@ -46525,6 +46060,26 @@ class BunqResponseDraftPayment(BunqResponse):
     def value(self):
         """
         :rtype: DraftPayment
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentBatch(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentBatch
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentBatchList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[PaymentBatch]
         """
  
         return super().value
@@ -46985,6 +46540,146 @@ class BunqResponseInstallationServerPublicKeyList(BunqResponse):
     def value(self):
         """
         :rtype: list[InstallationServerPublicKey]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountBank(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountBank
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountBankList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountBank]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountCard(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountCard
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountCardList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountCard]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountExternalSavings(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountExternalSavings
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountExternalSavingsList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountExternalSavings]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountExternal(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountExternal
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountExternalList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountExternal]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountJoint(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountJoint
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountJointList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountJoint]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountSavings(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccountSavings
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountSavingsList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccountSavings]
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccount(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: MonetaryAccount
+        """
+ 
+        return super().value
+
+    
+class BunqResponseMonetaryAccountList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[MonetaryAccount]
         """
  
         return super().value
@@ -47945,6 +47640,26 @@ class BunqResponsePaymentAutoAllocateDefinitionList(BunqResponse):
     def value(self):
         """
         :rtype: list[PaymentAutoAllocateDefinition]
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentAutoAllocateInstanceList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[PaymentAutoAllocateInstance]
+        """
+ 
+        return super().value
+
+    
+class BunqResponsePaymentAutoAllocateInstance(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: PaymentAutoAllocateInstance
         """
  
         return super().value
