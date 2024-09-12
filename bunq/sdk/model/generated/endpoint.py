@@ -14325,6 +14325,9 @@ class RequestResponse(BunqModel):
     :param _mandate_identifier: The mandate id provided by the counterparty for
     DIRECT_DEBIT inquiries.
     :type _mandate_identifier: str
+    :param _registration_action: Recommended registration action after
+    IdealIssuerTransaction from iDEAL issuer transaction.
+    :type _registration_action: str
     :param _eligible_whitelist_id: The whitelist id for this action or null.
     :type _eligible_whitelist_id: int
     :param _request_reference_split_the_bill: The reference to the object used
@@ -14380,6 +14383,7 @@ class RequestResponse(BunqModel):
     _address_shipping = None
     _credit_scheme_identifier = None
     _mandate_identifier = None
+    _registration_action = None
     _eligible_whitelist_id = None
     _request_reference_split_the_bill = None
     _event_id = None
@@ -14730,6 +14734,14 @@ cls.FIELD_CURRENCY_CONVERSION_QUOTE_ID : currency_conversion_quote_id
         return self._mandate_identifier
 
     @property
+    def registration_action(self):
+        """
+        :rtype: str
+        """
+
+        return self._registration_action
+
+    @property
     def eligible_whitelist_id(self):
         """
         :rtype: int
@@ -14842,6 +14854,9 @@ cls.FIELD_CURRENCY_CONVERSION_QUOTE_ID : currency_conversion_quote_id
             return False
 
         if self._mandate_identifier is not None:
+            return False
+
+        if self._registration_action is not None:
             return False
 
         if self._eligible_whitelist_id is not None:
