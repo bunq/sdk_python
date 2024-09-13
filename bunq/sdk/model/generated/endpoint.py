@@ -6189,6 +6189,12 @@ class Card(BunqModel):
     :type _card_replacement: CardReplacement
     :param _card_generated_cvc2: The generated CVC2 code for this card.
     :type _card_generated_cvc2: CardGeneratedCvc2
+    :param _is_limited_edition: Whether this card is a limited edition metal
+    card.
+    :type _is_limited_edition: bool
+    :param _card_metal_member_since_date: The date for the member since field on
+    the black metal card.
+    :type _card_metal_member_since_date: str
     """
 
     # Endpoint constants.
@@ -6244,6 +6250,8 @@ class Card(BunqModel):
     _is_eligible_for_free_replacement = None
     _card_replacement = None
     _card_generated_cvc2 = None
+    _is_limited_edition = None
+    _card_metal_member_since_date = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -6688,6 +6696,22 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
 
         return self._card_generated_cvc2
 
+    @property
+    def is_limited_edition(self):
+        """
+        :rtype: bool
+        """
+
+        return self._is_limited_edition
+
+    @property
+    def card_metal_member_since_date(self):
+        """
+        :rtype: str
+        """
+
+        return self._card_metal_member_since_date
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6778,6 +6802,12 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
             return False
 
         if self._card_generated_cvc2 is not None:
+            return False
+
+        if self._is_limited_edition is not None:
+            return False
+
+        if self._card_metal_member_since_date is not None:
             return False
 
         return True
