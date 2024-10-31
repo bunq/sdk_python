@@ -43832,9 +43832,6 @@ class Registry(BunqModel):
     :type _id_: int
     :param _created: The timestamp of the Registry's creation.
     :type _created: str
-    :param _unseen_entries_count: The number of RegistryEntries in this Registry
-    that the user has not seen.
-    :type _unseen_entries_count: int
     :param _total_amount_spent: The total amount spent in this Registry since
     the last settlement.
     :type _total_amount_spent: object_.Amount
@@ -43886,7 +43883,6 @@ class Registry(BunqModel):
     _description = None
     _category = None
     _status = None
-    _unseen_entries_count = None
     _total_amount_spent = None
     _is_previously_settled = None
     _membership_uuid_active = None
@@ -44079,14 +44075,6 @@ class Registry(BunqModel):
         return self._status
 
     @property
-    def unseen_entries_count(self):
-        """
-        :rtype: int
-        """
-
-        return self._unseen_entries_count
-
-    @property
     def total_amount_spent(self):
         """
         :rtype: object_.Amount
@@ -44199,9 +44187,6 @@ class Registry(BunqModel):
             return False
 
         if self._status is not None:
-            return False
-
-        if self._unseen_entries_count is not None:
             return False
 
         if self._total_amount_spent is not None:
