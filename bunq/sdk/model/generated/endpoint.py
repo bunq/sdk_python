@@ -414,6 +414,199 @@ class CustomerLimit(BunqModel):
         return converter.json_to_class(CustomerLimit, json_str)
 
 
+class InvoiceExportPdf(BunqModel):
+    """
+    Get a PDF export of an invoice.
+    
+    :param _id_: The id of the invoice export model.
+    :type _id_: int
+    :param _created: The timestamp of the invoice export's creation.
+    :type _created: str
+    :param _updated: The timestamp of the invoice export's last update.
+    :type _updated: str
+    :param _status: The status of the invoice export.
+    :type _status: str
+    """
+
+    # Endpoint constants.
+    _ENDPOINT_URL_READ = "user/{}/invoice/{}/invoice-export/{}"
+    _ENDPOINT_URL_CREATE = "user/{}/invoice/{}/invoice-export"
+    _ENDPOINT_URL_UPDATE = "user/{}/invoice/{}/invoice-export/{}"
+    _ENDPOINT_URL_DELETE = "user/{}/invoice/{}/invoice-export/{}"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "InvoiceExportPdf"
+
+    _id_ = None
+    _created = None
+    _updated = None
+    _status = None
+
+    @classmethod
+    def get(cls, invoice_id,  invoice_export_pdf_id, custom_headers=None):
+        """
+        :type api_context: ApiContext
+        :type user_id: int
+        :type invoice_id: int
+        :type invoice_export_pdf_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInvoiceExportPdf
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_READ.format(cls._determine_user_id(), invoice_id, invoice_export_pdf_id)
+        response_raw = api_client.get(endpoint_url, {}, custom_headers)
+
+        return BunqResponseInvoiceExportPdf.cast_from_bunq_response(
+            cls._from_json(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @classmethod
+    def create(cls,invoice_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type invoice_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        request_map = {
+
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        api_client = ApiClient(cls._get_api_context())
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_CREATE.format(cls._determine_user_id(), invoice_id)
+        response_raw = api_client.post(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def update(cls, invoice_id,  invoice_export_pdf_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type invoice_id: int
+        :type invoice_export_pdf_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseInt
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+
+        request_map = {
+
+}
+        request_map_string = converter.class_to_json(request_map)
+        request_map_string = cls._remove_field_for_request(request_map_string)
+
+        request_bytes = request_map_string.encode()
+        endpoint_url = cls._ENDPOINT_URL_UPDATE.format(cls._determine_user_id(), invoice_id, invoice_export_pdf_id)
+        response_raw = api_client.put(endpoint_url, request_bytes, custom_headers)
+
+        return BunqResponseInt.cast_from_bunq_response(
+            cls._process_for_id(response_raw)
+        )
+
+    @classmethod
+    def delete(cls, invoice_id,  invoice_export_pdf_id, custom_headers=None):
+        """
+        :type user_id: int
+        :type invoice_id: int
+        :type invoice_export_pdf_id: int
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseNone
+        """
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_DELETE.format(cls._determine_user_id(), invoice_id, invoice_export_pdf_id)
+        response_raw = api_client.delete(endpoint_url, custom_headers)
+
+        return BunqResponseNone.cast_from_bunq_response(
+            BunqResponse(None, response_raw.headers)
+        )
+
+    @property
+    def id_(self):
+        """
+        :rtype: int
+        """
+
+        return self._id_
+
+    @property
+    def created(self):
+        """
+        :rtype: str
+        """
+
+        return self._created
+
+    @property
+    def updated(self):
+        """
+        :rtype: str
+        """
+
+        return self._updated
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._id_ is not None:
+            return False
+
+        if self._created is not None:
+            return False
+
+        if self._updated is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: InvoiceExportPdf
+        """
+
+        return converter.json_to_class(InvoiceExportPdf, json_str)
+
+
 class InvoiceExportPdfContent(BunqModel):
     """
     Get a PDF export of an invoice.
@@ -45399,6 +45592,36 @@ class BunqResponseCustomerLimitList(BunqResponse):
         return super().value
 
     
+class BunqResponseInvoiceExportPdf(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: InvoiceExportPdf
+        """
+ 
+        return super().value
+
+    
+class BunqResponseInt(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: int
+        """
+ 
+        return super().value
+
+    
+class BunqResponseNone(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: None
+        """
+ 
+        return super().value
+
+    
 class BunqResponseBytes(BunqResponse):
     @property
     def value(self):
@@ -45454,16 +45677,6 @@ class BunqResponseAdditionalTransactionInformationCategoryList(BunqResponse):
     def value(self):
         """
         :rtype: list[AdditionalTransactionInformationCategory]
-        """
- 
-        return super().value
-
-    
-class BunqResponseInt(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: int
         """
  
         return super().value
@@ -45684,16 +45897,6 @@ class BunqResponseCardList(BunqResponse):
     def value(self):
         """
         :rtype: list[Card]
-        """
- 
-        return super().value
-
-    
-class BunqResponseNone(BunqResponse):
-    @property
-    def value(self):
-        """
-        :rtype: None
         """
  
         return super().value
