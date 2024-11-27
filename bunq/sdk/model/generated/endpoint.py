@@ -38206,6 +38206,9 @@ class PaymentAutoAllocateDefinition(BunqModel):
     :param _fraction: The percentage of the triggering payment's amount to
     allocate.
     :type _fraction: float
+    :param _ginmon_cost_disclosure_id: The id of the ginmon cost disclosure, if
+    this definition is a scheduled order.
+    :type _ginmon_cost_disclosure_id: str
     :param _id_: The id of the PaymentAutoAllocateDefinition.
     :type _id_: int
     :param _created: The timestamp when the PaymentAutoAllocateDefinition was
@@ -38225,6 +38228,7 @@ class PaymentAutoAllocateDefinition(BunqModel):
     FIELD_DESCRIPTION = "description"
     FIELD_AMOUNT = "amount"
     FIELD_FRACTION = "fraction"
+    FIELD_GINMON_COST_DISCLOSURE_ID = "ginmon_cost_disclosure_id"
 
     # Object type.
     _OBJECT_TYPE_GET = "PaymentAutoAllocateDefinition"
@@ -38241,8 +38245,9 @@ class PaymentAutoAllocateDefinition(BunqModel):
     _description_field_for_request = None
     _amount_field_for_request = None
     _fraction_field_for_request = None
+    _ginmon_cost_disclosure_id_field_for_request = None
 
-    def __init__(self, type_=None, counterparty_alias=None, description=None, amount=None, fraction=None):
+    def __init__(self, type_=None, counterparty_alias=None, description=None, amount=None, fraction=None, ginmon_cost_disclosure_id=None):
         """
         :param type_: The type of definition.
         :type type_: str
@@ -38256,6 +38261,9 @@ class PaymentAutoAllocateDefinition(BunqModel):
         :param fraction: The percentage of the triggering payment's amount to
         allocate.
         :type fraction: float
+        :param ginmon_cost_disclosure_id: The id of the ginmon cost disclosure, if
+        this definition is a scheduled order.
+        :type ginmon_cost_disclosure_id: str
         """
 
         self._type__field_for_request = type_
@@ -38263,6 +38271,7 @@ class PaymentAutoAllocateDefinition(BunqModel):
         self._description_field_for_request = description
         self._amount_field_for_request = amount
         self._fraction_field_for_request = fraction
+        self._ginmon_cost_disclosure_id_field_for_request = ginmon_cost_disclosure_id
 
     @classmethod
     def list(cls,payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
