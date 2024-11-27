@@ -4656,9 +4656,12 @@ class CardCredit(BunqModel):
     name/description for it. It can contain at most 17 characters and it can be
     empty.
     :type _first_line: str
-    :param _second_line: The second line of text on the card
+    :param _second_line: The second line of text on the card, used as
+    name/description for it. It can contain at most 17 characters and it can be
+    empty.
     :type _second_line: str
-    :param _name_on_card: The user's name on the card.
+    :param _name_on_card: The user's name as it will be on the card. Check
+    'card-name' for the available card names for a user.
     :type _name_on_card: str
     :param _preferred_name_on_card: The user's preferred name that can be put on
     the card.
@@ -4667,9 +4670,9 @@ class CardCredit(BunqModel):
     first with the card. Its IBAN code is also the one that will be printed on
     the card itself. The pointer must be of type IBAN.
     :type _alias: object_.Pointer
-    :param _type_: The type of the card. Can is MASTERCARD.
+    :param _type_: The type of card to order. Can be MASTERCARD.
     :type _type_: str
-    :param _product_type: The product type of the card.
+    :param _product_type: The product type of the card to order.
     :type _product_type: str
     :param _pin_code_assignment: Array of Types, PINs, account IDs assigned to
     the card.
@@ -4678,49 +4681,9 @@ class CardCredit(BunqModel):
     for this card if insufficient balance. Fallback account is removed if not
     supplied.
     :type _monetary_account_id_fallback: int
-    :param _order_status: The order status of the card. Can be
-    NEW_CARD_REQUEST_RECEIVED, CARD_REQUEST_PENDING, SENT_FOR_PRODUCTION,
-    ACCEPTED_FOR_PRODUCTION, DELIVERED_TO_CUSTOMER, CARD_UPDATE_REQUESTED,
-    CARD_UPDATE_PENDING, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
-    VIRTUAL_DELIVERY, NEW_CARD_REQUEST_PENDING_USER_APPROVAL, SENT_FOR_DELIVERY
-    or NEW_CARD_REQUEST_CANCELLED.
+    :param _order_status: The order status of this card. Can be
+    CARD_REQUEST_PENDING or VIRTUAL_DELIVERY.
     :type _order_status: str
-    :param _id_: The id of the card.
-    :type _id_: int
-    :param _created: The timestamp of the card's creation.
-    :type _created: str
-    :param _updated: The timestamp of the card's last update.
-    :type _updated: str
-    :param _public_uuid: The public UUID of the card.
-    :type _public_uuid: str
-    :param _sub_type: The sub-type of the card.
-    :type _sub_type: str
-    :param _status: The status to set for the card. Can be ACTIVE, DEACTIVATED,
-    LOST, STOLEN, CANCELLED, EXPIRED or PIN_TRIES_EXCEEDED.
-    :type _status: str
-    :param _sub_status: The sub-status of the card. Can be NONE or REPLACED.
-    :type _sub_status: str
-    :param _expiry_date: Expiry date of the card.
-    :type _expiry_date: str
-    :param _card_limit: The spending limit for the card.
-    :type _card_limit: object_.Amount
-    :param _card_limit_atm: The ATM spending limit for the card.
-    :type _card_limit_atm: object_.Amount
-    :param _country_permission: The countries for which to grant (temporary)
-    permissions to use the card.
-    :type _country_permission: list[object_.CardCountryPermission]
-    :param _label_monetary_account_ordered: The monetary account this card was
-    ordered on and the label user that owns the card.
-    :type _label_monetary_account_ordered: object_.MonetaryAccountReference
-    :param _label_monetary_account_current: The monetary account that this card
-    is currently linked to and the label user viewing it.
-    :type _label_monetary_account_current: object_.MonetaryAccountReference
-    :param _country: The country that is domestic to the card. Defaults to
-    country of residence of user.
-    :type _country: str
-    :param _card_shipment_tracking_url: A tracking link provided by our shipment
-    provider.
-    :type _card_shipment_tracking_url: str
     """
 
     # Endpoint constants.
@@ -4741,29 +4704,6 @@ class CardCredit(BunqModel):
     # Object type.
     _OBJECT_TYPE_POST = "CardCredit"
 
-    _id_ = None
-    _created = None
-    _updated = None
-    _public_uuid = None
-    _type_ = None
-    _sub_type = None
-    _product_type = None
-    _second_line = None
-    _status = None
-    _sub_status = None
-    _order_status = None
-    _expiry_date = None
-    _name_on_card = None
-    _preferred_name_on_card = None
-    _card_limit = None
-    _card_limit_atm = None
-    _country_permission = None
-    _label_monetary_account_ordered = None
-    _label_monetary_account_current = None
-    _pin_code_assignment = None
-    _monetary_account_id_fallback = None
-    _country = None
-    _card_shipment_tracking_url = None
     _first_line_field_for_request = None
     _second_line_field_for_request = None
     _name_on_card_field_for_request = None
@@ -4892,263 +4832,11 @@ cls.FIELD_ORDER_STATUS : order_status
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
         )
 
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def sub_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_type
-
-    @property
-    def product_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._product_type
-
-    @property
-    def second_line(self):
-        """
-        :rtype: str
-        """
-
-        return self._second_line
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def sub_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_status
-
-    @property
-    def order_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._order_status
-
-    @property
-    def expiry_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_date
-
-    @property
-    def name_on_card(self):
-        """
-        :rtype: str
-        """
-
-        return self._name_on_card
-
-    @property
-    def preferred_name_on_card(self):
-        """
-        :rtype: str
-        """
-
-        return self._preferred_name_on_card
-
-    @property
-    def card_limit(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._card_limit
-
-    @property
-    def card_limit_atm(self):
-        """
-        :rtype: object_.Amount
-        """
-
-        return self._card_limit_atm
-
-    @property
-    def country_permission(self):
-        """
-        :rtype: list[object_.CardCountryPermission]
-        """
-
-        return self._country_permission
-
-    @property
-    def label_monetary_account_ordered(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_ordered
-
-    @property
-    def label_monetary_account_current(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_current
-
-    @property
-    def pin_code_assignment(self):
-        """
-        :rtype: list[object_.CardPinAssignment]
-        """
-
-        return self._pin_code_assignment
-
-    @property
-    def monetary_account_id_fallback(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id_fallback
-
-    @property
-    def country(self):
-        """
-        :rtype: str
-        """
-
-        return self._country
-
-    @property
-    def card_shipment_tracking_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._card_shipment_tracking_url
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._sub_type is not None:
-            return False
-
-        if self._product_type is not None:
-            return False
-
-        if self._second_line is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._sub_status is not None:
-            return False
-
-        if self._order_status is not None:
-            return False
-
-        if self._expiry_date is not None:
-            return False
-
-        if self._name_on_card is not None:
-            return False
-
-        if self._preferred_name_on_card is not None:
-            return False
-
-        if self._card_limit is not None:
-            return False
-
-        if self._card_limit_atm is not None:
-            return False
-
-        if self._country_permission is not None:
-            return False
-
-        if self._label_monetary_account_ordered is not None:
-            return False
-
-        if self._label_monetary_account_current is not None:
-            return False
-
-        if self._pin_code_assignment is not None:
-            return False
-
-        if self._monetary_account_id_fallback is not None:
-            return False
-
-        if self._country is not None:
-            return False
-
-        if self._card_shipment_tracking_url is not None:
-            return False
 
         return True
 
@@ -5169,16 +4857,21 @@ class CardDebit(BunqModel):
     with each one of the monetary accounts the user has access to (including
     connected accounts).
     
-    :param _second_line: The second line of text on the card
+    :param _second_line: The second line of text on the card, used as
+    name/description for it. It can contain at most 17 characters and it can be
+    empty.
     :type _second_line: str
-    :param _name_on_card: The user's name as will be on the card
+    :param _name_on_card: The user's name as it will be on the card. Check
+    'card-name' for the available card names for a user.
     :type _name_on_card: str
     :param _preferred_name_on_card: The user's preferred name that can be put on
     the card.
     :type _preferred_name_on_card: str
-    :param _alias: The label for the user who requested the card.
-    :type _alias: object_.LabelUser
-    :param _type_: The type of the card. Can be MAESTRO, MASTERCARD.
+    :param _alias: The pointer to the monetary account that will be connected at
+    first with the card. Its IBAN code is also the one that will be printed on
+    the card itself. The pointer must be of type IBAN.
+    :type _alias: object_.Pointer
+    :param _type_: The type of card to order. Can be MAESTRO or MASTERCARD.
     :type _type_: str
     :param _product_type: The product type of the card to order.
     :type _product_type: str
@@ -5189,43 +4882,9 @@ class CardDebit(BunqModel):
     for this card if insufficient balance. Fallback account is removed if not
     supplied.
     :type _monetary_account_id_fallback: int
-    :param _order_status: The order status of the card. Can be
-    NEW_CARD_REQUEST_RECEIVED, CARD_REQUEST_PENDING, SENT_FOR_PRODUCTION,
-    ACCEPTED_FOR_PRODUCTION, DELIVERED_TO_CUSTOMER, CARD_UPDATE_REQUESTED,
-    CARD_UPDATE_PENDING, CARD_UPDATE_SENT, CARD_UPDATE_ACCEPTED,
-    VIRTUAL_DELIVERY, NEW_CARD_REQUEST_PENDING_USER_APPROVAL, SENT_FOR_DELIVERY
-    or NEW_CARD_REQUEST_CANCELLED.
+    :param _order_status: The order status of this card. Can be
+    CARD_REQUEST_PENDING or VIRTUAL_DELIVERY.
     :type _order_status: str
-    :param _id_: The id of the card.
-    :type _id_: int
-    :param _created: The timestamp when the card was crated.
-    :type _created: str
-    :param _updated: The timestamp when the card was last updated.
-    :type _updated: str
-    :param _public_uuid: The public UUID of the card.
-    :type _public_uuid: str
-    :param _sub_type: The sub_type of card.
-    :type _sub_type: str
-    :param _status: The status to set for the card. After ordering the card it
-    will be DEACTIVATED.
-    :type _status: str
-    :param _expiry_date: The expiry date of the card.
-    :type _expiry_date: str
-    :param _country_permission: The countries for which to grant (temporary)
-    permissions to use the card.
-    :type _country_permission: list[object_.CardCountryPermission]
-    :param _label_monetary_account_ordered: The monetary account this card was
-    ordered on and the label user that owns the card.
-    :type _label_monetary_account_ordered: object_.MonetaryAccountReference
-    :param _label_monetary_account_current: The monetary account that this card
-    is currently linked to and the label user viewing it.
-    :type _label_monetary_account_current: object_.MonetaryAccountReference
-    :param _country: The country that is domestic to the card. Defaults to
-    country of residence of user.
-    :type _country: str
-    :param _card_shipment_tracking_url: A tracking link provided by our shipment
-    provider.
-    :type _card_shipment_tracking_url: str
     """
 
     # Endpoint constants.
@@ -5245,26 +4904,6 @@ class CardDebit(BunqModel):
     # Object type.
     _OBJECT_TYPE_POST = "CardDebit"
 
-    _id_ = None
-    _created = None
-    _updated = None
-    _public_uuid = None
-    _type_ = None
-    _sub_type = None
-    _second_line = None
-    _name_on_card = None
-    _preferred_name_on_card = None
-    _status = None
-    _order_status = None
-    _expiry_date = None
-    _country_permission = None
-    _label_monetary_account_ordered = None
-    _label_monetary_account_current = None
-    _alias = None
-    _pin_code_assignment = None
-    _monetary_account_id_fallback = None
-    _country = None
-    _card_shipment_tracking_url = None
     _second_line_field_for_request = None
     _name_on_card_field_for_request = None
     _preferred_name_on_card_field_for_request = None
@@ -5382,230 +5021,11 @@ cls.FIELD_ORDER_STATUS : order_status
             cls._from_json(response_raw, cls._OBJECT_TYPE_POST)
         )
 
-    @property
-    def id_(self):
-        """
-        :rtype: int
-        """
-
-        return self._id_
-
-    @property
-    def created(self):
-        """
-        :rtype: str
-        """
-
-        return self._created
-
-    @property
-    def updated(self):
-        """
-        :rtype: str
-        """
-
-        return self._updated
-
-    @property
-    def public_uuid(self):
-        """
-        :rtype: str
-        """
-
-        return self._public_uuid
-
-    @property
-    def type_(self):
-        """
-        :rtype: str
-        """
-
-        return self._type_
-
-    @property
-    def sub_type(self):
-        """
-        :rtype: str
-        """
-
-        return self._sub_type
-
-    @property
-    def second_line(self):
-        """
-        :rtype: str
-        """
-
-        return self._second_line
-
-    @property
-    def name_on_card(self):
-        """
-        :rtype: str
-        """
-
-        return self._name_on_card
-
-    @property
-    def preferred_name_on_card(self):
-        """
-        :rtype: str
-        """
-
-        return self._preferred_name_on_card
-
-    @property
-    def status(self):
-        """
-        :rtype: str
-        """
-
-        return self._status
-
-    @property
-    def order_status(self):
-        """
-        :rtype: str
-        """
-
-        return self._order_status
-
-    @property
-    def expiry_date(self):
-        """
-        :rtype: str
-        """
-
-        return self._expiry_date
-
-    @property
-    def country_permission(self):
-        """
-        :rtype: list[object_.CardCountryPermission]
-        """
-
-        return self._country_permission
-
-    @property
-    def label_monetary_account_ordered(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_ordered
-
-    @property
-    def label_monetary_account_current(self):
-        """
-        :rtype: object_.MonetaryAccountReference
-        """
-
-        return self._label_monetary_account_current
-
-    @property
-    def alias(self):
-        """
-        :rtype: object_.LabelUser
-        """
-
-        return self._alias
-
-    @property
-    def pin_code_assignment(self):
-        """
-        :rtype: list[object_.CardPinAssignment]
-        """
-
-        return self._pin_code_assignment
-
-    @property
-    def monetary_account_id_fallback(self):
-        """
-        :rtype: int
-        """
-
-        return self._monetary_account_id_fallback
-
-    @property
-    def country(self):
-        """
-        :rtype: str
-        """
-
-        return self._country
-
-    @property
-    def card_shipment_tracking_url(self):
-        """
-        :rtype: str
-        """
-
-        return self._card_shipment_tracking_url
 
     def is_all_field_none(self):
         """
         :rtype: bool
         """
-
-        if self._id_ is not None:
-            return False
-
-        if self._created is not None:
-            return False
-
-        if self._updated is not None:
-            return False
-
-        if self._public_uuid is not None:
-            return False
-
-        if self._type_ is not None:
-            return False
-
-        if self._sub_type is not None:
-            return False
-
-        if self._second_line is not None:
-            return False
-
-        if self._name_on_card is not None:
-            return False
-
-        if self._preferred_name_on_card is not None:
-            return False
-
-        if self._status is not None:
-            return False
-
-        if self._order_status is not None:
-            return False
-
-        if self._expiry_date is not None:
-            return False
-
-        if self._country_permission is not None:
-            return False
-
-        if self._label_monetary_account_ordered is not None:
-            return False
-
-        if self._label_monetary_account_current is not None:
-            return False
-
-        if self._alias is not None:
-            return False
-
-        if self._pin_code_assignment is not None:
-            return False
-
-        if self._monetary_account_id_fallback is not None:
-            return False
-
-        if self._country is not None:
-            return False
-
-        if self._card_shipment_tracking_url is not None:
-            return False
 
         return True
 
@@ -6139,12 +5559,22 @@ class Card(BunqModel):
     :type _updated: str
     :param _public_uuid: The public UUID of the card.
     :type _public_uuid: str
+    :param _user_id: DEPRECATED. ID of the user who is owner of the card.
+    :type _user_id: int
+    :param _user_owner_id: ID of the user who is owner of the card.
+    :type _user_owner_id: int
+    :param _user_holder_id: ID of the user who is holder of the card.
+    :type _user_holder_id: int
     :param _type_: The type of the card. Can be MAESTRO, MASTERCARD.
     :type _type_: str
     :param _sub_type: The sub-type of the card.
     :type _sub_type: str
-    :param _user_id: ID of the user who is owner of the card.
-    :type _user_id: int
+    :param _product_type: The product type of the card.
+    :type _product_type: str
+    :param _product_sub_type: The product sub-type of the card.
+    :type _product_sub_type: str
+    :param _first_line: The first line of text on the card
+    :type _first_line: str
     :param _sub_status: The sub-status of the card. Can be NONE or REPLACED.
     :type _sub_status: str
     :param _expiry_date: Expiry date of the card.
@@ -6169,9 +5599,9 @@ class Card(BunqModel):
     :param _card_shipment_tracking_url: A tracking link provided by our shipment
     provider.
     :type _card_shipment_tracking_url: str
-    :param _is_eligible_for_free_replacement: Whether this card is eligible for
-    a free replacement.
-    :type _is_eligible_for_free_replacement: bool
+    :param _is_card_eligible_for_free_replacement: Whether this card is eligible
+    for a free replacement.
+    :type _is_card_eligible_for_free_replacement: bool
     :param _card_replacement: The card replacement for this card.
     :type _card_replacement: CardReplacement
     :param _card_generated_cvc2: The generated CVC2 code for this card.
@@ -6182,6 +5612,9 @@ class Card(BunqModel):
     :param _card_metal_member_since_date: The date for the member since field on
     the black metal card.
     :type _card_metal_member_since_date: str
+    :param _company_employee_card: Details of this card belonging to a company,
+    if applicable.
+    :type _company_employee_card: CompanyEmployeeCard
     """
 
     # Endpoint constants.
@@ -6212,10 +5645,15 @@ class Card(BunqModel):
     _created = None
     _updated = None
     _public_uuid = None
+    _user_id = None
+    _user_owner_id = None
+    _user_holder_id = None
     _type_ = None
     _sub_type = None
+    _product_type = None
+    _product_sub_type = None
+    _first_line = None
     _second_line = None
-    _user_id = None
     _status = None
     _sub_status = None
     _order_status = None
@@ -6234,11 +5672,12 @@ class Card(BunqModel):
     _monetary_account_id_fallback = None
     _country = None
     _card_shipment_tracking_url = None
-    _is_eligible_for_free_replacement = None
+    _is_card_eligible_for_free_replacement = None
     _card_replacement = None
     _card_generated_cvc2 = None
     _is_limited_edition = None
     _card_metal_member_since_date = None
+    _company_employee_card = None
     _pin_code_field_for_request = None
     _activation_code_field_for_request = None
     _status_field_for_request = None
@@ -6484,6 +5923,30 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         return self._public_uuid
 
     @property
+    def user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_id
+
+    @property
+    def user_owner_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_owner_id
+
+    @property
+    def user_holder_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._user_holder_id
+
+    @property
     def type_(self):
         """
         :rtype: str
@@ -6500,20 +5963,36 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         return self._sub_type
 
     @property
+    def product_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._product_type
+
+    @property
+    def product_sub_type(self):
+        """
+        :rtype: str
+        """
+
+        return self._product_sub_type
+
+    @property
+    def first_line(self):
+        """
+        :rtype: str
+        """
+
+        return self._first_line
+
+    @property
     def second_line(self):
         """
         :rtype: str
         """
 
         return self._second_line
-
-    @property
-    def user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._user_id
 
     @property
     def status(self):
@@ -6660,12 +6139,12 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         return self._card_shipment_tracking_url
 
     @property
-    def is_eligible_for_free_replacement(self):
+    def is_card_eligible_for_free_replacement(self):
         """
         :rtype: bool
         """
 
-        return self._is_eligible_for_free_replacement
+        return self._is_card_eligible_for_free_replacement
 
     @property
     def card_replacement(self):
@@ -6699,6 +6178,14 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
 
         return self._card_metal_member_since_date
 
+    @property
+    def company_employee_card(self):
+        """
+        :rtype: CompanyEmployeeCard
+        """
+
+        return self._company_employee_card
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -6716,16 +6203,31 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         if self._public_uuid is not None:
             return False
 
+        if self._user_id is not None:
+            return False
+
+        if self._user_owner_id is not None:
+            return False
+
+        if self._user_holder_id is not None:
+            return False
+
         if self._type_ is not None:
             return False
 
         if self._sub_type is not None:
             return False
 
-        if self._second_line is not None:
+        if self._product_type is not None:
             return False
 
-        if self._user_id is not None:
+        if self._product_sub_type is not None:
+            return False
+
+        if self._first_line is not None:
+            return False
+
+        if self._second_line is not None:
             return False
 
         if self._status is not None:
@@ -6782,7 +6284,7 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
         if self._card_shipment_tracking_url is not None:
             return False
 
-        if self._is_eligible_for_free_replacement is not None:
+        if self._is_card_eligible_for_free_replacement is not None:
             return False
 
         if self._card_replacement is not None:
@@ -6795,6 +6297,9 @@ cls.FIELD_CANCELLATION_REASON : cancellation_reason
             return False
 
         if self._card_metal_member_since_date is not None:
+            return False
+
+        if self._company_employee_card is not None:
             return False
 
         return True
@@ -8220,6 +7725,15 @@ class RelationUser(BunqModel):
     :type _user_status: str
     :param _counter_user_status: The account status of a user
     :type _counter_user_status: str
+    :param _company_employee_setting_adyen_card_transaction: Tap to Pay settings
+    for the company employee.
+    :type _company_employee_setting_adyen_card_transaction:
+    CompanyEmployeeSettingAdyenCardTransaction
+    :param _all_company_employee_card: Cards accessible by the company employee
+    :type _all_company_employee_card: list[CompanyEmployeeCard]
+    :param _number_of_company_employee_card_receipt_pending: The number of
+    transactions that still need a receipt.
+    :type _number_of_company_employee_card_receipt_pending: int
     """
 
     _user_id = None
@@ -8230,6 +7744,9 @@ class RelationUser(BunqModel):
     _status = None
     _user_status = None
     _counter_user_status = None
+    _company_employee_setting_adyen_card_transaction = None
+    _all_company_employee_card = None
+    _number_of_company_employee_card_receipt_pending = None
 
     @property
     def user_id(self):
@@ -8295,6 +7812,30 @@ class RelationUser(BunqModel):
 
         return self._counter_user_status
 
+    @property
+    def company_employee_setting_adyen_card_transaction(self):
+        """
+        :rtype: CompanyEmployeeSettingAdyenCardTransaction
+        """
+
+        return self._company_employee_setting_adyen_card_transaction
+
+    @property
+    def all_company_employee_card(self):
+        """
+        :rtype: list[CompanyEmployeeCard]
+        """
+
+        return self._all_company_employee_card
+
+    @property
+    def number_of_company_employee_card_receipt_pending(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_company_employee_card_receipt_pending
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -8324,6 +7865,15 @@ class RelationUser(BunqModel):
         if self._counter_user_status is not None:
             return False
 
+        if self._company_employee_setting_adyen_card_transaction is not None:
+            return False
+
+        if self._all_company_employee_card is not None:
+            return False
+
+        if self._number_of_company_employee_card_receipt_pending is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -8335,6 +7885,186 @@ class RelationUser(BunqModel):
         """
 
         return converter.json_to_class(RelationUser, json_str)
+
+
+class CompanyEmployeeCard(BunqModel):
+    """
+    Manage cards for company employees.
+    
+    :param _alias: The pointer to the monetary account that will be connected at
+    first with the card.
+    :type _alias: object_.Pointer
+    :param _type_: The type of card to order.
+    :type _type_: str
+    :param _product_type: The product type of the card to order.
+    :type _product_type: str
+    :param _company_name_on_card: The name of the company that should be
+    displayed on the card.
+    :type _company_name_on_card: str
+    :param _employee_name_on_card: The name of the employee that should be
+    displayed on the card.
+    :type _employee_name_on_card: str
+    :param _employee_preferred_name_on_card: The user's preferred name as it
+    will be on the card.
+    :type _employee_preferred_name_on_card: str
+    :param _amount_limit_monthly: The monthly spending limit for this employee
+    on the card.
+    :type _amount_limit_monthly: object_.Amount
+    :param _status: The status of the employee card.
+    :type _status: str
+    :param _card: The actual card.
+    :type _card: Card
+    :param _relation_user_id: The id of the relation user.
+    :type _relation_user_id: int
+    :param _amount_spent_monthly: The monthly spend for this employee on the
+    card.
+    :type _amount_spent_monthly: object_.Amount
+    """
+
+    # Field constants.
+    FIELD_ALIAS = "alias"
+    FIELD_TYPE = "type"
+    FIELD_PRODUCT_TYPE = "product_type"
+    FIELD_COMPANY_NAME_ON_CARD = "company_name_on_card"
+    FIELD_EMPLOYEE_NAME_ON_CARD = "employee_name_on_card"
+    FIELD_EMPLOYEE_PREFERRED_NAME_ON_CARD = "employee_preferred_name_on_card"
+    FIELD_AMOUNT_LIMIT_MONTHLY = "amount_limit_monthly"
+    FIELD_STATUS = "status"
+
+
+    _card = None
+    _relation_user_id = None
+    _status = None
+    _company_name_on_card = None
+    _amount_limit_monthly = None
+    _amount_spent_monthly = None
+    _alias_field_for_request = None
+    _type__field_for_request = None
+    _product_type_field_for_request = None
+    _company_name_on_card_field_for_request = None
+    _employee_name_on_card_field_for_request = None
+    _employee_preferred_name_on_card_field_for_request = None
+    _amount_limit_monthly_field_for_request = None
+    _status_field_for_request = None
+
+    def __init__(self, alias, type_, product_type, company_name_on_card, employee_name_on_card=None, employee_preferred_name_on_card=None, amount_limit_monthly=None, status=None):
+        """
+        :param alias: The pointer to the monetary account that will be connected at
+        first with the card.
+        :type alias: object_.Pointer
+        :param type_: The type of card to order.
+        :type type_: str
+        :param product_type: The product type of the card to order.
+        :type product_type: str
+        :param company_name_on_card: The name of the company that should be
+        displayed on the card.
+        :type company_name_on_card: str
+        :param employee_name_on_card: The name of the employee that should be
+        displayed on the card.
+        :type employee_name_on_card: str
+        :param employee_preferred_name_on_card: The user's preferred name as it will
+        be on the card.
+        :type employee_preferred_name_on_card: str
+        :param amount_limit_monthly: The monthly spending limit for this employee on
+        the card.
+        :type amount_limit_monthly: object_.Amount
+        :param status: The status of the employee card.
+        :type status: str
+        """
+
+        self._alias_field_for_request = alias
+        self._type__field_for_request = type_
+        self._product_type_field_for_request = product_type
+        self._company_name_on_card_field_for_request = company_name_on_card
+        self._employee_name_on_card_field_for_request = employee_name_on_card
+        self._employee_preferred_name_on_card_field_for_request = employee_preferred_name_on_card
+        self._amount_limit_monthly_field_for_request = amount_limit_monthly
+        self._status_field_for_request = status
+
+
+
+    @property
+    def card(self):
+        """
+        :rtype: Card
+        """
+
+        return self._card
+
+    @property
+    def relation_user_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._relation_user_id
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def company_name_on_card(self):
+        """
+        :rtype: str
+        """
+
+        return self._company_name_on_card
+
+    @property
+    def amount_limit_monthly(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_limit_monthly
+
+    @property
+    def amount_spent_monthly(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_spent_monthly
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._card is not None:
+            return False
+
+        if self._relation_user_id is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        if self._company_name_on_card is not None:
+            return False
+
+        if self._amount_limit_monthly is not None:
+            return False
+
+        if self._amount_spent_monthly is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: CompanyEmployeeCard
+        """
+
+        return converter.json_to_class(CompanyEmployeeCard, json_str)
 
 
 class ConfirmationOfFunds(BunqModel):
@@ -12091,6 +11821,9 @@ class MasterCardAction(BunqModel):
     :type _mastercard_action_report: MasterCardActionReport
     :param _merchant_category_code: The MCC provided.
     :type _merchant_category_code: str
+    :param _company_employee_card_receipt: The receipt the company employee has
+    to provide for this transaction.
+    :type _company_employee_card_receipt: CompanyEmployeeCardReceipt
     """
 
     # Endpoint constants.
@@ -12146,6 +11879,7 @@ class MasterCardAction(BunqModel):
     _pin_status = None
     _mastercard_action_report = None
     _merchant_category_code = None
+    _company_employee_card_receipt = None
 
     @classmethod
     def get(cls,  master_card_action_id, monetary_account_id=None, custom_headers=None):
@@ -12563,6 +12297,14 @@ class MasterCardAction(BunqModel):
 
         return self._merchant_category_code
 
+    @property
+    def company_employee_card_receipt(self):
+        """
+        :rtype: CompanyEmployeeCardReceipt
+        """
+
+        return self._company_employee_card_receipt
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -12704,6 +12446,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._merchant_category_code is not None:
+            return False
+
+        if self._company_employee_card_receipt is not None:
             return False
 
         return True
@@ -27730,27 +27475,27 @@ class NoteAttachmentMasterCardAction(BunqModel):
 
     def __init__(self, attachment_id, description=None):
         """
+        :param description: Optional description of the attachment.
+        :type description: str
         :param attachment_id: The reference to the uploaded file to attach to this
         note.
         :type attachment_id: int
-        :param description: Optional description of the attachment.
-        :type description: str
         """
 
-        self._attachment_id_field_for_request = attachment_id
         self._description_field_for_request = description
+        self._attachment_id_field_for_request = attachment_id
 
     @classmethod
-    def create(cls,mastercard_action_id, attachment_id, monetary_account_id=None, description=None, custom_headers=None):
+    def create(cls,mastercard_action_id, description, attachment_id, monetary_account_id=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
         :type mastercard_action_id: int
+        :param description: Optional description of the attachment.
+        :type description: str
         :param attachment_id: The reference to the uploaded file to attach to
         this note.
         :type attachment_id: int
-        :param description: Optional description of the attachment.
-        :type description: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
