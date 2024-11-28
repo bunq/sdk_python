@@ -7731,9 +7731,6 @@ class RelationUser(BunqModel):
     CompanyEmployeeSettingAdyenCardTransaction
     :param _all_company_employee_card: Cards accessible by the company employee
     :type _all_company_employee_card: list[CompanyEmployeeCard]
-    :param _number_of_company_employee_card_receipt_pending: The number of
-    transactions that still need a receipt.
-    :type _number_of_company_employee_card_receipt_pending: int
     """
 
     _user_id = None
@@ -7746,7 +7743,6 @@ class RelationUser(BunqModel):
     _counter_user_status = None
     _company_employee_setting_adyen_card_transaction = None
     _all_company_employee_card = None
-    _number_of_company_employee_card_receipt_pending = None
 
     @property
     def user_id(self):
@@ -7828,14 +7824,6 @@ class RelationUser(BunqModel):
 
         return self._all_company_employee_card
 
-    @property
-    def number_of_company_employee_card_receipt_pending(self):
-        """
-        :rtype: int
-        """
-
-        return self._number_of_company_employee_card_receipt_pending
-
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -7871,9 +7859,6 @@ class RelationUser(BunqModel):
         if self._all_company_employee_card is not None:
             return False
 
-        if self._number_of_company_employee_card_receipt_pending is not None:
-            return False
-
         return True
 
     @staticmethod
@@ -7891,9 +7876,12 @@ class CompanyEmployeeCard(BunqModel):
     """
     Manage cards for company employees.
     
-    :param _alias: The pointer to the monetary account that will be connected at
-    first with the card.
-    :type _alias: object_.Pointer
+    :param _pointer_counter_user: The pointer to the employee for which you want
+    to create a card.
+    :type _pointer_counter_user: object_.Pointer
+    :param _pointer_monetary_account: The pointer to the monetary account that
+    will be connected at first with the card.
+    :type _pointer_monetary_account: object_.Pointer
     :param _type_: The type of card to order.
     :type _type_: str
     :param _product_type: The product type of the card to order.
@@ -7914,15 +7902,17 @@ class CompanyEmployeeCard(BunqModel):
     :type _status: str
     :param _card: The actual card.
     :type _card: Card
-    :param _relation_user_id: The id of the relation user.
-    :type _relation_user_id: int
     :param _amount_spent_monthly: The monthly spend for this employee on the
     card.
     :type _amount_spent_monthly: object_.Amount
+    :param _number_of_company_employee_card_receipt_pending: The number of
+    transactions that still need a receipt.
+    :type _number_of_company_employee_card_receipt_pending: int
     """
 
     # Field constants.
-    FIELD_ALIAS = "alias"
+    FIELD_POINTER_COUNTER_USER = "pointer_counter_user"
+    FIELD_POINTER_MONETARY_ACCOUNT = "pointer_monetary_account"
     FIELD_TYPE = "type"
     FIELD_PRODUCT_TYPE = "product_type"
     FIELD_COMPANY_NAME_ON_CARD = "company_name_on_card"
@@ -7933,12 +7923,13 @@ class CompanyEmployeeCard(BunqModel):
 
 
     _card = None
-    _relation_user_id = None
     _status = None
     _company_name_on_card = None
     _amount_limit_monthly = None
     _amount_spent_monthly = None
-    _alias_field_for_request = None
+    _number_of_company_employee_card_receipt_pending = None
+    _pointer_counter_user_field_for_request = None
+    _pointer_monetary_account_field_for_request = None
     _type__field_for_request = None
     _product_type_field_for_request = None
     _company_name_on_card_field_for_request = None
@@ -7947,11 +7938,14 @@ class CompanyEmployeeCard(BunqModel):
     _amount_limit_monthly_field_for_request = None
     _status_field_for_request = None
 
-    def __init__(self, alias, type_, product_type, company_name_on_card, employee_name_on_card=None, employee_preferred_name_on_card=None, amount_limit_monthly=None, status=None):
+    def __init__(self, pointer_counter_user, pointer_monetary_account, type_, product_type, company_name_on_card, employee_name_on_card=None, employee_preferred_name_on_card=None, amount_limit_monthly=None, status=None):
         """
-        :param alias: The pointer to the monetary account that will be connected at
-        first with the card.
-        :type alias: object_.Pointer
+        :param pointer_counter_user: The pointer to the employee for which you want
+        to create a card.
+        :type pointer_counter_user: object_.Pointer
+        :param pointer_monetary_account: The pointer to the monetary account that
+        will be connected at first with the card.
+        :type pointer_monetary_account: object_.Pointer
         :param type_: The type of card to order.
         :type type_: str
         :param product_type: The product type of the card to order.
@@ -7972,7 +7966,8 @@ class CompanyEmployeeCard(BunqModel):
         :type status: str
         """
 
-        self._alias_field_for_request = alias
+        self._pointer_counter_user_field_for_request = pointer_counter_user
+        self._pointer_monetary_account_field_for_request = pointer_monetary_account
         self._type__field_for_request = type_
         self._product_type_field_for_request = product_type
         self._company_name_on_card_field_for_request = company_name_on_card
@@ -7990,14 +7985,6 @@ class CompanyEmployeeCard(BunqModel):
         """
 
         return self._card
-
-    @property
-    def relation_user_id(self):
-        """
-        :rtype: int
-        """
-
-        return self._relation_user_id
 
     @property
     def status(self):
@@ -8031,15 +8018,20 @@ class CompanyEmployeeCard(BunqModel):
 
         return self._amount_spent_monthly
 
+    @property
+    def number_of_company_employee_card_receipt_pending(self):
+        """
+        :rtype: int
+        """
+
+        return self._number_of_company_employee_card_receipt_pending
+
     def is_all_field_none(self):
         """
         :rtype: bool
         """
 
         if self._card is not None:
-            return False
-
-        if self._relation_user_id is not None:
             return False
 
         if self._status is not None:
@@ -8052,6 +8044,9 @@ class CompanyEmployeeCard(BunqModel):
             return False
 
         if self._amount_spent_monthly is not None:
+            return False
+
+        if self._number_of_company_employee_card_receipt_pending is not None:
             return False
 
         return True
