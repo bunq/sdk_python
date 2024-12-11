@@ -37946,9 +37946,6 @@ class PaymentAutoAllocateDefinition(BunqModel):
     :param _fraction: The percentage of the triggering payment's amount to
     allocate.
     :type _fraction: float
-    :param _ginmon_cost_disclosure_id: The id of the ginmon cost disclosure, if
-    this definition is a scheduled order.
-    :type _ginmon_cost_disclosure_id: str
     :param _id_: The id of the PaymentAutoAllocateDefinition.
     :type _id_: int
     :param _created: The timestamp when the PaymentAutoAllocateDefinition was
@@ -37968,7 +37965,6 @@ class PaymentAutoAllocateDefinition(BunqModel):
     FIELD_DESCRIPTION = "description"
     FIELD_AMOUNT = "amount"
     FIELD_FRACTION = "fraction"
-    FIELD_GINMON_COST_DISCLOSURE_ID = "ginmon_cost_disclosure_id"
 
     # Object type.
     _OBJECT_TYPE_GET = "PaymentAutoAllocateDefinition"
@@ -37985,9 +37981,8 @@ class PaymentAutoAllocateDefinition(BunqModel):
     _description_field_for_request = None
     _amount_field_for_request = None
     _fraction_field_for_request = None
-    _ginmon_cost_disclosure_id_field_for_request = None
 
-    def __init__(self, type_=None, counterparty_alias=None, description=None, amount=None, fraction=None, ginmon_cost_disclosure_id=None):
+    def __init__(self, type_=None, counterparty_alias=None, description=None, amount=None, fraction=None):
         """
         :param type_: The type of definition.
         :type type_: str
@@ -38001,9 +37996,6 @@ class PaymentAutoAllocateDefinition(BunqModel):
         :param fraction: The percentage of the triggering payment's amount to
         allocate.
         :type fraction: float
-        :param ginmon_cost_disclosure_id: The id of the ginmon cost disclosure, if
-        this definition is a scheduled order.
-        :type ginmon_cost_disclosure_id: str
         """
 
         self._type__field_for_request = type_
@@ -38011,7 +38003,6 @@ class PaymentAutoAllocateDefinition(BunqModel):
         self._description_field_for_request = description
         self._amount_field_for_request = amount
         self._fraction_field_for_request = fraction
-        self._ginmon_cost_disclosure_id_field_for_request = ginmon_cost_disclosure_id
 
     @classmethod
     def list(cls,payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
@@ -38160,6 +38151,9 @@ class PaymentAutoAllocateInstance(BunqModel):
     :param _payment_id: The ID of the payment that triggered the allocating of
     the payments.
     :type _payment_id: int
+    :param _all_ginmon_transaction_order: All Ginmon transaction orders executed
+    with this instance.
+    :type _all_ginmon_transaction_order: list[GinmonTransaction]
     """
 
     # Endpoint constants.
@@ -38177,6 +38171,7 @@ class PaymentAutoAllocateInstance(BunqModel):
     _error_message = None
     _payment_batch = None
     _payment_id = None
+    _all_ginmon_transaction_order = None
 
     @classmethod
     def list(cls,payment_auto_allocate_id, monetary_account_id=None, params=None, custom_headers=None):
@@ -38292,6 +38287,14 @@ class PaymentAutoAllocateInstance(BunqModel):
 
         return self._payment_id
 
+    @property
+    def all_ginmon_transaction_order(self):
+        """
+        :rtype: list[GinmonTransaction]
+        """
+
+        return self._all_ginmon_transaction_order
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -38321,6 +38324,9 @@ class PaymentAutoAllocateInstance(BunqModel):
         if self._payment_id is not None:
             return False
 
+        if self._all_ginmon_transaction_order is not None:
+            return False
+
         return True
 
     @staticmethod
@@ -38332,6 +38338,188 @@ class PaymentAutoAllocateInstance(BunqModel):
         """
 
         return converter.json_to_class(PaymentAutoAllocateInstance, json_str)
+
+
+class GinmonTransaction(BunqModel):
+    """
+    Endpoint for reading Ginmon transactions.
+    
+    :param _status: The status of the transaction.
+    :type _status: str
+    :param _status_description: The status of the transaction.
+    :type _status_description: str
+    :param _status_description_translated: The translated status of the
+    transaction.
+    :type _status_description_translated: str
+    :param _amount_billing: The final amount the user will pay or receive.
+    :type _amount_billing: object_.Amount
+    :param _amount_billing_original: The estimated amount the user will pay or
+    receive.
+    :type _amount_billing_original: object_.Amount
+    :param _isin: The ISIN of the security.
+    :type _isin: str
+    :param _external_identifier: External identifier of this order at Ginmon.
+    :type _external_identifier: str
+    :param _label_user: The label of the user.
+    :type _label_user: object_.LabelUser
+    :param _label_monetary_account: The label of the monetary account.
+    :type _label_monetary_account: object_.MonetaryAccountReference
+    :param _counter_label_monetary_account: The label of the counter monetary
+    account.
+    :type _counter_label_monetary_account: object_.MonetaryAccountReference
+    :param _event_id: The id of the event of transaction.
+    :type _event_id: int
+    """
+
+    _status = None
+    _status_description = None
+    _status_description_translated = None
+    _amount_billing = None
+    _amount_billing_original = None
+    _isin = None
+    _external_identifier = None
+    _label_user = None
+    _label_monetary_account = None
+    _counter_label_monetary_account = None
+    _event_id = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def status_description(self):
+        """
+        :rtype: str
+        """
+
+        return self._status_description
+
+    @property
+    def status_description_translated(self):
+        """
+        :rtype: str
+        """
+
+        return self._status_description_translated
+
+    @property
+    def amount_billing(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_billing
+
+    @property
+    def amount_billing_original(self):
+        """
+        :rtype: object_.Amount
+        """
+
+        return self._amount_billing_original
+
+    @property
+    def isin(self):
+        """
+        :rtype: str
+        """
+
+        return self._isin
+
+    @property
+    def external_identifier(self):
+        """
+        :rtype: str
+        """
+
+        return self._external_identifier
+
+    @property
+    def label_user(self):
+        """
+        :rtype: object_.LabelUser
+        """
+
+        return self._label_user
+
+    @property
+    def label_monetary_account(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._label_monetary_account
+
+    @property
+    def counter_label_monetary_account(self):
+        """
+        :rtype: object_.MonetaryAccountReference
+        """
+
+        return self._counter_label_monetary_account
+
+    @property
+    def event_id(self):
+        """
+        :rtype: int
+        """
+
+        return self._event_id
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._status_description is not None:
+            return False
+
+        if self._status_description_translated is not None:
+            return False
+
+        if self._amount_billing is not None:
+            return False
+
+        if self._amount_billing_original is not None:
+            return False
+
+        if self._isin is not None:
+            return False
+
+        if self._external_identifier is not None:
+            return False
+
+        if self._label_user is not None:
+            return False
+
+        if self._label_monetary_account is not None:
+            return False
+
+        if self._counter_label_monetary_account is not None:
+            return False
+
+        if self._event_id is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: GinmonTransaction
+        """
+
+        return converter.json_to_class(GinmonTransaction, json_str)
 
 
 class PaymentAutoAllocate(BunqModel):
