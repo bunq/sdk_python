@@ -11801,6 +11801,8 @@ class MasterCardAction(BunqModel):
     :param _cashback_payout_item: The cashback payout item for this action or
     null
     :type _cashback_payout_item: CashbackPayoutItem
+    :param _point_mutation: The point mutation for this action or null
+    :type _point_mutation: PointMutation
     :param _blacklist: DEPRECATED. The blacklist enabled for the merchant of
     this transaction
     :type _blacklist: UserBlocklistMasterCardMerchant
@@ -11868,6 +11870,7 @@ class MasterCardAction(BunqModel):
     _pos_card_holder_presence = None
     _eligible_whitelist_id = None
     _cashback_payout_item = None
+    _point_mutation = None
     _blacklist = None
     _blocklist = None
     _additional_authentication_status = None
@@ -12245,6 +12248,14 @@ class MasterCardAction(BunqModel):
         return self._cashback_payout_item
 
     @property
+    def point_mutation(self):
+        """
+        :rtype: PointMutation
+        """
+
+        return self._point_mutation
+
+    @property
     def blacklist(self):
         """
         :rtype: UserBlocklistMasterCardMerchant
@@ -12423,6 +12434,9 @@ class MasterCardAction(BunqModel):
             return False
 
         if self._cashback_payout_item is not None:
+            return False
+
+        if self._point_mutation is not None:
             return False
 
         if self._blacklist is not None:
