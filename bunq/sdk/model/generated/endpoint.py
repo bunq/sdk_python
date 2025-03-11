@@ -5308,6 +5308,8 @@ class CardName(BunqModel):
     card, the following formats are accepted: Name Surname, N. Surname, N
     Surname or Surname.
     
+    :param _name: The card name.
+    :type _name: str
     :param _possible_card_name_array: All possible variations (of suitable
     length) of user's legal name for the debit card.
     :type _possible_card_name_array: list[str]
@@ -5316,10 +5318,22 @@ class CardName(BunqModel):
     # Endpoint constants.
     _ENDPOINT_URL_LISTING = "user/{}/card-name"
 
+    # Field constants.
+    FIELD_NAME = "name"
+
     # Object type.
     _OBJECT_TYPE_GET = "CardUserNameArray"
 
     _possible_card_name_array = None
+    _name_field_for_request = None
+
+    def __init__(self, name):
+        """
+        :param name: The card name.
+        :type name: str
+        """
+
+        self._name_field_for_request = name
 
     @classmethod
     def list(cls, params=None, custom_headers=None):
