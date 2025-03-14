@@ -2715,6 +2715,8 @@ class Payment(BunqModel):
     :param _payment_suspended_outgoing: A reference to the
     PaymentSuspendedOutgoing if it exists.
     :type _payment_suspended_outgoing: PaymentSuspendedOutgoing
+    :param _payment_fee: Incurred fee for the payment.
+    :type _payment_fee: object_.PaymentFee
     """
 
     # Endpoint constants.
@@ -2760,6 +2762,7 @@ class Payment(BunqModel):
     _balance_after_mutation = None
     _payment_auto_allocate_instance = None
     _payment_suspended_outgoing = None
+    _payment_fee = None
     _amount_field_for_request = None
     _counterparty_alias_field_for_request = None
     _description_field_for_request = None
@@ -3121,6 +3124,14 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
 
         return self._payment_suspended_outgoing
 
+    @property
+    def payment_fee(self):
+        """
+        :rtype: object_.PaymentFee
+        """
+
+        return self._payment_fee
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -3205,6 +3216,9 @@ cls.FIELD_ALLOW_BUNQTO : allow_bunqto
             return False
 
         if self._payment_suspended_outgoing is not None:
+            return False
+
+        if self._payment_fee is not None:
             return False
 
         return True
