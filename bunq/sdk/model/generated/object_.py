@@ -941,8 +941,8 @@ class Address(BunqModel):
     :param _extra: The apartment, building or other extra information for
     addresses.
     :type _extra: str
-    :param _mailbox_name: The name on the mailbox (only used for Postal
-    addresses).
+    :param _mailbox_name: The name on the mailbox (only used for Postal and
+    Shipping addresses).
     :type _mailbox_name: str
     :param _province: The province according to local standard.
     :type _province: str
@@ -987,8 +987,8 @@ class Address(BunqModel):
         :param extra: The apartment, building or other extra information for
         addresses.
         :type extra: str
-        :param mailbox_name: The name on the mailbox (only used for Postal
-        addresses).
+        :param mailbox_name: The name on the mailbox (only used for Postal and
+        Shipping addresses).
         :type mailbox_name: str
         """
 

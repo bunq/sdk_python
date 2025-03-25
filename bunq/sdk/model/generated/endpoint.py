@@ -6973,6 +6973,8 @@ class UserCompany(BunqModel):
     :type _counter_bank_iban: str
     :param _avatar: The company's avatar.
     :type _avatar: object_.Avatar
+    :param _address_shipping: The company's shipping address.
+    :type _address_shipping: object_.Address
     :param _version_terms_of_service: The version of the terms of service
     accepted by the user.
     :type _version_terms_of_service: str
@@ -7036,6 +7038,7 @@ class UserCompany(BunqModel):
     _avatar = None
     _address_main = None
     _address_postal = None
+    _address_shipping = None
     _version_terms_of_service = None
     _directors = None
     _language = None
@@ -7364,6 +7367,14 @@ cls.FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN : daily_limit_without_confirmat
         return self._address_postal
 
     @property
+    def address_shipping(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_shipping
+
+    @property
     def version_terms_of_service(self):
         """
         :rtype: str
@@ -7550,6 +7561,9 @@ cls.FIELD_DAILY_LIMIT_WITHOUT_CONFIRMATION_LOGIN : daily_limit_without_confirmat
             return False
 
         if self._address_postal is not None:
+            return False
+
+        if self._address_shipping is not None:
             return False
 
         if self._version_terms_of_service is not None:
@@ -36484,6 +36498,8 @@ class UserPerson(BunqModel):
     :type _legal_name: str
     :param _alias: The aliases of the user.
     :type _alias: list[object_.Pointer]
+    :param _address_shipping: The person's shipping address.
+    :type _address_shipping: object_.Address
     :param _place_of_birth: The person's place of birth.
     :type _place_of_birth: str
     :param _country_of_birth: The person's country of birth. Formatted as a SO
@@ -36551,6 +36567,7 @@ class UserPerson(BunqModel):
     _tax_resident = None
     _address_main = None
     _address_postal = None
+    _address_shipping = None
     _date_of_birth = None
     _place_of_birth = None
     _country_of_birth = None
@@ -36957,6 +36974,14 @@ cls.FIELD_DISPLAY_NAME : display_name
         return self._address_postal
 
     @property
+    def address_shipping(self):
+        """
+        :rtype: object_.Address
+        """
+
+        return self._address_shipping
+
+    @property
     def date_of_birth(self):
         """
         :rtype: str
@@ -37129,6 +37154,9 @@ cls.FIELD_DISPLAY_NAME : display_name
             return False
 
         if self._address_postal is not None:
+            return False
+
+        if self._address_shipping is not None:
             return False
 
         if self._date_of_birth is not None:
