@@ -58,7 +58,11 @@ class BunqModel:
                                 obj: Dict,
                                 wrapper: str = None) -> Dict:
         if wrapper is not None:
-            return obj[cls._FIELD_RESPONSE][cls._INDEX_FIRST][wrapper]
+            from bunq.sdk.model.generated.endpoint import NotificationFilterUrlUser, NotificationFilterUrlMonetaryAccount
+            if cls == NotificationFilterUrlUser or cls == NotificationFilterUrlMonetaryAccount:
+                return obj[cls._FIELD_RESPONSE][cls._INDEX_FIRST]['NotificationFilterUrl']
+            else:
+                return obj[cls._FIELD_RESPONSE][cls._INDEX_FIRST][wrapper]
 
         return obj[cls._FIELD_RESPONSE][cls._INDEX_FIRST]
 
@@ -101,6 +105,16 @@ class BunqModel:
 
         for item in array:
             item_unwrapped = item if wrapper is None else item[wrapper]
+            # item_unwrapped needs to be deserialized to NotificationFilterUrl (wrapper) 
+            #   when cls is NotificationFilterUrlUser or NotificationFilterUrlMonetaryAccount
+            if wrapper=='NotificationFilterUrl':
+                from bunq.sdk.model.generated.endpoint import NotificationFilterUrlUser, NotificationFilterUrlMonetaryAccount
+                from bunq.sdk.model.generated.object_ import NotificationFilterUrl
+                if cls == NotificationFilterUrlUser or cls == NotificationFilterUrlMonetaryAccount:
+                    cls_orig = cls
+                    cls = NotificationFilterUrl
+                    #print(f'NotificationFilterUrlUser deserialization, changing cls from: {cls_orig} to: {cls}')
+                    #TODO: Test deserialize for NotificationFilterUrlUser and NotificationFilterUrlMonetaryAccount
             item_deserialized = converter.deserialize(cls, item_unwrapped)
             array_deserialized.append(item_deserialized)
 
