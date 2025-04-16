@@ -43897,6 +43897,87 @@ cls.FIELD_STATUS : status
         """
 
         return converter.json_to_class(MasterCardIdentityCheckChallengeRequestUser, json_str)
+
+
+class HealthCheck(BunqModel, AnchorObjectInterface):
+    """
+    Basic health check for uptime and instance health monitoring.
+    
+    :param _HealthResult: 
+    :type _HealthResult: object_.HealthCheckResult
+    """
+
+    # Error constants.
+    _ERROR_NULL_FIELDS = "All fields of an extended model or object are null."
+
+    # Endpoint constants.
+    _ENDPOINT_URL_LISTING = "health-check"
+
+    # Object type.
+    _OBJECT_TYPE_GET = "HealthCheckResult"
+
+    _HealthResult = None
+
+    @classmethod
+    def list(cls, params=None, custom_headers=None):
+        """
+        :type params: dict[str, str]|None
+        :type custom_headers: dict[str, str]|None
+        
+        :rtype: BunqResponseHealthCheckList
+        """
+
+        if params is None:
+            params = {}
+
+        if custom_headers is None:
+            custom_headers = {}
+
+        api_client = ApiClient(cls._get_api_context())
+        endpoint_url = cls._ENDPOINT_URL_LISTING
+        response_raw = api_client.get(endpoint_url, params, custom_headers)
+
+        return BunqResponseHealthCheckList.cast_from_bunq_response(
+            cls._from_json_list(response_raw, cls._OBJECT_TYPE_GET)
+        )
+
+    @property
+    def HealthResult(self):
+        """
+        :rtype: object_.HealthCheckResult
+        """
+
+        return self._HealthResult
+    def get_referenced_object(self):
+        """
+        :rtype: BunqModel
+        :raise: BunqException
+        """
+
+        if self._HealthResult is not None:
+            return self._HealthResult
+
+        raise BunqException(self._ERROR_NULL_FIELDS)
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._HealthResult is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: HealthCheck
+        """
+
+        return converter.json_to_class(HealthCheck, json_str)
     
 class BunqResponseBillingContractSubscriptionList(BunqResponse):
     @property
@@ -46363,6 +46444,16 @@ class BunqResponseMasterCardIdentityCheckChallengeRequestUser(BunqResponse):
     def value(self):
         """
         :rtype: MasterCardIdentityCheckChallengeRequestUser
+        """
+ 
+        return super().value
+
+    
+class BunqResponseHealthCheckList(BunqResponse):
+    @property
+    def value(self):
+        """
+        :rtype: list[HealthCheck]
         """
  
         return super().value
