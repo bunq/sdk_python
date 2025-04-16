@@ -6487,6 +6487,108 @@ class TransferwiseRequirementFieldGroupValuesAllowed(BunqModel):
         """
 
         return converter.json_to_class(TransferwiseRequirementFieldGroupValuesAllowed, json_str)
+
+
+class HealthCheckResult(BunqModel):
+    """
+    :param _status: The result status of the health check.
+    :type _status: str
+    :param _allEntry: The entries on which the current status is based.
+    :type _allEntry: list[HealthCheckResultEntry]
+    """
+
+    _status = None
+    _allEntry = None
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    @property
+    def allEntry(self):
+        """
+        :rtype: list[HealthCheckResultEntry]
+        """
+
+        return self._allEntry
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._status is not None:
+            return False
+
+        if self._allEntry is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: HealthCheckResult
+        """
+
+        return converter.json_to_class(HealthCheckResult, json_str)
+
+
+class HealthCheckResultEntry(BunqModel):
+    """
+    :param _type_: The type of HealthCheckResultEntry.
+    :type _type_: str
+    :param _status: The status of the HealthCheckResultEntry
+    :type _status: str
+    """
+
+    _type_ = None
+    _status = None
+
+    @property
+    def type_(self):
+        """
+        :rtype: str
+        """
+
+        return self._type_
+
+    @property
+    def status(self):
+        """
+        :rtype: str
+        """
+
+        return self._status
+
+    def is_all_field_none(self):
+        """
+        :rtype: bool
+        """
+
+        if self._type_ is not None:
+            return False
+
+        if self._status is not None:
+            return False
+
+        return True
+
+    @staticmethod
+    def from_json(json_str):
+        """
+        :type json_str: str
+        
+        :rtype: HealthCheckResultEntry
+        """
+
+        return converter.json_to_class(HealthCheckResultEntry, json_str)
 class MonetaryAccountReference(BunqModel):
     """
     :type pointer: Pointer
