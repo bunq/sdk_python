@@ -11077,6 +11077,8 @@ class SchedulePayment(BunqModel):
     :type _payment: object_.SchedulePaymentEntry
     :param _schedule: The schedule details.
     :type _schedule: Schedule
+    :param _purpose: The schedule purpose.
+    :type _purpose: str
     :param _status: The schedule status, options: ACTIVE, FINISHED, CANCELLED.
     :type _status: str
     """
@@ -11091,6 +11093,7 @@ class SchedulePayment(BunqModel):
     # Field constants.
     FIELD_PAYMENT = "payment"
     FIELD_SCHEDULE = "schedule"
+    FIELD_PURPOSE = "purpose"
 
     # Object type.
     _OBJECT_TYPE_GET = "ScheduledPayment"
@@ -11099,23 +11102,28 @@ class SchedulePayment(BunqModel):
     _payment = None
     _schedule = None
     _status = None
+    _purpose = None
     _payment_field_for_request = None
     _schedule_field_for_request = None
+    _purpose_field_for_request = None
 
-    def __init__(self, payment=None, schedule=None):
+    def __init__(self, payment=None, schedule=None, purpose=None):
         """
         :param payment: The payment details.
         :type payment: object_.SchedulePaymentEntry
         :param schedule: The schedule details when creating or updating a scheduled
         payment.
         :type schedule: Schedule
+        :param purpose: The purpose of this scheduled payment.
+        :type purpose: str
         """
 
         self._payment_field_for_request = payment
         self._schedule_field_for_request = schedule
+        self._purpose_field_for_request = purpose
 
     @classmethod
-    def create(cls,payment, schedule, monetary_account_id=None, custom_headers=None):
+    def create(cls,payment, schedule, monetary_account_id=None, purpose=None, custom_headers=None):
         """
         :type user_id: int
         :type monetary_account_id: int
@@ -11124,6 +11132,8 @@ class SchedulePayment(BunqModel):
         :param schedule: The schedule details when creating or updating a
         scheduled payment.
         :type schedule: Schedule
+        :param purpose: The purpose of this scheduled payment.
+        :type purpose: str
         :type custom_headers: dict[str, str]|None
         
         :rtype: BunqResponseInt
@@ -11134,7 +11144,8 @@ class SchedulePayment(BunqModel):
 
         request_map = {
 cls.FIELD_PAYMENT : payment,
-cls.FIELD_SCHEDULE : schedule
+cls.FIELD_SCHEDULE : schedule,
+cls.FIELD_PURPOSE : purpose
 }
         request_map_string = converter.class_to_json(request_map)
         request_map_string = cls._remove_field_for_request(request_map_string)
@@ -11278,6 +11289,14 @@ cls.FIELD_SCHEDULE : schedule
 
         return self._status
 
+    @property
+    def purpose(self):
+        """
+        :rtype: str
+        """
+
+        return self._purpose
+
     def is_all_field_none(self):
         """
         :rtype: bool
@@ -11290,6 +11309,9 @@ cls.FIELD_SCHEDULE : schedule
             return False
 
         if self._status is not None:
+            return False
+
+        if self._purpose is not None:
             return False
 
         return True
